@@ -3,29 +3,35 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <?php echo $this->headTitle('ZF2 '. $this->translate('Skeleton Application'))->setSeparator(' - ')->setAutoEscape(false) ?>
+        <?php echo $this->headTitle('ZF2 ' . $this->translate('Skeleton Application'))->setSeparator(' - ')->setAutoEscape(false) ?>
 
-        <?php echo $this->headMeta()
-            ->appendName('viewport', 'width=device-width, initial-scale=1.0')
-            ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
+        <?php
+        echo $this->headMeta()
+                ->appendName('viewport', 'width=device-width, initial-scale=1.0')
+                ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
         ?>
 
         <!-- Le styles -->
-        <?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'))
-                        ->prependStylesheet($this->basePath('css/style.css'))
-                        ->prependStylesheet($this->basePath('css/bootstrap-theme.min.css'))
-                        ->prependStylesheet($this->basePath('css/bootstrap.min.css')) ?>
+        <?php
+        echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'))
+                ->prependStylesheet($this->basePath('/css/custom.css'))
+                ->prependStylesheet($this->basePath('css/style.css'))
+                ->prependStylesheet($this->basePath('css/bootstrap-theme.min.css'))
+                ->prependStylesheet($this->basePath('css/bootstrap.min.css'))
+        ?>
 
         <!-- Scripts -->
-        <?php echo $this->headScript()
-            ->prependFile($this->basePath('js/bootstrap.min.js'))
-            ->prependFile($this->basePath('js/jquery.min.js'))
-            ->prependFile($this->basePath('js/respond.min.js'), 'text/javascript', array('conditional' => 'lt IE 9',))
-            ->prependFile($this->basePath('js/html5shiv.min.js'),   'text/javascript', array('conditional' => 'lt IE 9',))
-        ; ?>
-
+        <?php
+        echo $this->headScript()
+                ->prependFile($this->basePath('js/bootstrap.min.js'))
+                ->prependFile($this->basePath('js/jquery.min.js'))
+                ->prependFile($this->basePath('js/respond.min.js'), 'text/javascript', array('conditional' => 'lt IE 9',))
+                ->prependFile($this->basePath('js/html5shiv.min.js'), 'text/javascript', array('conditional' => 'lt IE 9',))
+        ;
+        ?>
     </head>
     <body>
+        <!--
         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
             <div class="container">
                 <div class="navbar-header">
@@ -40,16 +46,127 @@
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="<?php echo $this->url('home') ?>"><?php echo $this->translate('Home') ?></a></li>
                     </ul>
-                </div><!--/.nav-collapse -->
+                </div>
             </div>
-        </nav>
+        </nav> -->
         <div class="container">
-            <?php echo $this->content; ?>
+<?php echo $this->content; ?>
             <hr>
-            <footer>
-                <p>&copy; 2005 - <?php echo date('Y') ?> by Zend Technologies Ltd. <?php echo $this->translate('All rights reserved.') ?></p>
+            <footer>                
+                <div class="footer-top-container">
+                    <div class="wrapper">
+                        <div class="addthis_toolbox">   
+                            <div class="social_link">
+
+                                <a href="https://www.facebook.com/YourArtGallery"><img src="<?php echo $this->basePath()  ?>/img/facebook_share.png"  alt="Share to Facebook" /></a>
+                                <a href="https://twitter.com/YourArtGallery"><img src="<?php echo $this->basePath()  ?>/img/twitter_share.png"  alt="Share to Twitter" /></a>
+                                <a href="https://instagram.com/Your.Art.Gallery/"><img src="<?php echo $this->basePath()  ?>/img/instagram_share.png"  alt="Instagram" /></a>
+                                <a href="https://www.pinterest.com/yourartgallery/"><img src="<?php echo $this->basePath()  ?>/img/pinterest_share.png"  alt="Share to Pinterest" /></a>
+                                <a href="https://plus.google.com"><img src="<?php echo $this->basePath()  ?>/img/google_share.png"  alt="Share to Google" /></a>
+                                <a href="https://www.linkedin.com/company/your-art-gallery-llc"><img src="<?php echo $this->basePath()  ?>/img/linkedin_share.png"  alt="Stumble It" /></a>
+                                <a href="https://www.youtube.com/YourArtGallery"><img src="<?php echo $this->basePath()  ?>/img/youtube_share.png"  alt="Share to Youtube" /></a>            
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="footer-container">
+                        <footer class="wrapper clearfix">
+
+                            <div class="footer_box">
+                                <a href="/about-us"><h1>COMPANY INFO</h1></a>
+                                <ul>
+                                    <li><a href="/about-us">About Us</a></li>
+                                    <li><a href="/about-our-prints">About Our Prints</a></li>
+                                    <li><a href="http://yaguniversity.tumblr.com/tagged/media" target="_blank">Media</a></li>
+                                    <li><a href="http://yaguniversity.tumblr.com/tagged/news" target="_blank">News & Press</a></li>
+                                    <li><a href="http://yaguniversity.tumblr.com/tagged/events" target="_blank">Events & Exhibitions</a></li>
+                                </ul>
+                            </div>
+
+                            <div class="footer_box">
+                                <a id="loginPopup10" href="#" ><h1>ORDER INFO</h1></a>
+                                <ul>
+                                    <li><a href="#">Track An Order</a></li>
+                                    <li><a href="#">Shipping Options</a></li>
+                                    <li><a href="#">Return Information</a></li>
+                                </ul>
+                            </div>
+
+                            <div class="footer_box">
+                                <a href="/content.php?id=81"><h1>HELP / FEEDBACK</h1></a>
+                                <ul>
+                                    <li><a href="http://yaguniversity.tumblr.com/faq" target="_blank">FAQs</a></li>
+                                    <li><a href="http://yaguniversity.tumblr.com" target="_blank">YAG University</a></li>
+                                    <li>
+                                        <a href="#">Feedback</a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="footer_box" style="width: 14%;">
+                                <a href="/our-policies"><h1>TERMS & POLICIES</h1></a>
+                                <ul>
+                                    <li><a href="/our-policies">Sustainability Policy</a></li>
+                                    <li><a href="/our-policies">Privacy Policy</a></li>
+                                    <li><a href="/our-policies">Purchasing Policy</a></li>
+                                    <li><a href="/terms-of-service">Terms & Conditions</a></li>
+                                </ul>
+                            </div>
+
+                            <div class="footer_box" style="width: 11%;">
+                                <a href="/contact-us"><h1>CONTACT US</h1></a>
+                                <ul>
+                                    <li><a href="/contact-us">Location / Hours</a></li>
+                                    <li><a href="/jobs">Jobs / Careers</a></li>                                    
+                                </ul>
+                            </div>
+                            <div class="footer-separator" >
+                                &nbsp;    
+                            </div>
+                            <div class="footer_box signmeup-baby">
+                                <h1>Sign up for exclusive offers and the latest news</h1>
+                                <div style="float: left;">
+                                    <img src="<?php echo $this->basePath() ?>/img/bg-rateing.jpg"/>
+                                </div>
+                                <div>
+                                    <div style="float: right;"><input type="text" name="subscribe-email" placeholder="Email Address"/></div>
+                                    <div style="float: right;"><button id="signup-baby-btn">Sign Me Up, Baby!</button></div>
+                                </div>
+                            </div>
+
+                            <div class="footer_bottom clear clearfix">
+                                <span>Your Art Gallery &copy;2015</span>
+                            </div>
+                        </footer>
+                        <script>
+                            var addthis_config = addthis_config || {};
+                            addthis_config.data_track_addressbar = false;
+                            addthis_config.data_track_clickback = false;
+                        </script>
+                        <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-537097da2d2591ed"></script>                        
+
+                    </div>
+
+                    <script>
+                                (function (i, s, o, g, r, a, m) {
+                                    i['GoogleAnalyticsObject'] = r;
+                                    i[r] = i[r] || function () {
+                                        (i[r].q = i[r].q || []).push(arguments)
+                                    }, i[r].l = 1 * new Date();
+                                    a = s.createElement(o),
+                                            m = s.getElementsByTagName(o)[0];
+                                    a.async = 1;
+                                    a.src = g;
+                                    m.parentNode.insertBefore(a, m)
+                                })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+                        ga('create', 'UA-60062079-1', 'auto');
+                        ga('send', 'pageview');
+
+                    </script>
+
             </footer>
         </div> <!-- /container -->
-        <?php echo $this->inlineScript() ?>
+<?php echo $this->inlineScript() ?>
     </body>
 </html>

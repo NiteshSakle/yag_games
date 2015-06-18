@@ -8,6 +8,12 @@
  */
 
 return array(
+    'controllers' => array(
+        'invokables' => array(
+            'YagGames\Controller\Index' => 'YagGames\Controller\IndexController'
+        ),
+    ),
+    
     'router' => array(
         'routes' => array(
             'home' => array(
@@ -20,10 +26,6 @@ return array(
                     ),
                 ),
             ),
-            // The following is a route to simplify getting started creating
-            // new controllers and actions without needing to create a new
-            // module. Simply drop new controllers in, and you can access them
-            // using the path /application/:controller/:action
             'yaggames' => array(
                 'type'    => 'Literal',
                 'options' => array(
@@ -71,11 +73,7 @@ return array(
             ),
         ),
     ),
-    'controllers' => array(
-        'invokables' => array(
-            'YagGames\Controller\Index' => 'YagGames\Controller\IndexController'
-        ),
-    ),
+    
     'view_manager' => array(
         'display_not_found_reason' => true,
         'display_exceptions'       => true,
