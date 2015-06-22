@@ -10,10 +10,5 @@
     "require": {
         "php": ">=5.5",
         "zendframework/zendframework": "~2.5"
-    }, 
-    "config": {
-    "github-oauth": {
-      "github.com": "vishwa"
-        }
-      }
+    }
 }
