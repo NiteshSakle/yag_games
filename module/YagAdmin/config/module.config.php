@@ -6,49 +6,24 @@
  * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
-echo 123456789;
+echo 4387;
 return array(
     'controllers' => array(
         'invokables' => array(
-            'YagGames\Controller\Index' => 'YagGames\Controller\IndexController'
+            'YagAdmin\Controller\Index' => 'YagAdmin\Controller\IndexController'
         ),
     ),
     
     'router' => array(
         'routes' => array(
-            'home' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
+            'yagadmin' => array(
+                'type' => 'segment',
                 'options' => array(
-                    'route'    => '/',
+                    'route'    => '/yagadmin',
                     'defaults' => array(
-                        'controller' => 'YagGames\Controller\Index',
-                        'action'     => 'index',
-                    ),
-                ),
-            ),
-            'yaggames' => array(
-                'type'    => 'Segment',
-                'options' => array(
-                    'route'    => '/yaggames',
-                    'defaults' => array(
-                        '__NAMESPACE__' => 'YagGames\Controller',
+                        '__NAMESPACE__' => 'YagAdmin\Controller',
                         'controller'    => 'Index',
                         'action'        => 'index',
-                    ),
-                ),
-                'may_terminate' => true,
-                'child_routes' => array(
-                    'default' => array(
-                        'type'    => 'Segment',
-                        'options' => array(
-                            'route'    => '/[:controller[/:action]]',
-                            'constraints' => array(
-                                'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
-                            ),
-                            'defaults' => array(
-                            ),
-                        ),
                     ),
                 ),
             ),
@@ -82,7 +57,7 @@ return array(
         'exception_template'       => 'error/index',
         'template_map' => array(
             'layout/layout'           => __DIR__ . '/../view/layout/layout.phtml',
-            'yag-games/index/index' => __DIR__ . '/../view/yaggames/index/index.phtml',
+            'yag-admin/index/index' => __DIR__ . '/../view/yagadmin/index/index.phtml',
             'error/404'               => __DIR__ . '/../view/error/404.phtml',
             'error/index'             => __DIR__ . '/../view/error/index.phtml',
         ),

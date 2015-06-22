@@ -6,8 +6,9 @@
  * @see http://framework.zend.com/manual/current/en/tutorials/config.advanced.html#environment-specific-application-configuration
  */
 return array(
-    'modules' => array(
-        'YagGames',
+    'modules' => array(        
+        'YagGames', 
+        'YagAdmin'
     ),
     
     'module_listener_options' => array(

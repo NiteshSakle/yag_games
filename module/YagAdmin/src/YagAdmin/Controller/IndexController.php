@@ -7,20 +7,16 @@
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
 
-namespace YagGames\Controller;
+namespace YagAdmin\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
 class IndexController extends AbstractActionController
 {
-    public function onDispatch(\Zend\Mvc\MvcEvent $e)
-    {
-        $viewModel = $e->getViewModel();
-        return parent::onDispatch($e);
-    }
     public function indexAction()
     {
+        echo 63472;exit;
         return new ViewModel();
     }
 }
