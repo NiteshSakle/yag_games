@@ -56,20 +56,17 @@ return array(
         'not_found_template'       => 'error/404',
         'exception_template'       => 'error/index',
         'template_map' => array(
-            'layout/layout'           => __DIR__ . '/../view/layout/layout.phtml',
-            'yag-admin/index/index' => __DIR__ . '/../view/yagadmin/index/index.phtml',
-            'error/404'               => __DIR__ . '/../view/error/404.phtml',
-            'error/index'             => __DIR__ . '/../view/error/index.phtml',
+            'yag-admin/layout/layout'   => __DIR__ . '/../view/yagadmin/layout/layout.phtml',
+            'yag-admin/index/index'     => __DIR__ . '/../view/yagadmin/index/index.phtml',
         ),
         'template_path_stack' => array(
-            __DIR__ . '/../view',
+            'yagadmin' => __DIR__ . '/../view',
         ),
     ),
-    // Placeholder for console routes
-    'console' => array(
-        'router' => array(
-            'routes' => array(
-            ),
-        ),
+    'view_helpers' => array(
+        'invokables' => array(
+           'config' => 'Admin\View\Helper\Config',
+        )
     ),
+    
 );

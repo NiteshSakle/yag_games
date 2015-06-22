@@ -17,7 +17,7 @@ return array(
     'router' => array(
         'routes' => array(
             'home' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'type' => 'Segment',
                 'options' => array(
                     'route'    => '/',
                     'defaults' => array(
@@ -72,7 +72,7 @@ return array(
             'error/index'             => __DIR__ . '/../view/error/index.phtml',
         ),
         'template_path_stack' => array(
-            __DIR__ . '/../view',
+            'yaggames' => __DIR__ . '/../view',
         ),
     ),
     // Placeholder for console routes
