@@ -49,26 +49,58 @@
                 </div>
             </div>
         </nav> -->
+        <div class="header-container">
+            <header class="wrapper clearfix">
+                <h1 class="title"><a href="http://192.168.10.55/yag"><img src="http://192.168.10.55/yag/assets/themes/yag/images/logo.png" alt=""></a></h1>
+                <div style="float: right;">
+
+                    <nav>
+                        <ul>
+                            <li><a href="http://192.168.10.55/yag/about-us">About YAG</a></li>
+
+                            <li><a href="http://192.168.10.55/yag/image-search">Shop for Art</a></li>
+                            <li><a href="http://192.168.10.55/yag/sell-your-art">Sell Your Art</a></li>
+
+                            <li><a href="http://192.168.10.55/yag/contests">Artist Challenge/Contests</a></li>
+
+                            <li class="myaccount-dropmenu">
+                                <a href="http://192.168.10.55/yag/artist.welcome.php">My Account</a>
+                                <ul>
+
+                                    <li><a id="loginPopup3" href="workbox.php?mode=loginPopup">Artist Portfolio</a></li>
+
+                                    <li><a id="loginPopup4" href="workbox.php?mode=loginPopup">Buyer Account</a></li>    
+                                </ul>
+                            </li>
+
+                            <li><a id="loginPopup" href="workbox.php?mode=loginPopup">Login or Join for FREE</a></li>
+
+                        </ul>
+                    </nav>
+
+                </div>
+            </header>
+        </div>
         <div class="container">
-        <?php echo $this->content; ?>
-            
+            <?php echo $this->content; ?>
+
             <hr>
-            
-            
-            
+
+
+
             <footer>                
                 <div class="footer-top-container">
                     <div class="wrapper">
                         <div class="addthis_toolbox">   
                             <div class="social_link">
 
-                                <a href="https://www.facebook.com/YourArtGallery"><img src="<?php echo $this->basePath()  ?>/img/facebook_share.png"  alt="Share to Facebook" /></a>
-                                <a href="https://twitter.com/YourArtGallery"><img src="<?php echo $this->basePath()  ?>/img/twitter_share.png"  alt="Share to Twitter" /></a>
-                                <a href="https://instagram.com/Your.Art.Gallery/"><img src="<?php echo $this->basePath()  ?>/img/instagram_share.png"  alt="Instagram" /></a>
-                                <a href="https://www.pinterest.com/yourartgallery/"><img src="<?php echo $this->basePath()  ?>/img/pinterest_share.png"  alt="Share to Pinterest" /></a>
-                                <a href="https://plus.google.com"><img src="<?php echo $this->basePath()  ?>/img/google_share.png"  alt="Share to Google" /></a>
-                                <a href="https://www.linkedin.com/company/your-art-gallery-llc"><img src="<?php echo $this->basePath()  ?>/img/linkedin_share.png"  alt="Stumble It" /></a>
-                                <a href="https://www.youtube.com/YourArtGallery"><img src="<?php echo $this->basePath()  ?>/img/youtube_share.png"  alt="Share to Youtube" /></a>            
+                                <a href="https://www.facebook.com/YourArtGallery"><img src="<?php echo $this->basePath() ?>/img/facebook_share.png"  alt="Share to Facebook" /></a>
+                                <a href="https://twitter.com/YourArtGallery"><img src="<?php echo $this->basePath() ?>/img/twitter_share.png"  alt="Share to Twitter" /></a>
+                                <a href="https://instagram.com/Your.Art.Gallery/"><img src="<?php echo $this->basePath() ?>/img/instagram_share.png"  alt="Instagram" /></a>
+                                <a href="https://www.pinterest.com/yourartgallery/"><img src="<?php echo $this->basePath() ?>/img/pinterest_share.png"  alt="Share to Pinterest" /></a>
+                                <a href="https://plus.google.com"><img src="<?php echo $this->basePath() ?>/img/google_share.png"  alt="Share to Google" /></a>
+                                <a href="https://www.linkedin.com/company/your-art-gallery-llc"><img src="<?php echo $this->basePath() ?>/img/linkedin_share.png"  alt="Stumble It" /></a>
+                                <a href="https://www.youtube.com/YourArtGallery"><img src="<?php echo $this->basePath() ?>/img/youtube_share.png"  alt="Share to Youtube" /></a>            
 
                             </div>
                         </div>
@@ -152,24 +184,24 @@
                     </div>
 
                     <script>
-                                (function (i, s, o, g, r, a, m) {
-                                    i['GoogleAnalyticsObject'] = r;
-                                    i[r] = i[r] || function () {
-                                        (i[r].q = i[r].q || []).push(arguments)
-                                    }, i[r].l = 1 * new Date();
-                                    a = s.createElement(o),
-                                            m = s.getElementsByTagName(o)[0];
-                                    a.async = 1;
-                                    a.src = g;
-                                    m.parentNode.insertBefore(a, m)
-                                })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+                            (function (i, s, o, g, r, a, m) {
+                                i['GoogleAnalyticsObject'] = r;
+                                i[r] = i[r] || function () {
+                                    (i[r].q = i[r].q || []).push(arguments)
+                                }, i[r].l = 1 * new Date();
+                                a = s.createElement(o),
+                                        m = s.getElementsByTagName(o)[0];
+                                a.async = 1;
+                                a.src = g;
+                                m.parentNode.insertBefore(a, m)
+                            })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
 
-                        ga('create', 'UA-60062079-1', 'auto');
-                        ga('send', 'pageview');
+                            ga('create', 'UA-60062079-1', 'auto');
+                            ga('send', 'pageview');
 
                     </script>
             </footer>
         </div> <!-- /container -->
-<?php echo $this->inlineScript() ?>
+        <?php echo $this->inlineScript() ?>
     </body>
 </html>

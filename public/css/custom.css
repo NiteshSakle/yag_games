@@ -1,7 +1,9 @@
-/*Start Footer*/
 body {
-  font: 16px/26px Helvetica, Helvetica Neue, Arial;
+    font: 14px/24px Helvetica, Helvetica Neue, Arial;
 }
+
+/*Start Footer*/
+
 .footer-container,
 .main aside {
 }
@@ -45,38 +47,167 @@ body {
 /* Sign up for exclusive offers and the latest news */
 
 .wrapper {
-  width: 960px;
-  margin: 0 auto;
+    width: 960px;
+    margin: 0 auto;
 }
 .signmeup-baby h1 {
-  color: #e5da7c;
-  margin-bottom: 10px;
-  margin-top: 20px;
-  text-align: right;
+    color: #e5da7c;
+    margin-bottom: 10px;
+    margin-top: 20px;
+    text-align: right;
 }
 .signmeup-baby {
-  width: 33%;
+    width: 33%;
 }
 .signmeup-baby input[type=text] {
-  padding: 2px 4px;
-  width: 222px;
-  font-size: 12px;
-  text-align: right;
+    padding: 2px 4px;
+    width: 222px;
+    font-size: 12px;
+    text-align: right;
 }
 .signmeup-baby button {
-  font-size: 13px;
-  color: #68398c;
-  font-family: 'FranklinGothicMediumRegular';
-  background-color: #e5da7c;
-  border: 5px solid #d1d3d4;
-  box-shadow: 3px 3px 0px 0px #8e8d8d;
-  padding: 4px 8px;
-  min-width: 150px;
-  margin: 10px 0 5px 0;
+    font-size: 13px;
+    color: #68398c;
+    font-family: 'FranklinGothicMediumRegular';
+    background-color: #e5da7c;
+    border: 5px solid #d1d3d4;
+    box-shadow: 3px 3px 0px 0px #8e8d8d;
+    padding: 4px 8px;
+    min-width: 150px;
+    margin: 10px 0 5px 0;
 }
 
 /*End Footer*/
 
 ul li {
-  list-style: none;
+    list-style: none;
 }
+
+/*Header Start*/
+.header-container { position: relative;
+}
+
+.footer-container,
+.main aside {
+}
+
+.header-container,
+.footer-container,
+.main aside {
+}
+
+.title {
+    color: white;  
+    float: left;
+}
+
+.wrapper {
+    width:960px;
+    margin: 0 auto;
+}
+
+.main-container .main.wrapper { padding-top: 1px; }
+.header-container nav { height: 84px; padding-bottom: 0px; }
+.header-container nav { /*width: 774px;*/ width: 100%; }
+nav ul li:last-child a { padding: 1px 10px; }
+nav > ul > li:last-child a { padding-right: 0; }
+nav > ul > li {
+    display: inline-table;
+    vertical-align: top;
+}
+nav > ul > li:not(:last-child) {
+    border-right: 1px solid #d1d3d4;
+}
+ul li.myaccount-dropmenu{
+    width: 100px;
+    text-align: center;
+}
+ul li.myaccount-dropmenu a{
+    width: 120px;
+    padding: 1px 10px;
+    text-decoration: none;
+}
+ul li.myaccount-dropmenu ul{
+    margin-left: -4px;
+    margin-top: -2px;
+}
+ul li.myaccount-dropmenu > a {
+    margin-left: -4px;
+}
+ul li.myaccount-dropmenu li a{
+    color: #fff !important;
+    background: #939393;
+    font-family: 'franklin_gothic_bookregular';
+}
+ul li.myaccount-dropmenu li a:hover{
+    background: #55555C;
+}
+ul li.myaccount-dropmenu ul{
+    display: none;
+}
+ul li.myaccount-dropmenu:hover ul{
+    display: block; /* display the dropdown */
+}
+
+nav {
+    float: right;
+    width: 76%;
+    margin: 0 0px;
+    padding: 25px 0px;
+
+}
+nav ul {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+nav ul li{ list-style-type: none; display: inline-block;}
+nav a{ display: block; font-family: 'FranklinGothicMediumRegular',franklin_gothic_bookregular; font-size:10pt; font-weight: normal; color: #646567 !important; padding: 0px 16px;}
+nav a:hover {color: #68398c !important; text-decoration: none;font-weight:normal;}
+nav ul li:last-child a { padding:0 0 0 10px;}
+/*header end*/
+
+/*contest boxes start*/
+.contest {
+    width: 80%;
+    border: 1px solid #ccc;
+    margin: 1% 10% 1% 10%;
+    padding: 1%;
+}
+.contest-buttons {
+    text-align: center;
+}
+
+.contest-buttons .btn {
+    margin: 0% 0% 10% 0% !important;   
+}    
+.contest-buttons img {
+    margin: 5% 0% 15% 0%;
+}
+
+.contest-title {
+    font-size: 28px;
+    font-weight: bold;
+    margin: 0% 0% 10% 0%;
+    color: darkblue;
+}
+
+.contest-image img {
+    width: 100%;
+}
+
+.contest-dates {
+    color: blueviolet;
+}
+
+.gold {
+    font-size: 20px;
+    color: goldenrod;
+}
+/*contest boxes end*/
+
+/*contest navbar start*/
+.nav {
+    margin: 0% 10% 0% 10%;
+}
+/*contest navbar end*/

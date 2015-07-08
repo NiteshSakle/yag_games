@@ -19,8 +19,55 @@ class IndexController extends AbstractActionController
         $viewModel = $e->getViewModel();
         return parent::onDispatch($e);
     }
-    public function indexAction()
+    
+    public function newContestAction()
     {
-        return new ViewModel();
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $page = $this->getRequest()->getPost('page', 1);
+        }
+        return $this->getContestList('new', $page);
     }
+    
+    public function activeContestAction()
+    {
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $page = $this->getRequest()->getPost('page', 1);
+        }
+        return $this->getContestList('active', $page);
+    }
+    public function pastContestAction()
+    {
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $page = $this->getRequest()->getPost('page', 1);
+        }
+        return $this->getContestList('past', $page);
+    }
+    public function myContestAction()
+    {
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $page = $this->getRequest()->getPost('page', 1);
+        }
+        return $this->getContestList('my', $page);
+    }
+    
+    private function getContestList($type, $page)
+    {
+        $contestTable = $this->getServiceLocator()->get('YagGames\Model\ContestTable');
+        $data = $contestTable->fetchAllByType($type, $page);
+
+        return $this->getViewModal(array('data' => $data, 'type' => $type, 'page' => $page));
+    }
+
+    private function getViewModal($data)
+    {
+        $view = new ViewModel($data);
+        $view->setTemplate('yaggames/index/contest');
+
+        return $view;
+    }
+    
 }

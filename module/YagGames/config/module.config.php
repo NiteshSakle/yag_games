@@ -19,17 +19,10 @@ return array(
             'home' => array(
                 'type' => 'Segment',
                 'options' => array(
-                    'route'    => '/',
-                    'defaults' => array(
-                        'controller' => 'YagGames\Controller\Index',
-                        'action'     => 'index',
+                    'route'    => '/[:action]',
+                    'constraints' => array(
+                        'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
                     ),
-                ),
-            ),
-            'yaggames' => array(
-                'type'    => 'Segment',
-                'options' => array(
-                    'route'    => '/yaggames',
                     'defaults' => array(
                         '__NAMESPACE__' => 'YagGames\Controller',
                         'controller'    => 'Index',
