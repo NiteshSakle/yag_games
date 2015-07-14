@@ -62,11 +62,6 @@ return array(
         'template_path_stack' => array(
             'yagadmin' => __DIR__ . '/../view',
         ),
-    ),
-    'view_helpers' => array(
-        'invokables' => array(
-           'config' => 'Admin\View\Helper\Config',
-        )
-    ),
+    )
     
 );

@@ -14,6 +14,17 @@ return array(
         ),
     ),
     
+    'controller_plugins' => array(
+        'factories' => array(
+            'sessionPlugin' => function(Zend\Mvc\Controller\PluginManager $pluginManager) {
+                $sessionService = $pluginManager->getServiceLocator()->get('sessionService');
+                $sessionPlugin = new YagGames\Controller\Plugin\SessionPlugin();
+                $sessionPlugin->setSessionService($sessionService);
+                return $sessionPlugin;
+            },
+        ),
+    ),
+    
     'router' => array(
         'routes' => array(
             'home' => array(
@@ -74,5 +85,19 @@ return array(
             'routes' => array(
             ),
         ),
+    ),
+    
+    'view_helpers' => array(
+      'invokables' => array(
+         'config' => 'YagGames\View\Helper\ConfigHelper',
+      ),
+      'factories' => array(
+        'session' => function (Zend\View\HelperPluginManager $helperPluginManager) {
+            $sessionService = $helperPluginManager->getServiceLocator()->get('sessionService');
+            $sessionHelper = new YagGames\View\Helper\SessionHelper();
+            $sessionHelper->setSessionService($sessionService);
+            return $sessionHelper;
+        },
+      ),
     ),
 );

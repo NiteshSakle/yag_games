@@ -21,4 +21,17 @@ return array(
             \PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\', time_zone = "'. date('P') .'"'
         ),
     ),
+    
+    'main_site' => array(
+        'url' => 'http://localhost/yag',
+        'theme_assets_path' => 'http://localhost/yag/assets/themes/yag',
+    ),
+    
+    'view_manager' => array(
+        'display_not_found_reason' => false,
+        'display_exceptions' => false
+     ),
+    
+    'SITE_DOMAIN' => 'http://localhost/yag_games',
+    'SITE_BASE_PATH' => '',
 );

@@ -1,21 +1,26 @@
 <?php
 
-use Zend\Db\ResultSet\ResultSet;
-use Zend\Db\TableGateway\TableGateway;
 use YagGames\Model\Contest;
-use YagGames\Model\ContestTable;
 use YagGames\Model\ContestBracketMediaCombo;
 use YagGames\Model\ContestBracketMediaComboTable;
 use YagGames\Model\ContestBracketRound;
 use YagGames\Model\ContestBracketRoundTable;
 use YagGames\Model\ContestMedia;
-use YagGames\Model\ContestMediaTable;
 use YagGames\Model\ContestMediaRating;
 use YagGames\Model\ContestMediaRatingTable;
+use YagGames\Model\ContestMediaTable;
+use YagGames\Model\ContestTable;
 use YagGames\Model\ContestType;
 use YagGames\Model\ContestTypeTable;
 use YagGames\Model\ContestWinner;
 use YagGames\Model\ContestWinnerTable;
+use YagGames\Service\SessionService;
+use Zend\Db\ResultSet\ResultSet;
+use Zend\Db\TableGateway\TableGateway;
+use Zend\Log\Logger;
+use Zend\Log\Writer\Stream;
+use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\Session\Container;
 
 return array(
     
@@ -23,10 +28,17 @@ return array(
         'Zend\Db\Adapter\Adapter' => 'Zend\Db\Adapter\AdapterServiceFactory',
                 
         'YagGames\Logger' => function () {
-            $log = new Zend\Log\Logger();
-            $writer = new Zend\Log\Writer\Stream(dirname(__FILE__) . '/../../../data/log/log');
+            $log = new Logger();
+            $writer = new Stream(dirname(__FILE__) . '/../../../data/log/log');
             $log->addWriter($writer);
             return $log;
+        },
+                
+        'sessionService' => function(ServiceLocatorInterface $serviceLocator) {
+            $sessionContainer = new Container('member');
+            $sessionService = new SessionService();
+            $sessionService->setSessionContainer($sessionContainer);
+            return $sessionService;
         },
         
         'YagGames\Model\ContestTable' => function ($sm) {

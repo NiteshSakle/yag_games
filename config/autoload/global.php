@@ -11,6 +11,22 @@
  * file.
  */
 
+date_default_timezone_set("UTC");
+
 return array(
-    // ...
+    'service_manager' => array(
+        'invokables' => array(
+            'Zend\Session\SessionManager' => 'Zend\Session\SessionManager',
+        ),
+        'factories' => array(
+            'Zend\Db\Adapter\Adapter' => 'Zend\Db\Adapter\AdapterServiceFactory',
+        ),
+    ),
+    
+    'to_address_email' => 'info@yourartgallery.com',
+    'from_address_email' => 'info@yourartgallery.com',
+    'developers_email' => array(
+        'venu@riktamtech.com',
+    ),
+
 );

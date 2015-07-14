@@ -23,7 +23,6 @@
 </dl>
 <?php
     $e = $this->exception->getPrevious();
-    $icount = 0;
     if ($e) :
 ?>
 <hr/>
@@ -49,11 +48,6 @@
     </li>
     <?php
         $e = $e->getPrevious();
-        $icount += 1;
-        if ($icount >= 50) {
-            echo "<li>There may be more exceptions, but we have no enough memory to proccess it.</li>";
-            break;
-        }
         endwhile;
     ?>
 </ul>
