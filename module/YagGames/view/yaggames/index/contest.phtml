@@ -1,109 +1,87 @@
-<ul class="nav nav-pills">
-    <li <?php echo $type == 'new' ? 'class="active"' : ""; ?>><a href="new-contest">New Contests</a></li>
-    <li <?php echo $type == 'active' ? 'class="active"' : ""; ?>><a href="active-contest">Active Contests</a></li>
-    <li <?php echo $type == 'past' ? 'class="active"' : ""; ?>><a href="past-contest">Past Contests</a></li>
-    <li <?php echo $type == 'my' ? 'class="active"' : ""; ?>><a href="my-contest">My Contests</a></li>
-</ul>
+<div class="inner_main clearfix">
+  <div class="inner_txt clearfix">
+    <h1 class="page-titleHead">Artist Challenge & Contests</h1>
+  </div>
+</div>
+<br />
+<div class="navigation sub-header-menu clearfix">
+  <ul>
+    <li><a <?php echo $type == 'new' ? 'class="nav_active"' : ""; ?> href="<?php echo $this->basePath() ?>/new-contest">New Contests</a></li>
+    <li><a <?php echo $type == 'active' ? 'class="nav_active"' : ""; ?> href="<?php echo $this->basePath() ?>/active-contest">Active Contests</a></li>
+    <li><a <?php echo $type == 'past' ? 'class="nav_active"' : ""; ?> href="<?php echo $this->basePath() ?>/past-contest">Past Contests</a></li>
+    <li><a <?php echo $type == 'my' ? 'class="nav_active"' : ""; ?> href="<?php echo $this->basePath() ?>/my-contest">My Contests</a></li>
+  </ul>
+</div>
 
 <div class="contest-list">
-    <?php
-    foreach ($data as $contest) {
-        ?>
-        <div class="contest row">
-            <div class="col-md-4">
-                <div class="contest-title">
-                    <?php echo $contest['name']; ?>
-                </div>
-                <div class="contest-description">
-                    <?php echo $contest['description']; ?>
-                    <br>
-                    <br>
-                    <div class="contest-dates">
-                        Enter by: <?php echo $contest['entry_end_date']; ?>
-                        <br>
-                        Winner Announced: <?php echo $contest['winners_announce_date']; ?>
-                    </div>                
-                </div>
-            </div>        
-            <div class="contest-image col-md-4">
-                <img src="<?php echo $this->basePath() ?>/img/contest/thumbnail/<?php echo $contest['thumbnail']; ?>"  alt="Contest Photo" />
-            </div>
-            <div class="contest-buttons col-md-4">
-                <?php
-                if ($type == 'new') {
-                    if ($contest['entered']) {
-                        ?>
-                        <button class="btn btn-default">You're In</button>
-                        <?php
-                    } else {
-                        ?>
-                        <button class="btn btn-default">Enter Contest</button>
-                        <?php
-                    }
-                } elseif ($type == 'active') {
-                    if ($contest['voting_started']) {
-                        ?>
-                        <button class="btn btn-default">Vote Now</button>
-                        <?php
-                    } else {
-                        ?>
-                        <button class="btn btn-default">Vote Soon</button>
-                        <?php
-                    }
-                } elseif ($type == 'past') {
-                    ?>
-                    <button class="btn btn-default">Winner's Announced</button>                    
-                    <?php
-                } elseif ($type == 'my') {
-                    if ($contest['my_type'] == 'new') {
-                        ?>
-                        <button class="btn btn-default">You're In</button>
-                        <?php
-                    } elseif ($contest['my_type'] == 'active') {
-                        if ($contest['voting_started']) {
-                            ?>
-                            <button class="btn btn-default">Vote Now</button>
-                            <?php
-                        } else {
-                            ?>
-                            <button class="btn btn-default">Vote Soon</button>
-                            <?php
-                        }
-                    } elseif ($contest['my_type'] == 'past') {
-                        ?>
-                        <button class="btn btn-default">Winner's Announced</button>                    
-                        <?php
-                    }
-                }
-                ?>
-                <br>
-                <button class="btn btn-default">Learn More</button>
-                <br>
-                <?php
-                if ($type != 'new') {
-                    ?>
-                    <button class="btn btn-default">Rankings</button>
-                    <?php
-                }
-                ?>
-                <br>
-                <img src="<?php echo $this->basePath() ?>/img/congratulation.png"  alt="contest status" />
-                <br>
-                <div class="gold">Share this contest</div>
-                <div class="social_link">
-                    <a href="https://www.facebook.com/YourArtGallery"><img src="<?php echo $this->basePath() ?>/img/facebook_share.png"  alt="Share to Facebook" /></a>
-                    <a href="https://twitter.com/YourArtGallery"><img src="<?php echo $this->basePath() ?>/img/twitter_share.png"  alt="Share to Twitter" /></a>
-                    <a href="https://instagram.com/Your.Art.Gallery/"><img src="<?php echo $this->basePath() ?>/img/instagram_share.png"  alt="Instagram" /></a>
-                    <a href="https://www.pinterest.com/yourartgallery/"><img src="<?php echo $this->basePath() ?>/img/pinterest_share.png"  alt="Share to Pinterest" /></a>
-                    <a href="https://plus.google.com"><img src="<?php echo $this->basePath() ?>/img/google_share.png"  alt="Share to Google" /></a>
-                    <a href="https://www.linkedin.com/company/your-art-gallery-llc"><img src="<?php echo $this->basePath() ?>/img/linkedin_share.png"  alt="Stumble It" /></a>
-                    <a href="https://www.youtube.com/YourArtGallery"><img src="<?php echo $this->basePath() ?>/img/youtube_share.png"  alt="Share to Youtube" /></a>            
-                </div>
-            </div>
+  <?php foreach ($data as $contest): ?>
+    <div class="contest row">
+      <div class="col-md-4">
+        <div class="contest-title"><?php echo $contest['name']; ?></div>
+        <div class="contest-description">
+          <?php echo $contest['description']; ?>
+          <br>
+          <br>
+          <div class="contest-dates">
+            Enter by: <?php echo $contest['entry_end_date']; ?>
+            <br>
+            Winner Announced: <?php echo $contest['winners_announce_date']; ?>
+          </div>                
         </div>
-        <?php
-    }
-    ?>
+      </div>        
+      <div class="contest-image col-md-4">
+        <img src="<?php echo $this->basePath() ?>/img/contest/thumbnail/<?php echo $contest['thumbnail']; ?>"  alt="Contest Photo" />
+      </div>
+      <div class="contest-buttons col-md-4">
+        <?php if ($type == 'new'): ?>
+          <?php if ($contest['entered']): ?>
+            <button class="btn btn-default">You're In</button>
+          <?php else: ?>
+            <button class="btn btn-default">Enter Contest</button>
+          <?php endif; ?> 
+        <?php elseif ($type == 'active'): ?>
+          <?php if ($contest['voting_started']): ?>
+            <button class="btn btn-default">Vote Now</button>
+          <?php else: ?>
+            <button class="btn btn-default">Vote Soon</button>
+          <?php endif; ?> 
+        <?php elseif ($type == 'past'): ?>
+          <button class="btn btn-default">Winner's Announced</button>   
+        <?php elseif ($type == 'my'): ?>
+          <?php if ($contest['my_type'] == 'new'): ?>
+            <button class="btn btn-default">You're In</button>
+          <?php elseif ($contest['my_type'] == 'active'): ?>
+            <?php if ($contest['voting_started']): ?>
+              <button class="btn btn-default">Vote Now</button>
+            <?php else: ?>
+              <button class="btn btn-default">Vote Soon</button>
+            <?php endif; ?> 
+          <?php elseif ($contest['my_type'] == 'past'): ?>
+            <button class="btn btn-default">Winner's Announced</button>                    
+          <?php endif; ?> 
+        <?php endif; ?> 
+        <br>
+        <button class="btn btn-default">Learn More</button>
+        <br>
+        <?php if ($type != 'new'): ?>
+          <button class="btn btn-default">Rankings</button>
+        <?php endif; ?> 
+        <br>
+        <img src="<?php echo $this->basePath() ?>/img/congratulation.png"  alt="contest status" />
+        <br>
+        <div class="gold">Share this contest</div>
+        <div class="social_link">
+          <a href="https://www.facebook.com/YourArtGallery"><img src="<?php echo $this->basePath() ?>/img/facebook_share.png"  alt="Share to Facebook" /></a>
+          <a href="https://twitter.com/YourArtGallery"><img src="<?php echo $this->basePath() ?>/img/twitter_share.png"  alt="Share to Twitter" /></a>
+          <a href="https://instagram.com/Your.Art.Gallery/"><img src="<?php echo $this->basePath() ?>/img/instagram_share.png"  alt="Instagram" /></a>
+          <a href="https://www.pinterest.com/yourartgallery/"><img src="<?php echo $this->basePath() ?>/img/pinterest_share.png"  alt="Share to Pinterest" /></a>
+          <a href="https://plus.google.com"><img src="<?php echo $this->basePath() ?>/img/google_share.png"  alt="Share to Google" /></a>
+          <a href="https://www.linkedin.com/company/your-art-gallery-llc"><img src="<?php echo $this->basePath() ?>/img/linkedin_share.png"  alt="Stumble It" /></a>
+          <a href="https://www.youtube.com/YourArtGallery"><img src="<?php echo $this->basePath() ?>/img/youtube_share.png"  alt="Share to Youtube" /></a>            
+        </div>
+      </div>
+    </div>
+    <?php endforeach; ?>
 </div>
 <script>
 
