@@ -17,6 +17,7 @@ class IndexController extends AbstractActionController
     public function onDispatch(\Zend\Mvc\MvcEvent $e)
     {
         $viewModel = $e->getViewModel();
+        $this->session = $this->sessionPlugin();
         return parent::onDispatch($e);
     }
     
@@ -47,6 +48,10 @@ class IndexController extends AbstractActionController
     }
     public function myContestAction()
     {
+        if (!isset($this->session->mem_id)) {
+          throw new Exception('Not allowed', 403);
+        }
+        
         $request = $this->getRequest();
         if ($request->isPost()) {
             $page = $this->getRequest()->getPost('page', 1);

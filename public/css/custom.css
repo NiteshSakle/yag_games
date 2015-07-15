@@ -1,195 +1,64 @@
-body {
-    font: 14px/24px Helvetica, Helvetica Neue, Arial;
+/* header nav */
+.search_box label {
+  font-weight: normal;
+}
+.inner_righttop {
+  float: right;
+  padding: 10px 0px 0px 0px;
+  width: 825px;
+}
+.header-container nav {
+  margin: 10px 0px;
 }
 
-/*Start Footer*/
-
-.footer-container,
-.main aside {
+.inner_main .inner_txt h1.page-titleHead {
+  padding: 10px;
+  text-align: left;
 }
-
-.header-container,
-.footer-container,
-.main aside {
-}
-
-.footer-container footer {
-    width: 75%; margin: 0px auto;
-}
-.footer_box {width: 14.9%; float: left;}
-.footer_box h1 {font-size: 13px; color: #653F8C; font-family: 'franklin_gothic_bookregular'; margin: 0px; margin-top: 12px;
-                margin-bottom: 5px; font-weight: 400;}
-.footer_box ul {margin: 0px; padding: 0px;}
-.footer_box ul li {line-height: 12px;}
-.footer_box ul li a {font-size: 10px; color: #FFFFFF; font-family: 'MyriadWebPro';}
-.footer_box ul li a:hover {color: #dfdc7d;}
-.box_last {float:right !important; width: 10%;}
-
-.footer_bottom span{font-size: 13px; color: #FFFFFF; font-family: 'franklin_gothic_bookregular'; text-align: right; width: auto; margin-left: 40%; float:left; }
-.social_link {float:right; }
-.social_link ul {margin: 0px; padding: 0px;}
-.social_link ul li {display: inline-block; float: none; padding: 0px 5px;}
-.footer_bottom .social_link  a img { border-radius:3px; -webkit-border-radius:3px; -moz-border-radius:3px; -o-border-radius:3px; -ms-border-radius:3px;}
-
-.footer-container{ background-color:/* #a3a4a4 */#9D9FA2;}
-.footer-container{padding-bottom:0px; height: 150px;}
-
-.footer_box h1 {font-size: 15px; color: #68398c; font-family: 'FranklinGothicMediumRegular'; margin: 0px; margin-top: 12px;}
-.footer_box ul li {line-height: 18px;}
-.footer_box ul li a {font-size: 12px; color: #8d8d8d; font-family: 'MyriadWebPro';}
-.footer-top-container{ background-color: #C1C0C2;}
-.footer-container{ background-color: white;}
-.footer_bottom span { font-size: 12px; color: #DFDC73; font-family: 'FranklinGothicMediumRegular'; font-weight: bold; }
-.footer_box { width: 13%; }
-.footer-separator { float: left; border-right: 1px solid #2E332B; width: 0%; margin-right: 15px; height: 107px; margin-top: 15px; }
-.footer-container footer{width: 960px;}
-
-/* Sign up for exclusive offers and the latest news */
-
-.wrapper {
-    width: 960px;
-    margin: 0 auto;
-}
-.signmeup-baby h1 {
-    color: #e5da7c;
-    margin-bottom: 10px;
-    margin-top: 20px;
-    text-align: right;
-}
-.signmeup-baby {
-    width: 33%;
-}
-.signmeup-baby input[type=text] {
-    padding: 2px 4px;
-    width: 222px;
-    font-size: 12px;
-    text-align: right;
-}
-.signmeup-baby button {
-    font-size: 13px;
-    color: #68398c;
-    font-family: 'FranklinGothicMediumRegular';
-    background-color: #e5da7c;
-    border: 5px solid #d1d3d4;
-    box-shadow: 3px 3px 0px 0px #8e8d8d;
-    padding: 4px 8px;
-    min-width: 150px;
-    margin: 10px 0 5px 0;
-}
-
-/*End Footer*/
-
-ul li {
-    list-style: none;
-}
-
-/*Header Start*/
-.header-container { position: relative;
-}
-
-.footer-container,
-.main aside {
-}
-
-.header-container,
-.footer-container,
-.main aside {
-}
-
-.title {
-    color: white;  
-    float: left;
-}
-
-.wrapper {
-    width:960px;
-    margin: 0 auto;
-}
-
-.main-container .main.wrapper { padding-top: 1px; }
-.header-container nav { height: 84px; padding-bottom: 0px; }
-.header-container nav { /*width: 774px;*/ width: 100%; }
-nav ul li:last-child a { padding: 1px 10px; }
-nav > ul > li:last-child a { padding-right: 0; }
-nav > ul > li {
-    display: inline-table;
-    vertical-align: top;
-}
-nav > ul > li:not(:last-child) {
-    border-right: 1px solid #d1d3d4;
-}
-ul li.myaccount-dropmenu{
-    width: 100px;
-    text-align: center;
-}
-ul li.myaccount-dropmenu a{
-    width: 120px;
-    padding: 1px 10px;
-    text-decoration: none;
-}
-ul li.myaccount-dropmenu ul{
-    margin-left: -4px;
-    margin-top: -2px;
-}
-ul li.myaccount-dropmenu > a {
-    margin-left: -4px;
-}
-ul li.myaccount-dropmenu li a{
-    color: #fff !important;
-    background: #939393;
-    font-family: 'franklin_gothic_bookregular';
-}
-ul li.myaccount-dropmenu li a:hover{
-    background: #55555C;
-}
-ul li.myaccount-dropmenu ul{
-    display: none;
-}
-ul li.myaccount-dropmenu:hover ul{
-    display: block; /* display the dropdown */
-}
-
-nav {
-    float: right;
-    width: 76%;
-    margin: 0 0px;
-    padding: 25px 0px;
-
-}
-nav ul {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-}
-nav ul li{ list-style-type: none; display: inline-block;}
-nav a{ display: block; font-family: 'FranklinGothicMediumRegular',franklin_gothic_bookregular; font-size:10pt; font-weight: normal; color: #646567 !important; padding: 0px 16px;}
-nav a:hover {color: #68398c !important; text-decoration: none;font-weight:normal;}
-nav ul li:last-child a { padding:0 0 0 10px;}
-/*header end*/
 
 /*contest boxes start*/
+.inner_main {
+  margin:10px 0px;
+}
+.navigation {
+  margin:10px 0px;
+}
+
 .contest {
-    width: 80%;
-    border: 1px solid #ccc;
-    margin: 1% 10% 1% 10%;
+    border: 2px solid #C8B64C;
+    margin: 10px 0px;
     padding: 1%;
+    text-align: left;
 }
 .contest-buttons {
     text-align: center;
 }
 
-.contest-buttons .btn {
-    margin: 0% 0% 10% 0% !important;   
-}    
+.contest-buttons button {
+  font-size: 13px;
+  color: #68398c;
+  font-family: 'FranklinGothicMediumRegular';
+  background-color: #e5da7c;
+  border: 5px solid #d1d3d4;
+  box-shadow: 3px 3px 0px 0px #8e8d8d;
+  padding: 4px 8px;
+  min-width: 150px;
+  margin: 10px 0 5px 0;
+}
+.contest-buttons button:hover {
+   background-color: #818285;
+  color: #d1d3d4;
+}
 .contest-buttons img {
-    margin: 5% 0% 15% 0%;
+    margin: 5% 0% 5% 0%;
 }
 
 .contest-title {
     font-size: 28px;
     font-weight: bold;
     margin: 0% 0% 10% 0%;
-    color: darkblue;
+    color: #C8B64C;
+    text-align: left;
 }
 
 .contest-image img {
@@ -202,7 +71,7 @@ nav ul li:last-child a { padding:0 0 0 10px;}
 
 .gold {
     font-size: 20px;
-    color: goldenrod;
+    color: #C8B64C;
 }
 /*contest boxes end*/
 
