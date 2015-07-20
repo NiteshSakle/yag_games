@@ -10,7 +10,9 @@
 return array(
     'controllers' => array(
         'invokables' => array(
-            'YagGames\Controller\Index' => 'YagGames\Controller\IndexController'
+            'YagGames\Controller\Contest' => 'YagGames\Controller\ContestController',
+            'YagGames\Controller\FanFavorite' => 'YagGames\Controller\FanFavoriteController',
+            'YagGames\Controller\Media' => 'YagGames\Controller\MediaController',
         ),
     ),
     
@@ -36,8 +38,36 @@ return array(
                     ),
                     'defaults' => array(
                         '__NAMESPACE__' => 'YagGames\Controller',
-                        'controller'    => 'Index',
+                        'controller'    => 'Contest',
+                        'action'        => 'new-contest',
+                    ),
+                ),
+            ),
+            'media' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/media/[:action]',
+                    'constraints' => array(
+                        'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'YagGames\Controller',
+                        'controller'    => 'Media',
                         'action'        => 'index',
+                    ),
+                ),
+            ),
+            'fan-favorite' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/fan-favorite/[:action]',
+                    'constraints' => array(
+                        'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'YagGames\Controller',
+                        'controller'    => 'FanFavorite',
+                        'action'        => 'contest',
                     ),
                 ),
             ),
@@ -50,16 +80,6 @@ return array(
         ),
         'factories' => array(
             'translator' => 'Zend\Mvc\Service\TranslatorServiceFactory',
-        ),
-    ),
-    'translator' => array(
-        'locale' => 'en_US',
-        'translation_file_patterns' => array(
-            array(
-                'type'     => 'gettext',
-                'base_dir' => __DIR__ . '/../language',
-                'pattern'  => '%s.mo',
-            ),
         ),
     ),
     
@@ -77,6 +97,9 @@ return array(
         ),
         'template_path_stack' => array(
             'yaggames' => __DIR__ . '/../view',
+        ),
+        'strategies' => array(
+            'ViewJsonStrategy',
         ),
     ),
     // Placeholder for console routes

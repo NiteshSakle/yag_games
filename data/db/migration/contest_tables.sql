@@ -20,21 +20,6 @@ SET time_zone = "+00:00";
 -- Database: `yag`
 --
 
-DELIMITER $$
---
--- Procedures
---
-CREATE DEFINER=`root`@`localhost` PROCEDURE `FillCalendar`(start_date DATE, end_date DATE)
-BEGIN
-    DECLARE crt_date DATE;
-    SET crt_date = start_date;
-DELETE FROM calendar WHERE 1 = 1;
-    WHILE crt_date <= end_date DO
-        INSERT IGNORE INTO calendar VALUES(crt_date);
-        SET crt_date = ADDDATE(crt_date, INTERVAL 1 MONTH);
-    END WHILE;
-    END$$
-
 DELIMITER ;
 
 -- --------------------------------------------------------
@@ -158,3 +143,8 @@ CREATE TABLE IF NOT EXISTS `contest_winner` (
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+
+ALTER TABLE  `contest_media_rating` ADD  `contest_media_id` INT NOT NULL AFTER  `id` ;
+ALTER TABLE `contest_media_rating`  DROP `contest_id`,  DROP `media_id`;
+ALTER TABLE contest_media_rating MODIFY COLUMN member_id int(11) AFTER contest_media_id;

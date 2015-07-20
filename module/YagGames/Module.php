@@ -1,11 +1,4 @@
 <?php
-/**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/ZendSkeletonApplication for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- */
 
 namespace YagGames;
 
@@ -67,12 +60,12 @@ class Module
        
     public function onDispatchError($e)
     {
-        return $this->errorHandler($e, $e->getParam('exception'));
+        return $this->sendErrorResponse($e, $e->getParam('exception'));
     }
 
     public function onRenderError($e)
     {
-        return $this->errorHandler($e, $e->getParam('exception'));
+        return $this->sendErrorResponse($e, $e->getParam('exception'));
     }
     
     public function logErrors($event, $exception)
@@ -111,6 +104,33 @@ class Module
         if ($exception) {
             $this->logErrors($event, $exception);
             //$this->sendEmail($event, $exception);
+        }    
+    }
+    
+    public function sendErrorResponse($e)
+    {
+        $error = $e->getError();
+        if (!$error) {
+            return;
+        }
+
+        $exception = $e->getParam('exception');
+        $config = $e->getApplication()->getServiceManager()->get('Config');
+        if ($exception) {
+          $code = $exception->getCode();
+          switch($code) {
+            case 401:
+              $controller = $e->getTarget();
+              $controller->plugin('redirect')->toUrl($config['main_site']['url'] . '/index.php?mode=login');
+              $e->stopPropagation();
+              return FALSE;
+              break;
+            
+            case 500:
+            case 0;
+              $this->errorHandler($e, $exception);
+              break;
+          }
         }
     }
 }

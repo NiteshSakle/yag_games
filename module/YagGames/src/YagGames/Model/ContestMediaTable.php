@@ -55,4 +55,50 @@ class ContestMediaTable extends BaseTable
         
         return $resultSet;
     }
+    
+    public function getContestMedia($contestId, $userId = null, $keyword= null, $page = 1, $offset = 20) {
+        try {
+            $sql = $this->getSql();
+            $columns = array('*', 'votes' => new Expression('SUM(cmr.id)'));
+            $query = $sql->select()
+                ->from(array('cm' => 'contest_media'))
+                ->join(array('m' => 'ps4_media'), 'm.media_id = cm.meida_id')
+                ->join(array('u' => 'ps4_members'), 'm.owner = u.mem_id')
+                ->join(array('cmr' => 'contest_media_rating'), 'cm.id = cmr.contest_meida_id')
+                ->quantifier(new Expression('SQL_CALC_FOUND_ROWS'))
+                ->columns($columns)
+                ->where('cm.contest_id = ?', $contestId)
+                ->limit($offset)
+                ->offset(($page - 1) * $offset)
+                ->order("votes DESC")
+                ->group('cm.media_id');
+
+            if(!empty($keyword)) {                
+                $query->where->like('u.f_name', "%" . $keyword . "%");
+            }
+            
+            if(!empty($userId)) {    
+                $userId = (int) $userId;
+                $columns['is_liked'] = new Expression('COUNT(CASE WHEN cmr.member_id = '. $userId .' THEN 1 ELSE 0 END)');
+                $query->columns($columns);
+            }
+            
+            $rows = $sql->prepareStatementForSqlObject($query)->execute();
+
+            $media = array();
+            foreach ($rows as $row) {
+                $media[] = $row;
+            }            
+            
+            return array(
+                "total" => $this->getFoundRows(),
+                "medias" => $media
+            );
+        } catch (\Exception $e) {
+            return array(
+                "total" => 0,
+                "medias" => array()
+            );
+        }
+    }
 }

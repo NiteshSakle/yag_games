@@ -57,9 +57,9 @@ class ContestTable extends BaseTable
             ->group('c.id');
 
     if ($type == 'new') {
-
-      $select->join(array('m' => 'ps4_media'), new Expression('cm.media_id = m.media_id AND m.owner=?', $loggedInUser), array('entered' => new Expression('IF(m.media_id, 1, 0 )')), 'left')
-              ->where('entry_end_date >= NOW()');
+      $select->where('entry_end_date >= NOW()');
+//      $select->join(array('m' => 'ps4_media'), new Expression('cm.media_id = m.media_id AND m.owner=?', $user), array('entered' => new Expression('IF(m.media_id, 1, 0 )')), 'left')
+//              ->where('entry_end_date >= NOW()');
     } elseif ($type == 'active') {
 
       $select->where('entry_end_date <= NOW() AND winners_announce_date >= NOW()');

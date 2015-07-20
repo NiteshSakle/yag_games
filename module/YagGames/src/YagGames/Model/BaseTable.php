@@ -56,6 +56,25 @@ class BaseTable
         }
         return false;
     }
+    
+    protected function getFoundRows()
+    {
+        $sql = $this->getSql();
+        $query = $sql->select()
+            ->columns(array(
+                'total' => new Expression("FOUND_ROWS()")
+            ));
+
+        /* execute the select and extract the total */
+        $statement = $sql->prepareStatementForSqlObject($query);
+        $result = $statement->execute();
+        if ($result) {
+            $row = $result->current();
+            return $row['total'];
+        } else {
+            return 0;
+        }
+    }
 
     protected function created($var)
     {

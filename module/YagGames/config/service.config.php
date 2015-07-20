@@ -14,6 +14,7 @@ use YagGames\Model\ContestType;
 use YagGames\Model\ContestTypeTable;
 use YagGames\Model\ContestWinner;
 use YagGames\Model\ContestWinnerTable;
+use YagGames\Model\MediaViewTable;
 use YagGames\Service\SessionService;
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\TableGateway\TableGateway;
@@ -117,6 +118,24 @@ return array(
             $resultSetPrototype = new ResultSet();
             $resultSetPrototype->setArrayObjectPrototype(new ContestWinner());
             return new TableGateway('contest_winner', $dbAdapter, null, $resultSetPrototype);
+        },
+        'YagGames\Model\MediaTable' => function ($sm) {
+            $tableGateway = $sm->get('MediaTableGateway');
+            $table = new MediaTable($tableGateway, $sm->get('YagGames\Logger'));
+            return $table;
+        },
+        'MediaTableGateway' => function ($sm) {
+            $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+            return new TableGateway('ps4_media', $dbAdapter);
+        },
+        'YagGames\Model\MediaViewTable' => function ($sm) {
+            $tableGateway = $sm->get('MediaViewTableGateway');
+            $table = new MediaViewTable($tableGateway, $sm->get('YagGames\Logger'));
+            return $table;
+        },
+        'MediaViewTableGateway' => function ($sm) {
+            $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+            return new TableGateway('rating_view', $dbAdapter);
         },
     ),
 );
