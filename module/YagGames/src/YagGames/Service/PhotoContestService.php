@@ -2,7 +2,7 @@
 
 namespace YagGames\Service;
 
-class FanFavoriteService
+class PhotoContestService
 {
 
   private $serviceManager;
@@ -17,42 +17,42 @@ class FanFavoriteService
     $contestTable = $this->getServiceLocator()->get('YagGames\Model\ContestTable');
     $contestData = $contestTable->fetchRecord($contestId);
     if (!$contestData) {
-      throw new \YagGames\Exception\FanFavoriteException("No contest found");
+      throw new \YagGames\Exception\PhotoContestException("No contest found");
     }
     
     //only artist is allowed
     if ($contestData['login_as_buyer']) {
-      throw new \YagGames\Exception\FanFavoriteException("You have to be Artist to participate in contest");
+      throw new \YagGames\Exception\PhotoContestException("You have to be Artist to participate in contest");
     }
     
     //check end date
     $now = new DateTime();
     $endDate = new DateTime($contestData['entry_end_date']);
     if ($now > $endDate) {
-      throw new \YagGames\Exception\FanFavoriteException("You cannot upload art as contest has already ended");
+      throw new \YagGames\Exception\PhotoContestException("You cannot upload art as contest has already ended");
     }
     
     //max 200 in contest
     $contestMediaTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaTable');
     $contestMediaCount = $contestMediaTable->getContestMediaCount($contestId, $userId);
     if ($contestMediaCount && $contestMediaCount['count'] >= 200) {
-      throw new \YagGames\Exception\FanFavoriteException("Contest is already full");
+      throw new \YagGames\Exception\PhotoContestException("Contest is already full");
     }
     
     //ONE PHOTO PER ARTIST
     if ($contestMediaCount && $contestMediaCount['has_uploaded']) {
-      throw new \YagGames\Exception\FanFavoriteException("You have already submitted art to this contest");
+      throw new \YagGames\Exception\PhotoContestException("You have already submitted art to this contest");
     }
     
     //is media owned by user?
     $mediaTable = $this->getServiceLocator()->get('YagGames\Model\MediaTable');
     $mediaObject = $mediaTable->fetchRecord($mediaId);
     if (!$mediaObject) {
-      throw new \YagGames\Exception\FanFavoriteException("No media found");
+      throw new \YagGames\Exception\PhotoContestException("No media found");
     }
     
     if ($mediaObject['owner'] != $userId) {
-      throw new \YagGames\Exception\FanFavoriteException("Media is not owned by you", 403);
+      throw new \YagGames\Exception\PhotoContestException("Media is not owned by you", 403);
     }
     
     // now submit art
@@ -62,7 +62,7 @@ class FanFavoriteService
     
     $contestMediaId = $contestMediaTable->insert($contestMedia);   
     if (!$contestMediaId) {
-      throw new \YagGames\Exception\FanFavoriteException("Unable to submit art to contest");
+      throw new \YagGames\Exception\PhotoContestException("Unable to submit art to contest");
     }
     
     return $contestMediaId;
@@ -75,28 +75,28 @@ class FanFavoriteService
     $contestTable = $this->getServiceLocator()->get('YagGames\Model\ContestTable');
     $contestData = $contestTable->fetchRecord($contestId);
     if (!$contestData) {
-      throw new \YagGames\Exception\FanFavoriteException("No contest found");
+      throw new \YagGames\Exception\PhotoContestException("No contest found");
     }
     
      //check end date/voting_started flag for contest
     $now = new DateTime();
     $endDate = new DateTime($contestData['entry_end_date']);
     if ($now <= $endDate || !$contestData['voting_started']) {
-      throw new \YagGames\Exception\FanFavoriteException("Voting has not started");
+      throw new \YagGames\Exception\PhotoContestException("Voting has not started");
     }
     
     // FOR ONE CONTEST - ONE VOTE PER DAY 
     $contestMediaRatingTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaRatingTable');
     $count = $contestMediaRatingTable->hasAlreadyVotedForThisContest($contestId);
     if ($count) {
-      throw new \YagGames\Exception\FanFavoriteException("You have already voted fot this contest today.");
+      throw new \YagGames\Exception\PhotoContestException("You have already voted fot this contest today.");
     }
     
     //get contest & media id
     $contestMediaTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaTable');
     $contestMediaData = $contestMediaTable->fetchContestMedia($contestId, $mediaId);
     if (!$contestMediaData) {
-      throw new \YagGames\Exception\FanFavoriteException("No contest media found");
+      throw new \YagGames\Exception\PhotoContestException("No contest media found");
     }
             
     // now submit vote
@@ -107,10 +107,18 @@ class FanFavoriteService
     
     $contestMediaRatingId = $contestMediaRatingTable->insert($contestMediaRating);   
     if (!$contestMediaRatingId) {
-      throw new \YagGames\Exception\FanFavoriteException("Unable to submit vote to contest");
+      throw new \YagGames\Exception\PhotoContestException("Unable to submit vote to contest");
     }
     
     return $contestMediaRatingId;
+  }
+  
+  public function getContestMedia($contestId,  $userId = null, $keyword = null, $page = 1, $offset = 20)
+  {
+    $contestMediaTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaTable');
+    $contestData = $contestMediaTable->getContestMedia($contestId, $userId = null, $keyword = null, $page = 1, $offset = 20);
+    
+    return $contestData;
   }
   
   private function getServiceLocator()

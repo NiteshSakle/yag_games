@@ -35,6 +35,16 @@ return array(
             return $log;
         },
                 
+        'photoContestService' => function(ServiceLocatorInterface $serviceLocator) {
+            $photoContestService = new YagGames\Service\PhotoContestService($serviceLocator);
+            return $photoContestService;
+        },
+                
+        'fanFavoriteService' => function(ServiceLocatorInterface $serviceLocator) {
+            $fanFavoriteService = new YagGames\Service\FanFavoriteService($serviceLocator);
+            return $fanFavoriteService;
+        },
+                
         'sessionService' => function(ServiceLocatorInterface $serviceLocator) {
             $sessionContainer = new Container('member');
             $sessionService = new SessionService();

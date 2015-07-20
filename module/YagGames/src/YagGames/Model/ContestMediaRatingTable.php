@@ -55,4 +55,29 @@ class ContestMediaRatingTable extends BaseTable
         
         return $resultSet;
     }
+    
+    public function hasAlreadyVotedForThisContest($contestId, $userId)
+    {
+        try {
+            $sql = $this->getSql();
+            $columns = array('count' => new Expression('COUNT(cmr.id)'));
+            $query = $sql->select()
+                ->from(array('cmr' => 'contest_media_rating'))
+                ->columns($columns)
+                ->where(array(
+                    'cmr.contest_id' => $contestId,
+                    'cmr.member_id' => $userId,
+                     new Expression('DATE(cmr.created_at) = CURDATE()')
+                ));
+          
+            $rows = $sql->prepareStatementForSqlObject($query)->execute();
+            if (isset($rows[0])) {
+              return $rows[0]['count'];
+            } else {
+              return false;
+            }
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
 }

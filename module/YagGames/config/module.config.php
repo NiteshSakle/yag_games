@@ -12,6 +12,7 @@ return array(
         'invokables' => array(
             'YagGames\Controller\Contest' => 'YagGames\Controller\ContestController',
             'YagGames\Controller\FanFavorite' => 'YagGames\Controller\FanFavoriteController',
+            'YagGames\Controller\PhotoContest' => 'YagGames\Controller\PhotoContestController',
             'YagGames\Controller\Media' => 'YagGames\Controller\MediaController',
         ),
     ),
@@ -54,6 +55,20 @@ return array(
                         '__NAMESPACE__' => 'YagGames\Controller',
                         'controller'    => 'Media',
                         'action'        => 'index',
+                    ),
+                ),
+            ),
+            'photo-contest' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/photo-contest/[:action]',
+                    'constraints' => array(
+                        'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'YagGames\Controller',
+                        'controller'    => 'PhotoContest',
+                        'action'        => 'contest',
                     ),
                 ),
             ),
