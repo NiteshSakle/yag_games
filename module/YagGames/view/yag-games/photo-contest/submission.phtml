@@ -1,0 +1,50 @@
+<div  class="home_content clearfix">
+  <div class="inner_main clearfix">
+    <div class="inner_txt clearfix">
+      <h1 class="page-titleHead">Artist Challenge & Contests</h1>
+    </div>
+  </div>
+
+  <div class="contest-list clearfix">
+    <div class="contest row" style="border:none">
+      <div class="col-md-6">
+        <div class="contest-title"><?php echo $contest['name']; ?></div>
+        <div>Choose from one of your uploaded images and submit it for this
+          contest or upload a new image!</div>
+        <div>
+          
+
+        </div>
+        <div class="contest-description">
+          <?php echo $contest['description']; ?>
+          <br>
+          <br>
+          <div class="contest-dates">
+            Enter by: <?php echo $contest['entry_end_date']; ?>
+            <br>
+            Winner Announced: <?php echo $contest['winners_announce_date']; ?>
+          </div>                
+        </div>
+      </div> 
+      <div class="col-md-6">
+        <div id="myMedia">
+
+
+        </div>
+        <div class="social_link">
+          <a href="https://www.facebook.com/YourArtGallery"><img src="<?php echo $this->basePath() ?>/img/facebook_share.png"  alt="Share to Facebook" /></a>
+          <a href="https://twitter.com/YourArtGallery"><img src="<?php echo $this->basePath() ?>/img/twitter_share.png"  alt="Share to Twitter" /></a>
+          <a href="https://instagram.com/Your.Art.Gallery/"><img src="<?php echo $this->basePath() ?>/img/instagram_share.png"  alt="Instagram" /></a>
+          <a href="https://www.pinterest.com/yourartgallery/"><img src="<?php echo $this->basePath() ?>/img/pinterest_share.png"  alt="Share to Pinterest" /></a>
+          <a href="https://plus.google.com"><img src="<?php echo $this->basePath() ?>/img/google_share.png"  alt="Share to Google" /></a>
+          <a href="https://www.linkedin.com/company/your-art-gallery-llc"><img src="<?php echo $this->basePath() ?>/img/linkedin_share.png"  alt="Stumble It" /></a>
+          <a href="https://www.youtube.com/YourArtGallery"><img src="<?php echo $this->basePath() ?>/img/youtube_share.png"  alt="Share to Youtube" /></a>            
+        </div>
+      </div> 
+    </div>
+  </div>
+</div>
+<script type="text/javascript" src="<?php echo $this->basePath() ?>/js/helpers.js"></script>
+ <script type="text/javascript">
+   loadHtml('<?php echo $this->basePath() ?>/media/get-my-media', '#myMedia');
+   </script>

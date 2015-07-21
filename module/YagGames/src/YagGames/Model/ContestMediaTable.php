@@ -2,6 +2,10 @@
 
 namespace YagGames\Model;
 
+use Exception;
+use Zend\Db\Sql\Predicate\Expression;
+use Zend\Db\Sql\Select;
+
 class ContestMediaTable extends BaseTable
 {
 
@@ -16,7 +20,7 @@ class ContestMediaTable extends BaseTable
       $this->tableGateway->insert($contestMedia->getArrayCopy());
       $filedId = $this->tableGateway->getLastInsertValue();
       return $filedId;
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
       $this->logger->err($e->getMessage());
       return false;
     }
@@ -31,7 +35,7 @@ class ContestMediaTable extends BaseTable
       }
       $this->tableGateway->update($contestMedia->getArrayCopy());
       return true;
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
       $this->logger->err($e->getMessage());
       return false;
     }
@@ -53,7 +57,7 @@ class ContestMediaTable extends BaseTable
 
   public function fetchAll()
   {
-    $select = new \Zend\Db\Sql\Select;
+    $select = new Select;
     $select->from(array('c' => 'contest_media'))
             ->columns(array('*'));
 
@@ -102,7 +106,7 @@ class ContestMediaTable extends BaseTable
           "total" => $this->getFoundRows(),
           "medias" => $media
       );
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
       return array(
           "total" => 0,
           "medias" => array()
@@ -133,7 +137,7 @@ class ContestMediaTable extends BaseTable
       } else {
         return false;
       }
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
       return false;
     }
   }

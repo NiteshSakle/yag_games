@@ -85,18 +85,18 @@ class PhotoContestService
       throw new \YagGames\Exception\PhotoContestException("Voting has not started");
     }
     
-    // FOR ONE CONTEST - ONE VOTE PER DAY 
-    $contestMediaRatingTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaRatingTable');
-    $count = $contestMediaRatingTable->hasAlreadyVotedForThisContest($contestId);
-    if ($count) {
-      throw new \YagGames\Exception\PhotoContestException("You have already voted fot this contest today.");
-    }
-    
     //get contest & media id
     $contestMediaTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaTable');
     $contestMediaData = $contestMediaTable->fetchContestMedia($contestId, $mediaId);
     if (!$contestMediaData) {
       throw new \YagGames\Exception\PhotoContestException("No contest media found");
+    }
+    
+     // FOR ONE CONTEST
+    $contestMediaRatingTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaRatingTable');
+    $count = $contestMediaRatingTable->hasAlreadyVotedForThisContestMedia($contestMediaData['id']);
+    if ($count) {
+      throw new \YagGames\Exception\PhotoContestException("You have already voted fot this media in this contest.");
     }
             
     // now submit vote

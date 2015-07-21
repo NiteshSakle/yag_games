@@ -15,6 +15,10 @@ use YagGames\Model\ContestTypeTable;
 use YagGames\Model\ContestWinner;
 use YagGames\Model\ContestWinnerTable;
 use YagGames\Model\MediaViewTable;
+use YagGames\Model\SettingsTable;
+use YagGames\Service\FanFavoriteService;
+use YagGames\Service\KCryptService;
+use YagGames\Service\PhotoContestService;
 use YagGames\Service\SessionService;
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\TableGateway\TableGateway;
@@ -36,12 +40,12 @@ return array(
         },
                 
         'photoContestService' => function(ServiceLocatorInterface $serviceLocator) {
-            $photoContestService = new YagGames\Service\PhotoContestService($serviceLocator);
+            $photoContestService = new PhotoContestService($serviceLocator);
             return $photoContestService;
         },
                 
         'fanFavoriteService' => function(ServiceLocatorInterface $serviceLocator) {
-            $fanFavoriteService = new YagGames\Service\FanFavoriteService($serviceLocator);
+            $fanFavoriteService = new FanFavoriteService($serviceLocator);
             return $fanFavoriteService;
         },
                 
@@ -51,6 +55,13 @@ return array(
             $sessionService->setSessionContainer($sessionContainer);
             return $sessionService;
         },
+                
+        'kcryptService' => function(ServiceLocatorInterface $serviceLocator) {
+            $kcryptService = new KCryptService();
+            $kcryptService->setSettingsTable($serviceLocator->get('YagGames\Model\SettingsTable'));
+            $kcryptService->setConfig($serviceLocator->get('Config'));
+            return $kcryptService;
+        },        
         
         'YagGames\Model\ContestTable' => function ($sm) {
             $tableGateway = $sm->get('ContestTableGateway');
@@ -146,6 +157,12 @@ return array(
         'MediaViewTableGateway' => function ($sm) {
             $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
             return new TableGateway('rating_view', $dbAdapter);
+        },
+                
+        'YagGames\Model\SettingsTable' => function ($sm) {
+            $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+            $table = new SettingsTable($dbAdapter, $sm->get('YagGames\Logger'));
+            return $table;
         },
     ),
 );

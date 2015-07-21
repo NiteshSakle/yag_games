@@ -1,0 +1,23 @@
+
+<div class="contest-list clearfix">
+  <?php foreach ($medias as $key => $media): ?>
+    <div class="row">
+      <div class="col-md-2 <?php if ($key % 5 == 0): ?>col-md-offset-1<?php endif; ?>">
+        <div class="image-art-print" >
+          <a>
+            <img src="<?php echo $this->mediaImage($media, 'icons'); ?>" title="<?php echo $media['title'] ?>" alt="<?php echo $media['title'] ?>" />
+          </a>
+        </div>
+      </div>
+      <?php if ($key % 5 == 0): ?>
+      </div>
+      <div class="row">
+      <?php endif; ?>
+    </div>        
+  <?php endforeach; ?>
+</div>
+
+
+<?php
+echo $this->paginationControl($this->paginator, 'Sliding', 'paginator-slide', array('route' => 'media', 'action' => 'get-my-media'));
+?>
