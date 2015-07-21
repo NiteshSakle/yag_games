@@ -16,10 +16,13 @@ return array(
     
     'router' => array(
         'routes' => array(
-            'yagadmin' => array(
-                'type' => 'segment',
+            'admin' => array(
+                'type' => 'Segment',
                 'options' => array(
-                    'route'    => '/yagadmin',
+                    'route'    => '/manager[/:action]',
+                    'constraints' => array(
+                        'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ),
                     'defaults' => array(
                         '__NAMESPACE__' => 'YagAdmin\Controller',
                         'controller'    => 'Index',
@@ -56,7 +59,7 @@ return array(
         'not_found_template'       => 'error/404',
         'exception_template'       => 'error/index',
         'template_map' => array(
-            'yag-admin/layout/layout'   => __DIR__ . '/../view/yagadmin/layout/layout.phtml',
+            'yag-admin/layout/layout'   => __DIR__ . '/../view/yagadmin/layout/admin-layout.phtml',
             'yag-admin/index/index'     => __DIR__ . '/../view/yagadmin/index/index.phtml',
         ),
         'template_path_stack' => array(

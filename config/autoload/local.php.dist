@@ -26,6 +26,10 @@ return array(
         'url' => 'http://localhost/yag',
         'theme_assets_path' => 'http://localhost/yag/assets/themes/yag',
     ),
+        
+    'admin_main_site' => array(
+        'url' => 'http://localhost/yag/manager/mgr.login.php',
+    ),
     
     'view_manager' => array(
         'display_not_found_reason' => false,

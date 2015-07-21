@@ -23,6 +23,11 @@ return array(
         ),
     ),
     
+    'module_layouts' => array(
+        'YagGames' => 'layout/layout.phtml',
+        'YagAdmin' => 'layout/admin-layout.phtml',
+    ),
+    
     'to_address_email' => 'info@yourartgallery.com',
     'from_address_email' => 'info@yourartgallery.com',
     'developers_email' => array(
