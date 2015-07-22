@@ -22,8 +22,8 @@ $(document).ready(function(){
 	
 	//ajax loader
 	$('<div id="ajaxBusy" class="hide">Loading...</div>')
-			.ajaxStart(function() {$(this).show();})
-			.ajaxStop(function() {$(this).hide();})
+			//.ajaxStart(function() {$(this).removeClass('hide');})
+			//.ajaxStop(function() {$(this).addClass('hide');})
 			.appendTo('body');
 			
 	

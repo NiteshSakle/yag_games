@@ -71,18 +71,19 @@ class PhotoContestService
     
   }
 
-  public function addVoteToArt($contestId, $mediaId, $userId, $rating)
+  public function addVoteToArt($contestId, $mediaId, $userSession, $rating)
   {
    
     $contestTable = $this->getServiceLocator()->get('YagGames\Model\ContestTable');
     $contestData = $contestTable->fetchRecord($contestId);
+    $contestData = (array) $contestData;
     if (!$contestData) {
       throw new \YagGames\Exception\PhotoContestException("No contest found");
     }
     
      //check end date/voting_started flag for contest
-    $now = new DateTime();
-    $endDate = new DateTime($contestData['entry_end_date']);
+    $now = new \DateTime();
+    $endDate = new \DateTime($contestData['entry_end_date']);
     if ($now <= $endDate || !$contestData['voting_started']) {
       throw new \YagGames\Exception\PhotoContestException("Voting has not started");
     }
@@ -90,6 +91,7 @@ class PhotoContestService
     //get contest & media id
     $contestMediaTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaTable');
     $contestMediaData = $contestMediaTable->fetchContestMedia($contestId, $mediaId);
+    $contestMediaData = (array) $contestMediaData;
     if (!$contestMediaData) {
       throw new \YagGames\Exception\PhotoContestException("No contest media found");
     }
@@ -104,7 +106,7 @@ class PhotoContestService
     // now submit vote
     $contestMediaRating = new \YagGames\Model\ContestMediaRating();
     $contestMediaRating->contest_media_id = $contestMediaData['id'];
-    $contestMediaRating->member_id = $userId;
+    $contestMediaRating->member_id = $userSession['mem_id'];
     $contestMediaRating->rating = $rating;
     
     $contestMediaRatingId = $contestMediaRatingTable->insert($contestMediaRating);   

@@ -46,21 +46,73 @@ class PhotoContestController extends BaseController
   public function submissionAction()
   {
     $this->checkLogin();
-    
+
     $contestId = $this->params()->fromRoute('id', null);
     $contestTable = $this->getServiceLocator()->get('YagGames\Model\ContestTable');
     $contest = $contestTable->fetchRecord($contestId);
     if (!$contest) {
       throw new Exception("No contest found", 404);
     }
+    
+    $showPopupDiv = 0;
+    if (isset($this->session['contestUpload']['contestMediaId'])) {
+      unset($this->session['contestUpload']['contestMediaId']);
+      $showPopupDiv = 1;      
+    }
 
-    return new ViewModel(array('contest' => (array) $contest));
+    return new ViewModel(array('contest' => (array) $contest, 'showPopupDiv' => $showPopupDiv));
+  }
+  
+  public function uploadSubmissionAction()
+  {
+    $this->checkLogin();
+    if (isset($this->session['contestUpload']['contestId'], $this->session['contestUpload']['mediaId'])) {
+      $photoContestService = $this->getServiceLocator()->get('photoContestService');
+      try {
+        $contestId = $this->session['contestUpload']['contestId'];
+        $contestMediaId = $photoContestService->addArtToContest($contestId, $this->session['contestUpload']['mediaId'], $this->session);
+        $this->session['contestUpload'] = array('contestMediaId' => $contestMediaId);
+      } catch (PhotoContestException $e) {
+        $this->flashMessenger()->addErrorMessage($e->getMessage());
+      }
+      
+      return $this->redirect()->toRoute('photo-contest', array(
+          'id' =>  $contestId,
+          'action' =>  'submission'
+      ));
+    }
+    
+    return $this->redirect()->toRoute('photo-contest');
+  }
+
+  public function uploadArtAction()
+  {
+    $this->checkLogin();
+    $request = $this->getRequest();
+    if ($request->isPost()) {
+      $contestId = $request->getPost('contestId');
+      if (!$contestId) {
+        return new JsonModel(array(
+            'success' => false,
+            'message' => 'Bad Request'
+        ));
+      }
+
+      $this->session->contestUpload = array(
+          'contestId' => $contestId
+      );
+      return new JsonModel(array(
+          'success' => true
+      ));
+    }
+
+    return $this->redirect()->toRoute('photo-contest');
   }
 
   public function artSubmissionAction()
-  {
+  {sleep(5);
     $this->checkLogin();
-    
+
     $request = $this->getRequest();
     if ($request->isPost()) {
       $mediaId = $request->getPost('media_id');
@@ -96,12 +148,47 @@ class PhotoContestController extends BaseController
     ));
   }
 
-  public function rankingAction()
+  public function voteAction()
   {
-    
+    $this->checkLogin();
+
+    $request = $this->getRequest();
+    if ($request->isPost()) {
+      $mediaId = $request->getPost('media_id');
+      $contestId = $request->getPost('contestId');
+      $rating = $request->getPost('rating');
+      if (!$mediaId || !$contestId) {
+        return new JsonModel(array(
+            'success' => false,
+            'message' => 'Bad Request'
+        ));
+      }
+
+      $photoContestService = $this->getServiceLocator()->get('photoContestService');
+      try {
+        $contestMediaRatingId = $photoContestService->addVoteToArt($contestId, $mediaId, $this->session, $rating);
+      } catch (PhotoContestException $e) {
+        return new JsonModel(array(
+            'success' => false,
+            'message' => $e->getMessage()
+        ));
+      }
+
+      return new JsonModel(array(
+          'success' => true,
+          'data' => array(
+              'contestMediaRatingId' => $contestMediaRatingId
+          )
+      ));
+    }
+
+    return new JsonModel(array(
+        'success' => false,
+        'message' => 'Bad Request'
+    ));
   }
 
-  public function voteAction()
+  public function rankingAction()
   {
     
   }

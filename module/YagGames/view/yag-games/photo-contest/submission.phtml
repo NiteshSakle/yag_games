@@ -49,7 +49,7 @@
         <div class="contest-title-blue"><?php echo $contest['name']; ?></div>
         <div>Choose from one of your uploaded images and submit it for this
           contest or upload a new image!</div>
-          <br>
+        <br>
         <div class="row row-no-padding-margin">
           <div class="col-md-5 contest-image">
             <img  src="<?php echo $this->basePath() ?>/img/contest/thumbnail/<?php echo $contest['thumbnail']; ?>"  alt="Contest Photo" />
@@ -66,9 +66,9 @@
             </div>
           </div>  
         </div>
-        
+
         <br>
-          <br>
+        <br>
         <div class="contest-description">
           <?php echo $contest['description']; ?>
           <br>
@@ -97,39 +97,123 @@
     </div>
   </div>
 </div>
-<script type="text/javascript" src="<?php echo $this->basePath() ?>/js/helpers.js"></script>
+
+<div style="display: none;" id="blanket"></div>
+<div style="display: none;" id="popUpDiv">
+  <div class="popup-another-img" style="height: 70% !important;">
+    <a style="float:right;" onclick="popup('popUpDiv');$('div#overlay').css('display', 'none');" href="#."><img alt="" src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/close.button.png" /></a>
+    <div class="leftcol">
+      <h1 class="title" style="  text-align: left;">CONGRATULATIONS!<br><br>You have entered the  <strong><?php echo $contest['name']; ?> </strong> </h1>
+      <div class="congrts">Voting Begins: <?php echo $contest['entry_end_date']; ?>. Follow your ranking daily.</div>
+    </div>
+    <div class="join-popup-img">
+      <img class="icon_man" src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/thankyou1.png" /></div> 
+    <div class="social-links-upload-another-img">
+      <ul class="social_links">
+        <li><a class="addthis_button_facebook" addthis:url="<?php echo $this->config('main_site', 'url') ?>/media.details.php?mediaID={$encrypted_media_id}"/><img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/facebook.png"  alt="Share to Facebook" /></a></li>
+        <li><a class="addthis_button_twitter" addthis:url="<?php echo $this->config('main_site', 'url') ?>/media.details.php?mediaID={$encrypted_media_id}"><img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/twitter.png"  alt="Share to Twitter" /></a></li>
+        <li><a class="addthis_button_linkedin" addthis:url="<?php echo $this->config('main_site', 'url') ?>/media.details.php?mediaID={$encrypted_media_id}"><img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/linkedin.png"  alt="Linkedin" /></a></li>
+        <li><a class="addthis_button_pinterest_share" pi:pinit:url="<?php echo $this->config('main_site', 'url') ?>/media.details.php?mediaID={$encrypted_media_id}" pi:pinit:media="{$auto_crop_image}"><img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/pinterest.png"  alt="Share to Pinterest" /></a></li>
+      </ul>
+      <span class="or">or</span>
+      <div class="btn-upload-another-img"><input type="button" onClick="javascript:window.location.href = '<?php echo $this->basePath()?>/new-contest'"  value="Enter Another Contest" name="" class="back"></div>
+    </div>
+  </div>
+</div>
+
 <script type="text/javascript">
-  loadHtml('<?php echo $this->basePath() ?>/media/get-my-media', '.media-list', '', function(){
+    var addthis_share = addthis_share || {}
+    addthis_share = {
+            passthrough : {
+                    twitter: {
+                            text:'Check Out My Latest Art Available '
+                    }
+            }
+    }
+</script>
+<script type="text/javascript" src="<?php echo $this->basePath() ?>/js/helpers.js"></script>
+<script type="text/javascript" src="<?php echo $this->config('main_site', 'url') ?>/assets/javascript/popup.js"></script>
+<script type="text/javascript">
+  <?php if ($showPopupDiv): ?>
+    showSuccessPopup();
+  <?php endif; ?>
+    
+  loadHtml(gameBasePath + '/media/get-my-media', '.media-list', '', function () {
     registerHoverFunction();
     registerFollowCursor();
   });
-  
-  $('#submitImage').click(function(){
-    if($("input:radio[name=my_media]").is(":checked")){
-      submitArt('<?php echo $contest['id']; ?>', $("input:radio[name=my_media]").val());
+
+  var contestId = "<?php echo $contest['id']; ?>";
+  $('#submitImage').click(function () {
+    if ($("input:radio[name=my_media]").is(":checked")) {
+      submitArt(contestId, $("input:radio[name=my_media]").val());
     } else {
       alert('Please select your art');
     }
   });
+
+  $('#submitNewImage').click(function () {
+    uploadArt(contestId);
+  });
+  
+  function showSuccessPopup() {
+    popup('popUpDiv');
+    $('div#overlay').css('display', 'block');
+    $('div#overlay').css('opacity', '0.47');
+    $('div#blanket').css('height', '0');
+  }
   
   function submitArt(contestId, mediaId) {
     var request = $.ajax({
-      url:  '<?php echo $this->basePath() ?>/photo-contest/art-submission',
+      url: gameBasePath + '/photo-contest/art-submission',
       type: "POST",
-      data: {'media_id':mediaId, 'contestId': contestId},
+      data: {'media_id': mediaId, 'contestId': contestId},
       dataType: 'json',
+      beforeSend: function(){
+        $("#ajaxBusy").removeClass('hide');
+      },
+      complete: function(){
+        $("#ajaxBusy").addClass('hide');
+      }
     });
 
-    request.done(function( msg ) {
-      if(msg.success) {
-        alert(1)
+    request.done(function (msg) {
+      if (msg.success) {
+        showSuccessPopup();
       } else {
         alert(msg.message)
       }
     });
 
-    request.fail(function( jqXHR, textStatus ) {
-      alert( "Request failed: " + textStatus );
+    request.fail(function (jqXHR, textStatus) {
+      alert("Request failed: " + textStatus);
+    });
+  }
+
+  function uploadArt(contestId) {
+    var request = $.ajax({
+      url: gameBasePath + '/photo-contest/upload-art',
+      type: "POST",
+      data: {'contestId': contestId},
+      dataType: 'json',
+      beforeSend: function(){
+        $("#ajaxBusy").removeClass('hide');
+      },
+      complete: function(){
+        $("#ajaxBusy").addClass('hide');
+      }
+    });
+
+    request.done(function (msg) {
+      if (msg.success) {
+        window.location = baseURL + '/addnew_media.php';
+      } else {
+        alert(msg.message)
+      }
+    });
+
+    request.fail(function (jqXHR, textStatus) {
+      alert("Request failed: " + textStatus);
     });
   }
 </script>
