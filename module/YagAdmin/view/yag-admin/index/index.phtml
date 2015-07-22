@@ -1,0 +1,258 @@
+<!--<link rel="stylesheet" type="text/css" href="<?php echo $this->basePath('/library/metronic/template/assets/plugins/select2/select2.css'); ?>"/>
+<link rel="stylesheet" type="text/css" href="<?php echo $this->basePath('/library/metronic/template/assets/plugins/select2/select2-metronic.css'); ?>"/>
+<link rel="stylesheet" type="text/css" href="<?php echo $this->basePath('/library/metronic/template/assets/plugins/bootstrap-wysihtml5/bootstrap-wysihtml5.css'); ?>"/>
+<link rel="stylesheet" type="text/css" href="<?php echo $this->basePath('/library/metronic/template/assets/plugins/bootstrap-markdown/css/bootstrap-markdown.min.css'); ?>">-->
+<div class="jumbotron">
+    <a class="btn btn-primary pull-right open-modal" data-toggle="modal" href="#create-contest-modal">
+        Create Contest
+    </a>
+    <div class="portlet">
+        <div class="portlet-title">
+            <div class="caption">
+                <i class="fa fa-trophy"></i>Contests
+            </div>
+        </div>
+        <div class="portlet-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered table-advance table-hover">
+                    <thead>
+                        <tr>                            
+                            <th>
+                                <i class="fa fa-picture-o"></i> Thumbnail
+                            </th>
+                            <th>
+                                <i class="fa"></i> Name
+                            </th>
+                            <th class="hidden-xs">
+                                <i class="fa fa-calendar"></i> Entry End Date
+                            </th>
+                            <th>
+                                <i class="fa"></i> Type
+                            </th>
+                            <th>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($contests as $contest) { ?>
+                            <tr>
+                                <td>                                    
+                                    <img src="<?php echo $this->basePath('/img/contest/thumbnail/' . $contest['thumbnail']); ?>" alt="<?php echo $this->basePath('/img/bg-rateing.jpg'); ?>" style="width:100px" />
+                                </td>
+                                <td class="highlight">
+                                    <a href="#">
+                                        <?php echo $contest['name']; ?>
+                                    </a>
+                                </td>
+                                <td>
+                                    <?php echo $contest['entry_end_date']; ?>
+                                </td>
+                                <td>
+                                    <?php echo $contest['type']; ?>
+                                </td>
+                                <td>
+                                    <a id="<?php echo $contest['id']; ?>" class="btn default btn-xs purple edit">
+                                        <i class="fa fa-edit"></i> Edit
+                                    </a>
+                                    <a id="<?php echo $contest['id']; ?>" class="btn default btn-xs red delete">
+                                        <i class="fa fa-trash-o"></i> Delete
+                                    </a>
+                                </td>
+                            </tr>
+                        <?php } ?>                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="create-contest-modal" role="basic" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12 ">
+                            <!-- BEGIN CREATE CONTEST FORM-->
+                            <div class="portlet box blue">
+                                <div class="portlet-title">
+                                    <div class="caption">
+                                        <i class="fa fa-reorder"></i> Create Contest
+
+                                    </div>                
+                                    <div class="tools">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                    </div>
+                                </div>
+                                <div class="portlet-body form">
+                                    <form action="#" role="form" id="create-contest-form">
+                                        <div class="form-body">
+                                            <div class="alert alert-danger display-hide">
+                                                <button class="close" data-close="alert"></button>
+                                                You have some form errors. Please check below.
+                                            </div>
+                                            <div class="alert alert-success display-hide">
+                                                <button class="close" data-close="alert"></button>
+                                                Your form validation is successful!
+                                            </div>
+                                            <div class="form-group hidden">
+                                                <input type="text" id="id" name="id" value='0'>
+                                            </div>                        
+                                            <div class="form-group">
+                                                <label class="control-label" for="name">
+                                                    Contest Name
+                                                    <span class="required">
+                                                        *
+                                                    </span>
+                                                </label>
+                                                <input type="text" data-required="1" class="form-control" id="name" name="name" placeholder="Enter Contest's Name">
+                                            </div>                        
+                                            <div class="form-group">
+                                                <label for="description">
+                                                    Contest Description
+                                                    <span class="required">
+                                                        *
+                                                    </span>
+                                                </label>
+                                                <textarea class="wysihtml5 form-control" id="description" name="description" rows="3" placeholder="Enter Contest's Description"></textarea>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="thumbnail">
+                                                    Thumbnail
+                                                    <span class="required">
+                                                        *
+                                                    </span>
+                                                </label>
+                                                <input type="file" id="thumbnail" name="thumbnail">
+                                                <input type="text" disabled hidden id="thumbnail_name">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="entryEndDate">
+                                                    Entry End Date
+                                                    <span class="required">
+                                                        *
+                                                    </span>
+                                                </label>
+                                                <input id="entryEndDate" name="entryEndDate" class="form-control input-medium date-picker" size="16" type="text">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="winnersAnnounceDate">
+                                                    Winners Announce Date
+                                                    <span class="required">
+                                                        *
+                                                    </span>
+                                                </label>
+                                                <input id="winnersAnnounceDate" name="winnersAnnounceDate" class="form-control input-medium date-picker" size="16" type="text" value="">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="type">
+                                                    Contest Type
+                                                    <span class="required">
+                                                        *
+                                                    </span>
+                                                </label>
+                                                <select class="form-control" id="type" name="type">
+                                                    <?php foreach ($types as $type) { ?>
+                                                        <option value="<?php echo $type['id']; ?>"><?php echo $type['type'] ?></option>
+                                                    <?php } ?>
+                                                </select>
+                                            </div>
+                                            <div class="form-actions">
+                                                <button type="submit" class="btn blue">Submit</button>
+                                                <button type="button" class="btn default" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                                            </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <!-- END CREATE CONTEST FORM-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--<script type="text/javascript" src="<?php echo $this->basePath('library/metronic/template/assets/plugins/jquery-validation/dist/jquery.validate.min.js'); ?>"></script>
+<script type="text/javascript" src="<?php echo $this->basePath('library/metronic/template/assets/plugins/jquery-validation/dist/additional-methods.min.js'); ?>"></script>
+<script type="text/javascript" src="<?php echo $this->basePath('library/metronic/template/assets/plugins/select2/select2.min.js'); ?>"></script>
+<script type="text/javascript" src="<?php echo $this->basePath('library/metronic/template/assets/plugins/bootstrap-wysihtml5/wysihtml5-0.3.0.js'); ?>"></script>
+<script type="text/javascript" src="<?php echo $this->basePath('library/metronic/template/assets/plugins/bootstrap-wysihtml5/bootstrap-wysihtml5.js'); ?>"></script>
+<script type="text/javascript" src="<?php echo $this->basePath('library/metronic/template/assets/plugins/ckeditor/ckeditor.js'); ?>"></script>
+<script type="text/javascript" src="<?php echo $this->basePath('library/metronic/template/assets/plugins/bootstrap-markdown/js/bootstrap-markdown.js'); ?>"></script>
+<script type="text/javascript" src="<?php echo $this->basePath('library/metronic/template/assets/plugins/bootstrap-markdown/lib/markdown.js'); ?>"></script>-->
+
+<script>
+
+    $(document).ready(function () {
+        App.init();
+        //handleValidation();
+        $('.open-modal').on('click', function () {
+            $('form#create-contest-form').trigger('reset');
+            $('#thumbnail_name').hide();
+        });
+
+        $('.delete').on('click', function () {
+            if (confirm("Do you want to delete")) {
+                $.ajax({
+                    url: '<?php echo $this->basePath('/manager/delete-contest'); ?>',
+                    type: 'POST',
+                    data: 'id=' + this.id,
+                    success: function (response) {
+                        $('#create-contest-modal').modal('hide');
+                        bootbox.alert(response.message, function () {
+                            if (response.success) {
+                                location.reload();
+                            }
+                        });
+                    }
+                });
+            }
+            return false;
+        });
+
+        $('.edit').on('click', function () {
+            $.ajax({
+                url: '<?php echo $this->basePath('/manager/get-contest-detail'); ?>',
+                type: 'POST',
+                data: 'id=' + this.id,
+                success: function (response) {
+                    $('#id').val(response.data.id);
+                    $('#name').val(response.data.name);
+                    $('#description').val(response.data.description);
+                    $('#thumbnail_name').show();
+                    $('#thumbnail_name').val((response.data.thumbnail).substring(10));
+                    $('#entryEndDate').val(response.data.entry_end_date);
+                    $('#winnersAnnounceDate').val(response.data.winners_announce_date);
+                    $('#type').val(response.data.type_id);
+                    $('#create-contest-modal').modal('show');
+                }
+            });
+        });
+    });
+
+    $("form#create-contest-form").submit(function () {
+
+        var formData = new FormData($(this)[0]);
+
+        $.ajax({
+            url: '<?php echo $this->basePath('/manager/save-contest'); ?>',
+            type: 'POST',
+            data: formData,
+            async: true,
+            success: function (response) {
+                $('#create-contest-modal').modal('hide');
+                bootbox.alert(response.message, function () {
+                    if (response.success) {
+                        location.reload();
+                    }
+                });
+            },
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+
+        return false;
+    });
+
+</script>

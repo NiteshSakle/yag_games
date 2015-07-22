@@ -59,11 +59,11 @@ return array(
         'not_found_template'       => 'error/404',
         'exception_template'       => 'error/index',
         'template_map' => array(
-            'yag-admin/layout/layout'   => __DIR__ . '/../view/yagadmin/layout/admin-layout.phtml',
-            'yag-admin/index/index'     => __DIR__ . '/../view/yagadmin/index/index.phtml',
+            'yag-admin/layout/layout'   => __DIR__ . '/../view/yag-admin/layout/admin-layout.phtml',
+            'yag-admin/index/index'     => __DIR__ . '/../view/yag-admin/index/index.phtml',
         ),
         'template_path_stack' => array(
-            'yagadmin' => __DIR__ . '/../view',
+            'yag-admin' => __DIR__ . '/../view',
         ),
     )
     

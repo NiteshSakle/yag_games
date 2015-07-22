@@ -2,13 +2,11 @@
 
 namespace YagGames\Model;
 
-class ContestTypeTable extends BaseTable
-{
+class ContestTypeTable extends BaseTable {
 
-    public function insert(ContestType $contestType)
-    {
+    public function insert(ContestType $contestType) {
         try {
-            
+
             $this->created($contestType);
             if (!$this->isValid($contestType)) {
                 return false;
@@ -22,8 +20,7 @@ class ContestTypeTable extends BaseTable
         }
     }
 
-    public function update(ContestType $contestType)
-    {
+    public function update(ContestType $contestType) {
         try {
             $this->updated($contestType);
             if (!$this->isValid($contestType)) {
@@ -37,22 +34,26 @@ class ContestTypeTable extends BaseTable
         }
     }
 
-    public function fetchRecord($contestTypeId)
-    {
+    public function fetchRecord($contestTypeId) {
         $rowset = $this->tableGateway->select(array('id' => $contestTypeId));
         $contestRow = $rowset->current();
         return $contestRow;
-    }   
-    
-    public function fetchAll()
-    {
-        $select = new \Zend\Db\Sql\Select ;
+    }
+
+    public function fetchAll() {
+        $select = new \Zend\Db\Sql\Select;
         $select->from(array('c' => 'contest_type'))
                 ->columns(array('*'));
-         
-        $statement = $this->getSql()->prepareStatementForSqlObject($select); 
-        $resultSet = $statement->execute(); 
-        
-        return $resultSet;
+
+        $statement = $this->getSql()->prepareStatementForSqlObject($select);
+        $resultSet = $statement->execute();
+
+        $types = array();
+        foreach ($resultSet as $row) {
+            $types[] = $row;
+        }
+
+        return $types;
     }
+
 }

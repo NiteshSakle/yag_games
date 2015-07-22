@@ -36,6 +36,8 @@ return array(
         'display_exceptions' => false
      ),
     
+    'upload_path' => '/var/www/html/yag_games/public/img/contest/thumbnail/',
+    
     'SITE_DOMAIN' => 'http://localhost/yag_games',
     'SITE_BASE_PATH' => '',
 );

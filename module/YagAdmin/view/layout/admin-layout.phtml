@@ -13,40 +13,43 @@
         <?php
         echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/images/vendle_icon.ico'))
                 ->prependStylesheet('http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all')
-                ->prependStylesheet($this->basePath() . '/library/metronic/template/assets/plugins/bootstrap-datepicker/css/datepicker.css')
-                ->prependStylesheet($this->basePath() . '/library/metronic/template/assets/plugins/font-awesome/css/font-awesome.min.css')
-                ->prependStylesheet($this->basePath() . '/library/metronic/template/assets/css/style-metronic.css')
-                ->prependStylesheet($this->basePath() . '/library/metronic/template/assets/css/themes/default.css')
-                ->prependStylesheet($this->basePath() . '/library/metronic/template/assets/css/style-responsive.css')
-                ->prependStylesheet($this->basePath() . '/library/metronic/template/assets/css/style.css')
-                ->prependStylesheet($this->basePath() . '/library/metronic/template/assets/plugins/bootstrap/css/bootstrap.min.css')
-                ->prependStylesheet($this->basePath() . '/library/metronic/template/assets/plugins/uniform/css/uniform.default.css')
-                ->prependStylesheet($this->basePath() . '/library/metronic/template/assets/css/custom.css')
-                ->prependStylesheet($this->basePath() . '/library/metronic/template/assets/css/plugins.css')
-                ->prependStylesheet($this->basePath() . '/library/metronic/template/assets/css/pages/tasks.css')
-                ->prependStylesheet($this->basePath() . '/css/custom.css')
-                ->prependStylesheet($this->basePath() . '/library/metronic/template/assets/plugins/bootstrap-toastr/toastr.min.css');
+                ->prependStylesheet($this->basePath('/library/metronic/template/assets/plugins/bootstrap-datepicker/css/datepicker.css'))
+                ->prependStylesheet($this->basePath('/library/metronic/template/assets/plugins/font-awesome/css/font-awesome.min.css'))
+                ->prependStylesheet($this->basePath('/library/metronic/template/assets/css/style-metronic.css'))
+                ->prependStylesheet($this->basePath('/library/metronic/template/assets/css/themes/default.css'))
+                ->prependStylesheet($this->basePath('/library/metronic/template/assets/css/style-responsive.css'))
+                ->prependStylesheet($this->basePath('/library/metronic/template/assets/css/style.css'))
+                ->prependStylesheet($this->basePath('/library/metronic/template/assets/plugins/bootstrap/css/bootstrap.min.css'))
+                ->prependStylesheet($this->basePath('/library/metronic/template/assets/plugins/uniform/css/uniform.default.css'))
+                ->prependStylesheet($this->basePath('/library/metronic/template/assets/css/custom.css'))
+                ->prependStylesheet($this->basePath('/library/metronic/template/assets/css/plugins.css'))
+                ->prependStylesheet($this->basePath('/library/metronic/template/assets/css/pages/tasks.css'))
+                ->prependStylesheet($this->basePath('/css/custom.css'))
+                ->prependStylesheet($this->basePath('/library/metronic/template/assets/plugins/bootstrap-toastr/toastr.min.css'));
         ?>
 
         <!-- Scripts -->
         <?php
         echo $this->headScript()
                 ->prependFile('http://www.google.com/jsapi')
-                ->prependFile($this->basePath() . '/js/html5shiv.js', 'text/javascript', array('conditional' => 'lt IE 9',))
-                ->prependFile($this->basePath() . '/js/respond.min.js', 'text/javascript', array('conditional' => 'lt IE 9',))
-                ->prependFile($this->basePath() . '/library/metronic/template/assets/scripts/custom/ui-toastr.js')
-                ->prependFile($this->basePath() . '/library/metronic/template/assets/plugins/bootstrap-toastr/toastr.min.js')
-                ->prependFile($this->basePath() . '/library/metronic/template/assets/plugins/uniform/jquery.uniform.min.js')
-                ->prependFile($this->basePath() . '/library/metronic/template/assets/plugins/jquery.cokie.min.js')
-                ->prependFile($this->basePath() . '/library/metronic/template/assets/plugins/jquery.blockui.min.js')
-                ->prependFile($this->basePath() . '/library/metronic/template/assets/plugins/jquery-slimscroll/jquery.slimscroll.min.js')
-                ->prependFile($this->basePath() . '/library/metronic/template/assets/plugins/bootstrap/js/bootstrap.min.js')
-                ->prependFile($this->basePath() . '/library/metronic/template/assets/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js')
-                ->prependFile($this->basePath() . '/library/metronic/template/assets/plugins/jquery-migrate-1.2.1.min.js')
-                ->prependFile($this->basePath() . '/library/metronic/template/assets/plugins/excanvas.min.js')
-                ->prependFile($this->basePath() . '/library/metronic/template/assets/plugins/respond.min.js')
-                ->prependFile($this->basePath() . '/library/metronic/template/assets/plugins/jquery-1.10.2.min.js')
-                ->prependFile($this->basePath() . '/library/metronic/template/assets/scripts/core/app.js')
+                ->prependFile($this->basePath('/js/html5shiv.js') , 'text/javascript', array('conditional' => 'lt IE 9',))
+                ->prependFile($this->basePath('/js/respond.min.js'), 'text/javascript', array('conditional' => 'lt IE 9',))
+                ->prependFile($this->basePath('/library/metronic/template/assets/scripts/custom/ui-toastr.js'))                
+                ->prependFile($this->basePath('/library/metronic/template/assets/plugins/bootbox/bootbox.min.js'))                
+                ->prependFile($this->basePath('/library/metronic/template/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js'))
+                ->prependFile($this->basePath('/library/metronic/template/assets/plugins/bootstrap-toastr/toastr.min.js'))
+                ->prependFile($this->basePath('/library/metronic/template/assets/plugins/uniform/jquery.uniform.min.js'))
+                ->prependFile($this->basePath('/library/metronic/template/assets/plugins/jquery.cokie.min.js'))
+                ->prependFile($this->basePath('/library/metronic/template/assets/plugins/jquery.blockui.min.js'))
+                ->prependFile($this->basePath('/library/metronic/template/assets/plugins/jquery-slimscroll/jquery.slimscroll.min.js'))
+                ->prependFile($this->basePath('/library/metronic/template/assets/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js'))
+                ->prependFile($this->basePath('/library/metronic/template/assets/plugins/bootstrap/js/bootstrap.min.js'))
+                ->prependFile($this->basePath('/library/metronic/template/assets/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js'))
+                ->prependFile($this->basePath('/library/metronic/template/assets/plugins/jquery-migrate-1.2.1.min.js'))
+                ->prependFile($this->basePath('/library/metronic/template/assets/plugins/excanvas.min.js'))
+                ->prependFile($this->basePath('/library/metronic/template/assets/plugins/respond.min.js'))
+                ->prependFile($this->basePath('/library/metronic/template/assets/scripts/core/app.js'))
+                ->prependFile($this->basePath('/library/metronic/template/assets/plugins/jquery-1.10.2.min.js'))                
         ;
         ?>
     </head>
@@ -74,15 +77,15 @@
                             <span class="username">
                                 Contest Admin
                             </span>
-<!--                            <i class="fa fa-angle-down"></i>-->
+                            <i class="fa fa-angle-down"></i>
                         </a>
-<!--                        <ul class="dropdown-menu">	
+                        <ul class="dropdown-menu">	
                             <li>
-                                <a href="<?php echo $this->basePath('manager/logout'); ?>">
+                                <a href="<?php echo $this->config('admin_main_site', 'url').'?notice=logged_out' ?>">
                                     <i class="fa fa-key"></i> Log Out
                                 </a>
                             </li>
-                        </ul>-->
+                        </ul>
                     </li>
                     <!-- END USER LOGIN DROPDOWN -->
                 </ul>
@@ -102,14 +105,6 @@
                                 <i class="fa fa-home"></i>
                                 <span class="title">
                                     Dashboard
-                                </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="<?php echo $this->basePath('/manager/create-contest'); ?>">
-                                <i class="fa fa-home"></i>
-                                <span class="title">
-                                    Create contest
                                 </span>
                             </a>
                         </li>
