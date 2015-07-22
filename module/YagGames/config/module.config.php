@@ -146,6 +146,12 @@ return array(
             $sessionHelper->setKCryptService($kcryptService);
             return $sessionHelper;
         },
+        'KCrypt' => function (Zend\View\HelperPluginManager $helperPluginManager) {
+            $kcryptService = $helperPluginManager->getServiceLocator()->get('kcryptService');
+            $sessionHelper = new YagGames\View\Helper\KCryptHelper();
+            $sessionHelper->setKCryptService($kcryptService);
+            return $sessionHelper;
+        }      
       ),
     ),
 );

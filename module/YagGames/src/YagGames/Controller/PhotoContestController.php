@@ -3,9 +3,11 @@
 namespace YagGames\Controller;
 
 use Exception;
+use YagGames\Exception\PhotoContestException;
 use Zend\Mvc\MvcEvent;
 use Zend\Paginator\Adapter\NullFill;
 use Zend\Paginator\Paginator;
+use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
 
 class PhotoContestController extends BaseController
@@ -26,51 +28,87 @@ class PhotoContestController extends BaseController
     if (isset($this->session->mem_id)) {
       $userId = $this->session->mem_id;
     }
-    
-    $contestMediaTable = $this->getServiceLocator()->get('photoContestService');
-    $data = $contestMediaTable->getContestMedia($contestId, $userId, null, $page, $size);
-    
+
+    $photoContestService = $this->getServiceLocator()->get('photoContestService');
+    $data = $photoContestService->getContestMedia($contestId, $userId, null, $page, $size);
+
     $paginator = new Paginator(new NullFill($data['total']));
     $paginator->setCurrentPageNumber($page);
     $paginator->setItemCountPerPage($size);
-    
+
     $vm = new ViewModel();
     $vm->setVariable('paginator', $paginator);
     $vm->setVariable('medias', $data['medias']);
     $vm->setVariable('contestId', $contestId);
     return $vm;
   }
-  
+
   public function submissionAction()
   {
+    $this->checkLogin();
+    
     $contestId = $this->params()->fromRoute('id', null);
     $contestTable = $this->getServiceLocator()->get('YagGames\Model\ContestTable');
-    $contest = $contestTable->fetchRecord($contestId); 
+    $contest = $contestTable->fetchRecord($contestId);
     if (!$contest) {
       throw new Exception("No contest found", 404);
     }
-    
-    return new ViewModel(array('contest' => (array)$contest));
+
+    return new ViewModel(array('contest' => (array) $contest));
   }
-  
+
   public function artSubmissionAction()
   {
+    $this->checkLogin();
+    
+    $request = $this->getRequest();
+    if ($request->isPost()) {
+      $mediaId = $request->getPost('media_id');
+      $contestId = $request->getPost('contestId');
+      if (!$mediaId || !$contestId) {
+        return new JsonModel(array(
+            'success' => false,
+            'message' => 'Bad Request'
+        ));
+      }
 
+      $photoContestService = $this->getServiceLocator()->get('photoContestService');
+      try {
+        $contestMediaId = $photoContestService->addArtToContest($contestId, $mediaId, $this->session);
+      } catch (PhotoContestException $e) {
+        return new JsonModel(array(
+            'success' => false,
+            'message' => $e->getMessage()
+        ));
+      }
+
+      return new JsonModel(array(
+          'success' => true,
+          'data' => array(
+              'contestMediaId' => $contestMediaId
+          )
+      ));
+    }
+
+    return new JsonModel(array(
+        'success' => false,
+        'message' => 'Bad Request'
+    ));
   }
-  
+
   public function rankingAction()
   {
-
+    
   }
-  
+
   public function voteAction()
   {
-
+    
   }
-  
+
   public function termsAction()
   {
-
+    
   }
-  
+
 }

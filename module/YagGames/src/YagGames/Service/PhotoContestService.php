@@ -12,29 +12,31 @@ class PhotoContestService
     $this->serviceManager = $serviceManager;
   }
 
-  public function addArtToContest($contestId, $userId, $mediaId)
+  public function addArtToContest($contestId, $mediaId, $userSession)
   {
     $contestTable = $this->getServiceLocator()->get('YagGames\Model\ContestTable');
     $contestData = $contestTable->fetchRecord($contestId);
+    $contestData = (array) $contestData;
     if (!$contestData) {
       throw new \YagGames\Exception\PhotoContestException("No contest found");
     }
     
     //only artist is allowed
-    if ($contestData['login_as_buyer']) {
+    if ($userSession['login_as_buyer']) {
       throw new \YagGames\Exception\PhotoContestException("You have to be Artist to participate in contest");
     }
     
     //check end date
-    $now = new DateTime();
-    $endDate = new DateTime($contestData['entry_end_date']);
+    $now = new \DateTime();
+    $now = $now->format('Y-m-d');
+    $endDate = new \DateTime($contestData['entry_end_date']);
     if ($now > $endDate) {
       throw new \YagGames\Exception\PhotoContestException("You cannot upload art as contest has already ended");
     }
     
     //max 200 in contest
     $contestMediaTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaTable');
-    $contestMediaCount = $contestMediaTable->getContestMediaCount($contestId, $userId);
+    $contestMediaCount = $contestMediaTable->getContestMediaCount($contestId, $userSession['mem_id']);
     if ($contestMediaCount && $contestMediaCount['count'] >= 200) {
       throw new \YagGames\Exception\PhotoContestException("Contest is already full");
     }
@@ -51,7 +53,7 @@ class PhotoContestService
       throw new \YagGames\Exception\PhotoContestException("No media found");
     }
     
-    if ($mediaObject['owner'] != $userId) {
+    if ($mediaObject['owner'] != $userSession['mem_id']) {
       throw new \YagGames\Exception\PhotoContestException("Media is not owned by you", 403);
     }
     

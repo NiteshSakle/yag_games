@@ -1,5 +1,5 @@
 //Common utils function
-jQuery(document).ready(function($){
+$(document).ready(function(){
 	 
 	//Handle Session Timeout
 	$(document).ajaxError(function (event, request, options) {
@@ -27,7 +27,7 @@ jQuery(document).ready(function($){
 			.appendTo('body');
 			
 	
-})(jQuery);
+});
 
 function roundNumber(rnum, rlength) { // Arguments: number to round, number of decimal places
   var newnumber = Math.round(rnum*Math.pow(10,rlength))/Math.pow(10,rlength);
@@ -52,7 +52,7 @@ function loadHtml(href, divSelector, loader, callback) {
 		}
 		
 		var divPaginationLinks = divSelector+" .pagination a"; 
-		$(divPaginationLinks).click(function() {      
+		$(divPaginationLinks).unbind("click").click(function() {      
 			var thisHref = $(this).attr("href"); 
 			if(thisHref!='#.')	loadHtml(thisHref, divSelector, loader, callback); 
 			return false; 

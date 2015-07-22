@@ -15,6 +15,7 @@ use YagGames\Model\ContestTypeTable;
 use YagGames\Model\ContestWinner;
 use YagGames\Model\ContestWinnerTable;
 use YagGames\Model\MediaViewTable;
+use YagGames\Model\MediaTable;
 use YagGames\Model\SettingsTable;
 use YagGames\Service\FanFavoriteService;
 use YagGames\Service\KCryptService;
