@@ -7,7 +7,7 @@ class MediaTable extends BaseTable
 
     public function fetchRecord($contestMediaId)
     {
-        $rowset = $this->tableGateway->select(array('id' => $contestMediaId));
+        $rowset = $this->tableGateway->select(array('media_id' => $contestMediaId));
         $contestRow = $rowset->current();
         return $contestRow;
     }   

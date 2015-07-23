@@ -47,7 +47,7 @@ return array(
             'media' => array(
                 'type' => 'Segment',
                 'options' => array(
-                    'route'    => '/media/[:action]',
+                    'route'    => '/media/[:action][/page/:page][/size/:size]',
                     'constraints' => array(
                         'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
                     ),
@@ -61,14 +61,17 @@ return array(
             'photo-contest' => array(
                 'type' => 'Segment',
                 'options' => array(
-                    'route'    => '/photo-contest/[:action]',
+                    'route'    => '/photo-contest[/:action][/:id][/page/:page][/size/:size]',
                     'constraints' => array(
                         'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]+',
+                        'page'     => '[0-9]+',
+                        'size'     => '[0-9]+',
                     ),
                     'defaults' => array(
                         '__NAMESPACE__' => 'YagGames\Controller',
                         'controller'    => 'PhotoContest',
-                        'action'        => 'contest',
+                        'action'        => 'view',
                     ),
                 ),
             ),
@@ -106,9 +109,10 @@ return array(
         'exception_template'       => 'error/index',
         'template_map' => array(
             'layout/layout'           => __DIR__ . '/../view/layout/layout.phtml',
-            'yag-games/index/index' => __DIR__ . '/../view/yaggames/index/index.phtml',
+            'yag-games/index/index' => __DIR__ . '/../view/yag-games/index/index.phtml',
             'error/404'               => __DIR__ . '/../view/error/404.phtml',
             'error/index'             => __DIR__ . '/../view/error/index.phtml',
+            'paginator-slide' => __DIR__ . '/../view/layout/pagination.phtml',
         ),
         'template_path_stack' => array(
             'yaggames' => __DIR__ . '/../view',
@@ -136,6 +140,18 @@ return array(
             $sessionHelper->setSessionService($sessionService);
             return $sessionHelper;
         },
+        'mediaImage' => function (Zend\View\HelperPluginManager $helperPluginManager) {
+            $kcryptService = $helperPluginManager->getServiceLocator()->get('kcryptService');
+            $sessionHelper = new YagGames\View\Helper\MediaImageHelper();
+            $sessionHelper->setKCryptService($kcryptService);
+            return $sessionHelper;
+        },
+        'KCrypt' => function (Zend\View\HelperPluginManager $helperPluginManager) {
+            $kcryptService = $helperPluginManager->getServiceLocator()->get('kcryptService');
+            $sessionHelper = new YagGames\View\Helper\KCryptHelper();
+            $sessionHelper->setKCryptService($kcryptService);
+            return $sessionHelper;
+        }      
       ),
     ),
 );

@@ -12,29 +12,31 @@ class PhotoContestService
     $this->serviceManager = $serviceManager;
   }
 
-  public function addArtToContest($contestId, $userId, $mediaId)
+  public function addArtToContest($contestId, $mediaId, $userSession)
   {
     $contestTable = $this->getServiceLocator()->get('YagGames\Model\ContestTable');
     $contestData = $contestTable->fetchRecord($contestId);
+    $contestData = (array) $contestData;
     if (!$contestData) {
       throw new \YagGames\Exception\PhotoContestException("No contest found");
     }
     
     //only artist is allowed
-    if ($contestData['login_as_buyer']) {
+    if ($userSession['login_as_buyer']) {
       throw new \YagGames\Exception\PhotoContestException("You have to be Artist to participate in contest");
     }
     
     //check end date
-    $now = new DateTime();
-    $endDate = new DateTime($contestData['entry_end_date']);
+    $now = new \DateTime();
+    $now = $now->format('Y-m-d');
+    $endDate = new \DateTime($contestData['entry_end_date']);
     if ($now > $endDate) {
       throw new \YagGames\Exception\PhotoContestException("You cannot upload art as contest has already ended");
     }
     
     //max 200 in contest
     $contestMediaTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaTable');
-    $contestMediaCount = $contestMediaTable->getContestMediaCount($contestId, $userId);
+    $contestMediaCount = $contestMediaTable->getContestMediaCount($contestId, $userSession['mem_id']);
     if ($contestMediaCount && $contestMediaCount['count'] >= 200) {
       throw new \YagGames\Exception\PhotoContestException("Contest is already full");
     }
@@ -51,7 +53,7 @@ class PhotoContestService
       throw new \YagGames\Exception\PhotoContestException("No media found");
     }
     
-    if ($mediaObject['owner'] != $userId) {
+    if ($mediaObject['owner'] != $userSession['mem_id']) {
       throw new \YagGames\Exception\PhotoContestException("Media is not owned by you", 403);
     }
     
@@ -69,40 +71,42 @@ class PhotoContestService
     
   }
 
-  public function addVoteToArt($contestId, $mediaId, $userId, $rating)
+  public function addVoteToArt($contestId, $mediaId, $userSession, $rating)
   {
    
     $contestTable = $this->getServiceLocator()->get('YagGames\Model\ContestTable');
     $contestData = $contestTable->fetchRecord($contestId);
+    $contestData = (array) $contestData;
     if (!$contestData) {
       throw new \YagGames\Exception\PhotoContestException("No contest found");
     }
     
      //check end date/voting_started flag for contest
-    $now = new DateTime();
-    $endDate = new DateTime($contestData['entry_end_date']);
+    $now = new \DateTime();
+    $endDate = new \DateTime($contestData['entry_end_date']);
     if ($now <= $endDate || !$contestData['voting_started']) {
       throw new \YagGames\Exception\PhotoContestException("Voting has not started");
-    }
-    
-    // FOR ONE CONTEST - ONE VOTE PER DAY 
-    $contestMediaRatingTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaRatingTable');
-    $count = $contestMediaRatingTable->hasAlreadyVotedForThisContest($contestId);
-    if ($count) {
-      throw new \YagGames\Exception\PhotoContestException("You have already voted fot this contest today.");
     }
     
     //get contest & media id
     $contestMediaTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaTable');
     $contestMediaData = $contestMediaTable->fetchContestMedia($contestId, $mediaId);
+    $contestMediaData = (array) $contestMediaData;
     if (!$contestMediaData) {
       throw new \YagGames\Exception\PhotoContestException("No contest media found");
+    }
+    
+     // FOR ONE CONTEST
+    $contestMediaRatingTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaRatingTable');
+    $count = $contestMediaRatingTable->hasAlreadyVotedForThisContestMedia($contestMediaData['id']);
+    if ($count) {
+      throw new \YagGames\Exception\PhotoContestException("You have already voted fot this media in this contest.");
     }
             
     // now submit vote
     $contestMediaRating = new \YagGames\Model\ContestMediaRating();
     $contestMediaRating->contest_media_id = $contestMediaData['id'];
-    $contestMediaRating->member_id = $userId;
+    $contestMediaRating->member_id = $userSession['mem_id'];
     $contestMediaRating->rating = $rating;
     
     $contestMediaRatingId = $contestMediaRatingTable->insert($contestMediaRating);   

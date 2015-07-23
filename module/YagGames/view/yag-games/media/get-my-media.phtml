@@ -1,0 +1,47 @@
+<style>
+  .media-art {
+    padding: 5px;
+  }
+  .media-art img {
+    width: 70px;
+  }
+  input[type="radio"] {
+    -webkit-appearance: radio;
+  }
+</style>
+<div class="media-list contest-list clearfix">
+  <div class="row">
+    <?php foreach ($medias as $key => $media): ?>
+      <?php $i = $key + 1; ?>
+      <div class="col-md-2 <?php if ($key % 5 == 0): ?>col-md-offset-1<?php endif; ?>">
+        <div class="media-art" >
+          <a class="media_image" href="#." data-media_id="<?php echo $media['media_id'] ?>">
+            <img mediaid="<?php echo $this->KCrypt()->enc($media['media_id'])?>" class="mediaThumb showHoverWindow" src="<?php echo $this->mediaImage($media, 'icons'); ?>" title="<?php echo $media['title'] ?>" alt="<?php echo $media['title'] ?>" />
+          </a>          
+          <input type="radio" name="my_media" value="<?php echo $media['media_id'] ?>">
+        </div>
+      </div>
+      <?php if ($i != 1 && $i % 5 == 0): ?>
+      </div>
+      <div class="row">
+      <?php endif; ?>
+
+    <?php endforeach; ?>
+  </div>  
+</div>
+
+
+<?php
+echo $this->paginationControl($this->paginator, 'Sliding', 'paginator-slide', array('route' => 'media', 'action' => 'get-my-media'));
+?>
+<script>
+  // Don't change pages if the user is just changing the checkbox
+  $(".media-list a.media_image").click(function (e) {
+    var checkbox = $(this).next();
+    if (checkbox.is(':checked')) {
+      checkbox.prop('checked', false)
+    } else {
+      checkbox.prop('checked', true)
+    }
+  });
+</script>
