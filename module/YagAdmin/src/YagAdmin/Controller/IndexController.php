@@ -17,24 +17,48 @@ class IndexController extends BaseController {
 
     public function indexAction() {
         $this->checkLogin();
-        
+
         $types = array();
         $contests = array();
 
         $types = $this->getContestTypes();
         $contests = $this->getContests();
-        
+
         return new ViewModel(array('types' => $types, 'contests' => $contests));
     }
-    
+
+    public function contestDetailsAction() {
+        $this->checkLogin();
+
+        $contestDetails = array();
+        $contestPhotos = array();
+
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $id = trim($this->getRequest()->getPost('id'));
+
+            $contestDetails = $this->getContestDetails($id);
+            $contestPhotos = $this->getContestPhotos($id);
+        }
+
+        return new ViewModel(array('contestDetails' => $contestDetails, 'contestPhotos' => $contestPhotos));
+    }
+
     public function getContestDetailAction() {
-        $id = trim($this->getRequest()->getPost('id'));
-        $contestTable = $this->getServiceLocator()->get('YagGames\Model\ContestTable');
-        $data = $contestTable->fetchRecord($id);
-        
+        $this->checkLogin();
+
+        $data = array();
+
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $id = trim($this->getRequest()->getPost('id'));
+
+            $data = $this->getContestDetails($id);
+        }
+
         return new JsonModel(array('data' => $data));
     }
-    
+
     public function saveContestAction() {
         $this->checkLogin();
 
@@ -42,15 +66,15 @@ class IndexController extends BaseController {
 
         $request = $this->getRequest();
         if ($request->isPost()) {
-            
+
             $params['id'] = trim($this->getRequest()->getPost('id'));
             $params['name'] = trim($this->getRequest()->getPost('name'));
             $params['description'] = $this->getRequest()->getPost('description');
             $params['entryEndDate'] = $this->getRequest()->getPost('entryEndDate');
             $params['winnersAnnounceDate'] = $this->getRequest()->getPost('winnersAnnounceDate');
             $params['type'] = $this->getRequest()->getPost('type');
-            $thumbnail = $this->getRequest()->getFiles('thumbnail'); 
-            if(($thumbnail['error'] == 4 || $thumbnail['size'] == 0) && isset($params['id'])) {
+            $thumbnail = $this->getRequest()->getFiles('thumbnail');
+            if (($thumbnail['error'] == 4 || $thumbnail['size'] == 0) && isset($params['id'])) {
                 $params['thumbnail'] = 'NOT_UPDATED';
             } else {
                 $fileType = $thumbnail['type'];
@@ -82,32 +106,32 @@ class IndexController extends BaseController {
                 $response['success'] = false;
                 $response['message'] = 'All fields are compulsory';
             } else {
-                
+
                 $contest = new \YagGames\Model\Contest();
 
                 $contest->name = $params['name'];
-                $contest->description = $params['description'];                
+                $contest->description = $params['description'];
                 $contest->entry_end_date = date('Y-m-d', strtotime($params['entryEndDate']));
                 $contest->winners_announce_date = date('Y-m-d', strtotime($params['winnersAnnounceDate']));
                 $contest->type_id = $params['type'];
 
-                if($params['id']) {
+                if ($params['id']) {
                     $contest->id = $params['id'];
-                    if($params['thumbnail'] != 'NOT_UPDATED') {
+                    if ($params['thumbnail'] != 'NOT_UPDATED') {
                         $contest->thumbnail = $params['thumbnail'];
                     }
-                    
+
                     $contestTable = $this->getServiceLocator()->get('YagGames\Model\ContestTable');
                     $data = $contestTable->update($contest);
-                    
+
                     $response['success'] = true;
                     $response['message'] = 'Contest updated successfully';
                 } else {
                     $contest->thumbnail = $params['thumbnail'];
-                    
+
                     $contestTable = $this->getServiceLocator()->get('YagGames\Model\ContestTable');
                     $data = $contestTable->insert($contest);
-                    
+
                     $response['success'] = true;
                     $response['message'] = 'Contest created successfully';
                 }
@@ -121,28 +145,50 @@ class IndexController extends BaseController {
         return new JsonModel($response);
     }
 
+    public function deleteContestAction() {
+        $response = array();
+
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $id = trim($this->getRequest()->getPost('id'));
+            $contestTable = $this->getServiceLocator()->get('YagGames\Model\ContestTable');
+            if ($contestTable->delete($id)) {
+                $response['success'] = true;
+                $response['message'] = 'Deleted successfully';
+            } else {
+                $response['success'] = false;
+                $response['message'] = 'Some error occured while deleting';
+            }
+        } else {
+
+            $response['success'] = false;
+            $response['message'] = 'BAD REQUEST';
+        }
+        return new JsonModel($response);
+    }
+
     private function getContestTypes() {
         $contestTypeTable = $this->getServiceLocator()->get('YagGames\Model\ContestTypeTable');
         $data = $contestTypeTable->fetchAll();
         return $data;
     }
-    
+
     private function getContests() {
         $contestTable = $this->getServiceLocator()->get('YagGames\Model\ContestTable');
         $data = $contestTable->fetchAll();
         return $data;
     }
-    
-    public function deleteContestAction() {
-        $id = trim($this->getRequest()->getPost('id'));
+
+    private function getContestDetails($id) {
         $contestTable = $this->getServiceLocator()->get('YagGames\Model\ContestTable');
-        if($contestTable->delete($id)){
-            $response['success'] = true;
-            $response['message'] = 'Deleted successfully';
-        } else {
-            $response['success'] = false;
-            $response['message'] = 'Some error occured while deleting';
-        }
-        return new JsonModel($response);
+        $data = $contestTable->fetchRecord($id);
+        return $data;
     }
+    
+    private function getContestPhotos($id) {
+        $contestMediaTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaTable');
+        $data = $contestMediaTable->fetchAllByContest($id);
+        return $data;
+    }
+
 }

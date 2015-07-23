@@ -40,7 +40,7 @@
                                     <img src="<?php echo $this->basePath('/img/contest/thumbnail/' . $contest['thumbnail']); ?>" alt="<?php echo $this->basePath('/img/bg-rateing.jpg'); ?>" style="width:100px" />
                                 </td>
                                 <td class="highlight">
-                                    <a href="#">
+                                    <a class="name" contest_id="<?php echo $contest['id']; ?>">
                                         <?php echo $contest['name']; ?>
                                     </a>
                                 </td>
@@ -51,10 +51,10 @@
                                     <?php echo $contest['type']; ?>
                                 </td>
                                 <td>
-                                    <a id="<?php echo $contest['id']; ?>" class="btn default btn-xs purple edit">
+                                    <a contest_id="<?php echo $contest['id']; ?>" class="btn default btn-xs purple edit">
                                         <i class="fa fa-edit"></i> Edit
                                     </a>
-                                    <a id="<?php echo $contest['id']; ?>" class="btn default btn-xs red delete">
+                                    <a contest_id="<?php echo $contest['id']; ?>" class="btn default btn-xs red delete">
                                         <i class="fa fa-trash-o"></i> Delete
                                     </a>
                                 </td>
@@ -186,17 +186,35 @@
     $(document).ready(function () {
         App.init();
         //handleValidation();
-        $('.open-modal').on('click', function () {
+        $('.open-modal').click(function () {
             $('form#create-contest-form').trigger('reset');
             $('#thumbnail_name').hide();
         });
 
-        $('.delete').on('click', function () {
+        $('.name').click(function (e) {
+            $('body').append($('<form/>', {
+                id: 'form',
+                method: 'POST',
+                action: '<?php echo $this->basePath('/manager/contest-details'); ?>'
+            }));
+
+            $('#form').append($('<input/>', {
+                type: 'hidden',
+                name: 'id',
+                value: $(this).attr('contest_id')
+            }));
+
+            $('#form').submit();
+
+            return false;
+        });
+
+        $('.delete').click(function () {
             if (confirm("Do you want to delete")) {
                 $.ajax({
                     url: '<?php echo $this->basePath('/manager/delete-contest'); ?>',
                     type: 'POST',
-                    data: 'id=' + this.id,
+                    data: 'id=' + $(this).attr('contest_id'),
                     success: function (response) {
                         $('#create-contest-modal').modal('hide');
                         bootbox.alert(response.message, function () {
@@ -210,11 +228,11 @@
             return false;
         });
 
-        $('.edit').on('click', function () {
+        $('.edit').click(function () {
             $.ajax({
                 url: '<?php echo $this->basePath('/manager/get-contest-detail'); ?>',
                 type: 'POST',
-                data: 'id=' + this.id,
+                data: 'id=' + $(this).attr('contest_id'),
                 success: function (response) {
                     $('#id').val(response.data.id);
                     $('#name').val(response.data.name);
