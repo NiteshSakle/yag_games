@@ -80,11 +80,9 @@ class PhotoContestService
     if (!$contestData) {
       throw new \YagGames\Exception\PhotoContestException("No contest found");
     }
-    
-     //check end date/voting_started flag for contest
-    $now = new \DateTime();
-    $endDate = new \DateTime($contestData['entry_end_date']);
-    if ($now <= $endDate || !$contestData['voting_started']) {
+
+    //check voting_started flag for contest
+    if (!$contestData['voting_started']) {
       throw new \YagGames\Exception\PhotoContestException("Voting has not started");
     }
     
@@ -96,18 +94,21 @@ class PhotoContestService
       throw new \YagGames\Exception\PhotoContestException("No contest media found");
     }
     
-     // FOR ONE CONTEST
-    $contestMediaRatingTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaRatingTable');
-    $count = $contestMediaRatingTable->hasAlreadyVotedForThisContestMedia($contestMediaData['id']);
-    if ($count) {
-      throw new \YagGames\Exception\PhotoContestException("You have already voted fot this media in this contest.");
+    // Can rate once for a media in one day
+    if (!empty($userSession['mem_id'])) {
+      $contestMediaRatingTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaRatingTable');
+      $count = $contestMediaRatingTable->hasAlreadyVotedForThisContestMediaToday($contestMediaData['id'], $userSession['mem_id']);
+      if ($count) {
+        throw new \YagGames\Exception\PhotoContestException("You have already voted fot this media in this contest today.");
+      }
     }
             
     // now submit vote
     $contestMediaRating = new \YagGames\Model\ContestMediaRating();
     $contestMediaRating->contest_media_id = $contestMediaData['id'];
-    $contestMediaRating->member_id = $userSession['mem_id'];
+    $contestMediaRating->member_id = (!empty($userSession['mem_id'])) ? $userSession['mem_id'] : 0;
     $contestMediaRating->rating = $rating;
+    $contestMediaRating->round = 0;
     
     $contestMediaRatingId = $contestMediaRatingTable->insert($contestMediaRating);   
     if (!$contestMediaRatingId) {
@@ -117,10 +118,25 @@ class PhotoContestService
     return $contestMediaRatingId;
   }
   
-  public function getContestMedia($contestId,  $userId = null, $keyword = null, $page = 1, $offset = 20)
+  public function getContestMedia($contestId,  $userId = null, $keyword = null, $page = 1, $offset = 20, $sort = 'rank')
   {
     $contestMediaTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaTable');
-    $contestData = $contestMediaTable->getContestMedia($contestId, $userId = null, $keyword = null, $page = 1, $offset = 20);
+    $contestData = $contestMediaTable->getContestMedia($contestId, $userId, $keyword , $page, $offset, $sort);
+    
+    return $contestData;
+  }
+  
+  public function getNextContestMedia($contestId,  $userId = null, $mediaId = null, $ratedMedia = array())
+  {
+    $contestMediaTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaTable');
+    $contestData = $contestMediaTable->getNextContestMedia($contestId, $userId, $mediaId, $ratedMedia);
+    
+    $count = 0;
+    if ($userId) {
+      $contestMediaRatingTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaRatingTable');
+      $count = $contestMediaRatingTable->totalRatedForThisContestToday($contestId, $userId);
+    }
+    $contestData['totalRated'] = $count;
     
     return $contestData;
   }

@@ -18,30 +18,9 @@ class PhotoContestController extends BaseController
     return parent::onDispatch($e);
   }
 
-  public function viewAction()
-  {
-    $page = $this->params()->fromRoute('page') ? (int) $this->params()->fromRoute('page') : 1;
-    $size = $this->params()->fromRoute('size') ? (int) $this->params()->fromRoute('size') : 20;
-    $contestId = $this->params()->fromRoute('id', null);
-    $this->session = $this->sessionPlugin();
-    $userId = '';
-    if (isset($this->session->mem_id)) {
-      $userId = $this->session->mem_id;
-    }
-
-    $photoContestService = $this->getServiceLocator()->get('photoContestService');
-    $data = $photoContestService->getContestMedia($contestId, $userId, null, $page, $size);
-
-    $paginator = new Paginator(new NullFill($data['total']));
-    $paginator->setCurrentPageNumber($page);
-    $paginator->setItemCountPerPage($size);
-
-    $vm = new ViewModel();
-    $vm->setVariable('paginator', $paginator);
-    $vm->setVariable('medias', $data['medias']);
-    $vm->setVariable('contestId', $contestId);
-    return $vm;
-  }
+  /*
+   * Submission API's 
+   */
 
   public function submissionAction()
   {
@@ -53,16 +32,16 @@ class PhotoContestController extends BaseController
     if (!$contest) {
       throw new Exception("No contest found", 404);
     }
-    
+
     $showPopupDiv = 0;
     if (isset($this->session['contestUpload']['contestMediaId'])) {
       unset($this->session['contestUpload']['contestMediaId']);
-      $showPopupDiv = 1;      
+      $showPopupDiv = 1;
     }
 
     return new ViewModel(array('contest' => (array) $contest, 'showPopupDiv' => $showPopupDiv));
   }
-  
+
   public function uploadSubmissionAction()
   {
     $this->checkLogin();
@@ -75,13 +54,13 @@ class PhotoContestController extends BaseController
       } catch (PhotoContestException $e) {
         $this->flashMessenger()->addErrorMessage($e->getMessage());
       }
-      
+
       return $this->redirect()->toRoute('photo-contest', array(
-          'id' =>  $contestId,
-          'action' =>  'submission'
+                  'id' => $contestId,
+                  'action' => 'submission'
       ));
     }
-    
+
     return $this->redirect()->toRoute('photo-contest');
   }
 
@@ -110,7 +89,7 @@ class PhotoContestController extends BaseController
   }
 
   public function artSubmissionAction()
-  {sleep(5);
+  {
     $this->checkLogin();
 
     $request = $this->getRequest();
@@ -147,21 +126,123 @@ class PhotoContestController extends BaseController
         'message' => 'Bad Request'
     ));
   }
+  
+  /*
+   * Voting API's
+   */
+  public function votingAction()
+  {
+    $page = $this->params()->fromRoute('page') ? (int) $this->params()->fromRoute('page') : 1;
+    $size = $this->params()->fromRoute('size') ? (int) $this->params()->fromRoute('size') : 20;
+    $contestId = $this->params()->fromRoute('id', null);
+    $search = $this->params()->fromQuery('search', null);
+    $this->session = $this->sessionPlugin();
+    $userId = '';
+    if (isset($this->session->mem_id)) {
+      $userId = $this->session->mem_id;
+    }
+
+    $photoContestService = $this->getServiceLocator()->get('photoContestService');
+    $data = $photoContestService->getContestMedia($contestId, $userId, $search, $page, $size, '');
+
+    $paginator = new Paginator(new NullFill($data['total']));
+    $paginator->setCurrentPageNumber($page);
+    $paginator->setItemCountPerPage($size);
+
+    $vm = new ViewModel();
+    $vm->setVariable('paginator', $paginator);
+    $vm->setVariable('medias', $data['medias']);
+    $vm->setVariable('contestId', $contestId);
+    $vm->setVariable('search', $search);
+    $vm->setVariable('page', $page);
+    $vm->setVariable('size', $size);
+    return $vm;
+  }
+
+  public function termsAction()
+  {
+    
+  }
+
+  public function rankingsAction()
+  {
+    $page = $this->params()->fromRoute('page') ? (int) $this->params()->fromRoute('page') : 1;
+    $size = $this->params()->fromRoute('size') ? (int) $this->params()->fromRoute('size') : 20;
+    $contestId = $this->params()->fromRoute('id', null);
+    $this->session = $this->sessionPlugin();
+    $userId = '';
+    if (isset($this->session->mem_id)) {
+      $userId = $this->session->mem_id;
+    }
+
+    $photoContestService = $this->getServiceLocator()->get('photoContestService');
+    $data = $photoContestService->getContestMedia($contestId, $userId, null, $page, $size, 'rank');
+
+    $paginator = new Paginator(new NullFill($data['total']));
+    $paginator->setCurrentPageNumber($page);
+    $paginator->setItemCountPerPage($size);
+
+    $vm = new ViewModel();
+    $vm->setVariable('paginator', $paginator);
+    $vm->setVariable('medias', $data['medias']);
+    $vm->setVariable('contestId', $contestId);
+    $vm->setVariable('page', $page);
+    $vm->setVariable('size', $size);
+    return $vm;
+  }
+
+  public function getNextArtAction()
+  {
+    $contestId = $this->params()->fromQuery('contestId', null);
+    $mediaId = $this->params()->fromQuery('mediaId', null);
+    $this->session = $this->sessionPlugin();
+
+    if (isset($this->session->mem_id)) {
+      $userId = $this->session->mem_id;
+      $ratedMedia = array();
+    } else {
+      $userId = '';
+      $ratedMedia = $this->getRatedMedia(); //fill the data from cookie
+    }
+
+    $photoContestService = $this->getServiceLocator()->get('photoContestService');
+    $media = $photoContestService->getNextContestMedia($contestId, $userId, $mediaId, $ratedMedia);
+    if (!isset($this->session->mem_id)) {
+      $media['totalRated'] = count($ratedMedia);
+    }
+
+    $viewModel = new ViewModel(array('media' => $media, 'contestId' => $contestId));
+
+    return $viewModel->setTerminal(true);
+  }
 
   public function voteAction()
   {
-    $this->checkLogin();
+    $this->session = $this->sessionPlugin();
+    $userId = '';
+    if (isset($this->session->mem_id)) {
+      $userId = $this->session->mem_id;
+    }
 
     $request = $this->getRequest();
     if ($request->isPost()) {
-      $mediaId = $request->getPost('media_id');
+      $mediaId = $request->getPost('mediaId');
       $contestId = $request->getPost('contestId');
       $rating = $request->getPost('rating');
       if (!$mediaId || !$contestId) {
         return new JsonModel(array(
             'success' => false,
-            'message' => 'Bad Request'
+            'message' => 'Bad Requestss'
         ));
+      }
+
+      // for non logged in user
+      // check user already rated the contest media from this browser
+      if (!$userId) {
+        $resp = $this->checkUserAlreadyRated($contestId, $mediaId);
+        if ($resp) {
+          return $resp;
+        }
       }
 
       $photoContestService = $this->getServiceLocator()->get('photoContestService');
@@ -172,6 +253,10 @@ class PhotoContestController extends BaseController
             'success' => false,
             'message' => $e->getMessage()
         ));
+      }
+
+      if (!$userId) {
+        $this->storeRate($contestId, $mediaId);
       }
 
       return new JsonModel(array(
@@ -188,14 +273,50 @@ class PhotoContestController extends BaseController
     ));
   }
 
-  public function rankingAction()
+  private function storeRate($contestId, $mediaId)
   {
-    
+    try {
+      //store in cookie
+      $rmString = $this->getRequest()->getCookie()->rm;
+      $rmArray = \json_decode($rmString);
+      if (!isset($rmArray[$contestId])) {
+        $rmArray[$contestId] = array();
+      }
+      $rmArray[$contestId][] = $mediaId;
+      $this->getResponse()->getHeaders()->get('Set-Cookie')->rm = \json_encode($rmArray);
+    } catch (\Exception $e) {
+      
+    }
   }
 
-  public function termsAction()
+  private function checkUserAlreadyRated($contestId, $mediaId)
   {
-    
+    try {
+      $rmString = $this->getRequest()->getCookie()->rm;
+      $rmArray = \json_decode($rmString);
+      if (isset($rmArray[$contestId][$mediaId])) {
+        return new JsonModel(array(
+            'success' => false,
+            'message' => 'You have already rated'
+        ));
+      }
+    } catch (\Exception $e) {
+      
+    }
+  }
+
+  private function getRatedMedia($contestId)
+  {
+    try {
+      $rmString = $this->getRequest()->getCookie()->rm;
+      $rmArray = \json_decode($rmString);
+      if (isset($rmArray[$contestId])) {
+        return $rmArray[$contestId];
+      }
+    } catch (\Exception $e) {
+      
+    }
+    return array();
   }
 
 }
