@@ -71,6 +71,11 @@ class ContestTable extends BaseTable
       $select->join(array('cm1' => 'contest_media'), 'c.id = cm1.contest_id', 'media_id')
               ->join(array('m' => 'ps4_media'), 'cm1.media_id = m.media_id', 'media_id')
               ->where(array('m.owner' => $user));
+    } elseif ($type == 'exclusive') {
+
+      $select->join(array('cm1' => 'contest_media'), 'c.id = cm1.contest_id', 'media_id')
+              ->join(array('m' => 'ps4_media'), 'cm1.media_id = m.media_id', 'media_id')
+              ->where(array('m.owner' => $user));
     }
 
     $select->order('c.entry_end_date');

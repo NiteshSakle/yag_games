@@ -118,6 +118,19 @@
     </div>
 
   </div>
+  <?php elseif ($mediaId): ?>
+  <div class="rate-it-wrapper">
+    <div class="rangetitle1 animalcol"><?php echo $media['contest_name']; ?></div>
+    <div class="rate-it-image">
+      <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/close.button.png" id="closeWorkbox">
+    </div>
+  </div>
+  <div class="bottom-wrapper">
+    <div class="rate-it-details" >
+      <p  id="msg" style="text-align: center; font-size: 14px; color: green; font-weight: bold;">You have rated this art today.</p>
+      please click here to <button class="btn" onclick="showNextImagePopup()">Rate other arts</button>
+    </div>
+  </div>
   <?php else: ?>
   <div class="rate-it-wrapper">
     <div class="rangetitle1 animalcol"><?php echo $media['contest_name']; ?></div>
@@ -127,8 +140,8 @@
   </div>
   <div class="bottom-wrapper">
     <div class="rate-it-details" >
-      <p  id="msg" style="text-align: center; font-size: 14px; color: green; font-weight: bold;">You have already rated this art today.</p>
-      please click here to <button class="btn" onclick="showNextImagePopup()">Rate other arts</button>
+      <p  id="msg" style="text-align: center; font-size: 14px; color: green; font-weight: bold;">You have rated all arts in this contest.</p>
+      please click here to go to <button class="btn" onclick="window.location='<?php echo $this->basePath()?>/active-contest'">Active Contests</button>
     </div>
   </div>
   <?php endif; ?>

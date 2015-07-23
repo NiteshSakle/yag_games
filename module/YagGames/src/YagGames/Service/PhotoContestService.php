@@ -95,8 +95,8 @@ class PhotoContestService
     }
     
     // Can rate once for a media in one day
+    $contestMediaRatingTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaRatingTable');
     if (!empty($userSession['mem_id'])) {
-      $contestMediaRatingTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaRatingTable');
       $count = $contestMediaRatingTable->hasAlreadyVotedForThisContestMediaToday($contestMediaData['id'], $userSession['mem_id']);
       if ($count) {
         throw new \YagGames\Exception\PhotoContestException("You have already voted fot this media in this contest today.");

@@ -202,7 +202,7 @@ class PhotoContestController extends BaseController
       $ratedMedia = array();
     } else {
       $userId = '';
-      $ratedMedia = $this->getRatedMedia(); //fill the data from cookie
+      $ratedMedia = $this->getRatedMedia($contestId); //fill the data from cookie
     }
 
     $photoContestService = $this->getServiceLocator()->get('photoContestService');
@@ -211,7 +211,7 @@ class PhotoContestController extends BaseController
       $media['totalRated'] = count($ratedMedia);
     }
 
-    $viewModel = new ViewModel(array('media' => $media, 'contestId' => $contestId));
+    $viewModel = new ViewModel(array('media' => $media, 'contestId' => $contestId, 'mediaId' => $mediaId));
 
     return $viewModel->setTerminal(true);
   }
@@ -239,9 +239,12 @@ class PhotoContestController extends BaseController
       // for non logged in user
       // check user already rated the contest media from this browser
       if (!$userId) {
-        $resp = $this->checkUserAlreadyRated($contestId, $mediaId);
+        $resp = $this->isAlreadyRated($contestId, $mediaId);
         if ($resp) {
-          return $resp;
+          return new JsonModel(array(
+              'success' => false,
+              'message' => 'You have already rated'
+          ));
         }
       }
 
@@ -278,43 +281,49 @@ class PhotoContestController extends BaseController
     try {
       //store in cookie
       $rmString = $this->getRequest()->getCookie()->rm;
-      $rmArray = \json_decode($rmString);
+      $rmArray = \json_decode($rmString, true);
+      
       if (!isset($rmArray[$contestId])) {
         $rmArray[$contestId] = array();
       }
       $rmArray[$contestId][] = $mediaId;
-      $this->getResponse()->getHeaders()->get('Set-Cookie')->rm = \json_encode($rmArray);
-    } catch (\Exception $e) {
       
+      $cookie = new  \Zend\Http\Header\SetCookie('rm', \json_encode($rmArray), mktime(24,0,0), '/');
+      $this->getResponse()->getHeaders()->addHeader($cookie);
+    } catch (\Exception $e) {
+      $this->getServiceLocator()->get('YagGames\Logger')->err($e->getMessage());
     }
   }
 
-  private function checkUserAlreadyRated($contestId, $mediaId)
+  private function isAlreadyRated($contestId, $mediaId)
   {
     try {
       $rmString = $this->getRequest()->getCookie()->rm;
-      $rmArray = \json_decode($rmString);
+      $rmArray = \json_decode($rmString, true);
+      
+      //var_dump($rmArray);
+      //var_dump($rmArray->$contestId->$mediaId);
       if (isset($rmArray[$contestId][$mediaId])) {
-        return new JsonModel(array(
-            'success' => false,
-            'message' => 'You have already rated'
-        ));
+        return true;
       }
     } catch (\Exception $e) {
-      
+      $this->getServiceLocator()->get('YagGames\Logger')->err($e->getMessage());      
     }
+    
+    return false;
   }
 
   private function getRatedMedia($contestId)
   {
     try {
       $rmString = $this->getRequest()->getCookie()->rm;
-      $rmArray = \json_decode($rmString);
+      $rmArray = \json_decode($rmString, true);
+      
       if (isset($rmArray[$contestId])) {
         return $rmArray[$contestId];
       }
     } catch (\Exception $e) {
-      
+      $this->getServiceLocator()->get('YagGames\Logger')->err($e->getMessage());
     }
     return array();
   }
