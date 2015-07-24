@@ -12,6 +12,7 @@ namespace YagAdmin\Controller;
 
 use Zend\View\Model\ViewModel;
 use Zend\View\Model\JsonModel;
+use Aws\S3\S3Client;
 
 class IndexController extends BaseController {
 
@@ -93,6 +94,40 @@ class IndexController extends BaseController {
                     $destination = $config['upload_path'] . $name;
 
                     if (move_uploaded_file($thumbnail['tmp_name'], $destination)) {
+
+                        $pathToS3File = "contest/" . $name;
+
+                        $aws_key = $config['aws']['key'];
+                        $aws_secret = $config['aws']['secret'];
+                        $bucket = $config['aws']['bucket'];
+                        $version = $config['aws']['version'];
+                        $region = $config['aws']['region'];
+
+                        $s3Client = S3Client::factory(array(
+                                    'credentials' => array(
+                                        'key' => $aws_key,
+                                        'secret' => $aws_secret,
+                                    ),
+                                    'region' => $region,
+                                    'version' => $version
+                        ));
+
+                        try {
+                            $s3Client->putObject([
+                                'Bucket' => 'yagdev',
+                                'Key' => $pathToS3File,
+                                'Body' => fopen($destination, 'r'),
+                                'ACL' => 'public-read',
+                            ]);
+
+                            unlink($destination);
+                        } catch (Aws\Exception\S3Exception $e) {
+                            $response['success'] = false;
+                            $response['message'] = 'There was problem while uploading image to s3';
+
+                            return new JsonModel($response);
+                        }
+
                         $params['thumbnail'] = $name;
                     } else {
                         $response['success'] = false;
@@ -168,7 +203,7 @@ class IndexController extends BaseController {
         }
         return new JsonModel($response);
     }
-    
+
     public function deleteContestMediaAction() {
         $response = array();
 
@@ -209,7 +244,7 @@ class IndexController extends BaseController {
         $data = $contestTable->fetchRecord($id);
         return $data;
     }
-    
+
     private function getContestPhotos($id) {
         $contestMediaTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaTable');
         $data = $contestMediaTable->fetchAllByContest($id);
