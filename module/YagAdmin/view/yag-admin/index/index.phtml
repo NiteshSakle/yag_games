@@ -39,7 +39,7 @@
                         <?php foreach ($contests as $contest) { ?>
                             <tr>
                                 <td>                                    
-                                    <img src="<?php echo $this->basePath('/img/contest/thumbnail/' . $contest['thumbnail']); ?>" alt="<?php echo $this->basePath('/img/bg-rateing.jpg'); ?>" style="width:100px" />
+                                    <img src="<?php echo $this->config()['aws']['path'].$contest['thumbnail']; ?>" alt="<?php echo $this->basePath('/img/bg-rateing.jpg'); ?>" style="width:100px" />
                                 </td>
                                 <td class="highlight">
                                     <a class="name" contest_id="<?php echo $contest['id']; ?>">
@@ -189,7 +189,6 @@
 <script type="text/javascript" src="<?php echo $this->basePath('library/metronic/template/assets/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js'); ?>"></script>
 <script src="<?php echo $this->basePath('library/metronic/template/assets/scripts/custom/components-pickers.js'); ?>"></script>
 
-<!--<script type="text/javascript" src="<?php echo $this->basePath('library/metronic/template/assets/plugins/ckeditor/ckeditor.js'); ?>"></script>-->
 <script type="text/javascript" src="<?php echo $this->basePath('library/metronic/template/assets/plugins/bootstrap-wysihtml5/wysihtml5-0.3.0.js'); ?>"></script>
 <script type="text/javascript" src="<?php echo $this->basePath('library/metronic/template/assets/plugins/bootstrap-wysihtml5/bootstrap-wysihtml5.js'); ?>"></script>
 <script src="<?php echo $this->basePath('library/metronic/template/assets/scripts/custom/components-editors.js'); ?>"></script>
@@ -252,7 +251,7 @@
                 success: function (response) {
                     $('#id').val(response.data.id);
                     $('#name').val(response.data.name);
-                    $('#description').val(response.data.description);
+                    $('#description').data("wysihtml5").editor.setValue(response.data.description);
                     $('#thumbnail_name').show();
                     $('#thumbnail_name').val((response.data.thumbnail).substring(10));
                     $('#entryEndDate').val(response.data.entry_end_date);
