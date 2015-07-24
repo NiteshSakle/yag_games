@@ -23,8 +23,10 @@ return array(
     ),
     
     'main_site' => array(
+        'path' => '../yag',
         'url' => 'http://localhost/yag',
         'theme_assets_path' => 'http://localhost/yag/assets/themes/yag',
+        'cloudfront_url' => '',
     ),
         
     'admin_main_site' => array(

@@ -65,6 +65,26 @@ return array(
         'template_path_stack' => array(
             'yag-admin' => __DIR__ . '/../view',
         ),
-    )
+    ),
+    
+    'view_helpers' => array(
+      'invokables' => array(
+         'config' => 'YagGames\View\Helper\ConfigHelper',
+      ),
+      'factories' => array(
+        'mediaImage' => function (Zend\View\HelperPluginManager $helperPluginManager) {
+            $kcryptService = $helperPluginManager->getServiceLocator()->get('kcryptService');
+            $sessionHelper = new YagGames\View\Helper\MediaImageHelper();
+            $sessionHelper->setKCryptService($kcryptService);
+            return $sessionHelper;
+        },
+        'KCrypt' => function (Zend\View\HelperPluginManager $helperPluginManager) {
+            $kcryptService = $helperPluginManager->getServiceLocator()->get('kcryptService');
+            $sessionHelper = new YagGames\View\Helper\KCryptHelper();
+            $sessionHelper->setKCryptService($kcryptService);
+            return $sessionHelper;
+        }      
+      ),
+    ),
     
 );

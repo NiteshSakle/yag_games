@@ -26,8 +26,10 @@
     <script>
       var browser = {'mobile': '0', 'iOS': '0'};
       var baseURL = '<?php echo $this->config('main_site', 'url') ?>';
+      var gameBasePath = '<?php echo $this->basePath() ?>';
     </script>
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script type="text/javascript" src="<?php echo $this->basePath() ?>/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/js/jquery.browser.min.js"></script>
     <script type="text/javascript" src="<?php echo $this->config('main_site', 'url') ?>/assets/javascript/shared.min.js"></script>
     <script type="text/javascript" src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/js/theme.js"></script>
@@ -54,6 +56,21 @@
           <?php echo $this->partial('navigation.phtml'); ?>
         </div>
       </header>
+    </div>
+    
+    <div class="wrapper flashMessages">
+      <?php
+      $flash = $this->flashMessenger();
+      $flash->setMessageOpenFormat('<div%s>
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+              &times;
+          </button>
+          <ul><li>')
+          ->setMessageSeparatorString('</li><li>')
+          ->setMessageCloseString('</li></ul></div>');
+
+      echo $flash->render('error',   array('alert', 'alert-dismissible', 'alert-danger'));
+      ?>
     </div>
 
     <div class="container">

@@ -32,10 +32,10 @@
         <?php
         echo $this->headScript()
                 ->prependFile('http://www.google.com/jsapi')
-                ->prependFile($this->basePath('/js/html5shiv.js') , 'text/javascript', array('conditional' => 'lt IE 9',))
+                ->prependFile($this->basePath('/js/html5shiv.js'), 'text/javascript', array('conditional' => 'lt IE 9',))
                 ->prependFile($this->basePath('/js/respond.min.js'), 'text/javascript', array('conditional' => 'lt IE 9',))
-                ->prependFile($this->basePath('/library/metronic/template/assets/scripts/custom/ui-toastr.js'))                
-                ->prependFile($this->basePath('/library/metronic/template/assets/plugins/bootbox/bootbox.min.js'))                
+                ->prependFile($this->basePath('/library/metronic/template/assets/scripts/custom/ui-toastr.js'))
+                ->prependFile($this->basePath('/library/metronic/template/assets/plugins/bootbox/bootbox.min.js'))
                 ->prependFile($this->basePath('/library/metronic/template/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js'))
                 ->prependFile($this->basePath('/library/metronic/template/assets/plugins/bootstrap-toastr/toastr.min.js'))
                 ->prependFile($this->basePath('/library/metronic/template/assets/plugins/uniform/jquery.uniform.min.js'))
@@ -49,7 +49,7 @@
                 ->prependFile($this->basePath('/library/metronic/template/assets/plugins/excanvas.min.js'))
                 ->prependFile($this->basePath('/library/metronic/template/assets/plugins/respond.min.js'))
                 ->prependFile($this->basePath('/library/metronic/template/assets/scripts/core/app.js'))
-                ->prependFile($this->basePath('/library/metronic/template/assets/plugins/jquery-1.10.2.min.js'))                
+                ->prependFile($this->basePath('/library/metronic/template/assets/plugins/jquery-1.10.2.min.js'))
         ;
         ?>
     </head>
@@ -81,7 +81,7 @@
                         </a>
                         <ul class="dropdown-menu">	
                             <li>
-                                <a href="<?php echo $this->config('admin_main_site', 'url').'?notice=logged_out' ?>">
+                                <a href="<?php echo $this->config('admin_main_site', 'url') . '?notice=logged_out' ?>">
                                     <i class="fa fa-key"></i> Log Out
                                 </a>
                             </li>
@@ -96,9 +96,9 @@
 
         <div class="page-container">
             <!-- BEGIN SIDEBAR -->
-<!--            <div class="page-sidebar-wrapper">
+            <div class="page-sidebar-wrapper">
                 <div class="page-sidebar navbar-collapse collapse">
-                     BEGIN SIDEBAR MENU 
+                    <!-- BEGIN SIDEBAR MENU -->
                     <ul class="page-sidebar-menu" data-auto-scroll="true" data-slide-speed="200">
                         <li class="start ">
                             <a href="<?php echo $this->basePath('manager'); ?>">
@@ -109,13 +109,13 @@
                             </a>
                         </li>
                     </ul>
-                     END SIDEBAR MENU 
+                    <!-- END SIDEBAR MENU -->
                 </div>
-            </div>-->
+            </div>
             <!-- END SIDEBAR -->
             <!-- BEGIN CONTENT -->
-            <div class="pagecontentwrapper">
-                <div class="pagecontent">
+            <div class="page-content-wrapper">
+                <div class="page-content">
                     <?php echo $this->content; ?>  
                 </div>
             </div>

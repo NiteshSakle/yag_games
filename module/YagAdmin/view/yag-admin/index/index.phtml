@@ -1,7 +1,9 @@
-<!--<link rel="stylesheet" type="text/css" href="<?php echo $this->basePath('/library/metronic/template/assets/plugins/select2/select2.css'); ?>"/>
-<link rel="stylesheet" type="text/css" href="<?php echo $this->basePath('/library/metronic/template/assets/plugins/select2/select2-metronic.css'); ?>"/>
+<!-- BEGIN PAGE LEVEL STYLES -->
+<link rel="stylesheet" type="text/css" href="<?php echo $this->basePath('/library/metronic/template/assets/plugins/bootstrap-datepicker/css/datepicker.css'); ?>"/>
 <link rel="stylesheet" type="text/css" href="<?php echo $this->basePath('/library/metronic/template/assets/plugins/bootstrap-wysihtml5/bootstrap-wysihtml5.css'); ?>"/>
-<link rel="stylesheet" type="text/css" href="<?php echo $this->basePath('/library/metronic/template/assets/plugins/bootstrap-markdown/css/bootstrap-markdown.min.css'); ?>">-->
+<link rel="stylesheet" type="text/css" href="<?php echo $this->basePath('/library/metronic/template/assets/plugins/bootstrap-markdown/css/bootstrap-markdown.min.css'); ?>">
+<!-- END PAGE LEVEL STYLES -->
+
 <div class="jumbotron">
     <a class="btn btn-primary pull-right open-modal" data-toggle="modal" href="#create-contest-modal">
         Create Contest
@@ -67,7 +69,7 @@
     </div>
 
     <div class="modal fade" id="create-contest-modal" role="basic" aria-hidden="true" style="display: none;">
-        <div class="modal-dialog">
+        <div class="modal-dialog" style="width: 750px !important">
             <div class="modal-content">
                 <div class="modal-body">
                     <div class="row">
@@ -107,7 +109,7 @@
                                                 <input type="text" data-required="1" class="form-control" id="name" name="name" placeholder="Enter Contest's Name">
                                             </div>                        
                                             <div class="form-group">
-                                                <label for="description">
+                                                <label class="control-label" for="description">
                                                     Contest Description
                                                     <span class="required">
                                                         *
@@ -116,7 +118,7 @@
                                                 <textarea class="wysihtml5 form-control" id="description" name="description" rows="3" placeholder="Enter Contest's Description"></textarea>
                                             </div>
                                             <div class="form-group">
-                                                <label for="thumbnail">
+                                                <label class="control-label" for="thumbnail">
                                                     Thumbnail
                                                     <span class="required">
                                                         *
@@ -126,25 +128,35 @@
                                                 <input type="text" disabled hidden id="thumbnail_name">
                                             </div>
                                             <div class="form-group">
-                                                <label for="entryEndDate">
+                                                <label class="control-label" for="entryEndDate">
                                                     Entry End Date
                                                     <span class="required">
                                                         *
                                                     </span>
                                                 </label>
-                                                <input id="entryEndDate" name="entryEndDate" class="form-control input-medium date-picker" size="16" type="text">
+                                                <div class="input-group input-medium date date-picker" data-date-format="dd-mm-yyyy" data-date-start-date="+0d">
+                                                    <input id="entryEndDate" name="entryEndDate" type="text" class="form-control" readonly>
+                                                    <span class="input-group-btn">
+                                                        <button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
+                                                    </span>
+                                                </div>
                                             </div>
                                             <div class="form-group">
-                                                <label for="winnersAnnounceDate">
+                                                <label class="control-label" for="winnersAnnounceDate">
                                                     Winners Announce Date
                                                     <span class="required">
                                                         *
                                                     </span>
                                                 </label>
-                                                <input id="winnersAnnounceDate" name="winnersAnnounceDate" class="form-control input-medium date-picker" size="16" type="text" value="">
+                                                <div class="input-group input-medium date date-picker" data-date-format="dd-mm-yyyy" data-date-start-date="+0d">
+                                                    <input id="winnersAnnounceDate" name="winnersAnnounceDate" type="text" class="form-control" readonly>
+                                                    <span class="input-group-btn">
+                                                        <button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
+                                                    </span>
+                                                </div>
                                             </div>
                                             <div class="form-group">
-                                                <label for="type">
+                                                <label class="control-label" for="type">
                                                     Contest Type
                                                     <span class="required">
                                                         *
@@ -171,20 +183,24 @@
         </div>
     </div>
 </div>
+<!-- BEGIN PAGE LEVEL SCRIPTS -->
 
-<!--<script type="text/javascript" src="<?php echo $this->basePath('library/metronic/template/assets/plugins/jquery-validation/dist/jquery.validate.min.js'); ?>"></script>
-<script type="text/javascript" src="<?php echo $this->basePath('library/metronic/template/assets/plugins/jquery-validation/dist/additional-methods.min.js'); ?>"></script>
-<script type="text/javascript" src="<?php echo $this->basePath('library/metronic/template/assets/plugins/select2/select2.min.js'); ?>"></script>
+<script type="text/javascript" src="<?php echo $this->basePath('library/metronic/template/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js'); ?>"></script>
+<script type="text/javascript" src="<?php echo $this->basePath('library/metronic/template/assets/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js'); ?>"></script>
+<script src="<?php echo $this->basePath('library/metronic/template/assets/scripts/custom/components-pickers.js'); ?>"></script>
+
+<!--<script type="text/javascript" src="<?php echo $this->basePath('library/metronic/template/assets/plugins/ckeditor/ckeditor.js'); ?>"></script>-->
 <script type="text/javascript" src="<?php echo $this->basePath('library/metronic/template/assets/plugins/bootstrap-wysihtml5/wysihtml5-0.3.0.js'); ?>"></script>
 <script type="text/javascript" src="<?php echo $this->basePath('library/metronic/template/assets/plugins/bootstrap-wysihtml5/bootstrap-wysihtml5.js'); ?>"></script>
-<script type="text/javascript" src="<?php echo $this->basePath('library/metronic/template/assets/plugins/ckeditor/ckeditor.js'); ?>"></script>
-<script type="text/javascript" src="<?php echo $this->basePath('library/metronic/template/assets/plugins/bootstrap-markdown/js/bootstrap-markdown.js'); ?>"></script>
-<script type="text/javascript" src="<?php echo $this->basePath('library/metronic/template/assets/plugins/bootstrap-markdown/lib/markdown.js'); ?>"></script>-->
+<script src="<?php echo $this->basePath('library/metronic/template/assets/scripts/custom/components-editors.js'); ?>"></script>
 
+<!-- END PAGE LEVEL PLUGINS -->
 <script>
 
     $(document).ready(function () {
         App.init();
+        ComponentsPickers.init();
+        ComponentsEditors.init();
         //handleValidation();
         $('.open-modal').click(function () {
             $('form#create-contest-form').trigger('reset');

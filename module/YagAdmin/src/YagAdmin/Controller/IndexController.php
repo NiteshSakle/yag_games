@@ -39,6 +39,8 @@ class IndexController extends BaseController {
 
             $contestDetails = $this->getContestDetails($id);
             $contestPhotos = $this->getContestPhotos($id);
+        } else {
+            $this->redirect()->toRoute('admin');
         }
 
         return new ViewModel(array('contestDetails' => $contestDetails, 'contestPhotos' => $contestPhotos));
@@ -158,6 +160,29 @@ class IndexController extends BaseController {
             } else {
                 $response['success'] = false;
                 $response['message'] = 'Some error occured while deleting';
+            }
+        } else {
+
+            $response['success'] = false;
+            $response['message'] = 'BAD REQUEST';
+        }
+        return new JsonModel($response);
+    }
+    
+    public function deleteContestMediaAction() {
+        $response = array();
+
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $params['contest_id'] = trim($this->getRequest()->getPost('contest_id'));
+            $params['media_id'] = trim($this->getRequest()->getPost('media_id'));
+            $contestMediaTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaTable');
+            if ($contestMediaTable->delete($params)) {
+                $response['success'] = true;
+                $response['message'] = 'Removed successfully';
+            } else {
+                $response['success'] = false;
+                $response['message'] = 'Some error occured while removing';
             }
         } else {
 

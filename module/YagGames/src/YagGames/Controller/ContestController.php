@@ -71,7 +71,7 @@ class ContestController extends BaseController
   private function getViewModal($data)
   {
     $view = new ViewModel($data);
-    $view->setTemplate('yaggames/index/contest');
+    $view->setTemplate('yag-games/contest/index');
 
     return $view;
   }

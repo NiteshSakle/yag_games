@@ -118,6 +118,13 @@ class Module
         $config = $e->getApplication()->getServiceManager()->get('Config');
         if ($exception) {
           $code = $exception->getCode();
+          $response = $e->getResponse();
+          $viewModel = $e->getViewModel();
+          
+          if($code){
+            $response->setStatusCode($code);
+          }
+          
           switch($code) {
             case 401:
               $controller = $e->getTarget();
@@ -126,8 +133,13 @@ class Module
               return FALSE;
               break;
             
+            case 404:
+              $viewModel->setTemplate('error/404');
+              break;
+            
             case 500:
             case 0;
+              $viewModel->setTemplate('error/500');
               $this->errorHandler($e, $exception);
               break;
           }

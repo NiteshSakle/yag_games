@@ -41,7 +41,7 @@
 
       if (this.showWidgetOnAddonClick && (this.$element.parent().hasClass('input-append') || this.$element.parent().hasClass('input-prepend'))) {
         this.$element.parent('.input-append, .input-prepend').find('.add-on').on({
-          'click.timepicker': $.proxy(this.showWidgetWidget, this)
+          'click.timepicker': $.proxy(this.showWidget, this)
         });
         this.$element.on({
           'focus.timepicker': $.proxy(this.highlightUnit, this),
@@ -115,13 +115,7 @@
 
           return this.toggleMeridian();
         } else {
-          //added by vendle start
-          if(this.hour === '') {
-              this.hour = 11;
-              //ends
-          } else {
-              this.hour--;
-          }
+          this.hour--;
         }
       } else {
         if (this.hour <= 0) {

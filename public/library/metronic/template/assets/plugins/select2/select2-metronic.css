@@ -23,7 +23,7 @@ Select2 theme created for Metronic by Keenthemes
     background-color: #fff;
     background-image: none;    
     -webkit-box-shadow: none;
-    box-shadow: none;
+            box-shadow: none;
     filter: none;
     border-top: 0;
 }
@@ -35,7 +35,7 @@ Select2 theme created for Metronic by Keenthemes
 .select2-drop.select2-drop-above {
     border-top: 1px solid #e5e5e5;
     -webkit-box-shadow: none;
-    box-shadow: none;
+            box-shadow: none;
 }
 
 .select2-drop-active {
@@ -78,7 +78,7 @@ Select2 theme created for Metronic by Keenthemes
     vertical-align: top;  
     background-color: #ffffff;
     -webkit-box-shadow: none;
-    box-shadow: none;
+            box-shadow: none;
     margin-top: 5px;
 }
 
@@ -92,7 +92,7 @@ Select2 theme created for Metronic by Keenthemes
 .select2-container-active .select2-choices {
     border: 1px solid #999999 !important;
     -webkit-box-shadow: none !important;
-    box-shadow: none !important;
+            box-shadow: none !important;
 }
 
 .select2-dropdown-open .select2-choice {
@@ -101,7 +101,7 @@ Select2 theme created for Metronic by Keenthemes
     background-color: #fff;
     filter: none;
     -webkit-box-shadow: none !important;
-    box-shadow: none !important;
+            box-shadow: none !important;
 }
 
 .select2-dropdown-open.select2-drop-above .select2-choice,
@@ -112,7 +112,7 @@ Select2 theme created for Metronic by Keenthemes
     background-color: #fff;
     filter: none;
     -webkit-box-shadow: none !important;
-    box-shadow: none !important;
+            box-shadow: none !important;
 
 }
 
@@ -164,7 +164,7 @@ Select2 theme created for Metronic by Keenthemes
     background-color: #fff;
     filter: none;
     -webkit-box-shadow: none !important;
-    box-shadow: none !important;
+            box-shadow: none !important;
 }
 
 .select2-container-multi.select2-container-active .select2-choices {
@@ -173,7 +173,7 @@ Select2 theme created for Metronic by Keenthemes
     background-color: #fff;
     filter: none;
     -webkit-box-shadow: none !important;
-    box-shadow: none !important;
+            box-shadow: none !important;
 }
 
 .select2-container-multi .select2-choices .select2-search-choice {
@@ -184,7 +184,7 @@ Select2 theme created for Metronic by Keenthemes
     background-color: #fff;
     filter: none;
     -webkit-box-shadow: none !important;
-    box-shadow: none !important;
+            box-shadow: none !important;
 }
 
 /* contextual */
@@ -232,7 +232,7 @@ Select2 theme created for Metronic by Keenthemes
 .modal-open .select2-drop {
     z-index: 10102;
 }
-
+ 
 .modal-open .select2-search {
     z-index: 10102;
 }
