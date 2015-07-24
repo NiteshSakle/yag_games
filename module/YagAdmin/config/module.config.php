@@ -14,6 +14,17 @@ return array(
         ),
     ),
     
+    'controller_plugins' => array(
+        'factories' => array(
+            'adminSessionPlugin' => function(Zend\Mvc\Controller\PluginManager $pluginManager) {
+                $sessionService = $pluginManager->getServiceLocator()->get('adminSessionService');
+                $sessionPlugin = new YagGames\Controller\Plugin\SessionPlugin();
+                $sessionPlugin->setSessionService($sessionService);
+                return $sessionPlugin;
+            },
+        ),
+    ),
+    
     'router' => array(
         'routes' => array(
             'admin' => array(
@@ -32,32 +43,8 @@ return array(
             ),
         ),
     ),
-    'service_manager' => array(
-        'abstract_factories' => array(
-            'Zend\Cache\Service\StorageCacheAbstractServiceFactory',
-            'Zend\Log\LoggerAbstractServiceFactory',
-        ),
-        'factories' => array(
-            'translator' => 'Zend\Mvc\Service\TranslatorServiceFactory',
-        ),
-    ),
-    'translator' => array(
-        'locale' => 'en_US',
-        'translation_file_patterns' => array(
-            array(
-                'type'     => 'gettext',
-                'base_dir' => __DIR__ . '/../language',
-                'pattern'  => '%s.mo',
-            ),
-        ),
-    ),
     
     'view_manager' => array(
-        'display_not_found_reason' => true,
-        'display_exceptions'       => true,
-        'doctype'                  => 'HTML5',
-        'not_found_template'       => 'error/404',
-        'exception_template'       => 'error/index',
         'template_map' => array(
             'yag-admin/layout/layout'   => __DIR__ . '/../view/yag-admin/layout/admin-layout.phtml',
             'yag-admin/index/index'     => __DIR__ . '/../view/yag-admin/index/index.phtml',
@@ -66,25 +53,16 @@ return array(
             'yag-admin' => __DIR__ . '/../view',
         ),
     ),
-    
+                    
     'view_helpers' => array(
-      'invokables' => array(
-         'config' => 'YagGames\View\Helper\ConfigHelper',
-      ),
       'factories' => array(
-        'mediaImage' => function (Zend\View\HelperPluginManager $helperPluginManager) {
-            $kcryptService = $helperPluginManager->getServiceLocator()->get('kcryptService');
-            $sessionHelper = new YagGames\View\Helper\MediaImageHelper();
-            $sessionHelper->setKCryptService($kcryptService);
+        'adminSession' => function (Zend\View\HelperPluginManager $helperPluginManager) {
+            $sessionService = $helperPluginManager->getServiceLocator()->get('adminSessionService');
+            $sessionHelper = new YagGames\View\Helper\SessionHelper();
+            $sessionHelper->setSessionService($sessionService);
             return $sessionHelper;
-        },
-        'KCrypt' => function (Zend\View\HelperPluginManager $helperPluginManager) {
-            $kcryptService = $helperPluginManager->getServiceLocator()->get('kcryptService');
-            $sessionHelper = new YagGames\View\Helper\KCryptHelper();
-            $sessionHelper->setKCryptService($kcryptService);
-            return $sessionHelper;
-        }      
+        },  
       ),
-    ),
+    ),                
     
 );

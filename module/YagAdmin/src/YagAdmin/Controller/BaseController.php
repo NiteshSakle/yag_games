@@ -12,7 +12,7 @@ class BaseController extends AbstractActionController
 
   public function onDispatch(\Zend\Mvc\MvcEvent $e)
   {
-    $this->session = $this->sessionPlugin();
+    $this->session = $this->adminSessionPlugin();
     return parent::onDispatch($e);
   }
 
@@ -35,7 +35,7 @@ class BaseController extends AbstractActionController
   protected function getSession()
   {
     if (!isset($this->session)) {
-      $this->session = $this->sessionPlugin();
+      $this->session = $this->adminSessionPlugin();
     }
 
     return $this->session;
