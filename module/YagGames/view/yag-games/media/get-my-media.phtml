@@ -30,10 +30,17 @@
   </div>  
 </div>
 
-
 <?php
-echo $this->paginationControl($this->paginator, 'Sliding', 'paginator-slide', array('route' => 'media', 'action' => 'get-my-media'));
-?>
+  echo $this->paginationControl($this->paginator, 'Sliding', 'paginator-slide', array(
+        'route' => 'media', 
+        'routeParams' => array(
+            'action' => 'get-my-media'
+        ), 
+        'queryParams' => array(
+          )
+      ));
+  ?>
+
 <script>
   // Don't change pages if the user is just changing the checkbox
   $(".media-list a.media_image").click(function (e) {

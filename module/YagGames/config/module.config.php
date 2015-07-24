@@ -14,6 +14,13 @@ return array(
             'YagGames\Controller\FanFavorite' => 'YagGames\Controller\FanFavoriteController',
             'YagGames\Controller\PhotoContest' => 'YagGames\Controller\PhotoContestController',
             'YagGames\Controller\Media' => 'YagGames\Controller\MediaController',
+            
+            // Console
+            'YagGames\Console\SendContestResultsEmail' => 'YagGames\Console\SendContestResultsEmailController',
+            'YagGames\Console\SendSuccessSubmissionEmail' => 'YagGames\Console\SendSuccessSubmissionEmailController',
+            'YagGames\Console\SendVotingStartEmail' => 'YagGames\Console\SendVotingStartEmailController',
+            'YagGames\Console\StartVoting' => 'YagGames\Console\StartVotingController',
+            'YagGames\Console\AnnounceWinners' => 'YagGames\Console\AnnounceWinnersController',
         ),
     ),
     
@@ -125,6 +132,52 @@ return array(
     'console' => array(
         'router' => array(
             'routes' => array(
+                // Console
+                'StartVoting' => array(
+                  'options' => array(
+                      'route'    => 'StartVoting',
+                      'defaults' => array(
+                          'controller' => 'YagGames\Console\StartVoting',
+                          'action'     => 'index'
+                      )
+                  )
+                ),
+                'AnnounceWinners' => array(
+                  'options' => array(
+                      'route'    => 'AnnounceWinners',
+                      'defaults' => array(
+                          'controller' => 'YagGames\Console\AnnounceWinners',
+                          'action'     => 'index'
+                      )
+                  )
+                ),
+                'SendContestResultsEmail' => array(
+                  'options' => array(
+                      'route'    => 'SendContestResultsEmail <contestId>',
+                      'defaults' => array(
+                          'controller' => 'YagGames\Console\SendContestResultsEmail',
+                          'action'     => 'index'
+                      )
+                  )
+                ),
+                'SendSuccessSubmissionEmail' => array(
+                  'options' => array(
+                      'route'    => 'SendSuccessSubmissionEmail <contestMediaId>',
+                      'defaults' => array(
+                          'controller' => 'YagGames\Console\SendSuccessSubmissionEmail',
+                          'action'     => 'index'
+                      )
+                  )
+                ),
+                'SendVotingStartEmail' => array(
+                  'options' => array(
+                      'route'    => 'SendVotingStartEmail <contestId>',
+                      'defaults' => array(
+                          'controller' => 'YagGames\Console\SendVotingStartEmail',
+                          'action'     => 'index'
+                      )
+                  )
+                ),
             ),
         ),
     ),

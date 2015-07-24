@@ -90,6 +90,28 @@ class ContestMediaTable extends BaseTable {
 
         return $photos;
     }
+    
+    public function getContestMediaDetails($contestMediaId) {
+        try {
+
+            $sql = $this->getSql();
+            $query = $sql->select()
+                    ->from(array('c' => 'contest'))
+                    ->join(array('cm' => 'contest_media'), 'cm.contest_id = c.id', array('*'))
+                    ->join(array('m' => 'ps4_media'), 'm.media_id = cm.media_id', array('*'))
+                    ->join(array('u' => 'ps4_members'), 'm.owner = u.mem_id', array('username', 'f_name', 'email'))
+                    ->where(array('cm.id' => $contestMediaId))
+                    ->group('cm.media_id');
+            
+            $rows = $sql->prepareStatementForSqlObject($query)->execute();
+            $row = $rows->current();
+
+            return $row;
+        } catch (Exception $e) {
+            $this->logException($e);
+            return false;
+        }
+    }
 
     public function getContestMedia($contestId, $userId = null, $keyword = null, $page = 1, $offset = 20, $sort = 'rank') {
         try {

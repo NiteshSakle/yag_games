@@ -135,5 +135,85 @@ class ContestTable extends BaseTable {
 
         return $contest;
     }
+    
+    public function getContestArtistEmails($contestId)
+    {
+      try {
+          $sql = $this->getSql();
+          $query = $sql->select()
+                  ->from(array('c' => 'contest'))
+                  ->join(array('cm' => 'contest_media'), 'cm.contest_id = c.id', array())
+                  ->join(array('m' => 'ps4_media'), 'm.media_id = cm.media_id', array())
+                  ->join(array('u' => 'ps4_members'), 'm.owner = u.mem_id', array('username', 'f_name', 'email'))
+                  ->where(array(
+                      'c.id' => $contestId,
+                  ))
+                  ->group('u.id');
+
+          $rows = $sql->prepareStatementForSqlObject($query)->execute();
+
+          $contest = array();
+          foreach ($rows as $row) {
+              $contest[] = $row['email'];
+          }
+
+          return $contest;
+      } catch (Exception $e) {
+          $this->logException($e);
+          return false;
+      }
+    }
+    
+    public function getVotingReadyContests()
+    {
+      try {
+          $sql = $this->getSql();
+          $query = $sql->select()
+                  ->from(array('c' => 'contest'))
+                  ->where(array(
+                      'c.voting_started' => 0,
+                      new Expression('DATE(c.voting_start_date) <= CURDATE()')
+                  ))
+                  ->group('c.id');
+
+          $rows = $sql->prepareStatementForSqlObject($query)->execute();
+
+          $contest = array();
+          foreach ($rows as $row) {
+              $contest[] = $row;
+          }
+
+          return $contest;
+      } catch (Exception $e) {
+          $this->logException($e);
+          return false;
+      }
+    }
+    
+    public function getWinnersToBeAnouncedContests()
+    {
+      try {
+          $sql = $this->getSql();
+          $query = $sql->select()
+                  ->from(array('c' => 'contest'))
+                  ->where(array(
+                      'c.voting_started' => 1,
+                      new Expression('DATE(c.winners_announce_date) = CURDATE()')
+                  ))
+                  ->group('c.id');
+
+          $rows = $sql->prepareStatementForSqlObject($query)->execute();
+
+          $contest = array();
+          foreach ($rows as $row) {
+              $contest[] = $row;
+          }
+
+          return $contest;
+      } catch (Exception $e) {
+          $this->logException($e);
+          return false;
+      }
+    }
 
 }

@@ -9,7 +9,8 @@
     "homepage": "http://framework.zend.com/",
     "require": {
         "php": ">=5.5",
-        "zendframework/zendframework": "~2.5"
+        "zendframework/zendframework": "~2.5",
+        "symfony/process": "dev-master"
     }, 
     "config": {
     "github-oauth": {

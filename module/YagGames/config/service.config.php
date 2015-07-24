@@ -40,6 +40,11 @@ return array(
             return $log;
         },
                 
+        'YagGames\Utils\Process' => function ($sm) {
+            $process = new \YagGames\Utils\Process($sm->get('Request'));
+            return $process;
+        },
+                
         'photoContestService' => function(ServiceLocatorInterface $serviceLocator) {
             $photoContestService = new PhotoContestService($serviceLocator);
             return $photoContestService;
