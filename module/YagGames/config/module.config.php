@@ -71,7 +71,7 @@ return array(
                     'defaults' => array(
                         '__NAMESPACE__' => 'YagGames\Controller',
                         'controller'    => 'PhotoContest',
-                        'action'        => 'view',
+                        'action'        => 'rankings',
                     ),
                 ),
             ),
@@ -132,6 +132,7 @@ return array(
     'view_helpers' => array(
       'invokables' => array(
          'config' => 'YagGames\View\Helper\ConfigHelper',
+         'ordinal' => 'YagGames\View\Helper\OrdinalHelper',
       ),
       'factories' => array(
         'session' => function (Zend\View\HelperPluginManager $helperPluginManager) {

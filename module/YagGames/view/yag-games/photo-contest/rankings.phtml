@@ -1,0 +1,74 @@
+<style>
+  .media-art {
+    padding: 5px;
+  }
+  .col-md-2 {
+    margin: 12px;
+  }
+  .media-art img {
+    width: 160px;
+  }
+  .media-list-title {
+    background-color: #C8B64C;
+    padding: 2px;
+    margin:15px 20px;
+    width:200px;
+    font-size: 22px;
+  }
+</style>
+<div  class="home_content clearfix">
+  <div class="inner_main clearfix">
+    <div class="inner_txt clearfix">
+      <h1 class="page-titleHead">Artist Challenge & Contests</h1>
+    </div>
+  </div>
+
+  <div class="contest clearfix" style="border:none">
+    <div>What is art? It is your turn to help choose. These talented artist have been selected to show their work and need you to choose your
+      favorite image to win! You may only choose one image but can come back each day to vote again. For a list of our other contests
+      for Voting for please click here <button onclick="window.location='<?php echo $this->basePath() ?>/active-contest'">Artist Challenge</button>
+    </div>
+    <div class="clearfix"> 
+      <div class="right"><button onclick="window.location='<?php echo $this->basePath() ?>/photo-contest/voting/<?php echo $contestId; ?>'">Get to Voting!</button></div>
+      <div class="right">Contest countdown: 4 days remaining</div>
+      <br style="clear:both">
+    </div>
+    <br>
+    <div>
+      <div class="media-list-title">Current Standings</div>
+      <div class="media-list contest-list clearfix">
+        <div class="row">
+          <?php foreach ($medias as $key => $media): ?>
+            <?php $i = $key + 1; ?>
+            <div class="col-md-2">
+              <div class="media-art">
+                <a class="media_image" href="#." data-media_id="<?php echo $media['media_id'] ?>">
+                  <img mediaid="<?php echo $this->KCrypt()->enc($media['media_id']) ?>" class="mediaThumb showHoverWindow" src="<?php echo $this->mediaImage($media, 'icons'); ?>" title="<?php echo $media['title'] ?>" alt="<?php echo $media['title'] ?>" />
+                </a> 
+                <div>Artist Name: dadasd</div>
+                <div>User Name: 3123</div>
+                <div><strong><?php echo $this->ordinal( (($page-1)*$size)+$i );?></strong></div>
+              </div>
+            </div>
+            <?php if ($i != 1 && $i % 5 == 0): ?>
+            </div>
+            <div class="row">
+            <?php endif; ?>
+
+          <?php endforeach; ?>
+        </div>  
+      </div>
+
+    </div>
+  </div>
+
+  <?php
+  echo $this->paginationControl($this->paginator, 'Sliding', 'paginator-slide', array(
+        'route' => 'photo-contest', 
+        'routeParams' => array(
+            'action' => 'rankings', 
+            'id' => $this->contestId, 
+            'size' => $this->size
+        )
+      ));
+  ?>

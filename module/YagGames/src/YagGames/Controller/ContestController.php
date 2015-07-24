@@ -59,6 +59,17 @@ class ContestController extends BaseController
     }
     return $this->getContestList('my', $page);
   }
+  
+   public function exclusiveContestAction()
+  {
+    $this->checkLogin();
+
+    $request = $this->getRequest();
+    if ($request->isPost()) {
+      $page = $this->getRequest()->getPost('page', 1);
+    }
+    return $this->getContestList('exclusive', $page);
+  }
 
   private function getContestList($type, $page)
   {

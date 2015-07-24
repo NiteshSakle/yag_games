@@ -21,7 +21,7 @@ class ContestMediaTable extends BaseTable
       $filedId = $this->tableGateway->getLastInsertValue();
       return $filedId;
     } catch (Exception $e) {
-      $this->logger->err($e->getMessage());
+      $this->logException($e);
       return false;
     }
   }
@@ -36,7 +36,7 @@ class ContestMediaTable extends BaseTable
       $this->tableGateway->update($contestMedia->getArrayCopy());
       return true;
     } catch (Exception $e) {
-      $this->logger->err($e->getMessage());
+      $this->logException($e);
       return false;
     }
   }
@@ -67,22 +67,24 @@ class ContestMediaTable extends BaseTable
     return $resultSet;
   }
 
-  public function getContestMedia($contestId, $userId = null, $keyword = null, $page = 1, $offset = 20)
+  public function getContestMedia($contestId, $userId = null, $keyword = null, $page = 1, $offset = 20, $sort = 'rank')
   {
     try {
+      $sort = ($sort == 'rank') ? 'rank DESC' : 'cm.id ASC';
+      
       $sql = $this->getSql();
-      $columns = array('*', 'votes' => new Expression('SUM(cmr.id)'));
+      $columns = array('*', 'rank' => new Expression('AVG(cmr.rating)'));
       $query = $sql->select()
               ->from(array('cm' => 'contest_media'))
               ->join(array('m' => 'ps4_media'), 'm.media_id = cm.media_id')
               ->join(array('u' => 'ps4_members'), 'm.owner = u.mem_id')
-              ->join(array('cmr' => 'contest_media_rating'), 'cm.id = cmr.contest_meida_id')
+              ->join(array('cmr' => 'contest_media_rating'), 'cm.id = cmr.contest_media_id', array(), 'left')
               ->quantifier(new Expression('SQL_CALC_FOUND_ROWS'))
               ->columns($columns)
-              ->where('cm.contest_id = ?', $contestId)
+              ->where(array('cm.contest_id' => $contestId))
               ->limit($offset)
               ->offset(($page - 1) * $offset)
-              ->order("votes DESC")
+              ->order($sort)
               ->group('cm.media_id');
 
       if (!empty($keyword)) {
@@ -107,6 +109,7 @@ class ContestMediaTable extends BaseTable
           "medias" => $media
       );
     } catch (Exception $e) {
+      $this->logException($e);
       return array(
           "total" => 0,
           "medias" => array()
@@ -142,8 +145,67 @@ class ContestMediaTable extends BaseTable
         return array('count' => 0, 'has_uploaded' => 0);
       }
     } catch (Exception $e) {
+      $this->logException($e);
       return array('count' => 0, 'has_uploaded' => 0);
     }
   }
+  
+  public function getNextContestMedia($contestId,  $userId = null, $mediaId, $ratedMedia = array())
+  {
+    try {
+      $limit=1;
+      $sql = $this->getSql();
+      $columns = array('contest_name' => 'name', 'votes' => new Expression('COUNT(cmr.id)'));
+      $query = $sql->select()
+              ->from(array('c' => 'contest'))
+              ->join(array('cm' => 'contest_media'), 'cm.contest_id = c.id', array('*'))
+              ->join(array('m' => 'ps4_media'), 'm.media_id = cm.media_id', array('*'))
+              ->join(array('u' => 'ps4_members'), 'm.owner = u.mem_id', array('username', 'f_name'))
+              ->join(array('cmr' => 'contest_media_rating'), 'cm.id = cmr.contest_media_id', array(), 'left')
+              ->columns($columns)
+              ->where(array('cm.contest_id' => $contestId))
+              ->limit($limit)
+              ->order("votes DESC")
+              ->group('cm.media_id');
+      
+      if (!empty($mediaId)) {
+        $query->where(array('cm.media_id' => $mediaId));
+      }
+
+      if (!empty($userId)) {
+        //exclude already rated media of today
+        $subQry = $sql->select()
+                ->from(array('cmr2' => 'contest_media_rating'))
+                ->columns(array('contest_media_id'))
+                ->where(array(
+                    'cmr2.member_id' => $userId,
+                    new Expression('DATE(cmr2.created_at) = CURDATE()')
+                ));
+                
+        $query->where(
+            new \Zend\Db\Sql\Predicate\PredicateSet(
+              array(
+                  new \Zend\Db\Sql\Predicate\NotIn('cm.id', $subQry)
+              )
+            )
+        );
+      } else if (count($ratedMedia)){
+        //add not in condition to eliminate rated media
+        $query->where(new \Zend\Db\Sql\Predicate\NotIn('cm.media_id', $ratedMedia));
+      }
+
+      $rows = $sql->prepareStatementForSqlObject($query)->execute();
+      $row = $rows->current();
+      if ($row) {
+        return $row;
+      } else {
+        return false;
+      }
+    } catch (Exception $e) {
+      $this->logException($e);
+      return false;      
+    }
+  }
+  
 
 }
