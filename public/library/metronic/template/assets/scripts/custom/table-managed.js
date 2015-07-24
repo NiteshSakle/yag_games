@@ -1,9 +1,10 @@
-var TableManaged = function() {
+var TableManaged = function () {
 
     return {
-        //main function to initiate the module
-        init: function() {
 
+        //main function to initiate the module
+        init: function () {
+            
             if (!jQuery().dataTable) {
                 return;
             }
@@ -11,12 +12,12 @@ var TableManaged = function() {
             // begin first table
             $('#sample_1').dataTable({
                 "aoColumns": [
-                    {"bSortable": false},
-                    null,
-                    {"bSortable": false, "sType": "text"},
-                    null,
-                    {"bSortable": false},
-                    {"bSortable": false}
+                  { "bSortable": false },
+                  null,
+                  { "bSortable": false, "sType": "text" },
+                  null,
+                  { "bSortable": false },
+                  { "bSortable": false }
                 ],
                 "aLengthMenu": [
                     [5, 15, 20, -1],
@@ -33,28 +34,28 @@ var TableManaged = function() {
                     }
                 },
                 "aoColumnDefs": [
-                    {'bSortable': false, 'aTargets': [0]},
-                    {"bSearchable": false, "aTargets": [0]}
+                    { 'bSortable': false, 'aTargets': [0] },
+                    { "bSearchable": false, "aTargets": [ 0 ] }
                 ]
             });
 
-            jQuery('#sample_1 .group-checkable').change(function() {
+            jQuery('#sample_1 .group-checkable').change(function () {
                 var set = jQuery(this).attr("data-set");
                 var checked = jQuery(this).is(":checked");
-                jQuery(set).each(function() {
+                jQuery(set).each(function () {
                     if (checked) {
                         $(this).attr("checked", true);
                         $(this).parents('tr').addClass("active");
                     } else {
                         $(this).attr("checked", false);
                         $(this).parents('tr').removeClass("active");
-                    }
+                    }                    
                 });
                 jQuery.uniform.update(set);
             });
 
-            jQuery('#sample_1').on('change', 'tbody tr .checkboxes', function() {
-                $(this).parents('tr').toggleClass("active");
+            jQuery('#sample_1').on('change', 'tbody tr .checkboxes', function(){
+                 $(this).parents('tr').toggleClass("active");
             });
 
             jQuery('#sample_1_wrapper .dataTables_filter input').addClass("form-control input-medium input-inline"); // modify table search input
@@ -77,16 +78,16 @@ var TableManaged = function() {
                         "sNext": "Next"
                     }
                 },
-                "aoColumnDefs": [
-                    {'bSortable': false, 'aTargets': [0]},
-                    {"bSearchable": false, "aTargets": [0]}
+               "aoColumnDefs": [
+                    { 'bSortable': false, 'aTargets': [0] },
+                    { "bSearchable": false, "aTargets": [ 0 ] }
                 ]
             });
 
-            jQuery('#sample_2 .group-checkable').change(function() {
+            jQuery('#sample_2 .group-checkable').change(function () {
                 var set = jQuery(this).attr("data-set");
                 var checked = jQuery(this).is(":checked");
-                jQuery(set).each(function() {
+                jQuery(set).each(function () {
                     if (checked) {
                         $(this).attr("checked", true);
                     } else {
@@ -117,15 +118,15 @@ var TableManaged = function() {
                     }
                 },
                 "aoColumnDefs": [
-                    {'bSortable': false, 'aTargets': [0]},
-                    {"bSearchable": false, "aTargets": [0]}
+                    { 'bSortable': false, 'aTargets': [0] },
+                    { "bSearchable": false, "aTargets": [ 0 ] }
                 ]
             });
 
-            jQuery('#sample_3 .group-checkable').change(function() {
+            jQuery('#sample_3 .group-checkable').change(function () {
                 var set = jQuery(this).attr("data-set");
                 var checked = jQuery(this).is(":checked");
-                jQuery(set).each(function() {
+                jQuery(set).each(function () {
                     if (checked) {
                         $(this).attr("checked", true);
                     } else {
