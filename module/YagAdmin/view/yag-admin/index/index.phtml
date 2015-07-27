@@ -2,6 +2,12 @@
 <link rel="stylesheet" type="text/css" href="<?php echo $this->basePath('/library/metronic/template/assets/plugins/bootstrap-datepicker/css/datepicker.css'); ?>"/>
 <link rel="stylesheet" type="text/css" href="<?php echo $this->basePath('/library/metronic/template/assets/plugins/bootstrap-wysihtml5/bootstrap-wysihtml5.css'); ?>"/>
 <link rel="stylesheet" type="text/css" href="<?php echo $this->basePath('/library/metronic/template/assets/plugins/bootstrap-markdown/css/bootstrap-markdown.min.css'); ?>">
+<style>
+    table>tbody>tr>td, table>thead>tr>th {
+        vertical-align: middle !important;
+        text-align: center !important;
+    }
+</style>
 <!-- END PAGE LEVEL STYLES -->
 
 <div class="jumbotron">
@@ -26,7 +32,19 @@
                                 <i class="fa"></i> Name
                             </th>
                             <th class="hidden-xs">
-                                <i class="fa fa-calendar"></i> Entry End Date
+                                Entry End Date
+                            </th>
+                            <th class="hidden-xs">
+                                <i class="fa fa-calendar"></i> Voting Start Date
+                            </th>
+                            <th class="hidden-xs">
+                                <i class="fa fa-calendar"></i> Winners Announce Date
+                            </th>
+                            <th class="hidden-xs">
+                                <i class="fa fa-group"></i> Entries Limit
+                            </th>
+                            <th class="hidden-xs">
+                                <i class="fa fa-star"></i> Exclusive
                             </th>
                             <th>
                                 <i class="fa"></i> Type
@@ -39,7 +57,7 @@
                         <?php foreach ($contests as $contest) { ?>
                             <tr>
                                 <td>                                    
-                                    <img src="<?php echo $this->config()['aws']['path'].$contest['thumbnail']; ?>" alt="<?php echo $this->basePath('/img/bg-rateing.jpg'); ?>" style="width:100px" />
+                                    <img src="<?php echo $this->config()['aws']['path'] . $contest['thumbnail']; ?>" alt="Image not available" style="width:100px" />
                                 </td>
                                 <td class="highlight">
                                     <a class="name" contest_id="<?php echo $contest['id']; ?>">
@@ -48,6 +66,18 @@
                                 </td>
                                 <td>
                                     <?php echo $contest['entry_end_date']; ?>
+                                </td>
+                                <td>
+                                    <?php echo $contest['voting_start_date']; ?>
+                                </td>
+                                <td>
+                                    <?php echo $contest['winners_announce_date']; ?>
+                                </td>
+                                <td>
+                                    <?php echo $contest['max_no_of_photos']; ?>
+                                </td>
+                                <td>
+                                    <?php echo $contest['is_exclusive']?'YES':'NO'; ?>
                                 </td>
                                 <td>
                                     <?php echo $contest['type']; ?>
@@ -75,7 +105,7 @@
                     <div class="row">
                         <div class="col-md-12 ">
                             <!-- BEGIN CREATE CONTEST FORM-->
-                            <div class="portlet box blue">
+                            <div class="portlet">
                                 <div class="portlet-title">
                                     <div class="caption">
                                         <i class="fa fa-reorder"></i> Create Contest
@@ -99,7 +129,7 @@
                                             <div class="form-group hidden">
                                                 <input type="text" id="id" name="id" value='0'>
                                             </div>                        
-                                            <div class="form-group">
+                                            <div class="form-group col-md-12">
                                                 <label class="control-label" for="name">
                                                     Contest Name
                                                     <span class="required">
@@ -108,7 +138,7 @@
                                                 </label>
                                                 <input type="text" data-required="1" class="form-control" id="name" name="name" placeholder="Enter Contest's Name">
                                             </div>                        
-                                            <div class="form-group">
+                                            <div class="form-group col-md-12">
                                                 <label class="control-label" for="description">
                                                     Contest Description
                                                     <span class="required">
@@ -117,7 +147,7 @@
                                                 </label>
                                                 <textarea class="wysihtml5 form-control" id="description" name="description" rows="3" placeholder="Enter Contest's Description"></textarea>
                                             </div>
-                                            <div class="form-group">
+                                            <div class="form-group col-md-12">
                                                 <label class="control-label" for="thumbnail">
                                                     Thumbnail
                                                     <span class="required">
@@ -125,9 +155,9 @@
                                                     </span>
                                                 </label>
                                                 <input type="file" id="thumbnail" name="thumbnail">
-                                                <input type="text" disabled hidden id="thumbnail_name">
+                                                <input type="text" class="form-control" disabled hidden id="thumbnail_name">
                                             </div>
-                                            <div class="form-group">
+                                            <div class="form-group col-md-6">
                                                 <label class="control-label" for="entryEndDate">
                                                     Entry End Date
                                                     <span class="required">
@@ -141,7 +171,7 @@
                                                     </span>
                                                 </div>
                                             </div>
-                                            <div class="form-group">
+                                            <div class="form-group col-md-6">
                                                 <label class="control-label" for="winnersAnnounceDate">
                                                     Winners Announce Date
                                                     <span class="required">
@@ -154,8 +184,31 @@
                                                         <button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
                                                     </span>
                                                 </div>
+                                            </div>                                            
+                                            <div class="form-group col-md-6">
+                                                <label class="control-label" for="votingStartDate">
+                                                    Voting Start Date
+                                                    <span class="required">
+                                                        *
+                                                    </span>
+                                                </label>
+                                                <div class="input-group input-medium date date-picker" data-date-format="dd-mm-yyyy" data-date-start-date="+0d">
+                                                    <input id="votingStartDate" name="votingStartDate" type="text" class="form-control" readonly>
+                                                    <span class="input-group-btn">
+                                                        <button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
+                                                    </span>
+                                                </div>
                                             </div>
-                                            <div class="form-group">
+                                            <div class="form-group col-md-6">
+                                                <label class="control-label" for="entryLimit">
+                                                    Entries Limit
+                                                    <span class="required">
+                                                        *
+                                                    </span>
+                                                </label>
+                                                <input type="number" data-required="1" class="form-control" id="entryLimit" name="entryLimit" placeholder="Enter Contest's Entries Limit">
+                                            </div>
+                                            <div class="form-group col-md-6">
                                                 <label class="control-label" for="type">
                                                     Contest Type
                                                     <span class="required">
@@ -168,7 +221,16 @@
                                                     <?php } ?>
                                                 </select>
                                             </div>
-                                            <div class="form-actions">
+                                            <div class="form-group col-md-6">
+                                                <label>Is Exclusive Contest?</label>
+                                                <div class="radio-list">
+                                                    <label class="radio-inline">
+                                                        <div class="radio"><span><input type="radio" name="exclusive" id="exclusive-yes" value="1"></span></div> Yes </label>
+                                                    <label class="radio-inline">
+                                                        <div class="radio"><span><input type="radio" name="exclusive" id="exclusive-no" value="0" checked=""></span></div> No </label>
+                                                </div>
+                                            </div>
+                                            <div class="form-actions col-md-12">
                                                 <button type="submit" class="btn blue">Submit</button>
                                                 <button type="button" class="btn default" data-dismiss="modal" aria-hidden="true">Cancel</button>
                                             </div>
@@ -202,6 +264,8 @@
         ComponentsEditors.init();
         //handleValidation();
         $('.open-modal').click(function () {
+            $("input[name='exclusive'][value=1]").parent().removeClass('checked');
+            $("input[name='exclusive'][value=0]").parent().addClass('checked');
             $('form#create-contest-form').trigger('reset');
             $('#thumbnail_name').hide();
         });
@@ -256,6 +320,15 @@
                     $('#thumbnail_name').val((response.data.thumbnail).substring(10));
                     $('#entryEndDate').val(response.data.entry_end_date);
                     $('#winnersAnnounceDate').val(response.data.winners_announce_date);
+                    $('#votingStartDate').val(response.data.voting_start_date);
+                    $('#entryLimit').val(response.data.max_no_of_photos);
+                    if (response.data.is_exclusive == 1) {
+                        $("input[name='exclusive'][value=0]").parent().removeClass('checked');
+                        $("input[name='exclusive'][value=1]").parent().addClass('checked');
+                    } else {
+                        $("input[name='exclusive'][value=1]").parent().removeClass('checked');
+                        $("input[name='exclusive'][value=0]").parent().addClass('checked');
+                    }
                     $('#type').val(response.data.type_id);
                     $('#create-contest-modal').modal('show');
                 }
@@ -277,7 +350,9 @@
                 bootbox.alert(response.message, function () {
                     if (response.success) {
                         location.reload();
-                    }
+                    } else {
+                        $('#create-contest-modal').modal('show');
+                    }                        
                 });
             },
             cache: false,

@@ -36,14 +36,26 @@ class ContestTable extends BaseTable {
             if ($contest->description) {
                 $updated_data['description'] = $contest->description;
             }
+            if ($contest->thumbnail) {
+                $updated_data['thumbnail'] = $contest->thumbnail;
+            }
             if ($contest->entry_end_date) {
                 $updated_data['entry_end_date'] = $contest->entry_end_date;
             }
             if ($contest->winners_announce_date) {
                 $updated_data['winners_announce_date'] = $contest->winners_announce_date;
             }
-            if ($contest->thumbnail) {
-                $updated_data['thumbnail'] = $contest->thumbnail;
+            if ($contest->voting_start_date) {
+                $updated_data['voting_start_date'] = $contest->voting_start_date;
+            }
+            if ($contest->max_no_of_photos) {
+                $updated_data['max_no_of_photos'] = $contest->max_no_of_photos;
+            }
+            if ($contest->voting_started) {
+                $updated_data['voting_started'] = $contest->voting_started;
+            }
+            if ($contest->is_exclusive) {
+                $updated_data['is_exclusive'] = $contest->is_exclusive;
             }
             if ($contest->type_id) {
                 $updated_data['type_id'] = $contest->type_id;
@@ -51,9 +63,7 @@ class ContestTable extends BaseTable {
             if ($contest->updated_at) {
                 $updated_data['updated_at'] = $contest->updated_at;
             }
-            if ($contest->voting_started) {
-                $updated_data['voting_started'] = $contest->voting_started;
-            }
+            
             $this->tableGateway->update($updated_data, array('id' => $contest->id));
             return true;
         } catch (\Exception $e) {

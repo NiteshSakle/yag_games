@@ -69,13 +69,16 @@ class IndexController extends BaseController {
 
         $request = $this->getRequest();
         if ($request->isPost()) {
-
+            
             $params['id'] = trim($this->getRequest()->getPost('id'));
             $params['name'] = trim($this->getRequest()->getPost('name'));
             $params['description'] = $this->getRequest()->getPost('description');
             $params['entryEndDate'] = $this->getRequest()->getPost('entryEndDate');
             $params['winnersAnnounceDate'] = $this->getRequest()->getPost('winnersAnnounceDate');
+            $params['votingStartDate'] = $this->getRequest()->getPost('votingStartDate');
+            $params['entryLimit'] = $this->getRequest()->getPost('entryLimit');
             $params['type'] = $this->getRequest()->getPost('type');
+            $params['exclusive'] = $this->getRequest()->getPost('exclusive');
             $thumbnail = $this->getRequest()->getFiles('thumbnail');
             if (($thumbnail['error'] == 4 || $thumbnail['size'] == 0) && isset($params['id'])) {
                 $params['thumbnail'] = 'NOT_UPDATED';
@@ -138,10 +141,10 @@ class IndexController extends BaseController {
                 }
             }
 
-            if (empty($params['name']) || empty($params['description']) || empty($params['entryEndDate']) || empty($params['winnersAnnounceDate']) || empty($params['type']) || empty($params['thumbnail'])) {
+            if (empty($params['name']) || empty($params['description']) || empty($params['entryEndDate']) || empty($params['winnersAnnounceDate']) || empty($params['votingStartDate']) || empty($params['entryLimit']) || empty($params['type']) || empty($params['exclusive']) || empty($params['thumbnail'])) {
 
                 $response['success'] = false;
-                $response['message'] = 'All fields are compulsory';
+                $response['message'] = 'Please fill in all fields';
             } else {
 
                 $contest = new \YagGames\Model\Contest();
@@ -150,6 +153,9 @@ class IndexController extends BaseController {
                 $contest->description = $params['description'];
                 $contest->entry_end_date = date('Y-m-d', strtotime($params['entryEndDate']));
                 $contest->winners_announce_date = date('Y-m-d', strtotime($params['winnersAnnounceDate']));
+                $contest->voting_start_date = date('Y-m-d', strtotime($params['votingStartDate']));
+                $contest->max_no_of_photos= $params['entryLimit'];
+                $contest->is_exclusive= $params['exclusive'];
                 $contest->type_id = $params['type'];
 
                 if ($params['id']) {
