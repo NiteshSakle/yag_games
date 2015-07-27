@@ -40,9 +40,11 @@ return array(
             'home' => array(
                 'type' => 'Segment',
                 'options' => array(
-                    'route'    => '/[:action]',
+                    'route'    => '/[:action][/page/:page][/size/:size]',
                     'constraints' => array(
                         'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'page'     => '[0-9]+',
+                        'size'     => '[0-9]+',
                     ),
                     'defaults' => array(
                         '__NAMESPACE__' => 'YagGames\Controller',
@@ -57,6 +59,8 @@ return array(
                     'route'    => '/media/[:action][/page/:page][/size/:size]',
                     'constraints' => array(
                         'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'page'     => '[0-9]+',
+                        'size'     => '[0-9]+',
                     ),
                     'defaults' => array(
                         '__NAMESPACE__' => 'YagGames\Controller',

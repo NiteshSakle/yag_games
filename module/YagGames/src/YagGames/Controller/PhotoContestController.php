@@ -159,7 +159,7 @@ class PhotoContestController extends BaseController
     return $vm;
   }
 
-  public function termsAction()
+  public function learnMoreAction()
   {
     
   }
