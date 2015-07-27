@@ -114,5 +114,34 @@ class ContestMediaRatingTable extends BaseTable
       return false;
     }
   }
+  
+  public function getTop10RatedMedia($contestId)
+  {
+    try {
+      $sql = $this->getSql();
+      $columns = array('rank' => new Expression('AVG(cmr.rating)'));
+      $query = $sql->select()
+              ->from(array('cmr' => 'contest_media_rating'))
+              ->join(array('cm' => 'contest_media'), 'cm.id = cmr.contest_media_id', array('contest_media_id' => 'id'))
+              ->columns($columns)
+              ->where(array(
+                  'cm.contest_id' => $contestId
+              ))
+              ->order('rank DESC')
+              ->limit('10')
+              ->group('cm.media_id');
+
+      $rows = $sql->prepareStatementForSqlObject($query)->execute();
+      $row = $rows->current();
+      if ($row) {
+        return $row;
+      } else {
+        return false;
+      }
+    } catch (Exception $e) {
+      $this->logException($e);
+      return false;
+    }
+  }
 
 }

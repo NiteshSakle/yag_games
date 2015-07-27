@@ -37,9 +37,14 @@ class StartVotingController extends BaseConsoleController
     }
   }
 
-  private function startVoting($contest)
+  private function startVoting($contestData)
   {
-    return true;
+    $contestMediaTable = $this->getServiceLocator()->get('YagGames\Model\ContestTable');
+    
+    $contest = new \YagGames\Model\Contest();
+    $contest->id = $contestData['id'];
+    $contest->voting_started = 1;
+    return $contestMediaTable->update($contest);
   }
 
 }

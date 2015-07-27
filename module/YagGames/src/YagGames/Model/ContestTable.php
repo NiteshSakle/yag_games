@@ -51,6 +51,9 @@ class ContestTable extends BaseTable {
             if ($contest->updated_at) {
                 $updated_data['updated_at'] = $contest->updated_at;
             }
+            if ($contest->voting_started) {
+                $updated_data['voting_started'] = $contest->voting_started;
+            }
             $this->tableGateway->update($updated_data, array('id' => $contest->id));
             return true;
         } catch (\Exception $e) {

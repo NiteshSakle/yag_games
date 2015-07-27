@@ -38,9 +38,23 @@ class StartVotingController extends BaseConsoleController
     }    
   }
   
-  private function announceWinners($contest)
+  private function announceWinners($contestData)
   {
-    return true;    
+    $contestMediaTable = $this->getServiceLocator()->get('YagGames\Model\ContestTable');
+    $winners = $contestMediaTable->getTop10RatedMedia($contestData['id']);  
+    
+    $contestWinnerTable = $this->getServiceLocator()->get('YagGames\Model\ContestWinnerTable');
+    foreach ($winners as $winner) {
+      $contestWinner = new \YagGames\Model\ContestWinner();
+      $contestWinner->contest_media_id = $winner['contest_media_id'];
+      $contestWinnerTable->insert($contestWinner);
+    }
+    
+    if (count($winners)) {
+      return true;
+    }
+    
+    return false;
   }
 
 }
