@@ -25,7 +25,13 @@
     <?php foreach ($data as $contest): ?>
       <div class="contest row">
         <div class="col-md-4">
-          <div class="contest-title"><?php echo $contest['name']; ?></div>
+          <?php 
+            $titleClass = 'contest-title';
+            if ($this->getHelperPluginManager()->getServiceLocator()->get('Application')->getMvcEvent()->getRouteMatch()->getParam('action') == 'exclusive-contest') {
+              $titleClass = 'contest-title gold';
+            }
+          ?>
+          <div class="<?php echo $titleClass; ?>"><?php echo $contest['name']; ?></div>
           <div class="contest-description">
             <?php echo $contest['description']; ?>
             <br>

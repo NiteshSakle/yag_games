@@ -113,21 +113,30 @@ class ContestTable extends BaseTable
 
       if ($type == 'new') {
         $select->where('entry_end_date >= NOW()');
+        
+        // if user log's in, check whether he entered the contest or not
         if ($user) {
           $select->join(array('m' => 'ps4_media'), new Expression('cm.media_id = m.media_id AND m.owner = ?', $user), array('entered' => new Expression('IF(m.media_id, 1, 0 )')), 'left');
         }
       } elseif ($type == 'active') {
+        
         $select->where('entry_end_date <= NOW() AND winners_announce_date >= NOW()');
       } elseif ($type == 'past') {
+        // if user log's in, check whether his media rank
+        if ($user) {
+          $select->join(array('m' => 'ps4_media'), new Expression('cm.media_id = m.media_id AND m.owner = ?', $user), array('entered' => new Expression('IF(m.media_id, 1, 0 )')), 'left');
+          $select->join(array('cw' => 'contest_winner'), 'cm.id = cw.contest_media_id', array('rank'), 'left');
+        }
+        
         $select->where('winners_announce_date <= NOW()');
       } elseif ($type == 'my') {
+        // show only user medias
         $select->join(array('cm1' => 'contest_media'), 'c.id = cm1.contest_id', 'media_id')
                 ->join(array('m' => 'ps4_media'), 'cm1.media_id = m.media_id', 'media_id')
+                ->join(array('cw' => 'contest_winner'), 'cm1.id = cw.contest_media_id', array('rank'), 'left')
                 ->where(array('m.owner' => $user));
       } elseif ($type == 'exclusive') {
-        $select->join(array('cm1' => 'contest_media'), 'c.id = cm1.contest_id', 'media_id')
-                ->join(array('m' => 'ps4_media'), 'cm1.media_id = m.media_id', 'media_id')
-                ->where(array('m.owner' => $user, 'is_exclusive' => 1));
+        $select->where(array('c.is_exclusive' => 1));
       }
 
       $select->quantifier(new Expression('SQL_CALC_FOUND_ROWS'));

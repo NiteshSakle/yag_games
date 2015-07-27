@@ -119,7 +119,7 @@ class ContestMediaRatingTable extends BaseTable
   {
     try {
       $sql = $this->getSql();
-      $columns = array('rank' => new Expression('AVG(cmr.rating)'));
+      $columns = array('rating' => new Expression('AVG(cmr.rating)'));
       $query = $sql->select()
               ->from(array('cmr' => 'contest_media_rating'))
               ->join(array('cm' => 'contest_media'), 'cm.id = cmr.contest_media_id', array('contest_media_id' => 'id'))
@@ -127,7 +127,7 @@ class ContestMediaRatingTable extends BaseTable
               ->where(array(
                   'cm.contest_id' => $contestId
               ))
-              ->order('rank DESC')
+              ->order('rating DESC')
               ->limit('10')
               ->group('cm.media_id');
 

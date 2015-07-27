@@ -9,7 +9,15 @@
   <button class="btn btn-default"  onclick="window.location = '<?php echo $this->basePath() ?>/<?php echo $contestType; ?>/learn-more/<?php echo $contest['id']; ?>'">Learn More</button>
   <br>
   <br>
-  <img src="<?php echo $this->basePath() ?>/img/congratulation.png"  alt="contest status" />
+  <div class="contest-winner">
+    <img src="<?php echo $this->basePath() ?>/img/congratulation.png"  alt="contest status" />
+    <?php $percentage =  ($contest['total_entries']) ? ($contest['total_entries']/$contest['max_no_of_photos'])*100 : 0 ?>
+    <div class="progress">
+      <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="<?php echo $percentage ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $percentage ?>%">
+        <?php echo $percentage ?>% FULL
+      </div>
+    </div>
+  </div>
   <br>
   <div class="gold">Share this contest</div>
   <?php echo $this->partial('social_sharing.phtml'); ?>

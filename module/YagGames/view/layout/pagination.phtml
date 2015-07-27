@@ -1,5 +1,5 @@
 <?php if ($this->pageCount): ?>
-  <div class="pagination pagination-centered">
+  <div class="pagination pagination-centered" id="pagination-flickr">
     <ul>
       <li <?php echo!isset($this->previous) ? 'class="disabled"' : ''; ?>>
                 <a href="<?php echo $this->url($this->route, array_merge(array('page' => $this->first), $this->routeParams), array('query' => $this->queryParams)); ?>">&laquo;</a></li>
