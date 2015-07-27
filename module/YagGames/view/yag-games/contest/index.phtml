@@ -18,7 +18,6 @@
         <li><a id="loginPopup2" <?php echo $type == 'my' ? 'class="nav_active"' : ""; ?> href="<?php echo $this->config('main_site', 'url') ?>/workbox.php?mode=loginPopup">My Contests</a></li>
         <li><a id="loginPopup5" <?php echo $type == 'my' ? 'class="nav_active"' : ""; ?> href="<?php echo $this->config('main_site', 'url') ?>/workbox.php?mode=loginPopup">Exclusive Contests</a></li>
       <?php endif; ?> 
-        
     </ul>
   </div>
 
@@ -26,7 +25,13 @@
     <?php foreach ($data as $contest): ?>
       <div class="contest row">
         <div class="col-md-4">
-          <div class="contest-title"><?php echo $contest['name']; ?></div>
+          <?php 
+            $titleClass = 'contest-title';
+            if ($this->getHelperPluginManager()->getServiceLocator()->get('Application')->getMvcEvent()->getRouteMatch()->getParam('action') == 'exclusive-contest') {
+              $titleClass = 'contest-title gold';
+            }
+          ?>
+          <div class="<?php echo $titleClass; ?>"><?php echo $contest['name']; ?></div>
           <div class="contest-description">
             <?php echo $contest['description']; ?>
             <br>
@@ -41,55 +46,56 @@
         <div class="contest-image col-md-4">
           <img src="<?php echo $this->basePath() ?>/img/contest/thumbnail/<?php echo $contest['thumbnail']; ?>"  alt="Contest Photo" />
         </div>
-        <div class="col-md-4 contest-buttons ">
-          <?php if ($type == 'new'): ?>
-            <?php if ($contest['entered']): ?>
-              <button class="btn btn-default">You're In</button>
-            <?php else: ?>
-              <button class="btn btn-default" onclick="window.location='<?php echo $this->basePath() ?>/photo-contest/submission/<?php echo $contest['id']; ?>'">Enter Contest</button>
-            <?php endif; ?> 
-          <?php elseif ($type == 'active'): ?>
-            <?php if ($contest['voting_started']): ?>
-              <button class="btn btn-default" onclick="window.location='<?php echo $this->basePath() ?>/photo-contest/<?php echo $contest['id']; ?>'">Vote Now</button>
-            <?php else: ?>
-              <button class="btn btn-default">Vote Soon</button>
-            <?php endif; ?> 
-          <?php elseif ($type == 'past'): ?>
-            <button class="btn btn-default" onclick="window.location='<?php echo $this->basePath() ?>/photo-contest/rankings/<?php echo $contest['id']; ?>'">Winner's Announced</button>   
-          <?php elseif ($type == 'my'): ?>
-            <?php if ($contest['my_type'] == 'new'): ?>
-              <button class="btn btn-default">You're In</button>
-            <?php elseif ($contest['my_type'] == 'active'): ?>
-              <?php if ($contest['voting_started']): ?>
-                <button class="btn btn-default" onclick="window.location='<?php echo $this->basePath() ?>/photo-contest/<?php echo $contest['id']; ?>'">Vote Now</button>
-              <?php else: ?>
-                <button class="btn btn-default">Vote Soon</button>
-              <?php endif; ?> 
-            <?php elseif ($contest['my_type'] == 'past'): ?>
-              <button class="btn btn-default" onclick="window.location='<?php echo $this->basePath() ?>/photo-contest/rankings/<?php echo $contest['id']; ?>'">Winner's Announced</button>                       
-            <?php endif; ?> 
-          <?php endif; ?> 
-          <br>
-          <button class="btn btn-default">Learn More</button>
-          <br>
-          <?php if ($type != 'new'): ?>
-            <button class="btn btn-default" onclick="window.location='<?php echo $this->basePath() ?>/photo-contest/rankings/<?php echo $contest['id']; ?>'">Rankings</button>   
-          <?php endif; ?> 
-          <br>
-          <img src="<?php echo $this->basePath() ?>/img/congratulation.png"  alt="contest status" />
-          <br>
-          <div class="gold">Share this contest</div>
-          <div class="social_link">
-            <a href="https://www.facebook.com/YourArtGallery"><img src="<?php echo $this->basePath() ?>/img/facebook_share.png"  alt="Share to Facebook" /></a>
-            <a href="https://twitter.com/YourArtGallery"><img src="<?php echo $this->basePath() ?>/img/twitter_share.png"  alt="Share to Twitter" /></a>
-            <a href="https://instagram.com/Your.Art.Gallery/"><img src="<?php echo $this->basePath() ?>/img/instagram_share.png"  alt="Instagram" /></a>
-            <a href="https://www.pinterest.com/yourartgallery/"><img src="<?php echo $this->basePath() ?>/img/pinterest_share.png"  alt="Share to Pinterest" /></a>
-            <a href="https://plus.google.com"><img src="<?php echo $this->basePath() ?>/img/google_share.png"  alt="Share to Google" /></a>
-            <a href="https://www.linkedin.com/company/your-art-gallery-llc"><img src="<?php echo $this->basePath() ?>/img/linkedin_share.png"  alt="Stumble It" /></a>
-            <a href="https://www.youtube.com/YourArtGallery"><img src="<?php echo $this->basePath() ?>/img/youtube_share.png"  alt="Share to Youtube" /></a>            
-          </div>
-        </div>
+        <?php
+        switch ($type) {
+          case 'new':
+            $partial = 'new_rsidebar.phtml';
+            break;
+          case 'active':
+            $partial = 'active_rsidebar.phtml';
+            break;
+          case 'past':
+            $partial = 'past_rsidebar.phtml';
+            break;
+          case 'my':
+            $partial = 'my_rsidebar.phtml';
+            break;
+          case 'exclusive':
+            $partial = 'exclusive_rsidebar.phtml';
+            break;
+          case 'default':
+            $partial = 'my_rsidebar.phtml';
+        }
+        
+        switch ($contest['contest_type']) {
+          case 'Photo Contest':
+            $contestType = 'photo-contest';
+            break;
+          case 'Fan Favorite':
+            $contestType = 'fan-favorite';
+            break;
+          case 'default':
+            $contestType = 'brackets';
+        }
+        
+        echo $this->partial($partial, array(
+            'contest' => $contest,
+            'type' => $type,
+            'contestType' => $contestType,
+        ));
+        ?>
       </div>
     <?php endforeach; ?>
   </div>
+  
+  <?php
+  echo $this->paginationControl($this->paginator, 'Sliding', 'paginator-slide', array(
+        'route' => 'home', 
+        'routeParams' => array(
+            'action' => $this->getHelperPluginManager()->getServiceLocator()->get('Application')->getMvcEvent()->getRouteMatch()->getParam('action')
+        ), 
+        'queryParams' => array(
+          )
+      ));
+  ?>
 </div>

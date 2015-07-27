@@ -10,73 +10,73 @@
 
 namespace YagGames\Controller;
 
+use Zend\Mvc\MvcEvent;
+use Zend\Paginator\Adapter\NullFill;
+use Zend\Paginator\Paginator;
 use Zend\View\Model\ViewModel;
 
 class ContestController extends BaseController
 {
 
-  public function onDispatch(\Zend\Mvc\MvcEvent $e)
+  public function onDispatch(MvcEvent $e)
   {
-    $viewModel = $e->getViewModel();
     $this->session = $this->sessionPlugin();
+    
+    $this->page = $this->params()->fromRoute('page') ? (int) $this->params()->fromRoute('page') : 1;
+    $this->size = $this->params()->fromRoute('size') ? (int) $this->params()->fromRoute('size') : 10;
+    $this->userId = null;
+    if (isset($this->session->mem_id)) {
+      $this->userId = $this->session->mem_id;
+    }
+    
     return parent::onDispatch($e);
   }
 
   public function newContestAction()
   {
-    $request = $this->getRequest();
-    if ($request->isPost()) {
-      $page = $this->getRequest()->getPost('page', 1);
-    }
-    return $this->getContestList('new', $page);
+    return $this->getContestList('new');
   }
 
   public function activeContestAction()
   {
-    $request = $this->getRequest();
-    if ($request->isPost()) {
-      $page = $this->getRequest()->getPost('page', 1);
-    }
-    return $this->getContestList('active', $page);
+    return $this->getContestList('active');
   }
 
   public function pastContestAction()
   {
-    $request = $this->getRequest();
-    if ($request->isPost()) {
-      $page = $this->getRequest()->getPost('page', 1);
-    }
-    return $this->getContestList('past', $page);
+    return $this->getContestList('past');
   }
 
   public function myContestAction()
   {
     $this->checkLogin();
 
-    $request = $this->getRequest();
-    if ($request->isPost()) {
-      $page = $this->getRequest()->getPost('page', 1);
-    }
-    return $this->getContestList('my', $page);
+    return $this->getContestList('my');
   }
   
    public function exclusiveContestAction()
   {
     $this->checkLogin();
 
-    $request = $this->getRequest();
-    if ($request->isPost()) {
-      $page = $this->getRequest()->getPost('page', 1);
-    }
-    return $this->getContestList('exclusive', $page);
+    return $this->getContestList('exclusive');
   }
 
-  private function getContestList($type, $page)
+  private function getContestList($type)
   {
     $contestTable = $this->getServiceLocator()->get('YagGames\Model\ContestTable');
-    $data = $contestTable->fetchAllByType($type, $page);
+    $data = $contestTable->fetchAllByType($type, $this->userId, $this->page, $this->size);
+    
+    $paginator = new Paginator(new NullFill($data['total']));
+    $paginator->setCurrentPageNumber($this->page);
+    $paginator->setItemCountPerPage($this->size);
 
-    return $this->getViewModal(array('data' => $data, 'type' => $type, 'page' => $page));
+    return $this->getViewModal(array(
+        'paginator' => $paginator,
+        'data' => $data['contests'], 
+        'type' => $type, 
+        'page' => $this->page,
+        'size' => $this->size
+    ));
   }
 
   private function getViewModal($data)

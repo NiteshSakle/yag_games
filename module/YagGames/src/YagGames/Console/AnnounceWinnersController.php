@@ -44,9 +44,11 @@ class StartVotingController extends BaseConsoleController
     $winners = $contestMediaTable->getTop10RatedMedia($contestData['id']);  
     
     $contestWinnerTable = $this->getServiceLocator()->get('YagGames\Model\ContestWinnerTable');
-    foreach ($winners as $winner) {
+    foreach ($winners as $key => $winner) {
+      $rank = $key + 1;
       $contestWinner = new \YagGames\Model\ContestWinner();
       $contestWinner->contest_media_id = $winner['contest_media_id'];
+      $contestWinner->rank = $rank;
       $contestWinnerTable->insert($contestWinner);
     }
     

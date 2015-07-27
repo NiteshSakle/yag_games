@@ -57,16 +57,50 @@
     font-size: 28px;
     font-weight: bold;
     margin: 0% 0% 10% 0%;
-    color: #C8B64C;
+    color: #68398c;
     text-align: left;
 }
 
 .contest-image img {
     width: 100%;
 }
+.contest-winner {
+  position: relative;
+}
+.contest-winner div.progress{
+  position: absolute;
+  top:60px;
+  width:50%;
+  background-color: #d1d3d4; 
+  margin-left: 25%;
+  border-radius:0px;
+  padding: 3px;
+  height: 25px;
+  box-shadow:none;
+  -webkit-box-shadow:none;
+}
+.progress-bar-success{
+  background-color: #e5da7c; 
+  margin-top: -3px;
+  margin-left: -3px;
+  text-align: center;
+  height: 25px;
+}
+.contest-winner .rank {
+  font-size: 36px;
+  color: gray;
+  text-align: center;
+  font-weight: bold;
+  margin: 10px;
+}
+.contest-winner .you_ranked {
+  font-size: 18px;
+  color: #68398c;
+  text-align: center;
+}
 
 .contest-dates {
-    color: blueviolet;
+    color: #68398c;
 }
 
 .gold {
