@@ -6,8 +6,10 @@ return array(
         'secret' => 'wE+UtydBvFbya4ZExuP3xZj40sIlOVT5+zbredQ6',
         'version' => 'latest',
         'region' => 'us-east-1',
-        'bucket' => 'yagdev'
-//        'bucket' => 'yagprod'         
+        'bucket' => 'yagdev',
+        'path' => 'https://s3.amazonaws.com/yagdev/contest/'
         
+//        'bucket' => 'yagprod',         
+//        'path' => 'https://s3.amazonaws.com/yagprod/contest'
     )
 );
