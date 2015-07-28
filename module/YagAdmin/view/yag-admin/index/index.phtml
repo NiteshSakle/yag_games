@@ -98,21 +98,23 @@
             <div>
                 <ul class="pagination pull-right">
                     <li>
-                        <a class="page-number" value="<?php echo $currentPage == 1 ? $totalPages : $currentPage - 1; ?>">
-                            <i class="fa fa-angle-left"></i>
-                        </a>
-                    </li>
-                    <?php for ($i = 1; $i <= $totalPages; $i++) { ?>
-                        <li>
-                            <a class="page-number" value="<?php echo $i; ?>">
-                                <?php echo $i; ?>
+                        <?php if ($totalPages > 1) { ?>
+                            <a class="page-number" value="<?php echo $currentPage == 1 ? $totalPages : $currentPage - 1; ?>">
+                                <i class="fa fa-angle-left"></i>
                             </a>
                         </li>
-                    <?php } ?>
-                    <li>
-                        <a class="page-number" value="<?php echo $currentPage == $totalPages ? 1 : $currentPage + 1; ?>">
-                            <i class="fa fa-angle-right"></i>
-                        </a>
+                        <?php for ($i = 1; $i <= $totalPages; $i++) { ?>
+                            <li>
+                                <a class="page-number" value="<?php echo $i; ?>">
+                                    <?php echo $i; ?>
+                                </a>
+                            </li>
+                        <?php } ?>
+                        <li>
+                            <a class="page-number" value="<?php echo $currentPage == $totalPages ? 1 : $currentPage + 1; ?>">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        <?php } ?>
                     </li>
                 </ul>
             </div>

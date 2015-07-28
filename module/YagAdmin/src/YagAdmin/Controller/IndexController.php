@@ -21,17 +21,18 @@ class IndexController extends BaseController {
 
         $types = array();
         $contests = array();
+        $totalPages = 0;
 
         $page = $this->params()->fromQuery('page', 1);
-        
+
         $types = $this->getContestTypes();
         $data = $this->getContests($page);
 
-        if($data['total']) {
+        if ($data['total']) {
             $totalPages = ceil($data['total'] / 10);
-        }            
-        
-        return new ViewModel(array('types' => $types, 'contests' => $data['contests'], 'currentPage' => $page, 'totalPages'=> $totalPages));
+        }
+
+        return new ViewModel(array('types' => $types, 'contests' => $data['contests'], 'currentPage' => $page, 'totalPages' => $totalPages));
     }
 
     public function contestDetailsAction() {
@@ -146,7 +147,7 @@ class IndexController extends BaseController {
                     }
                 }
             }
-            
+
             if (empty($params['name']) || empty($params['description']) || empty($params['entryEndDate']) || empty($params['winnersAnnounceDate']) || empty($params['votingStartDate']) || empty($params['entryLimit']) || empty($params['type']) || !isset($params['exclusive']) || empty($params['thumbnail'])) {
 
                 $response['success'] = false;

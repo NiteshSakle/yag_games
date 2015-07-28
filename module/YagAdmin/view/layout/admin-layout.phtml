@@ -52,15 +52,28 @@
                 ->prependFile($this->basePath('/library/metronic/template/assets/plugins/jquery-1.10.2.min.js'))
         ;
         ?>
+        
+        <style>
+            .admin-header {
+                height: 75px !important;
+            }
+            .logo { 
+                height: 50px !important;
+            }
+            .admin-dropdown {
+                padding: 20px 0px !important;
+            }
+        </style>
+        
     </head>
     <body class="page-header-fixed">
 
-        <div class="header navbar navbar-fixed-top">
+        <div class="header navbar navbar-fixed-top admin-header">
             <!-- BEGIN TOP NAVIGATION BAR -->
             <div class="header-inner">
                 <!-- BEGIN LOGO -->
                 <a class="navbar-brand" href="<?php echo $this->basePath('manager'); ?>">
-                    <img src="<?php echo $this->basePath('img/logo.png') ?>" alt="logo" class="img-responsive">
+                    <img src="<?php echo $this->basePath('img/logo.png') ?>" alt="logo" class="img-responsive logo">
                 </a>
                 <!-- END LOGO -->
                 <!-- BEGIN RESPONSIVE MENU TOGGLER -->
@@ -69,7 +82,7 @@
                 </a>
                 <!-- END RESPONSIVE MENU TOGGLER -->
                 <!-- BEGIN TOP NAVIGATION MENU -->
-                <ul class="nav navbar-nav pull-right">
+                <ul class="nav navbar-nav pull-right admin-dropdown">
                     <!-- BEGIN USER LOGIN DROPDOWN -->
                     <li class="dropdown user">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
@@ -81,7 +94,12 @@
                         </a>
                         <ul class="dropdown-menu">	
                             <li>
-                                <a href="<?php echo $this->config('admin_main_site', 'url') . '?notice=logged_out' ?>">
+                                <a href="<?php echo $this->config('admin_main_site', 'url')?>">
+                                    <i class="fa fa-backward"></i> Go to main site
+                                </a>
+                            </li>
+                            <li>
+                                <a href="<?php echo $this->config('admin_main_site', 'login_url') . '?notice=logged_out' ?>">
                                     <i class="fa fa-key"></i> Log Out
                                 </a>
                             </li>

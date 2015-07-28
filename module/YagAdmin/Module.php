@@ -132,7 +132,7 @@ class Module
           switch($code) {
             case 403:
               $controller = $e->getTarget();
-              $controller->plugin('redirect')->toUrl($config['admin_main_site']['url']);
+              $controller->plugin('redirect')->toUrl($config['admin_main_site']['login_url']);
               $e->stopPropagation();
               return FALSE;
               break;
