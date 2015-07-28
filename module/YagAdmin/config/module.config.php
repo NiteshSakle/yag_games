@@ -30,9 +30,10 @@ return array(
             'admin' => array(
                 'type' => 'Segment',
                 'options' => array(
-                    'route'    => '/manager[/:action]',
+                    'route'    => '/manager[/:action][/page/:page]',
                     'constraints' => array(
                         'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'page'     => '[0-9]+'
                     ),
                     'defaults' => array(
                         '__NAMESPACE__' => 'YagAdmin\Controller',

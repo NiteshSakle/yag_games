@@ -22,10 +22,16 @@ class IndexController extends BaseController {
         $types = array();
         $contests = array();
 
+        $page = $this->params()->fromQuery('page', 1);
+        
         $types = $this->getContestTypes();
-        $contests = $this->getContests();
+        $data = $this->getContests($page);
 
-        return new ViewModel(array('types' => $types, 'contests' => $contests));
+        if($data['total']) {
+            $totalPages = ceil($data['total'] / 10);
+        }            
+        
+        return new ViewModel(array('types' => $types, 'contests' => $data['contests'], 'currentPage' => $page, 'totalPages'=> $totalPages));
     }
 
     public function contestDetailsAction() {
@@ -69,7 +75,7 @@ class IndexController extends BaseController {
 
         $request = $this->getRequest();
         if ($request->isPost()) {
-            
+
             $params['id'] = trim($this->getRequest()->getPost('id'));
             $params['name'] = trim($this->getRequest()->getPost('name'));
             $params['description'] = $this->getRequest()->getPost('description');
@@ -140,8 +146,8 @@ class IndexController extends BaseController {
                     }
                 }
             }
-
-            if (empty($params['name']) || empty($params['description']) || empty($params['entryEndDate']) || empty($params['winnersAnnounceDate']) || empty($params['votingStartDate']) || empty($params['entryLimit']) || empty($params['type']) || empty($params['exclusive']) || empty($params['thumbnail'])) {
+            
+            if (empty($params['name']) || empty($params['description']) || empty($params['entryEndDate']) || empty($params['winnersAnnounceDate']) || empty($params['votingStartDate']) || empty($params['entryLimit']) || empty($params['type']) || !isset($params['exclusive']) || empty($params['thumbnail'])) {
 
                 $response['success'] = false;
                 $response['message'] = 'Please fill in all fields';
@@ -154,8 +160,8 @@ class IndexController extends BaseController {
                 $contest->entry_end_date = date('Y-m-d', strtotime($params['entryEndDate']));
                 $contest->winners_announce_date = date('Y-m-d', strtotime($params['winnersAnnounceDate']));
                 $contest->voting_start_date = date('Y-m-d', strtotime($params['votingStartDate']));
-                $contest->max_no_of_photos= $params['entryLimit'];
-                $contest->is_exclusive= $params['exclusive'];
+                $contest->max_no_of_photos = $params['entryLimit'];
+                $contest->is_exclusive = $params['exclusive'];
                 $contest->type_id = $params['type'];
 
                 if ($params['id']) {
@@ -171,6 +177,7 @@ class IndexController extends BaseController {
                     $response['message'] = 'Contest updated successfully';
                 } else {
                     $contest->thumbnail = $params['thumbnail'];
+                    $contest->voting_started = 0;
 
                     $contestTable = $this->getServiceLocator()->get('YagGames\Model\ContestTable');
                     $data = $contestTable->insert($contest);
@@ -239,9 +246,9 @@ class IndexController extends BaseController {
         return $data;
     }
 
-    private function getContests() {
+    private function getContests($page) {
         $contestTable = $this->getServiceLocator()->get('YagGames\Model\ContestTable');
-        $data = $contestTable->fetchAll();
+        $data = $contestTable->getAllContests($page);
         return $data;
     }
 

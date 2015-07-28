@@ -5,26 +5,25 @@ namespace YagGames\Model;
 use Zend\Db\Sql\Expression;
 use Zend\Db\Sql\Select;
 
-class ContestTable extends BaseTable
-{
-  public function insert(Contest $contest)
-  {
-    try {
+class ContestTable extends BaseTable {
 
-      $this->created($contest);
-      if (!$this->isValid($contest)) {
-        return false;
-      }
-      $this->tableGateway->insert($contest->getArrayCopy());
-      $filedId = $this->tableGateway->getLastInsertValue();
-      return $filedId;
-    } catch (\Exception $e) {
-      $this->logger->err($e->getMessage());
-      return false;
+    public function insert(Contest $contest) {
+        try {
+
+            $this->created($contest);
+            if (!$this->isValid($contest)) {
+                return false;
+            }
+            $this->tableGateway->insert($contest->getArrayCopy());
+            $filedId = $this->tableGateway->getLastInsertValue();
+            return $filedId;
+        } catch (\Exception $e) {
+            $this->logger->err($e->getMessage());
+            return false;
+        }
     }
-  }
 
-  public function update(Contest $contest) {
+    public function update(Contest $contest) {
         try {
             $this->updated($contest);
             if (!$this->isValid($contest)) {
@@ -64,7 +63,7 @@ class ContestTable extends BaseTable
             if ($contest->updated_at) {
                 $updated_data['updated_at'] = $contest->updated_at;
             }
-            
+
             $this->tableGateway->update($updated_data, array('id' => $contest->id));
             return true;
         } catch (\Exception $e) {
@@ -73,185 +72,219 @@ class ContestTable extends BaseTable
         }
     }
 
-  public function delete($id)
-  {
-    try {
-      return $this->tableGateway->delete(array('id' => $id));
-    } catch (\Exception $e) {
-      $this->logger->err($e->getMessage());
-      return false;
-    }
-  }
-
-  public function fetchRecord($contestId)
-  {
-    $rowset = $this->tableGateway->select(array('id' => $contestId));
-    $contestRow = $rowset->current();
-    return $contestRow;
-  }
-
-  public function fetchAll()
-  {
-    $select = new \Zend\Db\Sql\Select;
-    $select->from(array('c' => 'contest'))
-            ->join(array('ct' => 'contest_type'), 'ct.id = c.type_id', array('type'))
-            ->columns(array('*'))
-            ->order('entry_end_date desc');
-
-    $statement = $this->getSql()->prepareStatementForSqlObject($select);
-    $resultSet = $statement->execute();
-
-    $types = array();
-    foreach ($resultSet as $row) {
-      $types[] = $row;
-    }
-
-    return $types;
-  }
-
-  public function fetchAllByType($type = '', $user = null, $page = 1, $offset = 10)
-  {
-    try {
-      $select = new Select;
-      $select->from(array('c' => 'contest'))
-              ->columns(array('*', 'my_type' => new Expression('IF(entry_end_date >= NOW(), "new", IF(winners_announce_date >=NOW(), "active", "past"))')))
-              ->join(array('ct' => 'contest_type'), 'ct.id = c.type_id', array('contest_type' => 'type'))
-              ->join(array('cm' => 'contest_media'), 'c.id = cm.contest_id', array('total_entries' => new Expression('COUNT(cm.id)')), 'left')
-              ->group('c.id');
-
-      if ($type == 'new') {
-        $select->where('entry_end_date >= NOW()');
-        
-        // if user log's in, check whether he entered the contest or not
-        if ($user) {
-          $select->join(array('m' => 'ps4_media'), new Expression('cm.media_id = m.media_id AND m.owner = ?', $user), array('entered' => new Expression('IF(m.media_id, 1, 0 )')), 'left');
+    public function delete($id) {
+        try {
+            return $this->tableGateway->delete(array('id' => $id));
+        } catch (\Exception $e) {
+            $this->logger->err($e->getMessage());
+            return false;
         }
-      } elseif ($type == 'active') {
-        
-        $select->where('entry_end_date <= NOW() AND winners_announce_date >= NOW()');
-      } elseif ($type == 'past') {
-        // if user log's in, check whether his media rank
-        if ($user) {
-          $select->join(array('m' => 'ps4_media'), new Expression('cm.media_id = m.media_id AND m.owner = ?', $user), array('entered' => new Expression('IF(m.media_id, 1, 0 )')), 'left');
-          $select->join(array('cw' => 'contest_winner'), 'cm.id = cw.contest_media_id', array('rank'), 'left');
+    }
+
+    public function fetchRecord($contestId) {
+        $rowset = $this->tableGateway->select(array('id' => $contestId));
+        $contestRow = $rowset->current();
+        return $contestRow;
+    }
+
+    public function fetchAll() {
+        $select = new \Zend\Db\Sql\Select;
+        $select->from(array('c' => 'contest'))
+                ->join(array('ct' => 'contest_type'), 'ct.id = c.type_id', array('type'))
+                ->columns(array('*'))
+                ->order('entry_end_date desc');
+
+        $statement = $this->getSql()->prepareStatementForSqlObject($select);
+        $resultSet = $statement->execute();
+
+        $types = array();
+        foreach ($resultSet as $row) {
+            $types[] = $row;
         }
-        
-        $select->where('winners_announce_date <= NOW()');
-      } elseif ($type == 'my') {
-        // show only user medias
-        $select->join(array('cm1' => 'contest_media'), 'c.id = cm1.contest_id', 'media_id')
-                ->join(array('m' => 'ps4_media'), 'cm1.media_id = m.media_id', 'media_id')
-                ->join(array('cw' => 'contest_winner'), 'cm1.id = cw.contest_media_id', array('rank'), 'left')
-                ->where(array('m.owner' => $user));
-      } elseif ($type == 'exclusive') {
-        $select->where(array('c.is_exclusive' => 1));
-      }
 
-      $select->quantifier(new Expression('SQL_CALC_FOUND_ROWS'));
-      $select->order('c.entry_end_date');
-      $select->group('c.id');
-      $select->limit($offset);
-      $select->offset(($page - 1) * $offset);
-
-      $statement = $this->getSql()->prepareStatementForSqlObject($select);
-      $resultSet = $statement->execute();
-      
-      $contests = array();
-      foreach ($resultSet as $row) {
-        $contests[] = $row;
-      }
-
-      return array(
-          "total" => $this->getFoundRows(),
-          "contests" => $contests
-      );
-    } catch (\Exception $e) {
-      $this->logException($e);
-      return array(
-          "total" => 0,
-          "contests" => array()
-      );
+        return $types;
     }
-  }
 
-  public function getContestArtistEmails($contestId)
-  {
-    try {
-      $sql = $this->getSql();
-      $query = $sql->select()
-              ->from(array('c' => 'contest'))
-              ->join(array('cm' => 'contest_media'), 'cm.contest_id = c.id', array())
-              ->join(array('m' => 'ps4_media'), 'm.media_id = cm.media_id', array())
-              ->join(array('u' => 'ps4_members'), 'm.owner = u.mem_id', array('username', 'f_name', 'email'))
-              ->where(array(
-                  'c.id' => $contestId,
-              ))
-              ->group('u.id');
+    public function fetchAllByType($type = '', $user = null, $page = 1, $offset = 10) {
+        try {
+            $select = new Select;
+            $select->from(array('c' => 'contest'))
+                    ->columns(array('*', 'my_type' => new Expression('IF(entry_end_date >= NOW(), "new", IF(winners_announce_date >=NOW(), "active", "past"))')))
+                    ->join(array('ct' => 'contest_type'), 'ct.id = c.type_id', array('contest_type' => 'type'))
+                    ->join(array('cm' => 'contest_media'), 'c.id = cm.contest_id', array('total_entries' => new Expression('COUNT(cm.id)')), 'left')
+                    ->group('c.id');
 
-      $rows = $sql->prepareStatementForSqlObject($query)->execute();
+            if ($type == 'new') {
+                $select->where('entry_end_date >= NOW()');
 
-      $contest = array();
-      foreach ($rows as $row) {
-        $contest[] = $row['email'];
-      }
+                // if user log's in, check whether he entered the contest or not
+                if ($user) {
+                    $select->join(array('m' => 'ps4_media'), new Expression('cm.media_id = m.media_id AND m.owner = ?', $user), array('entered' => new Expression('IF(m.media_id, 1, 0 )')), 'left');
+                }
+            } elseif ($type == 'active') {
 
-      return $contest;
-    } catch (\Exception $e) {
-      $this->logException($e);
-      return false;
+                $select->where('entry_end_date <= NOW() AND winners_announce_date >= NOW()');
+            } elseif ($type == 'past') {
+                // if user log's in, check whether his media rank
+                if ($user) {
+                    $select->join(array('m' => 'ps4_media'), new Expression('cm.media_id = m.media_id AND m.owner = ?', $user), array('entered' => new Expression('IF(m.media_id, 1, 0 )')), 'left');
+                    $select->join(array('cw' => 'contest_winner'), 'cm.id = cw.contest_media_id', array('rank'), 'left');
+                }
+
+                $select->where('winners_announce_date <= NOW()');
+            } elseif ($type == 'my') {
+                // show only user medias
+                $select->join(array('cm1' => 'contest_media'), 'c.id = cm1.contest_id', 'media_id')
+                        ->join(array('m' => 'ps4_media'), 'cm1.media_id = m.media_id', 'media_id')
+                        ->join(array('cw' => 'contest_winner'), 'cm1.id = cw.contest_media_id', array('rank'), 'left')
+                        ->where(array('m.owner' => $user));
+            } elseif ($type == 'exclusive') {
+                $select->where(array('c.is_exclusive' => 1));
+            }
+
+            $select->quantifier(new Expression('SQL_CALC_FOUND_ROWS'));
+            $select->order('c.entry_end_date');
+            $select->group('c.id');
+            $select->limit($offset);
+            $select->offset(($page - 1) * $offset);
+
+            $statement = $this->getSql()->prepareStatementForSqlObject($select);
+            $resultSet = $statement->execute();
+
+            $contests = array();
+            foreach ($resultSet as $row) {
+                $contests[] = $row;
+            }
+
+            return array(
+                "total" => $this->getFoundRows(),
+                "contests" => $contests
+            );
+        } catch (\Exception $e) {
+            $this->logException($e);
+            return array(
+                "total" => 0,
+                "contests" => array()
+            );
+        }
     }
-  }
 
-  public function getVotingReadyContests()
-  {
-    try {
-      $sql = $this->getSql();
-      $query = $sql->select()
-              ->from(array('c' => 'contest'))
-              ->where(array(
-                  'c.voting_started' => 0,
-                  new Expression('DATE(c.voting_start_date) <= CURDATE()')
-              ))
-              ->group('c.id');
+    public function getContestArtistEmails($contestId) {
+        try {
+            $sql = $this->getSql();
+            $query = $sql->select()
+                    ->from(array('c' => 'contest'))
+                    ->join(array('cm' => 'contest_media'), 'cm.contest_id = c.id', array())
+                    ->join(array('m' => 'ps4_media'), 'm.media_id = cm.media_id', array())
+                    ->join(array('u' => 'ps4_members'), 'm.owner = u.mem_id', array('username', 'f_name', 'email'))
+                    ->where(array(
+                        'c.id' => $contestId,
+                    ))
+                    ->group('u.id');
 
-      $rows = $sql->prepareStatementForSqlObject($query)->execute();
+            $rows = $sql->prepareStatementForSqlObject($query)->execute();
 
-      $contest = array();
-      foreach ($rows as $row) {
-        $contest[] = $row;
-      }
+            $contest = array();
+            foreach ($rows as $row) {
+                $contest[] = $row['email'];
+            }
 
-      return $contest;
-    } catch (\Exception $e) {
-      $this->logException($e);
-      return false;
+            return $contest;
+        } catch (\Exception $e) {
+            $this->logException($e);
+            return false;
+        }
     }
-  }
 
-  public function getWinnersToBeAnouncedContests()
-  {
-    try {
-      $sql = $this->getSql();
-      $query = $sql->select()
-              ->from(array('c' => 'contest'))
-              ->where(array(
-                  'c.voting_started' => 1,
-                  new Expression('DATE(c.winners_announce_date) = CURDATE()')
-              ))
-              ->group('c.id');
+    public function getVotingReadyContests() {
+        try {
+            $sql = $this->getSql();
+            $query = $sql->select()
+                    ->from(array('c' => 'contest'))
+                    ->where(array(
+                        'c.voting_started' => 0,
+                        new Expression('DATE(c.voting_start_date) <= CURDATE()')
+                    ))
+                    ->group('c.id');
 
-      $rows = $sql->prepareStatementForSqlObject($query)->execute();
+            $rows = $sql->prepareStatementForSqlObject($query)->execute();
 
-      $contest = array();
-      foreach ($rows as $row) {
-        $contest[] = $row;
-      }
+            $contest = array();
+            foreach ($rows as $row) {
+                $contest[] = $row;
+            }
 
-      return $contest;
-    } catch (\Exception $e) {
-      $this->logException($e);
-      return false;
+            return $contest;
+        } catch (\Exception $e) {
+            $this->logException($e);
+            return false;
+        }
     }
-  }
+
+    public function getWinnersToBeAnouncedContests() {
+        try {
+            $sql = $this->getSql();
+            $query = $sql->select()
+                    ->from(array('c' => 'contest'))
+                    ->where(array(
+                        'c.voting_started' => 1,
+                        new Expression('DATE(c.winners_announce_date) = CURDATE()')
+                    ))
+                    ->group('c.id');
+
+            $rows = $sql->prepareStatementForSqlObject($query)->execute();
+
+            $contest = array();
+            foreach ($rows as $row) {
+                $contest[] = $row;
+            }
+
+            return $contest;
+        } catch (\Exception $e) {
+            $this->logException($e);
+            return false;
+        }
+    }
+
+    public function getAllContests($page = 1) {
+        try {
+            $offset = 0;
+            $limit = 10;
+            if ($page > 1) {
+                $offset = $page * 10 - 10;
+            }
+
+            $select = new \Zend\Db\Sql\Select;
+            $select->from(array('c' => 'contest'))
+                    ->join(array('ct' => 'contest_type'), 'ct.id = c.type_id', array('type'))
+                    ->columns(array('*'))
+                    ->group('c.id')
+                    ->order('entry_end_date desc')
+                    ->limit($limit)
+                    ->offset($offset);
+
+            $select->quantifier(new Expression('SQL_CALC_FOUND_ROWS'));
+
+            //echo $select->getSqlString();exit;
+            
+            $statement = $this->getSql()->prepareStatementForSqlObject($select);
+            $resultSet = $statement->execute();
+
+            $contests = array();
+            foreach ($resultSet as $row) {
+                $contests[] = $row;
+            }
+            return array(
+                "total" => $this->getFoundRows(),
+                "contests" => $contests
+            );
+        } catch (\Exception $e) {
+            $this->logException($e);
+            return array(
+                "total" => 0,
+                "contests" => array()
+            );
+        }
+    }
 
 }
