@@ -143,3 +143,8 @@
 	text-transform:uppercase;
 	z-index:100000;
 }
+
+.alert ul {
+  margin:0px;
+  padding-left: 0px;
+}
