@@ -21,7 +21,7 @@ def build():
 
     # create files
     printAndFlush('== CREATING FILES from DIST ==') 
-    for file in ['local.php', 'phpSettings.local.php']:        
+    for file in ['local.php', 'aws.local.php', 'phpSettings.local.php']:        
         copyFileIfDestDoesNotExist(_projectDir + '/config/autoload/' + file + '.dist', _projectDir + '/config/autoload/' + file)
 
     # create folders
