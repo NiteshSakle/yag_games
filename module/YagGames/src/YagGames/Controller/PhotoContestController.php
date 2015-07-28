@@ -29,8 +29,23 @@ class PhotoContestController extends BaseController
     $contestId = $this->params()->fromRoute('id', null);
     $contestTable = $this->getServiceLocator()->get('YagGames\Model\ContestTable');
     $contest = $contestTable->fetchRecord($contestId);
+    $contest = (array) $contest;
     if (!$contest) {
-      throw new Exception("No contest found", 404);
+      $this->flashMessenger()->addErrorMessage('No contest found');
+
+      return $this->redirect()->toRoute('photo-contest', array(
+          'id' => $contestId,
+          'action' => 'voting'
+      ));
+    }
+    
+    if ($contest['voting_started']) {
+      $this->flashMessenger()->addErrorMessage('Voting has already started');
+
+      return $this->redirect()->toRoute('photo-contest', array(
+          'id' => $contestId,
+          'action' => 'voting'
+      ));
     }
 
     $showPopupDiv = 0;
