@@ -6,7 +6,8 @@ use Zend\Db\Sql\Expression;
 use Zend\Db\Sql\Select;
 
 class ContestTable extends BaseTable {
-
+    
+    //ADMIN: adding a new contest
     public function insert(Contest $contest) {
         try {
 
@@ -23,6 +24,7 @@ class ContestTable extends BaseTable {
         }
     }
 
+    //ADMIN: editing a existing contest
     public function update(Contest $contest) {
         try {
             $this->updated($contest);
@@ -72,6 +74,7 @@ class ContestTable extends BaseTable {
         }
     }
 
+    //ADMIN: removing a existing contest
     public function delete($id) {
         try {
             return $this->tableGateway->delete(array('id' => $id));
@@ -246,6 +249,7 @@ class ContestTable extends BaseTable {
         }
     }
 
+    //ADMIN: get all contests page wise(page_size = 10)
     public function getAllContests($page = 1) {
         try {
             $offset = 0;

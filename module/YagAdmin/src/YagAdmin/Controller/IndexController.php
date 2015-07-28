@@ -16,6 +16,7 @@ use Aws\S3\S3Client;
 
 class IndexController extends BaseController {
 
+    //displaying all contests pagewise(page_size = 10)
     public function indexAction() {
         $this->checkLogin();
 
@@ -35,6 +36,7 @@ class IndexController extends BaseController {
         return new ViewModel(array('types' => $types, 'contests' => $data['contests'], 'currentPage' => $page, 'totalPages' => $totalPages));
     }
 
+    //displaying particular contest details and all the photos uploaded to that contest
     public function contestDetailsAction() {
         $this->checkLogin();
 
@@ -54,6 +56,7 @@ class IndexController extends BaseController {
         return new ViewModel(array('contestDetails' => $contestDetails, 'contestPhotos' => $contestPhotos));
     }
 
+    //returning particular contest details for edit operation
     public function getContestDetailAction() {
         $this->checkLogin();
 
@@ -69,6 +72,7 @@ class IndexController extends BaseController {
         return new JsonModel(array('data' => $data));
     }
 
+    //adding and editing of contest
     public function saveContestAction() {
         $this->checkLogin();
 
@@ -87,11 +91,22 @@ class IndexController extends BaseController {
             $params['type'] = $this->getRequest()->getPost('type');
             $params['exclusive'] = $this->getRequest()->getPost('exclusive');
             $thumbnail = $this->getRequest()->getFiles('thumbnail');
+
+            //checking for all the empty fields here except thumbnail to avoid multiple uploading of thumbnails
+            if (empty($params['name']) || empty($params['description']) || empty($params['entryEndDate']) || empty($params['winnersAnnounceDate']) || empty($params['votingStartDate']) || empty($params['entryLimit']) || empty($params['type']) || !isset($params['exclusive'])) {
+
+                $response['success'] = false;
+                $response['message'] = 'Please fill in all fields';
+                return new JsonModel($response);
+            }
+
+            //checking for whether a thumbnail is uploaded or not
             if (($thumbnail['error'] == 4 || $thumbnail['size'] == 0) && isset($params['id'])) {
-                $params['thumbnail'] = 'NOT_UPDATED';
+                $params['thumbnail'] = 'NOT_UPDATED'; //set to NOT_UPDATED while editing a contest, will be used further
             } else {
                 $fileType = $thumbnail['type'];
                 $allowedImageTypes = array("image/pjpeg", "image/jpeg", "image/jpg", "image/png", "image/x-png", "image/gif");
+                //checking for valid image file
                 if ($thumbnail['error'] == 4 || $thumbnail['size'] == 0 || !in_array($thumbnail['type'], $allowedImageTypes)) {
                     $response['success'] = false;
                     $response['message'] = 'Please attach a valid image';
@@ -103,6 +118,7 @@ class IndexController extends BaseController {
                     $config = $this->getConfig();
                     $destination = $config['upload_path'] . $name;
 
+                    //saving the thumbnail to local server
                     if (move_uploaded_file($thumbnail['tmp_name'], $destination)) {
 
                         $pathToS3File = "contest/" . $name;
@@ -113,6 +129,7 @@ class IndexController extends BaseController {
                         $version = $config['aws']['version'];
                         $region = $config['aws']['region'];
 
+                        //creating a s3 client
                         $s3Client = S3Client::factory(array(
                                     'credentials' => array(
                                         'key' => $aws_key,
@@ -122,6 +139,7 @@ class IndexController extends BaseController {
                                     'version' => $version
                         ));
 
+                        //putting the thumbnail(object) in s3 server in the specified bucket
                         try {
                             $s3Client->putObject([
                                 'Bucket' => 'yagdev',
@@ -148,10 +166,12 @@ class IndexController extends BaseController {
                 }
             }
 
-            if (empty($params['name']) || empty($params['description']) || empty($params['entryEndDate']) || empty($params['winnersAnnounceDate']) || empty($params['votingStartDate']) || empty($params['entryLimit']) || empty($params['type']) || !isset($params['exclusive']) || empty($params['thumbnail'])) {
+            //checking only for thumbnail here because checked for all other fields before uploading thumbnail
+            if (empty($params['thumbnail'])) {
 
                 $response['success'] = false;
                 $response['message'] = 'Please fill in all fields';
+                return new JsonModel($response);
             } else {
 
                 $contest = new \YagGames\Model\Contest();
@@ -165,6 +185,7 @@ class IndexController extends BaseController {
                 $contest->is_exclusive = $params['exclusive'];
                 $contest->type_id = $params['type'];
 
+                //checking for editing(updating) or creating(insert) the contest
                 if ($params['id']) {
                     $contest->id = $params['id'];
                     if ($params['thumbnail'] != 'NOT_UPDATED') {
@@ -196,6 +217,7 @@ class IndexController extends BaseController {
         return new JsonModel($response);
     }
 
+    //deleting some contest
     public function deleteContestAction() {
         $response = array();
 
@@ -218,6 +240,7 @@ class IndexController extends BaseController {
         return new JsonModel($response);
     }
 
+    //removing a media from a contest(wrongly upload by user)
     public function deleteContestMediaAction() {
         $response = array();
 

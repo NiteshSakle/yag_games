@@ -30,7 +30,8 @@ return array(
     ),
         
     'admin_main_site' => array(
-        'url' => 'http://localhost/yag/manager/mgr.login.php',
+        'login_url' => 'http://localhost/yag/manager/mgr.login.php',
+        'url' => 'http://localhost/yag/manager/mgr.welcome.php',
     ),
     
     'view_manager' => array(
