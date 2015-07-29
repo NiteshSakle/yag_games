@@ -14,9 +14,16 @@
     <a class="pull-left" href="<?php echo $this->config('admin_main_site', 'url') ?>">
         <i class="fa fa-backward"></i> Go to main site
     </a>
-    <a class="btn btn-primary pull-right open-modal" data-toggle="modal" href="#create-contest-modal">
-        Create Contest
-    </a>
+    <?php
+    if ($is_reviewer) {
+        //don't show create contest
+    } else {
+        ?>
+        <a class="btn btn-primary pull-right open-modal" data-toggle="modal" href="#create-contest-modal">
+            Create Contest
+        </a>
+<?php } ?>
+
     <div class="portlet">
         <div class="portlet-title">
             <div class="caption">
@@ -52,47 +59,58 @@
                             <th>
                                 <i class="fa"></i> Type
                             </th>
-                            <th>
-                            </th>
+                            <?php
+                            if ($is_reviewer) {
+                                //don't show create contest
+                            } else {
+                                ?><th>
+                                </th>
+                        <?php } ?>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($contests as $contest) { ?>
+<?php foreach ($contests as $contest) { ?>
                             <tr>
                                 <td>                                    
                                     <img src="<?php echo $this->config()['aws']['path'] . $contest['thumbnail']; ?>" alt="Image not available" style="width:100px" />
                                 </td>
                                 <td class="highlight">
                                     <a class="name" contest_id="<?php echo $contest['id']; ?>">
-                                        <?php echo $contest['name']; ?>
+                                    <?php echo $contest['name']; ?>
                                     </a>
                                 </td>
                                 <td>
-                                    <?php echo $contest['entry_end_date']; ?>
+    <?php echo $contest['entry_end_date']; ?>
                                 </td>
                                 <td>
-                                    <?php echo $contest['voting_start_date']; ?>
+    <?php echo $contest['voting_start_date']; ?>
                                 </td>
                                 <td>
-                                    <?php echo $contest['winners_announce_date']; ?>
+    <?php echo $contest['winners_announce_date']; ?>
                                 </td>
                                 <td>
-                                    <?php echo $contest['max_no_of_photos']; ?>
+    <?php echo $contest['max_no_of_photos']; ?>
                                 </td>
                                 <td>
-                                    <?php echo $contest['is_exclusive'] ? 'YES' : 'NO'; ?>
+                                <?php echo $contest['is_exclusive'] ? 'YES' : 'NO'; ?>
                                 </td>
                                 <td>
-                                    <?php echo $contest['type']; ?>
+                                <?php echo $contest['type']; ?>
                                 </td>
-                                <td>
-                                    <a contest_id="<?php echo $contest['id']; ?>" class="btn default btn-xs purple edit">
-                                        <i class="fa fa-edit"></i> Edit
-                                    </a>
-                                    <a contest_id="<?php echo $contest['id']; ?>" class="btn default btn-xs red delete">
-                                        <i class="fa fa-trash-o"></i> Delete
-                                    </a>
-                                </td>
+    <?php
+    if ($is_reviewer) {
+        //don't show create contest
+    } else {
+        ?>
+                                    <td>
+                                        <a contest_id="<?php echo $contest['id']; ?>" class="btn default btn-xs purple edit">
+                                            <i class="fa fa-edit"></i> Edit
+                                        </a>
+                                        <a contest_id="<?php echo $contest['id']; ?>" class="btn default btn-xs red delete">
+                                            <i class="fa fa-trash-o"></i> Delete
+                                        </a>
+                                    </td>
+    <?php } ?>
                             </tr>
                         <?php } ?>                        
                     </tbody>
@@ -101,7 +119,7 @@
             <div>
                 <ul class="pagination pull-right">
                     <li>
-                        <?php if ($totalPages > 1) { ?>
+<?php if ($totalPages > 1) { ?>
                             <a class="page-number" value="<?php echo $currentPage == 1 ? $totalPages : $currentPage - 1; ?>">
                                 <i class="fa fa-angle-left"></i>
                             </a>
@@ -109,15 +127,15 @@
                         <?php for ($i = 1; $i <= $totalPages; $i++) { ?>
                             <li>
                                 <a class="page-number" value="<?php echo $i; ?>">
-                                    <?php echo $i; ?>
+        <?php echo $i; ?>
                                 </a>
                             </li>
-                        <?php } ?>
+    <?php } ?>
                         <li>
                             <a class="page-number" value="<?php echo $currentPage == $totalPages ? 1 : $currentPage + 1; ?>">
                                 <i class="fa fa-angle-right"></i>
                             </a>
-                        <?php } ?>
+<?php } ?>
                     </li>
                 </ul>
             </div>
@@ -242,9 +260,9 @@
                                                     </span>
                                                 </label>
                                                 <select class="form-control" id="type" name="type">
-                                                    <?php foreach ($types as $type) { ?>
+<?php foreach ($types as $type) { ?>
                                                         <option value="<?php echo $type['id']; ?>"><?php echo $type['type'] ?></option>
-                                                    <?php } ?>
+<?php } ?>
                                                 </select>
                                             </div>
                                             <div class="form-group col-md-6">

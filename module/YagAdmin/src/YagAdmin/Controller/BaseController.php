@@ -17,7 +17,7 @@ class BaseController extends AbstractActionController
   }
 
   public function checkLogin()
-  {
+  { 
     if (!isset($this->session->admin_id)) {
       throw new \Exception('Please login', 403);
     }

@@ -20,6 +20,17 @@ class IndexController extends BaseController {
     public function indexAction() {
         $this->checkLogin();
 
+        $is_reviewer = 0;
+
+        if ($permissions = $_SESSION['admin_user']['permissions']) {
+
+            foreach ($permissions as $permission) {
+                if ($permission == 'reviewer') {
+                    $is_reviewer = 1;
+                    break;
+                }
+            }
+        }
         $types = array();
         $contests = array();
         $totalPages = 0;
@@ -33,7 +44,7 @@ class IndexController extends BaseController {
             $totalPages = ceil($data['total'] / 10);
         }
 
-        return new ViewModel(array('types' => $types, 'contests' => $data['contests'], 'currentPage' => $page, 'totalPages' => $totalPages));
+        return new ViewModel(array('types' => $types, 'contests' => $data['contests'], 'currentPage' => $page, 'totalPages' => $totalPages, 'is_reviewer' => $is_reviewer));
     }
 
     //displaying particular contest details and all the photos uploaded to that contest
@@ -75,143 +86,162 @@ class IndexController extends BaseController {
     //adding and editing of contest
     public function saveContestAction() {
         $this->checkLogin();
+        $is_reviewer = 0;
+
+        if ($permissions = $_SESSION['admin_user']['permissions']) {
+
+            foreach ($permissions as $permission) {
+                if ($permission == 'reviewer') {
+                    $is_reviewer = 1;
+                    break;
+                }
+            }
+        }
 
         $response = array();
 
-        $request = $this->getRequest();
-        if ($request->isPost()) {
+        //checking for correct permissions
+        if ($is_reviewer) {
+            $response['success'] = false;
+            $response['message'] = "You don't have enough permissions";
+            return new JsonModel($response);
+        } else {
 
-            $params['id'] = trim($this->getRequest()->getPost('id'));
-            $params['name'] = trim($this->getRequest()->getPost('name'));
-            $params['description'] = $this->getRequest()->getPost('description');
-            $params['entryEndDate'] = $this->getRequest()->getPost('entryEndDate');
-            $params['winnersAnnounceDate'] = $this->getRequest()->getPost('winnersAnnounceDate');
-            $params['votingStartDate'] = $this->getRequest()->getPost('votingStartDate');
-            $params['entryLimit'] = $this->getRequest()->getPost('entryLimit');
-            $params['type'] = $this->getRequest()->getPost('type');
-            $params['exclusive'] = $this->getRequest()->getPost('exclusive');
-            $thumbnail = $this->getRequest()->getFiles('thumbnail');
+            $request = $this->getRequest();
+            if ($request->isPost()) {
 
-            //checking for all the empty fields here except thumbnail to avoid multiple uploading of thumbnails
-            if (empty($params['name']) || empty($params['description']) || empty($params['entryEndDate']) || empty($params['winnersAnnounceDate']) || empty($params['votingStartDate']) || empty($params['entryLimit']) || empty($params['type']) || !isset($params['exclusive'])) {
+                $params['id'] = trim($this->getRequest()->getPost('id'));
+                $params['name'] = trim($this->getRequest()->getPost('name'));
+                $params['description'] = $this->getRequest()->getPost('description');
+                $params['entryEndDate'] = $this->getRequest()->getPost('entryEndDate');
+                $params['winnersAnnounceDate'] = $this->getRequest()->getPost('winnersAnnounceDate');
+                $params['votingStartDate'] = $this->getRequest()->getPost('votingStartDate');
+                $params['entryLimit'] = $this->getRequest()->getPost('entryLimit');
+                $params['type'] = $this->getRequest()->getPost('type');
+                $params['exclusive'] = $this->getRequest()->getPost('exclusive');
+                $thumbnail = $this->getRequest()->getFiles('thumbnail');
 
-                $response['success'] = false;
-                $response['message'] = 'Please fill in all fields';
-                return new JsonModel($response);
-            }
+                //checking for all the empty fields here except thumbnail to avoid multiple uploading of thumbnails
+                if (empty($params['name']) || empty($params['description']) || empty($params['entryEndDate']) || empty($params['winnersAnnounceDate']) || empty($params['votingStartDate']) || empty($params['entryLimit']) || empty($params['type']) || !isset($params['exclusive'])) {
 
-            //checking for whether a thumbnail is uploaded or not
-            if (($thumbnail['error'] == 4 || $thumbnail['size'] == 0) && isset($params['id'])) {
-                $params['thumbnail'] = 'NOT_UPDATED'; //set to NOT_UPDATED while editing a contest, will be used further
-            } else {
-                $fileType = $thumbnail['type'];
-                $allowedImageTypes = array("image/pjpeg", "image/jpeg", "image/jpg", "image/png", "image/x-png", "image/gif");
-                //checking for valid image file
-                if ($thumbnail['error'] == 4 || $thumbnail['size'] == 0 || !in_array($thumbnail['type'], $allowedImageTypes)) {
                     $response['success'] = false;
-                    $response['message'] = 'Please attach a valid image';
-
+                    $response['message'] = 'Please fill in all fields';
                     return new JsonModel($response);
+                }
+
+                //checking for whether a thumbnail is uploaded or not
+                if (($thumbnail['error'] == 4 || $thumbnail['size'] == 0) && isset($params['id'])) {
+                    $params['thumbnail'] = 'NOT_UPDATED'; //set to NOT_UPDATED while editing a contest, will be used further
                 } else {
+                    $fileType = $thumbnail['type'];
+                    $allowedImageTypes = array("image/pjpeg", "image/jpeg", "image/jpg", "image/png", "image/x-png", "image/gif");
+                    //checking for valid image file
+                    if ($thumbnail['error'] == 4 || $thumbnail['size'] == 0 || !in_array($thumbnail['type'], $allowedImageTypes)) {
+                        $response['success'] = false;
+                        $response['message'] = 'Please attach a valid image';
 
-                    $name = strtotime("now") . $thumbnail['name'];
-                    $config = $this->getConfig();
-                    $destination = $config['upload_path'] . $name;
+                        return new JsonModel($response);
+                    } else {
 
-                    //saving the thumbnail to local server
-                    if (move_uploaded_file($thumbnail['tmp_name'], $destination)) {
+                        $name = strtotime("now") . $thumbnail['name'];
+                        $config = $this->getConfig();
+                        $destination = $config['upload_path'] . $name;
 
-                        $pathToS3File = "contest/" . $name;
+                        //saving the thumbnail to local server
+                        if (move_uploaded_file($thumbnail['tmp_name'], $destination)) {
 
-                        $aws_key = $config['aws']['key'];
-                        $aws_secret = $config['aws']['secret'];
-                        $bucket = $config['aws']['bucket'];
-                        $version = $config['aws']['version'];
-                        $region = $config['aws']['region'];
+                            $pathToS3File = "contest/" . $name;
 
-                        //creating a s3 client
-                        $s3Client = S3Client::factory(array(
-                                    'credentials' => array(
-                                        'key' => $aws_key,
-                                        'secret' => $aws_secret,
-                                    ),
-                                    'region' => $region,
-                                    'version' => $version
-                        ));
+                            $aws_key = $config['aws']['key'];
+                            $aws_secret = $config['aws']['secret'];
+                            $bucket = $config['aws']['bucket'];
+                            $version = $config['aws']['version'];
+                            $region = $config['aws']['region'];
 
-                        //putting the thumbnail(object) in s3 server in the specified bucket
-                        try {
-                            $s3Client->putObject([
-                                'Bucket' => 'yagdev',
-                                'Key' => $pathToS3File,
-                                'Body' => fopen($destination, 'r'),
-                                'ACL' => 'public-read',
-                            ]);
+                            //creating a s3 client
+                            $s3Client = S3Client::factory(array(
+                                        'credentials' => array(
+                                            'key' => $aws_key,
+                                            'secret' => $aws_secret,
+                                        ),
+                                        'region' => $region,
+                                        'version' => $version
+                            ));
 
-                            unlink($destination);
-                        } catch (Aws\Exception\S3Exception $e) {
+                            //putting the thumbnail(object) in s3 server in the specified bucket
+                            try {
+                                $s3Client->putObject([
+                                    'Bucket' => 'yagdev',
+                                    'Key' => $pathToS3File,
+                                    'Body' => fopen($destination, 'r'),
+                                    'ACL' => 'public-read',
+                                ]);
+
+                                unlink($destination);
+                            } catch (Aws\Exception\S3Exception $e) {
+                                $response['success'] = false;
+                                $response['message'] = 'There was problem while uploading image to s3';
+
+                                return new JsonModel($response);
+                            }
+
+                            $params['thumbnail'] = $name;
+                        } else {
                             $response['success'] = false;
-                            $response['message'] = 'There was problem while uploading image to s3';
+                            $response['message'] = 'There was problem while uploading image';
 
                             return new JsonModel($response);
                         }
-
-                        $params['thumbnail'] = $name;
-                    } else {
-                        $response['success'] = false;
-                        $response['message'] = 'There was problem while uploading image';
-
-                        return new JsonModel($response);
                     }
                 }
-            }
 
-            //checking only for thumbnail here because checked for all other fields before uploading thumbnail
-            if (empty($params['thumbnail'])) {
+                //checking only for thumbnail here because checked for all other fields before uploading thumbnail
+                if (empty($params['thumbnail'])) {
 
-                $response['success'] = false;
-                $response['message'] = 'Please fill in all fields';
-                return new JsonModel($response);
+                    $response['success'] = false;
+                    $response['message'] = 'Please fill in all fields';
+                    return new JsonModel($response);
+                } else {
+
+                    $contest = new \YagGames\Model\Contest();
+
+                    $contest->name = $params['name'];
+                    $contest->description = $params['description'];
+                    $contest->entry_end_date = date('Y-m-d', strtotime($params['entryEndDate']));
+                    $contest->winners_announce_date = date('Y-m-d', strtotime($params['winnersAnnounceDate']));
+                    $contest->voting_start_date = date('Y-m-d', strtotime($params['votingStartDate']));
+                    $contest->max_no_of_photos = $params['entryLimit'];
+                    $contest->is_exclusive = $params['exclusive'];
+                    $contest->type_id = $params['type'];
+
+                    //checking for editing(updating) or creating(insert) the contest
+                    if ($params['id']) {
+                        $contest->id = $params['id'];
+                        if ($params['thumbnail'] != 'NOT_UPDATED') {
+                            $contest->thumbnail = $params['thumbnail'];
+                        }
+
+                        $contestTable = $this->getServiceLocator()->get('YagGames\Model\ContestTable');
+                        $data = $contestTable->update($contest);
+
+                        $response['success'] = true;
+                        $response['message'] = 'Contest updated successfully';
+                    } else {
+                        $contest->thumbnail = $params['thumbnail'];
+                        $contest->voting_started = 0;
+
+                        $contestTable = $this->getServiceLocator()->get('YagGames\Model\ContestTable');
+                        $data = $contestTable->insert($contest);
+
+                        $response['success'] = true;
+                        $response['message'] = 'Contest created successfully';
+                    }
+                }
             } else {
 
-                $contest = new \YagGames\Model\Contest();
-
-                $contest->name = $params['name'];
-                $contest->description = $params['description'];
-                $contest->entry_end_date = date('Y-m-d', strtotime($params['entryEndDate']));
-                $contest->winners_announce_date = date('Y-m-d', strtotime($params['winnersAnnounceDate']));
-                $contest->voting_start_date = date('Y-m-d', strtotime($params['votingStartDate']));
-                $contest->max_no_of_photos = $params['entryLimit'];
-                $contest->is_exclusive = $params['exclusive'];
-                $contest->type_id = $params['type'];
-
-                //checking for editing(updating) or creating(insert) the contest
-                if ($params['id']) {
-                    $contest->id = $params['id'];
-                    if ($params['thumbnail'] != 'NOT_UPDATED') {
-                        $contest->thumbnail = $params['thumbnail'];
-                    }
-
-                    $contestTable = $this->getServiceLocator()->get('YagGames\Model\ContestTable');
-                    $data = $contestTable->update($contest);
-
-                    $response['success'] = true;
-                    $response['message'] = 'Contest updated successfully';
-                } else {
-                    $contest->thumbnail = $params['thumbnail'];
-                    $contest->voting_started = 0;
-
-                    $contestTable = $this->getServiceLocator()->get('YagGames\Model\ContestTable');
-                    $data = $contestTable->insert($contest);
-
-                    $response['success'] = true;
-                    $response['message'] = 'Contest created successfully';
-                }
+                $response['success'] = false;
+                $response['message'] = 'BAD REQUEST';
             }
-        } else {
-
-            $response['success'] = false;
-            $response['message'] = 'BAD REQUEST';
         }
 
         return new JsonModel($response);
@@ -220,22 +250,41 @@ class IndexController extends BaseController {
     //deleting some contest
     public function deleteContestAction() {
         $response = array();
+        if ($permissions = $_SESSION['admin_user']['permissions']) {
 
-        $request = $this->getRequest();
-        if ($request->isPost()) {
-            $id = trim($this->getRequest()->getPost('id'));
-            $contestTable = $this->getServiceLocator()->get('YagGames\Model\ContestTable');
-            if ($contestTable->delete($id)) {
-                $response['success'] = true;
-                $response['message'] = 'Deleted successfully';
-            } else {
-                $response['success'] = false;
-                $response['message'] = 'Some error occured while deleting';
+            foreach ($permissions as $permission) {
+                if ($permission == 'reviewer') {
+                    $is_reviewer = 1;
+                    break;
+                }
             }
+        }
+
+        $response = array();
+
+        //checking for correct permissions
+        if ($is_reviewer) {
+            $response['success'] = false;
+            $response['message'] = "You don't have enough permissions";
+            return new JsonModel($response);
         } else {
 
-            $response['success'] = false;
-            $response['message'] = 'BAD REQUEST';
+            $request = $this->getRequest();
+            if ($request->isPost()) {
+                $id = trim($this->getRequest()->getPost('id'));
+                $contestTable = $this->getServiceLocator()->get('YagGames\Model\ContestTable');
+                if ($contestTable->delete($id)) {
+                    $response['success'] = true;
+                    $response['message'] = 'Deleted successfully';
+                } else {
+                    $response['success'] = false;
+                    $response['message'] = 'Some error occured while deleting';
+                }
+            } else {
+
+                $response['success'] = false;
+                $response['message'] = 'BAD REQUEST';
+            }
         }
         return new JsonModel($response);
     }
