@@ -247,7 +247,7 @@ class PhotoContestController extends BaseController
       if (!$mediaId || !$contestId) {
         return new JsonModel(array(
             'success' => false,
-            'message' => 'Bad Requestss'
+            'message' => 'Bad Request'
         ));
       }
 

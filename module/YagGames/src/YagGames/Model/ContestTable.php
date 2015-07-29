@@ -115,18 +115,34 @@ class ContestTable extends BaseTable {
                     ->columns(array('*', 'my_type' => new Expression('IF(entry_end_date >= NOW(), "new", IF(winners_announce_date >=NOW(), "active", "past"))')))
                     ->join(array('ct' => 'contest_type'), 'ct.id = c.type_id', array('contest_type' => 'type'))
                     ->join(array('cm' => 'contest_media'), 'c.id = cm.contest_id', array('total_entries' => new Expression('COUNT(cm.id)')), 'left')
-                    ->group('c.id');
+                    ;
+            
+            $subColumns = array('inner_contest_id' => 'contest_id', 'total_ratings_count' => new Expression('COUNT(cm2.id)'));
+            $contestMediaCountQry = $this->getSql()->select()
+                      ->from(array('cm2' => 'contest_media'))
+                      ->columns($subColumns)
+                      ->group('cm2.contest_id');
 
             if ($type == 'new') {
-                $select->where('entry_end_date >= NOW()');
-
+                $select->join(array('cm_sub' => $contestMediaCountQry), 'cm_sub.inner_contest_id = cm.contest_id', array('total_ratings_count'), 'left');
+                $select->where('c.entry_end_date >= CURDATE() AND c.voting_started = 0');
+                
+                $select->where->nest
+                                ->lessThan('total_ratings_count', 'c.max_no_of_photos')
+                                ->or
+                                ->isNull('total_ratings_count')
+                              ->unnest;
+                
                 // if user log's in, check whether he entered the contest or not
                 if ($user) {
                     $select->join(array('m' => 'ps4_media'), new Expression('cm.media_id = m.media_id AND m.owner = ?', $user), array('entered' => new Expression('IF(m.media_id, 1, 0 )')), 'left');
                 }
             } elseif ($type == 'active') {
 
-                $select->where('entry_end_date <= NOW() AND winners_announce_date >= NOW()');
+              $select->join(array('cm_sub' => $contestMediaCountQry), 'cm_sub.inner_contest_id = cm.contest_id', array('total_ratings_count'), 'left');
+              $select->where('(entry_end_date <= NOW() AND winners_announce_date >= NOW())');
+              $select->where->or->greaterThanOrEqualTo('total_ratings_count', 'c.max_no_of_photos');
+              
             } elseif ($type == 'past') {
                 // if user log's in, check whether his media rank
                 if ($user) {
@@ -150,7 +166,7 @@ class ContestTable extends BaseTable {
             $select->group('c.id');
             $select->limit($offset);
             $select->offset(($page - 1) * $offset);
-
+            
             $statement = $this->getSql()->prepareStatementForSqlObject($select);
             $resultSet = $statement->execute();
 
