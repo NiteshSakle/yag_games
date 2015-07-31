@@ -1,6 +1,6 @@
 
 <div class="col-md-4 contest-buttons ">
-  <?php if ($contest['entered']): ?>
+  <?php if (isset($contest['entered']) && $contest['entered']): ?>
     <button class="btn btn-default">You're In</button>
   <?php else: ?>
     <button class="btn btn-default" onclick="window.location = '<?php echo $this->basePath() ?>/<?php echo $contestType; ?>/submission/<?php echo $contest['id']; ?>'">Enter Contest</button>
