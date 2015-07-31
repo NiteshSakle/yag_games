@@ -1,101 +1,109 @@
 <div  class="home_content clearfix">
-  <div class="inner_main clearfix">
-    <div class="inner_txt clearfix">
-      <h1 class="page-titleHead">Artist Challenge & Contests</h1>
-    </div>
-  </div>
-
-  <?php $session = $this->session(); ?>
-  <div class="navigation clearfix">
-    <ul>
-      <li><a <?php echo $type == 'new' ? 'class="nav_active"' : ""; ?> href="<?php echo $this->basePath() ?>/new-contest">New Contests</a></li>
-      <li><a <?php echo $type == 'active' ? 'class="nav_active"' : ""; ?> href="<?php echo $this->basePath() ?>/active-contest">Active Contests</a></li>
-      <li><a <?php echo $type == 'past' ? 'class="nav_active"' : ""; ?> href="<?php echo $this->basePath() ?>/past-contest">Past Contests</a></li>
-      <?php if ($session->mem_id): ?>
-        <li><a <?php echo $type == 'my' ? 'class="nav_active"' : ""; ?> href="<?php echo $this->basePath() ?>/my-contest">My Contests</a></li>
-        <li><a <?php echo $type == 'exclusive' ? 'class="nav_active"' : ""; ?> href="<?php echo $this->basePath() ?>/exclusive-contest">Exclusive Contests</a></li>
-      <?php else: ?>
-        <li><a id="loginPopup2" <?php echo $type == 'my' ? 'class="nav_active"' : ""; ?> href="<?php echo $this->config('main_site', 'url') ?>/workbox.php?mode=loginPopup&login_type=artist">My Contests</a></li>
-        <li><a id="loginPopup5" <?php echo $type == 'my' ? 'class="nav_active"' : ""; ?> href="<?php echo $this->config('main_site', 'url') ?>/workbox.php?mode=loginPopup&login_type=artist">Exclusive Contests</a></li>
-      <?php endif; ?> 
-    </ul>
-  </div>
-
-  <div class="contest-list clearfix">
-    <?php foreach ($data as $contest): ?>
-      <div class="contest row">
-        <div class="col-md-4">
-          <?php 
-            $titleClass = 'contest-title';
-            if ($this->getHelperPluginManager()->getServiceLocator()->get('Application')->getMvcEvent()->getRouteMatch()->getParam('action') == 'exclusive-contest') {
-              $titleClass = 'contest-title gold';
-            }
-          ?>
-          <div class="<?php echo $titleClass; ?>"><?php echo $contest['name']; ?></div>
-          <div class="contest-description">
-            <?php echo $contest['description']; ?>
-            <br>
-            <br>
-            <div class="contest-dates">
-              Enter by: <?php echo $contest['entry_end_date']; ?>
-              <br>
-              Winner Announced: <?php echo $contest['winners_announce_date']; ?>
-            </div>                
-          </div>
-        </div>        
-        <div class="contest-image col-md-4">
-            <img src="<?php echo $this->config('aws', 'path') . $contest['thumbnail']; ?>"  alt="Contest Photo" />
+    <div class="inner_main clearfix">
+        <div class="inner_txt clearfix">
+            <h1 class="page-titleHead">Artist Challenge & Contests</h1>
         </div>
+    </div>
+
+    <?php $session = $this->session(); ?>
+    <div class="navigation clearfix">
+        <ul>
+            <li><a <?php echo $type == 'new' ? 'class="nav_active"' : ""; ?> href="<?php echo $this->basePath() ?>/new-contest">New Contests</a></li>
+            <li><a <?php echo $type == 'active' ? 'class="nav_active"' : ""; ?> href="<?php echo $this->basePath() ?>/active-contest">Active Contests</a></li>
+            <li><a <?php echo $type == 'past' ? 'class="nav_active"' : ""; ?> href="<?php echo $this->basePath() ?>/past-contest">Past Contests</a></li>
+            <?php if ($session->mem_id): ?>
+                <li><a <?php echo $type == 'my' ? 'class="nav_active"' : ""; ?> href="<?php echo $this->basePath() ?>/my-contest">My Contests</a></li>
+                <li><a <?php echo $type == 'exclusive' ? 'class="nav_active"' : ""; ?> href="<?php echo $this->basePath() ?>/exclusive-contest">Exclusive Contests</a></li>
+            <?php else: ?>
+                <li><a id="loginPopup2" <?php echo $type == 'my' ? 'class="nav_active"' : ""; ?> href="<?php echo $this->config('main_site', 'url') ?>/workbox.php?mode=loginPopup&login_type=artist">My Contests</a></li>
+                <li><a id="loginPopup5" <?php echo $type == 'my' ? 'class="nav_active"' : ""; ?> href="<?php echo $this->config('main_site', 'url') ?>/workbox.php?mode=loginPopup&login_type=artist">Exclusive Contests</a></li>
+            <?php endif; ?> 
+        </ul>
+    </div>
+
+    <div class="contest-list clearfix">
         <?php
-        switch ($type) {
-          case 'new':
-            $partial = 'new_rsidebar.phtml';
-            break;
-          case 'active':
-            $partial = 'active_rsidebar.phtml';
-            break;
-          case 'past':
-            $partial = 'past_rsidebar.phtml';
-            break;
-          case 'my':
-            $partial = 'my_rsidebar.phtml';
-            break;
-          case 'exclusive':
-            $partial = 'exclusive_rsidebar.phtml';
-            break;
-          case 'default':
-            $partial = 'my_rsidebar.phtml';
+        if (empty($data)) {
+            echo "No contests available";
+        } else {
+            foreach ($data as $contest):
+                ?>
+                <div class="contest row">
+                    <div class="col-md-4">
+                        <?php
+                        $titleClass = 'contest-title';
+                        if ($this->getHelperPluginManager()->getServiceLocator()->get('Application')->getMvcEvent()->getRouteMatch()->getParam('action') == 'exclusive-contest') {
+                            $titleClass = 'contest-title gold';
+                        }
+                        ?>
+                        <div class="<?php echo $titleClass; ?>"><?php echo $contest['name']; ?></div>
+                        <div class="contest-description">
+                            <?php echo $contest['description']; ?>
+                            <br>
+                            <br>
+                            <div class="contest-dates">
+                                Enter by: <?php echo $contest['entry_end_date']; ?>
+                                <br>
+                                Winner Announced: <?php echo $contest['winners_announce_date']; ?>
+                            </div>                
+                        </div>
+                    </div>        
+                    <div class="contest-image col-md-4">
+                        <img src="<?php echo $this->config('aws', 'path') . $contest['thumbnail']; ?>"  alt="Contest Photo" />
+                    </div>
+                    <?php
+                    switch ($type) {
+                        case 'new':
+                            $partial = 'new_rsidebar.phtml';
+                            break;
+                        case 'active':
+                            $partial = 'active_rsidebar.phtml';
+                            break;
+                        case 'past':
+                            $partial = 'past_rsidebar.phtml';
+                            break;
+                        case 'my':
+                            $partial = 'my_rsidebar.phtml';
+                            break;
+                        case 'exclusive':
+                            $partial = 'exclusive_rsidebar.phtml';
+                            break;
+                        case 'default':
+                            $partial = 'my_rsidebar.phtml';
+                    }
+
+                    switch ($contest['contest_type']) {
+                        case 'Photo Contest':
+                            $contestType = 'photo-contest';
+                            break;
+                        case 'Fan Favorite':
+                            $contestType = 'fan-favorite';
+                            break;
+                        case 'default':
+                            $contestType = 'brackets';
+                    }
+
+                    echo $this->partial($partial, array(
+                        'contest' => $contest,
+                        'type' => $type,
+                        'contestType' => $contestType,
+                    ));
+                    ?>
+                </div>
+            <?php endforeach;
         }
-        
-        switch ($contest['contest_type']) {
-          case 'Photo Contest':
-            $contestType = 'photo-contest';
-            break;
-          case 'Fan Favorite':
-            $contestType = 'fan-favorite';
-            break;
-          case 'default':
-            $contestType = 'brackets';
-        }
-        
-        echo $this->partial($partial, array(
-            'contest' => $contest,
-            'type' => $type,
-            'contestType' => $contestType,
-        ));
         ?>
-      </div>
-    <?php endforeach; ?>
-  </div>
-  
-  <?php
-  echo $this->paginationControl($this->paginator, 'Sliding', 'paginator-slide', array(
-        'route' => 'home', 
+
+    </div>
+
+    <?php
+    echo $this->paginationControl($this->paginator, 'Sliding', 'paginator-slide', array(
+        'route' => 'home',
         'routeParams' => array(
             'action' => $this->getHelperPluginManager()->getServiceLocator()->get('Application')->getMvcEvent()->getRouteMatch()->getParam('action')
-        ), 
+        ),
         'queryParams' => array(
-          )
-      ));
-  ?>
+        )
+    ));
+    ?>
 </div>
