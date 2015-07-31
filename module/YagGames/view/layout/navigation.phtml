@@ -16,7 +16,7 @@
                 <li><a href="<?php echo $this->config('main_site', 'url') ?>/artist.welcome.php">Artist Portfolio</a></li>
             <?php endif; ?> 
         <?php else: ?>
-            <li><a id="loginPopup3" href="<?php echo $this->config('main_site', 'url') ?>/workbox.php?mode=loginPopup">Artist Portfolio</a></li>
+            <li><a id="loginPopup3" href="<?php echo $this->config('main_site', 'url') ?>/workbox.php?mode=loginPopup&login_type=artist">Artist Portfolio</a></li>
         <?php endif; ?>
 
         <?php if ($session->mem_id): ?>
@@ -26,7 +26,7 @@
                 <li><a href="<?php echo $this->config('main_site', 'url') ?>/buyer.welcome.php" >Buyer Account</a></li>
             <?php endif; ?> 
         <?php else: ?>
-            <li><a id="loginPopup4" href="<?php echo $this->config('main_site', 'url') ?>/workbox.php?mode=loginPopup">Buyer Account</a></li>    
+            <li><a id="loginPopup4" href="<?php echo $this->config('main_site', 'url') ?>/workbox.php?mode=loginPopup&login_type=buyer">Buyer Account</a></li>    
         <?php endif; ?>
       </ul>
     </li>
@@ -48,7 +48,7 @@
         ,</a>
         <a href="<?php echo $this->config('main_site', 'url') ?>/login.php?cmd=logout">Logout</a></div></li>
     <?php else: ?>
-        <li><a id="loginPopup" href="<?php echo $this->config('main_site', 'url') ?>/workbox.php?mode=loginPopup">Login or Join for FREE</a></li>
+        <li><a id="loginPopup" href="<?php echo $this->config('main_site', 'url') ?>/workbox.php?mode=loginPopup&login_type=both">Login or Join for FREE</a></li>
     <?php endif; ?>
   </ul>
 </nav>
