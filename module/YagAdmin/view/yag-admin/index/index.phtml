@@ -72,7 +72,7 @@
 <?php foreach ($contests as $contest) { ?>
                             <tr>
                                 <td>                                    
-                                    <img src="<?php echo $this->config()['aws']['path'] . $contest['thumbnail']; ?>" alt="Image not available" style="width:100px" />
+                                    <img src="<?php echo $this->config('aws', 'path') . $contest['thumbnail']; ?>" alt="Image not available" style="width:100px" />
                                 </td>
                                 <td class="highlight">
                                     <a class="name" contest_id="<?php echo $contest['id']; ?>">

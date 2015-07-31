@@ -44,7 +44,7 @@
           </div>
         </div>        
         <div class="contest-image col-md-4">
-          <img src="<?php echo $this->basePath() ?>/img/contest/thumbnail/<?php echo $contest['thumbnail']; ?>"  alt="Contest Photo" />
+            <img src="<?php echo $this->config('aws', 'path') . $contest['thumbnail']; ?>"  alt="Contest Photo" />
         </div>
         <?php
         switch ($type) {
