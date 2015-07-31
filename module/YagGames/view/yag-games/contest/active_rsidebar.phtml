@@ -3,7 +3,7 @@
   <?php if ($contest['voting_started']): ?>
     <button class="btn btn-default" onclick="window.location='<?php echo $this->basePath() ?>/<?php echo $contestType; ?>/voting/<?php echo $contest['id']; ?>'">Vote Now</button>
   <?php else: ?>
-    <button class="btn btn-default">Vote Soon</button>
+    <button class="btn btn-default" disabled>Vote Soon</button>
   <?php endif; ?> 
   <br>
   <button class="btn btn-default"  onclick="window.location = '<?php echo $this->basePath() ?>/<?php echo $contestType; ?>/learn-more/<?php echo $contest['id']; ?>'">Learn More</button>
