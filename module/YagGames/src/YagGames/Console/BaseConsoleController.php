@@ -57,7 +57,7 @@ class BaseConsoleController extends AbstractActionController
     $mailer = $this->getMailer();
     $config = $this->getServiceLocator()->get('Config');
     try {
-      $body = $mailer->getBody($template, $data);
+      $body = $mailer->getMailBody($template, $data);
       
       if (is_array($toEmail)) {
         foreach ($toEmail as $email) {

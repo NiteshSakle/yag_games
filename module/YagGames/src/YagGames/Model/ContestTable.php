@@ -199,7 +199,7 @@ class ContestTable extends BaseTable {
                     ->where(array(
                         'c.id' => $contestId,
                     ))
-                    ->group('u.id');
+                    ->group('u.mem_id');
 
             $rows = $sql->prepareStatementForSqlObject($query)->execute();
 
@@ -217,22 +217,22 @@ class ContestTable extends BaseTable {
 
     public function getVotingReadyContests() {
         try {
+            
+            $where = new \Zend\Db\Sql\Where();
+            $where->equalTo('c.voting_started', '0')
+                    ->lessThanOrEqualTo('c.voting_start_date', new Expression('CURDATE()'));
             $sql = $this->getSql();
             $query = $sql->select()
                     ->from(array('c' => 'contest'))
-                    ->where(array(
-                        'c.voting_started' => 0,
-                        new Expression('DATE(c.voting_start_date) <= CURDATE()')
-                    ))
+                    ->where($where)
                     ->group('c.id');
-
+            
             $rows = $sql->prepareStatementForSqlObject($query)->execute();
-
             $contest = array();
             foreach ($rows as $row) {
                 $contest[] = $row;
             }
-
+            
             return $contest;
         } catch (\Exception $e) {
             $this->logException($e);

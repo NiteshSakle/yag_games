@@ -5,7 +5,7 @@
         </div>
     </div>
 
-    <?php $session = $this->session(); ?>
+    <?php $session = $this->session();?>
     <div class="navigation clearfix">
         <ul>
             <li><a <?php echo $type == 'new' ? 'class="nav_active"' : ""; ?> href="<?php echo $this->basePath() ?>/new-contest">New Contests</a></li>
@@ -13,7 +13,9 @@
             <li><a <?php echo $type == 'past' ? 'class="nav_active"' : ""; ?> href="<?php echo $this->basePath() ?>/past-contest">Past Contests</a></li>
             <?php if ($session->mem_id): ?>
                 <li><a <?php echo $type == 'my' ? 'class="nav_active"' : ""; ?> href="<?php echo $this->basePath() ?>/my-contest">My Contests</a></li>
-                <li><a <?php echo $type == 'exclusive' ? 'class="nav_active"' : ""; ?> href="<?php echo $this->basePath() ?>/exclusive-contest">Exclusive Contests</a></li>
+                <?php if ($session->membership == 4): ?>
+                    <li><a <?php echo $type == 'exclusive' ? 'class="nav_active"' : ""; ?> href="<?php echo $this->basePath() ?>/exclusive-contest">Exclusive Contests</a></li>
+                <?php endif; ?>
             <?php else: ?>
                 <li><a id="loginPopup2" <?php echo $type == 'my' ? 'class="nav_active"' : ""; ?> href="<?php echo $this->config('main_site', 'url') ?>/workbox.php?mode=loginPopup&login_type=artist">My Contests</a></li>
                 <li><a id="loginPopup5" <?php echo $type == 'my' ? 'class="nav_active"' : ""; ?> href="<?php echo $this->config('main_site', 'url') ?>/workbox.php?mode=loginPopup&login_type=artist">Exclusive Contests</a></li>
@@ -90,7 +92,8 @@
                     ));
                     ?>
                 </div>
-            <?php endforeach;
+            <?php
+            endforeach;
         }
         ?>
 
