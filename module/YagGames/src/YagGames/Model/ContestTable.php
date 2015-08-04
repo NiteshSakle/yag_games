@@ -125,9 +125,15 @@ class ContestTable extends BaseTable {
 
             if ($type == 'new') {
                 $select->join(array('cm_sub' => $contestMediaCountQry), 'cm_sub.inner_contest_id = cm.contest_id', array('total_ratings_count'), 'left');
-                $select->where('c.entry_end_date >= CURDATE() AND c.voting_started = 0 AND c.is_exclusive <> 1');
+                $select->where('c.entry_end_date >= CURDATE()');
+                $select->where->and->notEqualTo('c.is_exclusive', '1');
+                $select->where('(total_ratings_count < c.max_no_of_photos OR total_ratings_count IS NULL)');
                 
-                $select->where('total_ratings_count < c.max_no_of_photos OR total_ratings_count IS NULL');
+//                $select->where->nest
+//                                ->lessThan('total_ratings_count', 'c.max_no_of_photos')
+//                                ->or
+//                                ->isNull('total_ratings_count')
+//                              ->unnest;
                 
                 // if user log's in, check whether he entered the contest or not
                 if ($user) {
@@ -136,7 +142,8 @@ class ContestTable extends BaseTable {
             } elseif ($type == 'active') {
 
               $select->join(array('cm_sub' => $contestMediaCountQry), 'cm_sub.inner_contest_id = cm.contest_id', array('total_ratings_count'), 'left');
-              $select->where('(entry_end_date <= CURDATE() AND winners_announce_date >= CURDATE() AND c.is_exclusive <> 1)');
+              $select->where('(entry_end_date < CURDATE() AND winners_announce_date > CURDATE())');
+              $select->where->and->notEqualTo('c.is_exclusive', '1');
               $select->where->or->greaterThanOrEqualTo('total_ratings_count', 'c.max_no_of_photos');
               
             } elseif ($type == 'past') {
@@ -146,7 +153,7 @@ class ContestTable extends BaseTable {
                     $select->join(array('cw' => 'contest_winner'), 'cm.id = cw.contest_media_id', array('rank'), 'left');
                 }
 
-                $select->where('winners_announce_date <= CURDATE() AND c.is_exclusive <> 1');
+                $select->where('winners_announce_date <= NOW() AND c.is_exclusive <> 1');
             } elseif ($type == 'my') {
                 // show only user medias
                 $select->join(array('cm1' => 'contest_media'), 'c.id = cm1.contest_id', 'media_id')
@@ -170,7 +177,7 @@ class ContestTable extends BaseTable {
             foreach ($resultSet as $row) {
                 $contests[] = $row;
             }
-
+            
             return array(
                 "total" => $this->getFoundRows(),
                 "contests" => $contests
