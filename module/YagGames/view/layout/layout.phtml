@@ -3,82 +3,93 @@
 <!--[if IE 7]>         <html lang="en" class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html lang="en" class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html lang="en" class="no-js"> <!--<![endif]-->
-  <head>
-    <meta charset="utf-8">
-    <?php echo $this->headTitle('Online Galleries- Your Art Gallery- Buy Sell Share Art &ndash; Your Art Gallery')->setAutoEscape(false) ?>
+    <head>
+        <meta charset="utf-8">
+        <?php echo $this->headTitle('Online Galleries- Your Art Gallery- Buy Sell Share Art &ndash; Your Art Gallery')->setAutoEscape(false) ?>
 
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
-    <meta name="description" content="Your Art Gallery is an easy to use online gallery for artists to share, buy, and sell Fine Art photography. Create your own gallery or browse for your perfect art piece today!">
-    <meta name="keywords" content="Art Photography, Photography, Canvas Prints, Fine Art Gallery, eGallery, Image Gallery, Stock Images, Photographic Art, Digital Imaging Photography, Stock Pictures, Create Your Gallery, Online Gallery, Buy Art, Sell My Art, Online Portfolio, Create Your Portfolio, Portfolios">
-    <meta name="robots" content="index, follow">
-    <link rel="shortcut icon" href="<?php echo $this->basePath('favicon.ico') ?>"/>
+        <meta name="description" content="Your Art Gallery is an easy to use online gallery for artists to share, buy, and sell Fine Art photography. Create your own gallery or browse for your perfect art piece today!">
+        <meta name="keywords" content="Art Photography, Photography, Canvas Prints, Fine Art Gallery, eGallery, Image Gallery, Stock Images, Photographic Art, Digital Imaging Photography, Stock Pictures, Create Your Gallery, Online Gallery, Buy Art, Sell My Art, Online Portfolio, Create Your Portfolio, Portfolios">
+        <meta name="robots" content="index, follow">
+        <link rel="shortcut icon" href="<?php echo $this->basePath('favicon.ico') ?>"/>
 
-    <link rel="stylesheet" type="text/css" href="<?php echo $this->basePath() ?>/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="<?php echo $this->config('main_site', 'theme_assets_path') ?>/css/normalize.min.css">
-    <link rel="stylesheet" type="text/css" href="<?php echo $this->config('main_site', 'theme_assets_path') ?>/style.main.css">
-    <link rel="stylesheet" type="text/css" href="<?php echo $this->config('main_site', 'theme_assets_path') ?>/css/main.css">
-    <link rel="stylesheet" type="text/css" href="<?php echo $this->config('main_site', 'theme_assets_path') ?>/css/demo.css" />
-    <link rel="stylesheet" type="text/css" href="<?php echo $this->config('main_site', 'theme_assets_path') ?>/css/custom-css.css">    
-    <link rel="stylesheet" type="text/css" href="<?php echo $this->basePath() ?>/css/custom.css">
+        <link rel="stylesheet" type="text/css" href="<?php echo $this->basePath() ?>/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="<?php echo $this->config('main_site', 'theme_assets_path') ?>/css/normalize.min.css">
+        <link rel="stylesheet" type="text/css" href="<?php echo $this->config('main_site', 'theme_assets_path') ?>/style.main.css">
+        <link rel="stylesheet" type="text/css" href="<?php echo $this->config('main_site', 'theme_assets_path') ?>/css/main.css">
+        <link rel="stylesheet" type="text/css" href="<?php echo $this->config('main_site', 'theme_assets_path') ?>/css/demo.css" />
+        <link rel="stylesheet" type="text/css" href="<?php echo $this->config('main_site', 'theme_assets_path') ?>/css/custom-css.css">    
+        <link rel="stylesheet" type="text/css" href="<?php echo $this->basePath() ?>/css/custom.css">
 
-    <script>
-      var browser = {'mobile': '0', 'iOS': '0'};
-      var baseURL = '<?php echo $this->config('main_site', 'url') ?>';
-      var gameBasePath = '<?php echo $this->basePath() ?>';
-    </script>
-    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-    <script type="text/javascript" src="<?php echo $this->basePath() ?>/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/js/jquery.browser.min.js"></script>
-    <script type="text/javascript" src="<?php echo $this->config('main_site', 'url') ?>/assets/javascript/shared.min.js"></script>
-    <script type="text/javascript" src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/js/theme.js"></script>
-    <script type="text/javascript" src="<?php echo $this->config('main_site', 'url') ?>/assets/javascript/public.min.js"></script>  
-    <script type="text/javascript" src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/js/modernizr.js"></script>
-    <script type="text/javascript" src="<?php echo $this->config('main_site', 'url') ?>/assets/javascript/custom.js"></script>
-    <script type="text/javascript" src="<?php echo $this->config('main_site', 'url') ?>/assets/javascript/login.js"></script>
+        <script>
+            var browser = {'mobile': '0', 'iOS': '0'};
+            var baseURL = '<?php echo $this->config('main_site', 'url') ?>';
+            var gameBasePath = '<?php echo $this->basePath() ?>';
+        </script>
+        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+        <script type="text/javascript" src="<?php echo $this->basePath() ?>/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/js/jquery.browser.min.js"></script>
+        <script type="text/javascript" src="<?php echo $this->config('main_site', 'url') ?>/assets/javascript/shared.min.js"></script>
+        <script type="text/javascript" src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/js/theme.js"></script>
+        <script type="text/javascript" src="<?php echo $this->config('main_site', 'url') ?>/assets/javascript/public.min.js"></script>  
+        <script type="text/javascript" src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/js/modernizr.js"></script>
+        <script type="text/javascript" src="<?php echo $this->config('main_site', 'url') ?>/assets/javascript/custom.js"></script>
+        <script type="text/javascript" src="<?php echo $this->config('main_site', 'url') ?>/assets/javascript/login.js"></script>
 
-  </head>
-  <body>
-    <div id="overlay">&nbsp;</div>
-    <div id="workbox"></div>
-    <div id="hoverWindow"><div id="hoverWindowInner"></div></div>
-    <div class="header-container">    
-      <header class="wrapper clearfix">
-        <h1 class="title"><a href="<?php echo $this->config('main_site', 'url') ?>"><img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/logo.png" alt=""></a></h1>
-        <div class="inner_righttop">
-          <div class="search_box">
-            <form id="searchFormTest" action="<?php echo $this->config('main_site', 'url') ?>/search.php" method="get">
-              <label>Search</label><input type="text" id="searchPhrase" name="searchPhrase">
-              <input type="hidden" name="clearSearch" value="true">
-            </form>
-          </div>
-          <?php echo $this->partial('navigation.phtml'); ?>
+        <style>
+            // to override bootstrap's box-sizing for login pop ups
+            .miniWorkbox *,
+            .miniWorkbox *:before,
+            .miniWorkbox *:after {
+                -webkit-box-sizing: content-box !important;
+                -moz-box-sizing: content-box !important;
+                box-sizing: content-box !important;
+            }
+        </style>
+
+    </head>
+    <body>
+        <div id="overlay">&nbsp;</div>
+        <div id="workbox"></div>
+        <div id="hoverWindow"><div id="hoverWindowInner"></div></div>
+        <div class="header-container">    
+            <header class="wrapper clearfix">
+                <h1 class="title"><a href="<?php echo $this->config('main_site', 'url') ?>"><img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/logo.png" alt=""></a></h1>
+                <div class="inner_righttop">
+                    <div class="search_box">
+                        <form id="searchFormTest" action="<?php echo $this->config('main_site', 'url') ?>/search.php" method="get">
+                            <label>Search</label><input type="text" id="searchPhrase" name="searchPhrase">
+                            <input type="hidden" name="clearSearch" value="true">
+                        </form>
+                    </div>
+                    <?php echo $this->partial('navigation.phtml'); ?>
+                </div>
+            </header>
         </div>
-      </header>
-    </div>
-    
-    <div class="wrapper flashMessages">
-      <?php
-      $flash = $this->flashMessenger();
-      $flash->setMessageOpenFormat('<div%s>
+
+        <div class="wrapper flashMessages">
+            <?php
+            $flash = $this->flashMessenger();
+            $flash->setMessageOpenFormat('<div%s>
           <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
               &times;
           </button>
           <ul><li>')
-          ->setMessageSeparatorString('</li><li>')
-          ->setMessageCloseString('</li></ul></div>');
+                    ->setMessageSeparatorString('</li><li>')
+                    ->setMessageCloseString('</li></ul></div>');
 
-      echo $flash->render('error',   array('alert', 'alert-dismissible', 'alert-danger'));
-      ?>
-    </div>
+            echo $flash->render('error', array('alert', 'alert-dismissible', 'alert-danger'));
+            ?>
+        </div>
 
-    <div class="container">
-      <div class="main wrapper clearfix">
-          <?php echo $this->content; ?>            
-      </div>
-    </div> <!-- /container -->
-    <?php echo $this->partial('footer.phtml'); ?>
-    <?php echo $this->inlineScript() ?>
-  </body>
+        <div class="container">
+            <div class="main wrapper clearfix">
+                <?php echo $this->content; ?>            
+            </div>
+        </div> <!-- /container -->
+        <?php echo $this->partial('footer.phtml'); ?>
+        <?php echo $this->inlineScript() ?>
+    </body>
 </html>

@@ -128,7 +128,7 @@ class Module
           switch($code) {
             case 401:
               $controller = $e->getTarget();
-              $controller->plugin('redirect')->toUrl($config['main_site']['url'] . '/index.php?mode=login');
+              $controller->plugin('redirect')->toUrl($config['main_site']['url'] . '/index.php?mode=login&login_type=both');
               $e->stopPropagation();
               return FALSE;
               break;

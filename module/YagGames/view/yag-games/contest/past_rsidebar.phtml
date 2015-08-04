@@ -6,20 +6,16 @@
   <br><br>
   <div class="contest-winner">
     <?php if (empty($contest['rank'])):?>
-    <img src="<?php echo $this->basePath() ?>/img/congratulation.png"  alt="contest status" />
-    <div class="progress">
-      <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-        CLOSED
-      </div>
+    <img src="<?php echo $this->basePath() ?>/img/closed.png"  alt="contest status" style="width:40%" />
     </div>
     <?php elseif ($contest['rank'] == 1) :?>
     <div class="you_ranked">You Ranked</div>
     <div class="rank">WINNER</div>
-    <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/artbio_img1.png"  alt="contest status" />
+    <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/trophy.png"  alt="contest status" style="width:40%" />
     <?php else:?>
     <div class="you_ranked">You Ranked</div>
     <div class="rank">Top 10</div>
-    <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/artbio_img1.png"  alt="contest status" />
+    <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/trophy.png"  alt="contest status" style="width:40%" />
     <?php endif;?>
   </div>
   

@@ -1,3 +1,11 @@
+<style>
+    .rate-it-popup .rangetitle1{
+        font-family: Arial; 
+        font-size: 20px !important; 
+        font-weight: bold !important; 
+        color: #663f8e !important;
+    }
+</style>
 <script type="text/javascript" src="<?php echo $this->config('main_site', 'url') ?>/assets/javascript/workbox.js"></script>
 <script type="text/javascript">
   $('#closeWorkbox').click(function () {
@@ -114,13 +122,13 @@
       <div>Artist: <?php echo $media['f_name'] ?></div>            	
     </div>
     <div class="rate-it-category">
-      <div class="category-name"> <?php echo $media['totalRated'] + 1 ?>/200</div>  
+      <div class="category-name"> <?php echo $media['totalRated'] + 1 ?>/<?php echo $media['count'] ?></div>  
     </div>
 
   </div>
   <?php elseif ($mediaId): ?>
   <div class="rate-it-wrapper">
-    <div class="rangetitle1 animalcol"><?php echo $media['contest_name']; ?></div>
+<!--    <div class="rangetitle1 animalcol"><?php echo $media['contest_name']; ?></div>-->
     <div class="rate-it-image">
       <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/close.button.png" id="closeWorkbox">
     </div>
@@ -133,7 +141,7 @@
   </div>
   <?php else: ?>
   <div class="rate-it-wrapper">
-    <div class="rangetitle1 animalcol"><?php echo $media['contest_name']; ?></div>
+<!--    <div class="rangetitle1 animalcol"><?php echo $media['contest_name']; ?></div>-->
     <div class="rate-it-image">
       <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/close.button.png" id="closeWorkbox">
     </div>

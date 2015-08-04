@@ -198,7 +198,7 @@ class ContestMediaTable extends BaseTable {
         try {
             $limit = 1;
             $sql = $this->getSql();
-            $columns = array('contest_name' => 'name', 'votes' => new Expression('COUNT(cmr.id)'));
+            $columns = array('contest_name' => 'name', 'max_no_of_photos', 'votes' => new Expression('COUNT(cmr.id)'));
             $query = $sql->select()
                     ->from(array('c' => 'contest'))
                     ->join(array('cm' => 'contest_media'), 'cm.contest_id = c.id', array('*'))
@@ -240,6 +240,8 @@ class ContestMediaTable extends BaseTable {
             $rows = $sql->prepareStatementForSqlObject($query)->execute();
             $row = $rows->current();
             if ($row) {
+                $count = $this->getContestMediaCount($contestId, $userId);
+                $row['count'] = $count['count'];
                 return $row;
             } else {
                 return false;
