@@ -142,9 +142,9 @@ class ContestTable extends BaseTable {
             } elseif ($type == 'active') {
 
               $select->join(array('cm_sub' => $contestMediaCountQry), 'cm_sub.inner_contest_id = cm.contest_id', array('total_ratings_count'), 'left');
-              $select->where('(entry_end_date < CURDATE() AND winners_announce_date > CURDATE())');
-              $select->where->and->notEqualTo('c.is_exclusive', '1');
-              $select->where->or->greaterThanOrEqualTo('total_ratings_count', 'c.max_no_of_photos');
+              $select->where('(entry_end_date < CURDATE() AND winners_announce_date > CURDATE()) AND c.is_exclusive <> 1 OR total_ratings_count >= c.max_no_of_photos');
+//              $select->where->and->notEqualTo('c.is_exclusive', '1');
+//              $select->where->or->greaterThanOrEqualTo('total_ratings_count', 'c.max_no_of_photos');
               
             } elseif ($type == 'past') {
                 // if user log's in, check whether his media rank
