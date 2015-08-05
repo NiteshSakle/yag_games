@@ -1,10 +1,18 @@
 
 <div class="col-md-4 contest-buttons ">
+  <?php $session = $this->session();  ?>
   <?php if (isset($contest['entered']) && $contest['entered']): ?>
     <button class="btn btn-default">You're In</button>
+  <?php elseif ($session->mem_id): ?>
+      <?php if ($session->login_as_buyer == 1): ?>
+          <button id="loginPopup4" class="btn btn-default" href="<?php echo $this->config('main_site', 'url') ?>/workbox.php?mode=loginPopup&login_type=artist">Enter Contest</button>
+      <?php else: ?>
+          <button class="btn btn-default" onclick="window.location = '<?php echo $this->basePath() ?>/<?php echo $contestType; ?>/submission/<?php echo $contest['id']; ?>'">Enter Contest</button>   
+      <?php endif; ?> 
   <?php else: ?>
-    <button class="btn btn-default" onclick="window.location = '<?php echo $this->basePath() ?>/<?php echo $contestType; ?>/submission/<?php echo $contest['id']; ?>'">Enter Contest</button>
+    <button id="loginPopup4" class="btn btn-default" href="<?php echo $this->config('main_site', 'url') ?>/workbox.php?mode=loginPopup&login_type=artist">Enter Contest</button>
   <?php endif; ?> 
+    
   <br>
   <button class="btn btn-default"  onclick="window.location = '<?php echo $this->basePath() ?>/<?php echo $contestType; ?>/learn-more/<?php echo $contest['id']; ?>'">Learn More</button>
   <br>
