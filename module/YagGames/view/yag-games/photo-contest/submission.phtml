@@ -266,72 +266,68 @@
     $('#submitNewImage').click(function () {
         uploadArt(contestId);
     });
-            function showSuccessPopup() {
-                $('#popUpDiv').css('top', ($(window).height() / 2 - 100) + 'px');
-                        $('#popUpDiv').show();
-                        function showSuccessPopup(type) {
-                            popup(type)
-                            ;
-                            >>> >>> > 9d660dbdc3a64c3565d41c22b0e84a1a710fe464
-                                    $('div#overlay').css('display', 'block');
-                            $('div#overlay').css('opacity', '0.47');
-                            $('div#blanket').css('height', '0');
-                        }
+    function showSuccessPopup() {
+        $('#popUpDiv').css('top', ($(window).height() / 2 - 100) + 'px');
+        $('#popUpDiv').show();
+        $('div#overlay').css('display', 'block');
+        $('div#overlay').css('opacity', '0.47');
+        $('div#blanket').css('height', '0');
+    }
 
-                function hideSuccessPopup() {
-                    $('#popUpDiv').hide();
-                    $('div#overlay').css('display', 'none');
-                }
+    function hideSuccessPopup() {
+        $('#popUpDiv').hide();
+        $('div#overlay').css('display', 'none');
+    }
 
-                function submitArt(contestId, mediaId) {
-                    var request = $.ajax({
-                        url: gameBasePath + '/photo-contest/art-submission',
-                        type: "POST",
-                        data: {'media_id': mediaId, 'contestId': contestId},
-                        dataType: 'json',
-                        beforeSend: function () {
-                            $("#ajaxBusy").removeClass('hide');
-                        },
-                        complete: function () {
-                            $("#ajaxBusy").addClass('hide');
-                        }
-                    });
+    function submitArt(contestId, mediaId) {
+        var request = $.ajax({
+            url: gameBasePath + '/photo-contest/art-submission',
+            type: "POST",
+            data: {'media_id': mediaId, 'contestId': contestId},
+            dataType: 'json',
+            beforeSend: function () {
+                $("#ajaxBusy").removeClass('hide');
+            },
+            complete: function () {
+                $("#ajaxBusy").addClass('hide');
+            }
+        });
 
-                    request.done(function (msg) {
-                        if (msg.success) {
-                            showSuccessPopup('popUpDiv');
-                        } else {
-                            alert(msg.message)
-                        }
-                    });
+        request.done(function (msg) {
+            if (msg.success) {
+                showSuccessPopup('popUpDiv');
+            } else {
+                alert(msg.message)
+            }
+        });
 
-                    request.fail(function (jqXHR, textStatus) {
-                        alert("Request failed: " + textStatus);
-                    });
-                }
+        request.fail(function (jqXHR, textStatus) {
+            alert("Request failed: " + textStatus);
+        });
+    }
 
-                function uploadArt(contestId) {
-                var request = $.ajax({
-                url: gameBasePath + '/photo-contest/upload-art',
-                        type: "POST",
-                        data: {'contestId': contestId},
-                        dataType: 'json',
-                        beforeSend: function () {
-                        $("#ajaxBusy").removeClass('hide');
-                        },
-                        complete: function () {
-                        $("#ajaxBusy").addClass('hide');
-                        }
-                });
-                        request.done(function (msg) {
-                        if (msg.success) {
-                        window.location = baseURL + '/addnew_media.php';
-                        } else {
-                        alert(msg.message)
-                        }
-                        });
-                        request.fail(function (jqXHR, textStatus) {
-                        alert("Request failed: " + textStatus);
-                        });
-                }
+    function uploadArt(contestId) {
+        var request = $.ajax({
+            url: gameBasePath + '/photo-contest/upload-art',
+            type: "POST",
+            data: {'contestId': contestId},
+            dataType: 'json',
+            beforeSend: function () {
+                $("#ajaxBusy").removeClass('hide');
+            },
+            complete: function () {
+                $("#ajaxBusy").addClass('hide');
+            }
+        });
+        request.done(function (msg) {
+            if (msg.success) {
+                window.location = baseURL + '/addnew_media.php';
+            } else {
+                alert(msg.message)
+            }
+        });
+        request.fail(function (jqXHR, textStatus) {
+            alert("Request failed: " + textStatus);
+        });
+    }
 </script>
