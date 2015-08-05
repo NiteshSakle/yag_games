@@ -37,7 +37,7 @@ class SendSuccessSubmissionEmailController extends BaseConsoleController
       return $this->printAndLog("No contest media found");
     }
     
-    $this->sendEmail('Art submission successful', $contestMediaData['email'], 'submission', $contestMediaData);
+    $this->sendEmail('Thank You For Entering', $contestMediaData['email'], 'submission', $contestMediaData);
   }
 
 }

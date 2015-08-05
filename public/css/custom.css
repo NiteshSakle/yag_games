@@ -1,27 +1,27 @@
 /* header nav */
 .search_box label {
-  font-weight: normal;
+    font-weight: normal;
 }
 .inner_righttop {
-  float: right;
-  padding: 10px 0px 0px 0px;
-  width: 825px;
+    float: right;
+    padding: 10px 0px 0px 0px;
+    width: 825px;
 }
 .header-container nav {
-  margin: 10px 0px;
+    margin: 10px 0px;
 }
 
 .inner_main .inner_txt h1.page-titleHead {
-  padding: 10px;
-  text-align: left;
+    padding: 10px;
+    text-align: left;
 }
 
 /*contest boxes start*/
 .inner_main {
-  margin:10px 0px;
+    margin:10px 0px;
 }
 .navigation {
-  margin:10px 0px;
+    margin:10px 0px;
 }
 
 .contest {
@@ -35,19 +35,19 @@
 }
 
 .contest-buttons button {
-  font-size: 13px;
-  color: #68398c;
-  font-family: 'FranklinGothicMediumRegular';
-  background-color: #e5da7c;
-  border: 5px solid #d1d3d4;
-  box-shadow: 3px 3px 0px 0px #8e8d8d;
-  padding: 4px 8px;
-  min-width: 150px;
-  margin: 10px 0 5px 0;
+    font-size: 13px;
+    color: #68398c;
+    font-family: 'FranklinGothicMediumRegular';
+    background-color: #e5da7c;
+    border: 5px solid #d1d3d4;
+    box-shadow: 3px 3px 0px 0px #8e8d8d;
+    padding: 4px 8px;
+    min-width: 150px;
+    margin: 10px 0 5px 0;
 }
 .contest-buttons button:hover {
-   background-color: #818285;
-  color: #d1d3d4;
+    background-color: #818285;
+    color: #d1d3d4;
 }
 .contest-buttons img {
     margin: 5% 0% 5% 0%;
@@ -62,41 +62,42 @@
 }
 
 .contest-image img {
-    width: 100%;
+    width: 300px;
+    height: 300px;
 }
 .contest-winner {
-  position: relative;
+    position: relative;
 }
 .contest-winner div.progress{
-  position: absolute;
-  top:60px;
-  width:50%;
-  background-color: #d1d3d4; 
-  margin-left: 25%;
-  border-radius:0px;
-  padding: 3px;
-  height: 25px;
-  box-shadow:none;
-  -webkit-box-shadow:none;
+    position: absolute;
+    top:60px;
+    width:50%;
+    background-color: #d1d3d4; 
+    margin-left: 25%;
+    border-radius:0px;
+    padding: 3px;
+    height: 25px;
+    box-shadow:none;
+    -webkit-box-shadow:none;
 }
 .progress-bar-success{
-  background-color: #e5da7c; 
-  margin-top: -3px;
-  margin-left: -3px;
-  text-align: center;
-  height: 25px;
+    background-color: #e5da7c; 
+    margin-top: -3px;
+    margin-left: -3px;
+    text-align: center;
+    height: 25px;
 }
 .contest-winner .rank {
-  font-size: 36px;
-  color: gray;
-  text-align: center;
-  font-weight: bold;
-  margin: 10px;
+    font-size: 36px;
+    color: gray;
+    text-align: center;
+    font-weight: bold;
+    margin: 10px;
 }
 .contest-winner .you_ranked {
-  font-size: 18px;
-  color: #68398c;
-  text-align: center;
+    font-size: 18px;
+    color: #68398c;
+    text-align: center;
 }
 
 .contest-dates {
@@ -117,34 +118,34 @@
 
 
 .contest button {
-  font-size: 13px;
-  color: #68398c;
-  font-family: 'FranklinGothicMediumRegular';
-  background-color: #e5da7c;
-  border: 5px solid #d1d3d4;
-  box-shadow: 3px 3px 0px 0px #8e8d8d;
-  padding: 4px 8px;
-  min-width: 150px;
-  margin: 10px 0 5px 0;
+    font-size: 13px;
+    color: #68398c;
+    font-family: 'FranklinGothicMediumRegular';
+    background-color: #e5da7c;
+    border: 5px solid #d1d3d4;
+    box-shadow: 3px 3px 0px 0px #8e8d8d;
+    padding: 4px 8px;
+    min-width: 150px;
+    margin: 10px 0 5px 0;
 }
 
 #ajaxBusy {
-	position:fixed;
-	right:10px;
-	top:10px;
-	background:#c00;
-	color:#fff;
-	font-weight:700;
-	padding:5px 15px;
-	border:3px solid #fff;
-	font-size:11px;
-	-moz-border-radius: 15px;
-	border-radius: 15px;
-	text-transform:uppercase;
-	z-index:100000;
+    position:fixed;
+    right:10px;
+    top:10px;
+    background:#c00;
+    color:#fff;
+    font-weight:700;
+    padding:5px 15px;
+    border:3px solid #fff;
+    font-size:11px;
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+    text-transform:uppercase;
+    z-index:100000;
 }
 
 .alert ul {
-  margin:0px;
-  padding-left: 0px;
+    margin:0px;
+    padding-left: 0px;
 }

@@ -137,7 +137,7 @@ class ContestTable extends BaseTable {
                 
                 // if user log's in, check whether he entered the contest or not
                 if ($user) {
-                    $select->join(array('m' => 'ps4_media'), new Expression('cm.media_id = m.media_id AND m.owner = ?', $user), array('entered' => new Expression('IF(m.media_id, 1, 0 )')), 'left');
+                    $select->join(array('m' => 'ps4_media'), new Expression('cm.media_id = m.media_id AND m.owner = ?', $user), array('entered' => new Expression('IF(m.media_id, 1, 0 )'), 'media_id', 'folder_id'), 'left');
                 }
             } elseif ($type == 'active') {
 

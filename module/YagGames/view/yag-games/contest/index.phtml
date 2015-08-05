@@ -1,3 +1,10 @@
+<style>
+    .progress-bar {
+        color: #000;
+        font-size: 24px;
+        padding-top: 3%;
+    }
+</style>
 <div  class="home_content clearfix">
     <div class="inner_main clearfix">
         <div class="inner_txt clearfix">
@@ -5,7 +12,7 @@
         </div>
     </div>
 
-    <?php $session = $this->session();?>
+    <?php $session = $this->session(); ?>
     <div class="navigation clearfix">
         <ul>
             <li><a <?php echo $type == 'new' ? 'class="nav_active"' : ""; ?> href="<?php echo $this->basePath() ?>/new-contest">New Contests</a></li>
@@ -92,7 +99,7 @@
                     ));
                     ?>
                 </div>
-            <?php
+                <?php
             endforeach;
         }
         ?>
