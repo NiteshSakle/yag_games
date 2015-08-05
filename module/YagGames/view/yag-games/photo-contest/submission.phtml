@@ -35,8 +35,24 @@
     .social_link, .pagination {
         padding: 5px;
     }
+    
+    .title {
+      font-size: 16px;
+    }
+    .congrts {
+      text-align: left;
+    }
+    
+    #uploadPopUpDiv{
+      position: fixed;
+      background-color: transparent;
+      width: 850px;
+      z-index: 9002;
+      padding: 20px;
+      margin: 0 0 0 265px;
+    }
 
-    #popUpDiv {
+    #popUpDiv, #uploadPopUpDiv {
         margin: 0 0 0 10%;
     }
     .join-popup-img {
@@ -112,8 +128,7 @@
 <div style="display: none;" id="blanket"></div>
 <div style="display: none;" id="popUpDiv">
     <div class="popup-another-img" style="height: 80% !important;">
-        <a style="float:right;" onclick="popup('popUpDiv');
-                $('div#overlay').css('display', 'none');" href="#."><img alt="" src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/close.button.png" /></a>
+        <a style="float:right;" onclick="popup('popUpDiv');$('div#overlay').css('display', 'none');" href="#."><img alt="" src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/close.button.png" /></a>
         <div class="leftcol">
             <h1 class="title" style="  text-align: left;">CONGRATULATIONS!<br><br>You have entered the  <strong><?php echo $contest['name']; ?> </strong> </h1>
             <div class="congrts">Voting Begins: <?php echo $contest['voting_start_date']; ?>. Follow your ranking daily.
@@ -123,6 +138,31 @@
         </div>
         <div class="join-popup-img">
             <img class="icon_man" src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/thankyou1.png" /></div> 
+        <div class="social-links-upload-another-img">
+            <ul class="social_links">
+                <li><a class="addthis_button_facebook" addthis:url="<?php echo $this->config('main_site', 'url') ?>/media.details.php?mediaID={$encrypted_media_id}"/><img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/facebook.png"  alt="Share to Facebook" /></a></li>
+                <li><a class="addthis_button_twitter" addthis:url="<?php echo $this->config('main_site', 'url') ?>/media.details.php?mediaID={$encrypted_media_id}"><img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/twitter.png"  alt="Share to Twitter" /></a></li>
+                <li><a class="addthis_button_linkedin" addthis:url="<?php echo $this->config('main_site', 'url') ?>/media.details.php?mediaID={$encrypted_media_id}"><img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/linkedin.png"  alt="Linkedin" /></a></li>
+                <li><a class="addthis_button_pinterest_share" pi:pinit:url="<?php echo $this->config('main_site', 'url') ?>/media.details.php?mediaID={$encrypted_media_id}" pi:pinit:media="{$auto_crop_image}"><img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/pinterest.png"  alt="Share to Pinterest" /></a></li>
+            </ul>
+            <span class="or">or</span>
+            <div class="btn-upload-another-img"><input type="button" onClick="javascript:window.location.href = '<?php echo $this->basePath() ?>/new-contest'"  value="Enter Another Contest" name="" class="back"></div>
+        </div>
+    </div>
+</div>
+<div style="display: none;" id="uploadPopUpDiv">
+    <div class="popup-another-img" style="height: 80% !important;">
+        <a style="float:right;" onclick="popup('uploadPopUpDiv'); $('div#overlay').css('display', 'none');" href="#."><img alt="" src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/close.button.png" /></a>
+        <div class="leftcol">
+            <h1 class="title" style="  text-align: left;"> Share Your Art, Upload Another Image or Return to our Photo Contests</h1>
+            <div class="congrts">Congratulations you have uploaded your art! <br>
+                Not its time to get your work out there, Don't worry we will help but the <br>
+                more you share the better of a chance to b seen. Happy Sharing!
+            </div>
+        </div>
+        <div class="join-popup-img">
+            <img width="150px" mediaid="<?php echo $this->KCrypt()->enc($media['media_id'])?>" class="icon_man" src="<?php echo $this->mediaImage($media, 'icons'); ?>" title="<?php echo $media['title'] ?>" alt="<?php echo $media['title'] ?>" />
+        </div> 
         <div class="social-links-upload-another-img">
             <ul class="social_links">
                 <li><a class="addthis_button_facebook" addthis:url="<?php echo $this->config('main_site', 'url') ?>/media.details.php?mediaID={$encrypted_media_id}"/><img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/facebook.png"  alt="Share to Facebook" /></a></li>
@@ -150,7 +190,7 @@
 <script type="text/javascript" src="<?php echo $this->config('main_site', 'url') ?>/assets/javascript/popup.js"></script>
 <script type="text/javascript">
 <?php if ($showPopupDiv): ?>
-        showSuccessPopup();
+        showSuccessPopup('uploadPopUpDiv');
 <?php endif; ?>
 
     loadHtml(gameBasePath + '/media/get-my-media', '.media-list', '', function () {
@@ -171,8 +211,8 @@
         uploadArt(contestId);
     });
 
-    function showSuccessPopup() {
-        popup('popUpDiv');
+    function showSuccessPopup(type) {
+        popup(type);
         $('div#overlay').css('display', 'block');
         $('div#overlay').css('opacity', '0.47');
         $('div#blanket').css('height', '0');
@@ -194,7 +234,7 @@
 
         request.done(function (msg) {
             if (msg.success) {
-                showSuccessPopup();
+                showSuccessPopup('popUpDiv');
             } else {
                 alert(msg.message)
             }
