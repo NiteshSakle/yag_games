@@ -118,26 +118,37 @@ class ContestMediaRatingTable extends BaseTable
   public function getTop10RatedMedia($contestId)
   {
     try {
+      $this->executeRawQuery('SET @rank_count := 0, @prev_value := NULL');
+      
       $sql = $this->getSql();
-      $columns = array('rating' => new Expression('AVG(cmr.rating)'));
-      $query = $sql->select()
+      
+      $subQuery = $sql->select()
               ->from(array('cmr' => 'contest_media_rating'))
-              ->join(array('cm' => 'contest_media'), 'cm.id = cmr.contest_media_id', array('contest_media_id' => 'id'))
-              ->columns($columns)
+              ->join(array('cm' => 'contest_media'), 'cm.id = cmr.contest_media_id', array('contest_media_id' => 'id', 'media_id'))
+              ->join(array('m' => 'ps4_media'), 'm.media_id = cm.media_id', array('owner'))
+              ->columns(array('rating' => new Expression('AVG(cmr.rating)')))
               ->where(array(
                   'cm.contest_id' => $contestId
               ))
-              ->order('rating DESC')
-              ->limit('10')
               ->group('cm.media_id');
-
+      
+      $columns = array('*', 'rank' => new Expression('CASE
+                                    WHEN @prev_value = r.rating THEN @rank_count
+                                    WHEN @prev_value := r.rating THEN @rank_count := @rank_count + 1
+                                  END'));
+      $query = $sql->select()
+                        ->from(array('r' => $subQuery))
+                        ->columns($columns)
+                        ->order('r.rating desc')
+                        ->having('rank <= 10');
+      
       $rows = $sql->prepareStatementForSqlObject($query)->execute();
-      $row = $rows->current();
-      if ($row) {
-        return $row;
-      } else {
-        return false;
+      $winners = array();
+      foreach ($rows as $row) {
+          $winners[] = $row;
       }
+      
+      return $winners;
     } catch (Exception $e) {
       $this->logException($e);
       return false;

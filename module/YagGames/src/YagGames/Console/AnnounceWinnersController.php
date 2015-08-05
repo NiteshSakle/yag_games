@@ -4,7 +4,7 @@ namespace YagGames\Console;
 
 use Zend\Console\Request as ConsoleRequest;
 
-class StartVotingController extends BaseConsoleController
+class AnnounceWinnersController extends BaseConsoleController
 {
 
   public function indexAction()
@@ -19,7 +19,6 @@ class StartVotingController extends BaseConsoleController
 
     $this->logger = $this->getServiceLocator()->get('YagGames\Logger');
 
-    
     $this->process();
 
     echo "Sent email";
@@ -32,24 +31,28 @@ class StartVotingController extends BaseConsoleController
     
     foreach ($contests as $contest) {
       if ($this->announceWinners($contest)) {      
-        $contestEmails = $contestMediaTable->getContestArtistEmails($contest['id']);
-        $this->sendEmail('Winners for contest - ' . $contest['name'], $contestEmails, 'winners_announced', $contest);
+        //$contestEmails = $contestMediaTable->getContestArtistEmails($contest['id']);
+        //$this->sendEmail('Winners for contest - ' . $contest['name'], $contestEmails, 'winners_announced', $contest);
       }
     }    
   }
   
   private function announceWinners($contestData)
   {
-    $contestMediaTable = $this->getServiceLocator()->get('YagGames\Model\ContestTable');
-    $winners = $contestMediaTable->getTop10RatedMedia($contestData['id']);  
+    $contestMediaRatingTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaRatingTable');
+    $winners = $contestMediaRatingTable->getTop10RatedMedia($contestData['id']); 
     
     $contestWinnerTable = $this->getServiceLocator()->get('YagGames\Model\ContestWinnerTable');
-    foreach ($winners as $key => $winner) {
-      $rank = $key + 1;
+    foreach ($winners as $winner) {
       $contestWinner = new \YagGames\Model\ContestWinner();
       $contestWinner->contest_media_id = $winner['contest_media_id'];
-      $contestWinner->rank = $rank;
-      $contestWinnerTable->insert($contestWinner);
+      $contestWinner->rank = $winner['rank'];
+      
+      if ($contestWinnerTable->insert($contestWinner)) {
+        if ((int)$winner['rank'] === 1) {
+          $this->awardTropyToWinner($winner, $contestData);
+        }
+      }
     }
     
     if (count($winners)) {
@@ -57,6 +60,20 @@ class StartVotingController extends BaseConsoleController
     }
     
     return false;
+  }
+  
+  private function awardTropyToWinner($winner, $contestData)
+  {
+    $monthlyAwardTable = $this->getServiceLocator()->get('YagGames\Model\MonthlyAwardTable');
+    
+    $monthlyAward = new \YagGames\Model\MonthlyAward();
+    $monthlyAward->contest_id = $contestData['id'];
+    $monthlyAward->media_id = $winner['media_id'];
+    $monthlyAward->award_type = 5;
+    $monthlyAward->date = new \Zend\Db\Sql\Expression('NOW()');
+    $monthlyAward->member_id = $winner['owner'];
+    
+    return $monthlyAwardTable->insert($monthlyAward);
   }
 
 }

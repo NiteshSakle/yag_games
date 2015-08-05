@@ -14,13 +14,16 @@ use YagGames\Model\ContestType;
 use YagGames\Model\ContestTypeTable;
 use YagGames\Model\ContestWinner;
 use YagGames\Model\ContestWinnerTable;
-use YagGames\Model\MediaViewTable;
 use YagGames\Model\MediaTable;
+use YagGames\Model\MediaViewTable;
+use YagGames\Model\MonthlyAward;
+use YagGames\Model\MonthlyAwardTable;
 use YagGames\Model\SettingsTable;
 use YagGames\Service\FanFavoriteService;
 use YagGames\Service\KCryptService;
 use YagGames\Service\PhotoContestService;
 use YagGames\Service\SessionService;
+use YagGames\Utils\Process;
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\TableGateway\TableGateway;
 use Zend\Log\Logger;
@@ -41,7 +44,7 @@ return array(
         },
                 
         'YagGames\Utils\Process' => function ($sm) {
-            $process = new \YagGames\Utils\Process($sm->get('Request'));
+            $process = new Process($sm->get('Request'));
             return $process;
         },
                 
@@ -169,6 +172,17 @@ return array(
             $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
             $table = new SettingsTable($dbAdapter, $sm->get('YagGames\Logger'));
             return $table;
+        },
+        'YagGames\Model\MonthlyAwardTable' => function ($sm) {
+            $tableGateway = $sm->get('MonthlyAwardTableGateway');
+            $table = new MonthlyAwardTable($tableGateway, $sm->get('YagGames\Logger'));
+            return $table;
+        },
+        'MonthlyAwardTableGateway' => function ($sm) {
+            $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+            $resultSetPrototype = new ResultSet();
+            $resultSetPrototype->setArrayObjectPrototype(new MonthlyAward());
+            return new TableGateway('ps4_monthly_award', $dbAdapter, null, $resultSetPrototype);
         },
     ),
 );
