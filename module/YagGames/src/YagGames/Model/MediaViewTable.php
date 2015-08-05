@@ -40,7 +40,7 @@ class MediaViewTable extends BaseTable
                 ->where(array('rv.owner' => $userId))
                 ->limit($offset)
                 ->offset(($page - 1) * $offset)
-                ->order("media_id DESC")
+                ->order("rv.rating DESC")
                 ->group('rv.media_id');
 
             $rows = $sql->prepareStatementForSqlObject($query)->execute();

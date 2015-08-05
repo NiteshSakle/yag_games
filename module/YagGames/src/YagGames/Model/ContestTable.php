@@ -250,10 +250,10 @@ class ContestTable extends BaseTable {
                     ->from(array('c' => 'contest'))
                     ->where(array(
                         'c.voting_started' => 1,
-                        new Expression('DATE(c.winners_announce_date) = CURDATE()')
+                        new \Zend\Db\Sql\Predicate\Expression('DATE(c.winners_announce_date) = CURDATE()')
                     ))
                     ->group('c.id');
-
+            
             $rows = $sql->prepareStatementForSqlObject($query)->execute();
 
             $contest = array();

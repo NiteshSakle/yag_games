@@ -75,6 +75,12 @@ class BaseTable
             return 0;
         }
     }
+    
+    protected function executeRawQuery($sql)
+    {
+      $statement = $this->tableGateway->adapter->query($sql); 
+      return $statement->execute(); 
+    }
 
     protected function created($var)
     {
