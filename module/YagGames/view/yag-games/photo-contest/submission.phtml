@@ -210,10 +210,9 @@
         <a style="float:right;" onclick="popup('uploadPopUpDiv');
                 $('div#overlay').css('display', 'none');" href="#."><img alt="" src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/close.button.png" /></a>
         <div class="leftcol">
-            <h1 class="title" style="  text-align: left;"> Share Your Art, Upload Another Image or Return to our Photo Contests</h1>
-            <div class="congrts">Congratulations you have uploaded your art! <br>
-                Not its time to get your work out there, Don't worry we will help but the <br>
-                more you share the better of a chance to b seen. Happy Sharing!
+            <h1 class="title" style="  text-align: left;">Congratulations you have successfully entered the photo contest!</h1>
+            <div class="congrts">Your image has been uploaded to your profile and the photo contest. <br>
+                We will reach out to you once it is time to start voting! <br>
             </div>
         </div>
         <div class="join-popup-img">
@@ -227,7 +226,7 @@
                 <li><a class="addthis_button_pinterest_share" pi:pinit:url="<?php echo $this->config('main_site', 'url') ?>/media.details.php?mediaID={$encrypted_media_id}" pi:pinit:media="{$auto_crop_image}"><img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/pinterest.png"  alt="Share to Pinterest" /></a></li>
             </ul>
             <span class="or">or</span>
-            <div class="btn-upload-another-img"><input type="button" onClick="javascript:window.location.href = '<?php echo $this->basePath() ?>/new-contest'"  value="Enter Another Contest" name="" class="back"></div>
+            <div class="btn-upload-another-img"><input type="button" onClick="javascript:window.location.href = '<?php echo $this->basePath() ?>/new-contest'"  value="Return to Photo Contest" name="" class="back"></div>
         </div>
     </div>
 </div>
