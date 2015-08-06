@@ -37,7 +37,7 @@
         } else {
             foreach ($data as $contest):
                 ?>
-                <div class="contest row">
+                <div class="contest row <?php echo ($type !== 'exclusive') ? 'black-border': '' ?>">
                     <div class="col-md-4">
                         <?php
                         $titleClass = 'contest-title';

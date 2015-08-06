@@ -149,3 +149,7 @@
     margin:0px;
     padding-left: 0px;
 }
+
+.black-border {
+  border: 2px solid #ccc;
+}
