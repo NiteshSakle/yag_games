@@ -46,10 +46,13 @@ echo $this->paginationControl($this->paginator, 'Sliding', 'paginator-slide', ar
     $(".media-list a.media_image").click(function (e) {
         var checkbox = $(this).next();
         if (checkbox.is(':checked')) {
-            checkbox.prop('checked', false)
+            checkbox.prop('checked', false);
+            $('#submitImage').prop('disabled', true);
         } else {
-            checkbox.prop('checked', true)
+            checkbox.prop('checked', true);
+            $('#submitImage').prop('disabled', false);
         }
+        
     });
 
     $("input:radio[name=my_media]").change(function () {

@@ -247,6 +247,8 @@
 <?php if ($showPopupDiv): ?>
         showSuccessPopup('uploadPopUpDiv');
 <?php endif; ?>
+    //disable submit button
+    $('#submitImage').prop('disabled', true);
 
     loadHtml(gameBasePath + '/media/get-my-media', '.media-list', '', function () {
         registerHoverFunction();
