@@ -51,6 +51,10 @@ echo $this->paginationControl($this->paginator, 'Sliding', 'paginator-slide', ar
         } else {
             checkbox.prop('checked', true);
             $('#submitImage').prop('disabled', false);
+            
+            // show selected image
+            var anchor = $("input:radio[name=my_media]").filter(':checked').siblings('a');
+            $('.contest-image').html(anchor.clone());
         }
         
     });
