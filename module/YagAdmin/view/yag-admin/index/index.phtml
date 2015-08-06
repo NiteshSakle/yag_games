@@ -85,13 +85,13 @@
                                     </a>
                                 </td>
                                 <td>
-                                    <?php echo $contest['entry_end_date']; ?>
+                                    <?php echo date("jS F, Y", strtotime($contest['entry_end_date'])); ?>
                                 </td>
                                 <td>
-                                    <?php echo $contest['voting_start_date']; ?>
+                                    <?php echo date("jS F, Y", strtotime($contest['voting_start_date'])); ?>
                                 </td>
                                 <td>
-                                    <?php echo $contest['winners_announce_date']; ?>
+                                    <?php echo date("jS F, Y", strtotime($contest['winners_announce_date'])); ?>
                                 </td>
                                 <td>
                                     <?php echo $contest['max_no_of_photos']; ?>

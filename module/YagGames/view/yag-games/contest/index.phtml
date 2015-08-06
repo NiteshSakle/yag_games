@@ -51,9 +51,9 @@
                             <br>
                             <br>
                             <div class="contest-dates">
-                                Enter by: <?php echo $contest['entry_end_date']; ?>
+                                Enter by: <?php echo date("jS F, Y", strtotime($contest['entry_end_date'])); ?>
                                 <br>
-                                Winner Announced: <?php echo $contest['winners_announce_date']; ?>
+                                Winner Announced: <?php echo date("jS F, Y", strtotime($contest['winners_announce_date'])); ?>
                             </div>                
                         </div>
                     </div>        
