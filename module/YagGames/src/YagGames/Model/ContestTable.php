@@ -165,7 +165,7 @@ class ContestTable extends BaseTable
     return $select;
   }
   
-  private function getPastContestSelect($select, $user) 
+  private function getPastContestSelect($select) 
   {
     // if user log's in, check whether his media rank
     if ($user) {
@@ -201,7 +201,7 @@ class ContestTable extends BaseTable
       } elseif ($type == 'past') {
         $select = $this->getPastContestSelect($select);
       } elseif ($type == 'my') {
-        $select = $this->getMyContestSelect($select);
+        $select = $this->getMyContestSelect($select, $user);
       } elseif ($type == 'exclusive') {
         $select->where(array('c.is_exclusive' => 1));
       }

@@ -26,12 +26,19 @@
   <div class="contest clearfix" style="border:none">
     <div>What is art? It is your turn to help choose. These talented artist have been selected to show their work and need you to choose your
       favorite image to win! You may only choose one image but can come back each day to vote again. For a list of our other contests
-      for Voting for please click here <button onclick="window.location='<?php echo $this->basePath() ?>/active-contest'">Artist Challenge</button>
+      for Voting for please click here <button onclick="window.location = '<?php echo $this->basePath() ?>/active-contest'">Artist Challenge</button>
     </div>
     <div class="clearfix"> 
-      <div class="right"><button onclick="window.location='<?php echo $this->basePath() ?>/photo-contest/voting/<?php echo $contestId; ?>'">Get to Voting!</button></div>
-      <div class="right">Contest countdown: 4 days remaining</div>
-      <br style="clear:both">
+      <div class="row">
+        <div class="right">
+          <button onclick="window.location = '<?php echo $this->basePath() ?>/photo-contest/voting/<?php echo $contestId; ?>'">Get to Voting!</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="right">
+          Contest countdown: 4 days remaining
+        </div>
+      </div>
     </div>
     <br>
     <div>
@@ -47,7 +54,7 @@
                 </a> 
                 <div>Artist Name: dadasd</div>
                 <div>User Name: 3123</div>
-                <div><strong><?php echo $this->ordinal( (($page-1)*$size)+$i );?></strong></div>
+                <div><strong><?php echo $this->ordinal((($page - 1) * $size) + $i); ?></strong></div>
               </div>
             </div>
             <?php if ($i != 1 && $i % 5 == 0): ?>
@@ -64,11 +71,11 @@
 
   <?php
   echo $this->paginationControl($this->paginator, 'Sliding', 'paginator-slide', array(
-        'route' => 'photo-contest', 
-        'routeParams' => array(
-            'action' => 'rankings', 
-            'id' => $this->contestId, 
-            'size' => $this->size
-        )
-      ));
+      'route' => 'photo-contest',
+      'routeParams' => array(
+          'action' => 'rankings',
+          'id' => $this->contestId,
+          'size' => $this->size
+      )
+  ));
   ?>
