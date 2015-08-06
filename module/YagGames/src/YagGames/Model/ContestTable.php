@@ -122,7 +122,7 @@ class ContestTable extends BaseTable
                 'contest_media_id' => 'id',
                 'contest_id',
                 'media_id',
-                'total_ratings_count' => new Expression('COUNT(cm2.id)')
+                'total_entries' => new Expression('COUNT(cm2.id)')
             ))
             ->group('cm2.contest_id');
 
@@ -130,7 +130,7 @@ class ContestTable extends BaseTable
     $select->from(array('c' => 'contest'))
             ->columns(array('*', 'my_type' => new Expression('IF(entry_end_date >= NOW(), "new", IF(winners_announce_date >=NOW(), "active", "past"))')))
             ->join(array('ct' => 'contest_type'), 'ct.id = c.type_id', array('contest_type' => 'type'))
-            ->join(array('cm' => $contestMediaCountQry), 'c.id = cm.contest_id', array('total_ratings_count'), 'left')
+            ->join(array('cm' => $contestMediaCountQry), 'c.id = cm.contest_id', array('total_entries'), 'left')
     ;
 
     return $select;
@@ -140,7 +140,7 @@ class ContestTable extends BaseTable
   {
     $select->where('c.entry_end_date >= CURDATE()');
     $select->where->and->notEqualTo('c.is_exclusive', '1');
-    $select->where('(total_ratings_count < c.max_no_of_photos OR total_ratings_count IS NULL)');
+    $select->where('(total_entries < c.max_no_of_photos OR total_entries IS NULL)');
 
     // if user log's in, check whether he entered the contest or not
     if ($user) {
@@ -160,7 +160,7 @@ class ContestTable extends BaseTable
   
   private function getActiveContestSelect($select) 
   {
-    $select->where('(entry_end_date < CURDATE() AND winners_announce_date > CURDATE()) AND c.is_exclusive <> 1 OR total_ratings_count >= c.max_no_of_photos');
+    $select->where('(entry_end_date < CURDATE() AND winners_announce_date > CURDATE()) AND c.is_exclusive <> 1 OR total_entries >= c.max_no_of_photos');
 
     return $select;
   }
