@@ -69,7 +69,10 @@ class ContestController extends BaseController
     $paginator = new Paginator(new NullFill($data['total']));
     $paginator->setCurrentPageNumber($this->page);
     $paginator->setItemCountPerPage($this->size);
-
+    foreach ($data['contests'] as $key => $contest) {
+        $data['contests'][$key]['entry_end_date'] = date("jS F, Y", strtotime($contest['entry_end_date'])); 
+        $data['contests'][$key]['winners_announce_date'] = date("jS F, Y", strtotime($contest['winners_announce_date'])); 
+    }
     return $this->getViewModal(array(
         'paginator' => $paginator,
         'data' => $data['contests'], 
