@@ -28,6 +28,12 @@
       favorite image to win! You may only choose one image but can come back each day to vote again. For a list of our other contests
       for Voting for please click here <button onclick="window.location = '<?php echo $this->basePath() ?>/active-contest'">Artist Challenge</button>
     </div>
+    <?php 
+      $dStart = new DateTime(date("Y-m-d"));
+      $dEnd  = new DateTime($contest['winners_announce_date']);
+      $dDiff = $dStart->diff($dEnd);
+    ?>
+    <?php if ($dEnd > $dStart): ?>
     <div class="clearfix"> 
       <div class="row">
         <div class="right">
@@ -36,11 +42,12 @@
       </div>
       <div class="row">
         <div class="right">
-          Contest countdown: 4 days remaining
+          Contest countdown:<?php echo $dDiff->days; ?> days remaining
         </div>
       </div>
     </div>
     <br>
+    <?php endif;?>
     <div>
       <div class="media-list-title">Current Standings</div>
       <div class="media-list contest-list clearfix">

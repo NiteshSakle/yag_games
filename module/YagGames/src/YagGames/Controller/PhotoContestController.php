@@ -12,7 +12,7 @@ use Zend\View\Model\ViewModel;
 
 class PhotoContestController extends BaseController
 {
-
+  
   public function onDispatch(MvcEvent $e)
   {
     return parent::onDispatch($e);
@@ -27,19 +27,12 @@ class PhotoContestController extends BaseController
     $this->checkLogin();
 
     $contestId = $this->params()->fromRoute('id', null);
-    $contestTable = $this->getServiceLocator()->get('YagGames\Model\ContestTable');
-    $contest = $contestTable->fetchRecord($contestId);
-    $contest = (array) $contest;
-    if (!$contest) {
+    if (!$this->getContest($contestId)) {
       $this->flashMessenger()->addErrorMessage('No contest found');
-
-      return $this->redirect()->toRoute('photo-contest', array(
-          'id' => $contestId,
-          'action' => 'voting'
-      ));
+      return $this->redirect()->toRoute('home');
     }
     
-    if ($contest['voting_started']) {
+    if ($this->contest['voting_started']) {
       $this->flashMessenger()->addErrorMessage('Voting has already started');
 
       return $this->redirect()->toRoute('photo-contest', array(
@@ -57,7 +50,7 @@ class PhotoContestController extends BaseController
       $showPopupDiv = 1;
     }
 
-    return new ViewModel(array('contest' => (array) $contest, 'showPopupDiv' => $showPopupDiv, 'media' => $media));
+    return new ViewModel(array('contest' => $this->contest, 'showPopupDiv' => $showPopupDiv, 'media' => $media));
   }
 
   public function uploadSubmissionAction()
@@ -159,6 +152,12 @@ class PhotoContestController extends BaseController
     if (isset($this->session->mem_id)) {
       $userId = $this->session->mem_id;
     }
+    
+    //get contest details
+    if (!$this->getContest($contestId)) {
+      $this->flashMessenger()->addErrorMessage('No contest found');
+      return $this->redirect()->toRoute('home');
+    }
 
     $photoContestService = $this->getServiceLocator()->get('photoContestService');
     $data = $photoContestService->getContestMedia($contestId, $userId, $search, $page, $size, '');
@@ -192,6 +191,12 @@ class PhotoContestController extends BaseController
     if (isset($this->session->mem_id)) {
       $userId = $this->session->mem_id;
     }
+    
+    //get contest details
+    if (!$this->getContest($contestId)) {
+      $this->flashMessenger()->addErrorMessage('No contest found');
+      return $this->redirect()->toRoute('home');
+    }
 
     $photoContestService = $this->getServiceLocator()->get('photoContestService');
     $data = $photoContestService->getContestMedia($contestId, $userId, null, $page, $size, 'rank');
@@ -204,6 +209,7 @@ class PhotoContestController extends BaseController
     $vm->setVariable('paginator', $paginator);
     $vm->setVariable('medias', $data['medias']);
     $vm->setVariable('contestId', $contestId);
+    $vm->setVariable('contest', $this->contest);
     $vm->setVariable('page', $page);
     $vm->setVariable('size', $size);
     return $vm;
@@ -344,6 +350,19 @@ class PhotoContestController extends BaseController
       $this->getServiceLocator()->get('YagGames\Logger')->err($e->getMessage());
     }
     return array();
+  }
+  
+  private function getContest($contestId)
+  {
+    $contestTable = $this->getServiceLocator()->get('YagGames\Model\ContestTable');
+    $this->contest = $contestTable->fetchRecord($contestId);
+    if ($this->contest) {
+      $this->contest = (array) $this->contest;
+    } else {
+      $this->contest = array();
+    }
+    
+    return $this->contest;
   }
 
 }
