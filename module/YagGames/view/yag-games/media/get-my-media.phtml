@@ -54,7 +54,7 @@ echo $this->paginationControl($this->paginator, 'Sliding', 'paginator-slide', ar
             
             // show selected image
             var anchor = $("input:radio[name=my_media]").filter(':checked').siblings('a');
-            $('.contest-image').html(anchor.clone());
+            $('.contest-image').html(anchor.clone().find('img').css('opacity', 1));
         }
         
     });
