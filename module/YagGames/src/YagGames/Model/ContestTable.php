@@ -169,7 +169,7 @@ class ContestTable extends BaseTable
   {
     // if user log's in, check whether his media rank
     if ($user) {
-      $select->join(array('cw' => 'contest_winner'), 'cm.id = cw.contest_media_id', array('rank'), 'left');
+      $select->join(array('cw' => 'contest_winner'), 'cm.contest_media_id = cw.contest_media_id', array('rank'), 'left');
     }
 
     $select->where('winners_announce_date <= NOW() AND c.is_exclusive <> 1');
