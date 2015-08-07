@@ -22,13 +22,12 @@
 </style>
 <div class="col-md-4 contest-buttons ">
   <?php $session = $this->session(); ?>
-  <?php
-  $media = array();
-  $media['media_id'] = $contest['media_id'];
-  $media['folder_id'] = $contest['folder_id'];
-  ?>
-
   <?php if (isset($contest['entered']) && $contest['entered']): ?>
+    <?php
+    $media = array();
+    $media['media_id'] = $contest['media_id'];
+    $media['folder_id'] = $contest['folder_id'];
+    ?>
     <button class="btn btn-default" onclick="showThankYouPopUp('<?php echo $this->mediaImage($media, 'icons'); ?>', '<?php echo $contest['name']; ?>')">You're In</button>
   <?php elseif ($session->mem_id): ?>
     <?php if ($session->login_as_buyer == 1): ?>
