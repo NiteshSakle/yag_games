@@ -10,6 +10,7 @@ class BaseConsoleController extends AbstractActionController
   protected $logger;
   protected $settings;
   protected $mailer;
+  protected $config;
 
   public function printAndLog($msg)
   {
@@ -17,6 +18,15 @@ class BaseConsoleController extends AbstractActionController
     return $msg;
   }
 
+  protected function getConfig()
+  {
+    if (!isset($this->config)) {
+      $this->config = $this->getServiceLocator()->get('config');
+    }
+
+    return $this->config;
+  }
+  
   public function getMailer()
   {
     if (!isset($this->settings)) {

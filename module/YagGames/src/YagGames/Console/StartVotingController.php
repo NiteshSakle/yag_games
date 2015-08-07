@@ -28,10 +28,13 @@ class StartVotingController extends BaseConsoleController
   {
     $contestMediaTable = $this->getServiceLocator()->get('YagGames\Model\ContestTable');
     $contests = $contestMediaTable->getVotingReadyContests();
+    
+    $config = $this->getConfig();
 
     foreach ($contests as $contest) {
       if ($this->startVoting($contest)) {
         $contestEmails = $contestMediaTable->getContestArtistEmails($contest['id']);
+        $contest['main_site_url'] = $config['main_site']['url'];
         $this->sendEmail('Voting Started for - ' . $contest['name'], $contestEmails, 'voting_started', $contest);
       }
     }
