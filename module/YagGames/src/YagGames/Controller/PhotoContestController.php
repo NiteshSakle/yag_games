@@ -62,7 +62,7 @@ class PhotoContestController extends BaseController
         $contestId = $this->session['contestUpload']['contestId'];
         $contestMediaId = $photoContestService->addArtToContest($contestId, $this->session['contestUpload']['mediaId'], $this->session);
         
-        $process = new \YagGames\Utils\Process($request);
+        $process = new \YagGames\Utils\Process($this->getRequest());
         $process->start('SendSuccessSubmissionEmail ' . $contestMediaId);
         
         $this->session['contestUpload'] = array('contestMediaId' => $contestMediaId);
