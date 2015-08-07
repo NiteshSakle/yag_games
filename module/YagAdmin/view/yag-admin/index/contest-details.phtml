@@ -5,20 +5,22 @@
             <h1 class="page-header">Thumbnail Gallery</h1>
         </div>
 
-        <?php 
-        if(empty($contestPhotos)) {
-            echo "No photos uploaded to contest yet.";            
+        <?php
+        if (empty($contestPhotos)) {
+            echo "No photos uploaded to contest yet.";
         } else {
-            foreach ($contestPhotos as $photo) { ?>
+            foreach ($contestPhotos as $photo) {
+                ?>
 
                 <div class="col-lg-2 col-md-3 col-xs-4 thumb">
                     <img class="img-responsive" src="<?php echo $this->mediaImage($photo, 'icons'); ?>" alt="<?php echo $photo['filename']; ?>">
                     <br>
                     <button media_id="<?php echo $photo['media_id']; ?>" contest_id="<?php echo $photo['contest_id']; ?>" type="button" class="btn btn-danger center-block remove">Remove</button>
                 </div>
-            <?php } 
-        }?>
-            
+            <?php }
+        }
+        ?>
+
     </div>
 </div>
 <script>
@@ -31,10 +33,9 @@
                 data: 'contest_id=' + $(this).attr('contest_id') + '&media_id=' + $(this).attr('media_id'),
                 success: function (response) {
                     bootbox.alert(response.message, function () {
-                        if (response.success) {
-                            location.reload();
-                        }
+                        location.reload();
                     });
+                    location.reload();
                 }
             });
         }

@@ -347,9 +347,7 @@
                     success: function (response) {
                         $('#create-contest-modal').modal('hide');
                         bootbox.alert(response.message, function () {
-                            if (response.success) {
-                                location.reload();
-                            }
+                            location.reload();
                         });
                     }
                 });
@@ -363,24 +361,28 @@
                 type: 'POST',
                 data: 'id=' + $(this).attr('contest_id'),
                 success: function (response) {
-                    $('#id').val(response.data.id);
-                    $('#name').val(response.data.name);
-                    $('#description').data("wysihtml5").editor.setValue(response.data.description);
-                    $('#thumbnail_name').show();
-                    $('#thumbnail_name').val((response.data.thumbnail).substring(10));
-                    $('#entryEndDate').val(response.data.entry_end_date);
-                    $('#winnersAnnounceDate').val(response.data.winners_announce_date);
-                    $('#votingStartDate').val(response.data.voting_start_date);
-                    $('#entryLimit').val(response.data.max_no_of_photos);
-                    if (response.data.is_exclusive == 1) {
-                        $("input[name='exclusive'][value=0]").parent().removeClass('checked');
-                        $("input[name='exclusive'][value=1]").parent().addClass('checked');
+                    if (response.success) {
+                        $('#id').val(response.data.id);
+                        $('#name').val(response.data.name);
+                        $('#description').data("wysihtml5").editor.setValue(response.data.description);
+                        $('#thumbnail_name').show();
+                        $('#thumbnail_name').val((response.data.thumbnail).substring(10));
+                        $('#entryEndDate').val(response.data.entry_end_date);
+                        $('#winnersAnnounceDate').val(response.data.winners_announce_date);
+                        $('#votingStartDate').val(response.data.voting_start_date);
+                        $('#entryLimit').val(response.data.max_no_of_photos);
+                        if (response.data.is_exclusive == 1) {
+                            $("input[name='exclusive'][value=0]").parent().removeClass('checked');
+                            $("input[name='exclusive'][value=1]").parent().addClass('checked');
+                        } else {
+                            $("input[name='exclusive'][value=1]").parent().removeClass('checked');
+                            $("input[name='exclusive'][value=0]").parent().addClass('checked');
+                        }
+                        $('#type').val(response.data.type_id);
+                        $('#create-contest-modal').modal('show');
                     } else {
-                        $("input[name='exclusive'][value=1]").parent().removeClass('checked');
-                        $("input[name='exclusive'][value=0]").parent().addClass('checked');
+                        location.reload();
                     }
-                    $('#type').val(response.data.type_id);
-                    $('#create-contest-modal').modal('show');
                 }
             });
         });
