@@ -1,4 +1,9 @@
 /* header nav */
+body {
+    font: 16px/26px Helvetica, Helvetica Neue, Arial;
+    color: #646567; 
+}
+
 .search_box label {
     font-weight: normal;
 }
@@ -152,4 +157,16 @@
 
 .black-border {
   border: 2px solid #ccc;
+}
+.learn-more-contest-title{
+    font-size: 24px;
+    font-weight: 900;
+    color: #68398C;
+    padding: 12px 0px;
+}
+.learn-more-sub-head {
+    color: #68398C;
+}
+.blue-text {
+    color: #68398C;
 }
