@@ -311,7 +311,7 @@ class PhotoContestController extends BaseController
   {
     try {
       //store in cookie
-      $rmString = $this->getRequest()->getCookie()->rm;
+      $rmString = isset($this->getRequest()->getCookie()->rm);
       $rmArray = \json_decode($rmString, true);
       
       if (!isset($rmArray[$contestId])) {
@@ -329,11 +329,9 @@ class PhotoContestController extends BaseController
   private function isAlreadyRated($contestId, $mediaId)
   {
     try {
-      $rmString = $this->getRequest()->getCookie()->rm;
+      $rmString = isset($this->getRequest()->getCookie()->rm);
       $rmArray = \json_decode($rmString, true);
       
-      //var_dump($rmArray);
-      //var_dump($rmArray->$contestId->$mediaId);
       if (isset($rmArray[$contestId][$mediaId])) {
         return true;
       }
@@ -347,7 +345,7 @@ class PhotoContestController extends BaseController
   private function getRatedMedia($contestId)
   {
     try {
-      $rmString = $this->getRequest()->getCookie()->rm;
+      $rmString = isset($this->getRequest()->getCookie()->rm);
       $rmArray = \json_decode($rmString, true);
       
       if (isset($rmArray[$contestId])) {
