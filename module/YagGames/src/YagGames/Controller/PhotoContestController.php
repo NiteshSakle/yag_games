@@ -61,6 +61,10 @@ class PhotoContestController extends BaseController
       try {
         $contestId = $this->session['contestUpload']['contestId'];
         $contestMediaId = $photoContestService->addArtToContest($contestId, $this->session['contestUpload']['mediaId'], $this->session);
+        
+        $process = new \YagGames\Utils\Process($request);
+        $process->start('SendSuccessSubmissionEmail ' . $contestMediaId);
+        
         $this->session['contestUpload'] = array('contestMediaId' => $contestMediaId);
       } catch (PhotoContestException $e) {
         $this->flashMessenger()->addErrorMessage($e->getMessage());
@@ -117,6 +121,9 @@ class PhotoContestController extends BaseController
       $photoContestService = $this->getServiceLocator()->get('photoContestService');
       try {
         $contestMediaId = $photoContestService->addArtToContest($contestId, $mediaId, $this->session);
+        
+        $process = new \YagGames\Utils\Process($request);
+        $process->start('SendSuccessSubmissionEmail ' . $contestMediaId);
       } catch (PhotoContestException $e) {
         return new JsonModel(array(
             'success' => false,
