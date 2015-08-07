@@ -64,7 +64,7 @@ class BaseConsoleController extends AbstractActionController
           $mailer->send($config['from_address_email'], $email, $subject, $body);
         }
       } else {
-        $mailer->send($config['from_address_email'], $email, $subject, $body);
+        $mailer->send($config['from_address_email'], $toEmail, $subject, $body);
       }
 
       return true;

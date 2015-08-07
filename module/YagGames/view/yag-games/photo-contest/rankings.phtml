@@ -59,8 +59,8 @@
                 <a class="media_image" href="#." data-media_id="<?php echo $media['media_id'] ?>">
                   <img mediaid="<?php echo $this->KCrypt()->enc($media['media_id']) ?>" class="mediaThumb showHoverWindow" src="<?php echo $this->mediaImage($media, 'icons'); ?>" title="<?php echo $media['title'] ?>" alt="<?php echo $media['title'] ?>" />
                 </a> 
-                <div>Artist Name: dadasd</div>
-                <div>User Name: 3123</div>
+                <div>Artist Name: <?php echo $media['f_name'] ?></div>
+                <div>User Name: <a href="<?php echo $this->config('main_site', 'url') ?>/<?php echo $media['username'] ?>"><?php echo $media['username'] ?></a></div>
                 <div><strong><?php echo $this->ordinal((($page - 1) * $size) + $i); ?></strong></div>
               </div>
             </div>
