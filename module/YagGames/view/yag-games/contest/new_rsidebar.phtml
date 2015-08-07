@@ -1,92 +1,76 @@
 <style>
-    #thanksPopUpDiv {
-        position: fixed;
-        background-color: transparent;
-        width: 500px;
-        height: 330px;
-        z-index: 9002;
-        padding: 20px;
-        margin: 0 0 0 265px;
-    }
-    .btn-upload-another-img {
-        float: none;
-    }
-    .down-image {
-        position: absolute;
-        margin: 2%;
-        margin-left: -15%;
-    }
-    .upper-image {
-        position: relative;
-    }
+  #thanksPopUpDiv {
+    position: fixed;
+    background-color: transparent;
+    width: 500px;
+    height: 330px;
+    z-index: 9002;
+    padding: 20px;
+    margin: 0 0 0 265px;
+  }
+  .btn-upload-another-img {
+    float: none;
+  }
+  .down-image {
+    position: absolute;
+    margin: 2%;
+    margin-left: -15%;
+  }
+  .upper-image {
+    position: relative;
+  }
 </style>
 <div class="col-md-4 contest-buttons ">
-    <?php $session = $this->session(); ?>
-    <?php if (isset($contest['entered']) && $contest['entered']): ?>
-        <button class="btn btn-default" onclick="showThankYouPopUp()">You're In</button>
-    <?php elseif ($session->mem_id): ?>
-        <?php if ($session->login_as_buyer == 1): ?>
-            <button id="loginPopup4" class="btn btn-default" href="<?php echo $this->config('main_site', 'url') ?>/workbox.php?mode=loginPopup&login_type=artist">Enter Contest</button>
-        <?php else: ?>
-            <button class="btn btn-default" onclick="window.location = '<?php echo $this->basePath() ?>/<?php echo $contestType; ?>/submission/<?php echo $contest['id']; ?>'">Enter Contest</button>   
-        <?php endif; ?> 
+  <?php $session = $this->session(); ?>
+  <?php if (isset($contest['entered']) && $contest['entered']): ?>
+    <?php
+    $media = array();
+    $media['media_id'] = $contest['media_id'];
+    $media['folder_id'] = $contest['folder_id'];
+    ?>
+    <button class="btn btn-default" onclick="showThankYouPopUp('<?php echo $this->mediaImage($media, 'icons'); ?>', '<?php echo $contest['name']; ?>')">You're In</button>
+  <?php elseif ($session->mem_id): ?>
+    <?php if ($session->login_as_buyer == 1): ?>
+      <button id="loginPopup4" class="btn btn-default" href="<?php echo $this->config('main_site', 'url') ?>/workbox.php?mode=loginPopup&login_type=artist">Enter Contest</button>
     <?php else: ?>
-        <button id="loginPopup4" class="btn btn-default" href="<?php echo $this->config('main_site', 'url') ?>/workbox.php?mode=loginPopup&login_type=artist">Enter Contest</button>
+      <button class="btn btn-default" onclick="window.location = '<?php echo $this->basePath() ?>/<?php echo $contestType; ?>/submission/<?php echo $contest['id']; ?>'">Enter Contest</button>   
     <?php endif; ?> 
+  <?php else: ?>
+    <button id="loginPopup4" class="btn btn-default" href="<?php echo $this->config('main_site', 'url') ?>/workbox.php?mode=loginPopup&login_type=artist">Enter Contest</button>
+  <?php endif; ?> 
 
-    <br>
-    <button class="btn btn-default"  onclick="window.location = '<?php echo $this->basePath() ?>/<?php echo $contestType; ?>/learn-more/<?php echo $contest['id']; ?>'">Learn More</button>
-    <br>
-    <br>
-    <div class="contest-winner">
-        <img src="<?php echo $this->basePath() ?>/img/congratulation.png" style="width:50%" alt="contest status" />
-        <?php $percentage = ($contest['total_entries']) ? floor(($contest['total_entries'] / $contest['max_no_of_photos']) * 100) : 0 ?>
-        <div class="progress">
-            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="<?php echo $percentage ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $percentage ?>%">
-                <?php echo $percentage ?>%_FULL
-            </div>
-        </div>
-        <br>
-        <div class="gold">Share this contest</div>
-        <?php echo $this->partial('social_sharing.phtml'); ?>
+  <br>
+  <button class="btn btn-default"  onclick="window.location = '<?php echo $this->basePath() ?>/<?php echo $contestType; ?>/learn-more/<?php echo $contest['id']; ?>'">Learn More</button>
+  <br>
+  <br>
+  <div class="contest-winner">
+    <img src="<?php echo $this->basePath() ?>/img/congratulation.png" style="width:50%" alt="contest status" />
+    <?php $percentage = ($contest['total_entries']) ? floor(($contest['total_entries'] / $contest['max_no_of_photos']) * 100) : 0 ?>
+    <div class="progress">
+      <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="<?php echo $percentage ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $percentage ?>%">
+        <?php echo $percentage ?>%_FULL
+      </div>
     </div>
+    <br>
+    <div class="gold">Share this contest</div>
+    <?php echo $this->partial('social_sharing.phtml'); ?>
+  </div>
 
-    <div style="display: none;" id="blanket"></div>
-    <div style="display: none; text-align: center" id="thanksPopUpDiv">
-        <div class="popup-another-img" style="font-size: 25px; font-weight: 200; text-align: center; color: #663f8e; font-family: 'franklin_gothic_bookregular';">
-            <a style="float:right;" onclick="hideThankYouPopUp();
-                $('div#overlay').css('display', 'none');" href="#."><img alt="" src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/close.button.png" /></a>
-            <div style="border:1px solid grey; text-align: center;">
-                <b><p>Thank You</p></b>
-                <p>for entering the</p>
-                <b><p class="contest-name"></p></b>
-                <p>Your Entry</p>
-                <img class="down-image" height="122" width="124" src="">
-                <img class="upper-image" width="177" height="189" src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/man-icon-yag.png">            
-            </div>
-            <div class="btn-upload-another-img"><input type="button" onClick="javascript:window.location.href = '<?php echo $this->basePath() ?>/new-contest'"  value="Enter Another Contest"></div>
+  <div style="display: none;" id="blanket"></div>
+  <div style="display: none; text-align: center" id="thanksPopUpDiv">
+    <div class="popup-another-img" style="font-size: 25px; font-weight: 200; text-align: center; color: #663f8e; font-family: 'franklin_gothic_bookregular';">
+      <a style="float:right;" onclick="hideThankYouPopUp();" href="#."><img alt="" src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/close.button.png" /></a>
+      <div style="border:1px solid grey; text-align: center;">
+        <b><p>Thank You</p></b>
+        <p>for entering the</p>
+        <b><p class="contest-name"></p></b>
+        <p>Your Entry</p>
+        <div>
+          <img class="down-image" height="122" width="124" src="" style="margin-left: 10px;">
+          <img class="upper-image" width="177" height="189" src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/man-icon-yag.png">            
         </div>
+      </div>
+      <div class="btn-upload-another-img"><input type="button" onClick="javascript:window.location.href = '<?php echo $this->basePath() ?>/new-contest'"  value="Enter Another Contest"></div>
     </div>
+  </div>
 </div>
-    <script>
-        function showThankYouPopUp() {
-<?php
-$media = array();
-$media['media_id'] = $contest['media_id'];
-$media['folder_id'] = $contest['folder_id'];
-?>
-            image_source = '<?php echo $this->mediaImage($media, 'icons'); ?>';
-            $('.contest-name').html('<?php echo $contest['name']; ?>!');
-            $('.down-image').attr('src', image_source);
-            $('#thanksPopUpDiv').css('top', ($(window).height() / 2 - 300) + 'px');
-            $('#thanksPopUpDiv').show();
-            $('div#overlay').css('display', 'block');
-            $('div#overlay').css('opacity', '0.47');
-            $('div#blanket').css('height', '0');
-        }
-
-        function hideThankYouPopUp() {
-            $('#thanksPopUpDiv').hide();
-            $('div#overlay').css('display', 'none');
-        }
-    </script>
