@@ -129,9 +129,7 @@ body {
     background-color: #e5da7c;
     border: 5px solid #d1d3d4;
     box-shadow: 3px 3px 0px 0px #8e8d8d;
-    padding: 4px 8px;
     min-width: 150px;
-    margin: 10px 0 5px 0;
 }
 
 #ajaxBusy {
