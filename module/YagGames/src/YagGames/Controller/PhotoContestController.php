@@ -12,7 +12,7 @@ use Zend\View\Model\ViewModel;
 
 class PhotoContestController extends BaseController
 {
-  
+
   public function onDispatch(MvcEvent $e)
   {
     return parent::onDispatch($e);
@@ -31,13 +31,13 @@ class PhotoContestController extends BaseController
       $this->flashMessenger()->addErrorMessage('No contest found');
       return $this->redirect()->toRoute('home');
     }
-    
+
     if ($this->contest['voting_started']) {
       $this->flashMessenger()->addErrorMessage('Voting has already started');
 
       return $this->redirect()->toRoute('photo-contest', array(
-          'id' => $contestId,
-          'action' => 'voting'
+                  'id' => $contestId,
+                  'action' => 'voting'
       ));
     }
 
@@ -61,10 +61,10 @@ class PhotoContestController extends BaseController
       try {
         $contestId = $this->session['contestUpload']['contestId'];
         $contestMediaId = $photoContestService->addArtToContest($contestId, $this->session['contestUpload']['mediaId'], $this->session);
-        
+
         $process = new \YagGames\Utils\Process($this->getRequest());
         $process->start('SendSuccessSubmissionEmail ' . $contestMediaId);
-        
+
         $this->session['contestUpload'] = array('contestMediaId' => $contestMediaId);
       } catch (PhotoContestException $e) {
         $this->flashMessenger()->addErrorMessage($e->getMessage());
@@ -121,7 +121,7 @@ class PhotoContestController extends BaseController
       $photoContestService = $this->getServiceLocator()->get('photoContestService');
       try {
         $contestMediaId = $photoContestService->addArtToContest($contestId, $mediaId, $this->session);
-        
+
         $process = new \YagGames\Utils\Process($request);
         $process->start('SendSuccessSubmissionEmail ' . $contestMediaId);
       } catch (PhotoContestException $e) {
@@ -144,10 +144,11 @@ class PhotoContestController extends BaseController
         'message' => 'Bad Request'
     ));
   }
-  
+
   /*
    * Voting API's
    */
+
   public function votingAction()
   {
     $page = $this->params()->fromRoute('page') ? (int) $this->params()->fromRoute('page') : 1;
@@ -159,7 +160,7 @@ class PhotoContestController extends BaseController
     if (isset($this->session->mem_id)) {
       $userId = $this->session->mem_id;
     }
-    
+
     //get contest details
     if (!$this->getContest($contestId)) {
       $this->flashMessenger()->addErrorMessage('No contest found');
@@ -198,7 +199,7 @@ class PhotoContestController extends BaseController
     if (isset($this->session->mem_id)) {
       $userId = $this->session->mem_id;
     }
-    
+
     //get contest details
     if (!$this->getContest($contestId)) {
       $this->flashMessenger()->addErrorMessage('No contest found');
@@ -311,15 +312,14 @@ class PhotoContestController extends BaseController
   {
     try {
       //store in cookie
-      $rmString = isset($this->getRequest()->getCookie()->rm);
-      $rmArray = \json_decode($rmString, true);
-      
+      $rmArray = $this->getRmCookie();
+
       if (!isset($rmArray[$contestId])) {
         $rmArray[$contestId] = array();
       }
       $rmArray[$contestId][] = $mediaId;
-      
-      $cookie = new  \Zend\Http\Header\SetCookie('rm', \json_encode($rmArray), mktime(24,0,0), '/');
+
+      $cookie = new \Zend\Http\Header\SetCookie('rm', \json_encode($rmArray), mktime(24, 0, 0), '/');
       $this->getResponse()->getHeaders()->addHeader($cookie);
     } catch (\Exception $e) {
       $this->getServiceLocator()->get('YagGames\Logger')->err($e->getMessage());
@@ -329,25 +329,23 @@ class PhotoContestController extends BaseController
   private function isAlreadyRated($contestId, $mediaId)
   {
     try {
-      $rmString = isset($this->getRequest()->getCookie()->rm);
-      $rmArray = \json_decode($rmString, true);
-      
+      $rmArray = $this->getRmCookie();
+
       if (isset($rmArray[$contestId][$mediaId])) {
         return true;
       }
     } catch (\Exception $e) {
-      $this->getServiceLocator()->get('YagGames\Logger')->err($e->getMessage());      
+      $this->getServiceLocator()->get('YagGames\Logger')->err($e->getMessage());
     }
-    
+
     return false;
   }
 
   private function getRatedMedia($contestId)
   {
     try {
-      $rmString = isset($this->getRequest()->getCookie()->rm);
-      $rmArray = \json_decode($rmString, true);
-      
+      $rmArray = $this->getRmCookie();
+
       if (isset($rmArray[$contestId])) {
         return $rmArray[$contestId];
       }
@@ -356,7 +354,18 @@ class PhotoContestController extends BaseController
     }
     return array();
   }
-  
+
+  private function getRmCookie()
+  {
+    $rmArray = "";
+    if (isset($this->getRequest()->getCookie()->rm)) {
+      $rmString = $this->getRequest()->getCookie()->rm;
+      $rmArray = \json_decode($rmString, true);
+    }
+
+    return $rmArray;
+  }
+
   private function getContest($contestId)
   {
     $contestTable = $this->getServiceLocator()->get('YagGames\Model\ContestTable');
@@ -366,7 +375,7 @@ class PhotoContestController extends BaseController
     } else {
       $this->contest = array();
     }
-    
+
     return $this->contest;
   }
 
