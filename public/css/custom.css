@@ -40,15 +40,15 @@ body {
 }
 
 .contest-buttons button {
-    font-size: 13px;
+    font-size: 20px;
     color: #68398c;
     font-family: 'FranklinGothicMediumRegular';
     background-color: #e5da7c;
     border: 5px solid #d1d3d4;
     box-shadow: 3px 3px 0px 0px #8e8d8d;
-    padding: 1px 8px;
+    //padding: 6px 70px;
     min-width: 150px;
-    margin: 0px 0 5px 0;
+    margin: 20px 0 0px 0;
 }
 .contest-buttons button:hover {
     background-color: #818285;
@@ -123,13 +123,13 @@ body {
 
 
 .contest button {
-    font-size: 13px;
+    opacity: 1 !important;
     color: #68398c;
     font-family: 'FranklinGothicMediumRegular';
-    background-color: #e5da7c;
+    background-color: #e5da7c !important;
     border: 5px solid #d1d3d4;
-    box-shadow: 3px 3px 0px 0px #8e8d8d;
-    min-width: 150px;
+    box-shadow: 3px 3px 0px 0px #8e8d8d !important;
+    width: 225px
 }
 
 #ajaxBusy {

@@ -1,8 +1,8 @@
 <style>
     .progress-bar {
-        color: #000;
+        color: #646567;
         font-size: 24px;
-        padding-top: 3%;
+        padding: 3% 0% 0% 7%;
     }
 </style>
 <div  class="home_content clearfix">
@@ -37,7 +37,7 @@
         } else {
             foreach ($data as $contest):
                 ?>
-                <div class="contest row <?php echo ($type !== 'exclusive') ? 'black-border': '' ?>">
+                <div class="contest row <?php echo ($type !== 'exclusive') ? 'black-border' : '' ?>">
                     <div class="col-md-4">
                         <?php
                         $titleClass = 'contest-title';
@@ -119,19 +119,19 @@
 </div>
 
 <script>
-  function showThankYouPopUp(image_source, contest_name) {
-    $('.contest-name').html(contest_name);
-    $('.down-image').attr('src', image_source);
-    $('#thanksPopUpDiv').css('top', ($(window).height() / 2 - 300) + 'px');
-    $('#thanksPopUpDiv').css('left', ($(window).width() / 2 - $('#thanksPopUpDiv').width() - 50) + 'px');
-    $('#thanksPopUpDiv').show();
-    $('div#overlay').css('display', 'block');
-    $('div#overlay').css('opacity', '0.47');
-    $('div#blanket').css('height', '0');
-}
+    function showThankYouPopUp(image_source, contest_name) {
+        $('.contest-name').html(contest_name);
+        $('.down-image').attr('src', image_source);
+        $('#thanksPopUpDiv').css('top', ($(window).height() / 2 - 300) + 'px');
+        $('#thanksPopUpDiv').css('left', ($(window).width() / 2 - $('#thanksPopUpDiv').width() - 50) + 'px');
+        $('#thanksPopUpDiv').show();
+        $('div#overlay').css('display', 'block');
+        $('div#overlay').css('opacity', '0.47');
+        $('div#blanket').css('height', '0');
+    }
 
-function hideThankYouPopUp() {
-    $('#thanksPopUpDiv').hide();
-    $('div#overlay').css('display', 'none');
-}
+    function hideThankYouPopUp() {
+        $('#thanksPopUpDiv').hide();
+        $('div#overlay').css('display', 'none');
+    }
 </script>
