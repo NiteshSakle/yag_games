@@ -168,3 +168,9 @@ body {
 .blue-text {
     color: #68398C;
 }
+
+.join-popup, .join-popup:before, .join-popup:after {
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+}
