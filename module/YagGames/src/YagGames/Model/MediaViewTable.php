@@ -37,7 +37,7 @@ class MediaViewTable extends BaseTable
                 ->from(array('rv' => 'rating_view'))
                 ->quantifier(new Expression('SQL_CALC_FOUND_ROWS'))
                 ->columns($columns)
-                ->where(array('rv.owner' => $userId))
+                ->where(array('rv.owner' => $userId, 'active' => '1'))
                 ->limit($offset)
                 ->offset(($page - 1) * $offset)
                 ->order("rv.rating DESC")

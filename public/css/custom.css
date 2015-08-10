@@ -54,6 +54,11 @@ body {
     background-color: #818285;
 //    color: #d1d3d4;
 }
+.vote-soon:hover{
+    color: #68398c;
+    cursor: auto;
+}
+
 .contest-buttons img {
     margin: 5% 0% 5% 0%;
 }
