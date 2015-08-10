@@ -7,7 +7,9 @@
     <br>
     <button class="btn btn-default"  onclick="window.location = '<?php echo $this->basePath() ?>/<?php echo $contestType; ?>/learn-more/<?php echo $contest['id']; ?>'">Learn More</button>
     <br>
-    <button class="btn btn-default" onclick="window.location = '<?php echo $this->basePath() ?>/<?php echo $contestType; ?>/rankings/<?php echo $contest['id']; ?>'">Rankings</button>   
+    <?php if ($contest['voting_started']): ?>
+        <button class="btn btn-default" onclick="window.location = '<?php echo $this->basePath() ?>/<?php echo $contestType; ?>/rankings/<?php echo $contest['id']; ?>'">Rankings</button>
+    <?php endif; ?>       
     <br>
     <div class="contest-winner">
         <?php $percentage = ($contest['total_entries']) ? ($contest['total_entries'] / $contest['max_no_of_photos']) * 100 : 0 ?>

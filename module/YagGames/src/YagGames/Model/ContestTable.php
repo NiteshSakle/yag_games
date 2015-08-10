@@ -121,7 +121,7 @@ class ContestTable extends BaseTable {
 
         $select = new Select;
         $select->from(array('c' => 'contest'))
-                ->columns(array('*', 'my_type' => new Expression('IF(entry_end_date >= NOW(), "new", IF(winners_announce_date >=NOW(), "active", "past"))')))
+                ->columns(array('*', 'my_type' => new Expression('IF(entry_end_date >= CURDATE(), "new", IF(winners_announce_date >=CURDATE(), "active", "past"))')))
                 ->join(array('ct' => 'contest_type'), 'ct.id = c.type_id', array('contest_type' => 'type'))
                 ->join(array('cm' => $contestMediaCountQry), 'c.id = cm.contest_id', array('total_entries'), 'left')
         ;
@@ -162,7 +162,7 @@ class ContestTable extends BaseTable {
             $select->join(array('cw' => 'contest_winner'), 'cm.contest_media_id = cw.contest_media_id', array('rank'), 'left');
         }
 
-        $select->where('winners_announce_date <= NOW() AND c.is_exclusive <> 1');
+        $select->where('winners_announce_date <= CURDATE() AND c.is_exclusive <> 1');
 
         return $select;
     }
@@ -173,6 +173,19 @@ class ContestTable extends BaseTable {
                 ->join(array('m' => 'ps4_media'), 'cm1.media_id = m.media_id', 'media_id')
                 ->join(array('cw' => 'contest_winner'), 'cm1.id = cw.contest_media_id', array('rank'), 'left')
                 ->where(array('m.owner' => $user));
+
+        // if user log's in, check whether he entered the contest or not
+        if ($user) {
+            $userMediaQry = $this->getSql()->select()
+                    ->from(array('cm_new' => 'contest_media'))
+                    ->join(array('m_new' => 'ps4_media'), 'cm_new.media_id = m_new.media_id', array('media_id', 'folder_id'))
+                    ->where(array('m_new.owner' => $user))
+                    ->columns(array(
+                'contest_id'
+            ));
+
+            $select->join(array('uc' => $userMediaQry), new Expression('c.id = uc.contest_id'), array('entered' => new Expression('IF(uc.contest_id, 1, 0 )'), 'media_id', 'folder_id'), 'left');
+        }
 
         return $select;
     }
@@ -191,7 +204,7 @@ class ContestTable extends BaseTable {
 
             $select->join(array('uc' => $userMediaQry), new Expression('c.id = uc.contest_id'), array('entered' => new Expression('IF(uc.contest_id, 1, 0 )'), 'media_id', 'folder_id'), 'left');
         }
-        
+
         return $select;
     }
 
