@@ -40,11 +40,12 @@ return array(
             'home' => array(
                 'type' => 'Segment',
                 'options' => array(
-                    'route'    => '/[:action][/page/:page][/size/:size]',
+                    'route'    => '/[:action][/page/:page][/size/:size][/id/:id]',
                     'constraints' => array(
                         'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'page'     => '[0-9]+',
                         'size'     => '[0-9]+',
+                        'id'     => '[0-9]+',
                     ),
                     'defaults' => array(
                         '__NAMESPACE__' => 'YagGames\Controller',

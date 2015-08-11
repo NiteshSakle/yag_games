@@ -17,5 +17,7 @@
     </div>
     <br>
     <div class="gold">Share this contest</div>
-    <?php echo $this->partial('social_sharing.phtml'); ?>
+    <?php echo $this->partial('social_sharing.phtml', array(
+        'contest' => $contest,       
+    )); ?>
 </div>

@@ -54,11 +54,27 @@ class ContestController extends BaseController
     return $this->getContestList('my');
   }
   
-   public function exclusiveContestAction()
+  public function exclusiveContestAction()
   {
     $this->checkLogin();
 
     return $this->getContestList('exclusive');
+  }
+  
+  public function descriptionAction()
+  {
+      $contestId = $this->params()->fromRoute('id');
+      $contestTable = $this->getServiceLocator()->get('YagGames\Model\ContestTable');
+      $data = $contestTable->getByContestId($contestId);if(strtotime($data['entry_end_date']) >= strtotime(date("Y-m-d"))){
+          $type = "new";
+      } else {
+          $type = "past";
+      }
+      $view = new ViewModel(array(
+          'contest' => $data,
+          'type' => $type, 
+        ));
+        return $view;
   }
 
   private function getContestList($type)

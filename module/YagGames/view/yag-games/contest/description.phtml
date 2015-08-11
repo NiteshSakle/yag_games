@@ -1,0 +1,111 @@
+ 
+<head>
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@YourArtGallery">
+    <meta name="twitter:title" content="<?php echo $contest['name']; ?>">
+    <meta name="twitter:description" content="<?php echo $contest['description']; ?>">
+    <meta name="twitter:image" content="<?php echo $this->config('aws', 'path') . $contest['thumbnail']; ?>">
+    
+    <!-- Open Graph data -->
+    <meta property="og:title" content="<?php echo $contest['name']; ?>" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="<?php echo $this->config('aws', 'path') . $contest['thumbnail']; ?>" />
+    <meta property="og:description" content="<?php echo $contest['description']; ?>" />
+<script type="text/javascript" src="//s7.addthis.com/js/250/addthis_widget.js"></script>
+</head>
+<script>
+    
+$(document).ready(function() {
+    $('.btnPinIt').click(function() {
+        var url = $(this).attr('href');
+        var media = encodeURIComponent($(this).attr('data-image'));
+        var desc = $(this).attr('data-desc');
+        window.open("//www.pinterest.com/pin/create/button/"+
+        "?url="+url+
+        "&media="+media+
+        "&description="+desc,"pinIt","toolbar=no, scrollbars=no, resizable=no, top=0, right=0, width=750, height=320");
+        return false;
+    });
+ax});
+</script>
+
+<div class="inner_main clearfix">
+    <div class="inner_txt clearfix">
+        <h1 class="page-titleHead">Artist Challenge & Contests</h1>
+    </div>
+</div>
+<div class="contest row <?php echo ($type !== 'exclusive') ? 'black-border' : '' ?>">
+    <div class="col-md-4">
+        <?php
+        $titleClass = 'contest-title';
+        if ($this->getHelperPluginManager()->getServiceLocator()->get('Application')->getMvcEvent()->getRouteMatch()->getParam('action') == 'exclusive-contest') {
+            $titleClass = 'contest-title gold';
+        }
+        ?>
+        <div class="<?php echo $titleClass; ?>"><?php echo $contest['name']; ?></div>
+        <div class="contest-description">
+            <?php echo $contest['description']; ?>
+            <br>
+            <br>
+            <div class="contest-dates">
+                Enter by: <?php echo date("jS F, Y", strtotime($contest['entry_end_date'])); ?>
+                <br>
+                Winner Announced: <?php echo date("jS F, Y", strtotime($contest['winners_announce_date'])); ?>
+            </div>                
+        </div>
+    </div>        
+    <div class="contest-image col-md-4">
+        <img src="<?php echo $this->config('aws', 'path') . $contest['thumbnail']; ?>"  alt="Contest Photo" />
+    </div>
+<script type="text/javascript">
+    var title="<?php echo $contest['name']; ?>";
+    var text=" is available on YOURARTGALLERY.COM. Enter to win!” ";
+    var addthis_share = addthis_share || {};
+    addthis_share = {
+	passthrough : {
+		twitter: {
+			text:title+' '+text
+		}
+	}
+    }
+</script>
+    <?php
+    switch ($type) {
+        case 'new':
+            $partial = 'new_rsidebar.phtml';
+            break;
+        case 'active':
+            $partial = 'active_rsidebar.phtml';
+            break;
+        case 'past':
+            $partial = 'past_rsidebar.phtml';
+            break;
+        case 'my':
+            $partial = 'my_rsidebar.phtml';
+            break;
+        case 'exclusive':
+            $partial = 'exclusive_rsidebar.phtml';
+            break;
+        case 'default':
+            $partial = 'my_rsidebar.phtml';
+    }
+
+    switch ($contest['type']) {
+        case 'Photo Contest':
+            $contestType = 'photo-contest';
+            break;
+        case 'Fan Favorite':
+            $contestType = 'fan-favorite';
+            break;
+        case 'default':
+            $contestType = 'brackets';
+    }
+
+    echo $this->partial($partial, array(
+        'contest' => $contest,
+        'type' => $type,
+        'contestType' => $contestType,
+    ));
+    ?>
+</div>

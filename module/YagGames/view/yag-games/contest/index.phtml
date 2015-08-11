@@ -1,3 +1,4 @@
+<script type="text/javascript" src="//s7.addthis.com/js/250/addthis_widget.js"></script>
 <style>
     .progress-bar {
         color: #646567;
@@ -135,4 +136,16 @@
         $('#thanksPopUpDiv').hide();
         $('div#overlay').css('display', 'none');
     }
+    
+    $('.btnPinIt').click(function() {
+        var url = $(this).attr('href');
+        var media = encodeURIComponent($(this).attr('data-image'));
+        var desc = $(this).attr('data-desc');
+        window.open("//www.pinterest.com/pin/create/button/"+
+        "?url="+url+
+        "&media="+media+
+        "&description="+desc,"pinIt","toolbar=no, scrollbars=no, resizable=no, top=0, right=0, width=750, height=320");
+        return false;
+    });
+    
 </script>
