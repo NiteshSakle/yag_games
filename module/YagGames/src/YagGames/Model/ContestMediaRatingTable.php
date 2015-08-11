@@ -118,11 +118,9 @@ class ContestMediaRatingTable extends BaseTable
   public function getTop10RatedMedia($contestId)
   {
     try {
-      $this->executeRawQuery('SET @rank_count := 0, @prev_value := NULL');
-      
       $sql = $this->getSql();
       
-      $subQuery = $sql->select()
+      $query = $sql->select()
               ->from(array('cmr' => 'contest_media_rating'))
               ->join(array('cm' => 'contest_media'), 'cm.id = cmr.contest_media_id', array('contest_media_id' => 'id', 'media_id'))
               ->join(array('m' => 'ps4_media'), 'm.media_id = cm.media_id', array('owner'))
@@ -130,17 +128,9 @@ class ContestMediaRatingTable extends BaseTable
               ->where(array(
                   'cm.contest_id' => $contestId
               ))
-              ->group('cm.media_id');
-      
-      $columns = array('*', 'rank' => new Expression('CASE
-                                    WHEN @prev_value = r.rating THEN @rank_count
-                                    WHEN @prev_value := r.rating THEN @rank_count := @rank_count + 1
-                                  END'));
-      $query = $sql->select()
-                        ->from(array('r' => $subQuery))
-                        ->columns($columns)
-                        ->order('r.rating desc')
-                        ->having('rank <= 10');
+              ->group('cm.media_id')
+              ->order('rating desc, cm.created_at asc')
+              ->limit(10);
       
       $rows = $sql->prepareStatementForSqlObject($query)->execute();
       $winners = array();

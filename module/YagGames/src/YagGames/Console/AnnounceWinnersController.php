@@ -46,13 +46,14 @@ class AnnounceWinnersController extends BaseConsoleController {
         $winners = $contestMediaRatingTable->getTop10RatedMedia($contestData['id']);
 
         $contestWinnerTable = $this->getServiceLocator()->get('YagGames\Model\ContestWinnerTable');
-        foreach ($winners as $winner) {
+        foreach ($winners as $key => $winner) {
+            $rank = $key+1;
             $contestWinner = new \YagGames\Model\ContestWinner();
             $contestWinner->contest_media_id = $winner['contest_media_id'];
-            $contestWinner->rank = $winner['rank'];
+            $contestWinner->rank = $rank;
 
             if ($contestWinnerTable->insert($contestWinner)) {
-                if ((int) $winner['rank'] === 1) {
+                if ((int) $rank === 1) {
                     $this->awardTropyToWinner($winner, $contestData);
                 }
             }
