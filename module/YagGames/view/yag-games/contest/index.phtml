@@ -1,9 +1,29 @@
 <style>
-    .progress-bar {
+    .progress-percentage {
         color: #646567;
         font-size: 24px;
         margin: 0%;
         padding: 3%;
+    }
+    // font sizes css 
+
+    span .wysiwyg-font-size-fs10 {
+        font-size: 10px;
+    }
+    .wysiwyg-font-size-fs12 {
+        font-size: 12px;
+    }
+    .wysiwyg-font-size-fs14 {
+        font-size: 14px;
+    }
+    .wysiwyg-font-size-fs16 {
+        font-size: 16px;
+    }
+    .wysiwyg-font-size-fs18 {
+        font-size: 18px;
+    }
+    .wysiwyg-font-size-fs20 {
+        font-size: 20px;
     }
 </style>
 <div  class="home_content clearfix">
@@ -34,12 +54,12 @@
     <div class="contest-list clearfix">
         <?php if (empty($data)) { ?>
             <br><div class="alert alert-info" role="alert"><?php echo "More Contests coming soon!"; ?></div>    
-        <?php
+            <?php
         } else {
             foreach ($data as $contest):
                 ?>
                 <div class="contest row <?php echo ($type !== 'exclusive') ? 'black-border' : '' ?>">
-                    <div class="col-md-4">
+                    <div class="col-md-5">
                         <?php
                         $titleClass = 'contest-title';
                         if ($this->getHelperPluginManager()->getServiceLocator()->get('Application')->getMvcEvent()->getRouteMatch()->getParam('action') == 'exclusive-contest') {
@@ -52,13 +72,13 @@
                             <br>
                             <br>
                             <div class="contest-dates">
-                                Enter by: <?php echo date("jS F, Y", strtotime($contest['entry_end_date'])); ?>
+                                Enter by: <?php echo date("F jS, Y", strtotime($contest['entry_end_date'])); ?>
                                 <br>
-                                Winner Announced: <?php echo date("jS F, Y", strtotime($contest['winners_announce_date'])); ?>
+                                Winner Announced: <?php echo date("F jS, Y", strtotime($contest['winners_announce_date'])); ?>
                             </div>                
                         </div>
                     </div>        
-                    <div class="contest-image col-md-4">
+                    <div class="contest-image col-md-3">
                         <img src="<?php echo $this->config('aws', 'path') . $contest['thumbnail']; ?>"  alt="Contest Photo" />
                     </div>
                     <?php
@@ -135,4 +155,5 @@
         $('#thanksPopUpDiv').hide();
         $('div#overlay').css('display', 'none');
     }
+    
 </script>

@@ -134,8 +134,8 @@
                     <br>
                     <br>
                     <div class="contest-dates">
-                        Open Entries End: <?php echo date("jS F, Y", strtotime($contest['entry_end_date'])); ?><br>
-                        Voting Begins: <?php echo date("jS F, Y", strtotime($contest['voting_start_date'])); ?>
+                        Open Entries End: <?php echo date("F jS, Y", strtotime($contest['entry_end_date'])); ?><br>
+                        Voting Begins: <?php echo date("F jS, Y", strtotime($contest['voting_start_date'])); ?>
                     </div>                
                 </div>
             </div> 
@@ -199,7 +199,7 @@
         <a style="float:right;" onclick="hideSuccessPopup('popUpDiv');" href="#."><img alt="" src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/close.button.png" /></a>
         <div class="leftcol">
             <h1 class="title" style="  text-align: left;">CONGRATULATIONS!<br><br>You have entered the  <strong><?php echo $contest['name']; ?> </strong> </h1>
-            <div class="congrts">Voting Begins: <?php echo date("jS F, Y", strtotime($contest['voting_start_date'])); ?>. Follow your ranking daily.
+            <div class="congrts">Voting Begins: <?php echo date("F jS, Y", strtotime($contest['voting_start_date'])); ?>. Follow your ranking daily.
                 <br>
                 Don’t forget to share with your friends!
             </div>
