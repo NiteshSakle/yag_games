@@ -32,9 +32,9 @@
     </div>
 
     <div class="contest-list clearfix">
+        <?php if (empty($data)) { ?>
+            <div class="alert alert-info" role="alert"><?php echo "No contests available"; ?></div>            
         <?php
-        if (empty($data)) {
-            echo "No contests available";
         } else {
             foreach ($data as $contest):
                 ?>
