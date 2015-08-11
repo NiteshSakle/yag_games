@@ -90,6 +90,15 @@
     ?>
 
     <script type="text/javascript">
+
+        $(window).ready(function () {
+            workbox({
+                page: gameBasePath + '/photo-contest/get-next-art?contestId=' + contestId,
+                mini: true
+            });
+            scroll(0, 0);
+        });
+
         var contestId = "<?php echo $contestId; ?>";
         $('.media_image').click(function () {
             workbox({

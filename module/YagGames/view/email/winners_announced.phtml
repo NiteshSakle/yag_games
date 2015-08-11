@@ -1,5 +1,5 @@
 <div>
-    Hi, <br><br>
+    Hi <?php echo $user_data['f_name'].' '.$user_data['l_name'];?>,<br><br>
 
     <p>The results are in! Voting for the "<?php echo $name; ?>" contest that you entered has concluded. Come find out the winners by clicking <a href="<?php echo $main_site_url.'/contests/photo-contest/rankings/'.$id; ?>">here</a>.</p><br>
 

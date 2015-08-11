@@ -30,9 +30,13 @@ class AnnounceWinnersController extends BaseConsoleController {
 
         foreach ($contests as $contest) {
             if ($this->announceWinners($contest)) {
-                $contestEmails = $contestMediaTable->getContestArtistEmails($contest['id']);
+                $contestArtists = $contestMediaTable->getContestArtistData($contest['id']);
                 $contest['main_site_url'] = $config['main_site']['url'];
-                $this->sendEmail('Winners for contest - ' . $contest['name'], $contestEmails, 'winners_announced', $contest);
+                foreach ($contestArtists as $contestArtist) {
+                    $contest['user_data'] = $contestArtist;
+                    $this->sendEmail('Winners for contest - ' . $contest['name'], $contestArtist['email'], 'winners_announced', $contest);
+                    //$mailer->send($config['from_address_email'], $email, $subject, $body);
+                }
             }
         }
     }

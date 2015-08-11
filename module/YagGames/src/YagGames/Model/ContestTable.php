@@ -279,6 +279,33 @@ class ContestTable extends BaseTable {
         }
     }
 
+    public function getContestArtistData($contestId) {
+        try {
+            $sql = $this->getSql();
+            $query = $sql->select()
+                    ->from(array('c' => 'contest'))
+                    ->join(array('cm' => 'contest_media'), 'cm.contest_id = c.id', array())
+                    ->join(array('m' => 'ps4_media'), 'm.media_id = cm.media_id', array())
+                    ->join(array('u' => 'ps4_members'), 'm.owner = u.mem_id', array('username', 'email', 'f_name', 'l_name'))
+                    ->where(array(
+                        'c.id' => $contestId,
+                    ))
+                    ->group('u.mem_id');
+
+            $rows = $sql->prepareStatementForSqlObject($query)->execute();
+
+            $contest = array();
+            foreach ($rows as $row) {
+                $contest[] = $row;
+            }
+
+            return $contest;
+        } catch (\Exception $e) {
+            $this->logException($e);
+            return false;
+        }
+    }
+
     public function getVotingReadyContests() {
         try {
 

@@ -52,7 +52,7 @@ body {
 }
 .contest-buttons button:hover {
     background-color: #818285;
-//    color: #d1d3d4;
+    //    color: #d1d3d4;
 }
 .vote-soon:hover{
     color: #68398c;
@@ -72,8 +72,8 @@ body {
 }
 
 .contest-image img {
-    width: 300px;
-    height: 300px;
+    width: 250px;
+    height: 250px;
 }
 .contest-winner {
     position: relative;
@@ -91,10 +91,11 @@ body {
 }
 .progress-bar-success{
     background-color: #e5da7c; 
-    margin-top: -3px;
-    margin-left: -3px;
     text-align: center;
     height: 25px;
+    font-size: 24px;
+    color: #646567;
+    padding: 3% 0%;
 }
 .contest-winner .rank {
     font-size: 36px;
@@ -133,7 +134,7 @@ body {
     background-color: #e5da7c !important;
     border: 5px solid #d1d3d4;
     box-shadow: 3px 3px 0px 0px #8e8d8d !important;
-    width: 225px
+    width: 200px
 }
 
 #ajaxBusy {
@@ -179,4 +180,7 @@ body {
     box-sizing: content-box;
 }
 
+.social_link_contest {
+    text-align: center;
+}
 .contest-share{ text-align: center !important;}
