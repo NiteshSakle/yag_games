@@ -52,7 +52,7 @@ body {
 }
 .contest-buttons button:hover {
     background-color: #818285;
-//    color: #d1d3d4;
+    //    color: #d1d3d4;
 }
 .vote-soon:hover{
     color: #68398c;
@@ -91,10 +91,11 @@ body {
 }
 .progress-bar-success{
     background-color: #e5da7c; 
-    margin-top: -3px;
-    margin-left: -3px;
     text-align: center;
     height: 25px;
+    font-size: 24px;
+    color: #646567;
+    padding: 3% 0%;
 }
 .contest-winner .rank {
     font-size: 36px;

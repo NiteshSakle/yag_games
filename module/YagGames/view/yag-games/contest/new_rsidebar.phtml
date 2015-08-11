@@ -19,6 +19,11 @@
     .upper-image {
         position: relative;
     }
+    .progress-percentage {
+        color: #646567;
+        font-size: 24px;
+        margin: 0% 3%;
+    }
 </style>
 <div class="col-md-4 contest-buttons ">
     <?php $session = $this->session(); ?>
@@ -47,8 +52,7 @@
         <img src="<?php echo $this->basePath() ?>/img/congratulation.png" style="width:50%" alt="contest status" />
         <?php $percentage = ($contest['total_entries']) ? floor(($contest['total_entries'] / $contest['max_no_of_photos']) * 100) : 0 ?>
         <div class="progress">
-            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="<?php echo $percentage ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $percentage ?>%"></div>
-            <span class="progress-percentage"><?php echo $percentage ?>%_FULL</span>
+            <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="<?php echo $percentage ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $percentage ?>%"> <span class="progress-percentage"><?php echo $percentage ?>%_FULL</span></div>
         </div>
         <br>
         <div class="gold">Share this contest</div>
