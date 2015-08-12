@@ -1,19 +1,15 @@
- 
-<head>
-    <!-- Twitter Card data -->
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:site" content="@YourArtGallery">
-    <meta name="twitter:title" content="<?php echo $contest['name']; ?>">
-    <meta name="twitter:description" content="<?php echo $contest['name']; ?> is available on YOURARTGALLERY.COM. Enter to win!”  <?php echo $this->config('main_site' ,'url') ?>/contests/description/id/<?php echo $contest['id']; ?>">
-    <meta name="twitter:image" content="<?php echo $this->config('aws', 'path') . $contest['thumbnail']; ?>">
-    
-    <!-- Open Graph data -->
-    <meta property="og:title" content="<?php echo $contest['name']; ?>" />
-    <meta property="og:type" content="website" />
-    <meta property="og:image" content="<?php echo $this->config('aws', 'path') . $contest['thumbnail']; ?>" />
-    <meta property="og:description" content="<?php echo $contest['name']; ?> is available on YOURARTGALLERY.COM. Enter to win!”  <?php echo $this->config('main_site' ,'url') ?>/contests/description/id/<?php echo $contest['id']; ?>" />
-<script type="text/javascript" src="//s7.addthis.com/js/250/addthis_widget.js"></script>
-</head>
+<?php
+$this->headMeta()->setProperty('twitter:card', 'summary');
+$this->headMeta()->setProperty('twitter:site', 'article');
+$this->headMeta()->setProperty('twitter:title', $contest['name']);
+$this->headMeta()->setProperty('twitter:description', 'article');
+$this->headMeta()->setProperty('twitter:image', $this->config('aws', 'path') . $contest['thumbnail']);
+
+$this->headMeta()->setProperty('og:title', $contest['name']);
+$this->headMeta()->setProperty('og:type', 'website');
+$this->headMeta()->setProperty('og:image', $this->config('aws', 'path') . $contest['thumbnail']);
+$this->headMeta()->setProperty('og:description', $contest['name'] . ' is available on YOURARTGALLERY.COM. Enter to win! ' . $this->config('main_site' ,'url') . '/contests/description/id/' . $contest['id']);
+?>
 <script>
     
 $(document).ready(function() {
