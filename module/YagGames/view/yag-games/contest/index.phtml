@@ -16,6 +16,7 @@
         position: absolute;
         margin: 2%;
         margin-left: -15%;
+        border: 4px solid rgb(223, 220, 125);
     }
     .upper-image {
         position: relative;
@@ -23,7 +24,9 @@
     .progress-percentage {
         color: #646567;
         font-size: 24px;
-        margin: 0% 3%;
+        position: absolute;
+        display: block;
+        width: 100%;
     }
     // font sizes css 
 
@@ -73,7 +76,7 @@
 
     <div class="contest-list clearfix">
         <?php if (empty($data)) { ?>
-            <br><div class="alert alert-info" role="alert"><?php echo "More Contests coming soon!"; ?></div>    
+            <br><div class="alert alert-info" role="alert"><?php echo $type=='my'? "You have not participated in any contest yet":"More Contests coming soon!"; ?></div>    
             <?php
         } else {
             foreach ($data as $contest):
@@ -89,7 +92,6 @@
                         <div class="<?php echo $titleClass; ?>"><?php echo $contest['name']; ?></div>
                         <div class="contest-description">
                             <?php echo $contest['description']; ?>
-                            <br>
                             <br>
                             <div class="contest-dates">
                                 Enter by: <?php echo date("F jS, Y", strtotime($contest['entry_end_date'])); ?>

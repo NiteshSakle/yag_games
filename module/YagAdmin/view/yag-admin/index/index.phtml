@@ -368,9 +368,9 @@
                     $('#description').data("wysihtml5").editor.setValue(response.data.description);
                     $('#thumbnail_name').show();
                     $('#thumbnail_name').val((response.data.thumbnail).substring(10));
-                    $('#entryEndDate').val(response.data.entry_end_date);
-                    $('#winnersAnnounceDate').val(response.data.winners_announce_date);
-                    $('#votingStartDate').val(response.data.voting_start_date);
+                    $('#entryEndDate').val(reformatDate(response.data.entry_end_date));
+                    $('#winnersAnnounceDate').val(reformatDate(response.data.winners_announce_date));
+                    $('#votingStartDate').val(reformatDate(response.data.voting_start_date));
                     $('#entryLimit').val(response.data.max_no_of_photos);
                     if (response.data.is_exclusive == 1) {
                         $("input[name='exclusive'][value=0]").parent().removeClass('checked');
@@ -405,7 +405,10 @@
         votingStartDateTime = convertDateToTime(votingStartDate);
 
         if (votingStartDateTime <= entryEndDateTime || winnersAnnounceDateTime <= votingStartDateTime) {
-            bootbox.alert('Please check the dates');
+            $('#create-contest-modal').modal('hide');
+            bootbox.alert('Please check the dates', function () {
+                $('#create-contest-modal').modal('show');
+            })
         } else {
             var formData = new FormData($(this)[0]);
 
@@ -436,6 +439,12 @@
         myDate = myDate.split("-");
         var newDate = myDate[1] + "/" + myDate[0] + "/" + myDate[2];
         return new Date(newDate).getTime();
+    }
+
+    function reformatDate(dateStr)
+    {
+        dArr = dateStr.split("-");  // ex input "2010-01-18"
+        return dArr[2] + "-" + dArr[1] + "-" + dArr[0]; //ex out: "18/01/10"
     }
 
 </script>
