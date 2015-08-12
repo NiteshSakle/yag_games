@@ -1,8 +1,8 @@
 <?php
 $this->headMeta()->setProperty('twitter:card', 'summary');
-$this->headMeta()->setProperty('twitter:site', 'article');
+$this->headMeta()->setProperty('twitter:site', '@YourArtGallery');
 $this->headMeta()->setProperty('twitter:title', $contest['name']);
-$this->headMeta()->setProperty('twitter:description', 'article');
+$this->headMeta()->setProperty('twitter:description', $contest['name'] . ' is available on YOURARTGALLERY.COM. Enter to win! ' . $this->config('main_site' ,'url') . '/contests/description/id/' . $contest['id']);
 $this->headMeta()->setProperty('twitter:image', $this->config('aws', 'path') . $contest['thumbnail']);
 
 $this->headMeta()->setProperty('og:title', $contest['name']);
