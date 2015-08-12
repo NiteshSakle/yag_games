@@ -79,8 +79,8 @@ body {
     position: relative;
 }
 .contest-winner div.progress{
-    position: absolute;
-    top:60px;
+    position: relative;
+    top:-90px;
     width:50%;
     background-color: #d1d3d4; 
     margin-left: 25%;
