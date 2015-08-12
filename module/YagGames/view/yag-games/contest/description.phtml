@@ -54,18 +54,6 @@ $(document).ready(function() {
     <div class="contest-image col-md-4">
         <img src="<?php echo $this->config('aws', 'path') . $contest['thumbnail']; ?>"  alt="Contest Photo" />
     </div>
-<script type="text/javascript">
-    var title="<?php echo $contest['name']; ?>";
-    var text=" is available on YOURARTGALLERY.COM. Enter to win!” ";
-    var addthis_share = addthis_share || {};
-    addthis_share = {
-	passthrough : {
-		twitter: {
-			text:title+' '+text
-		}
-	}
-    }
-</script>
     <?php
     switch ($type) {
         case 'new':
