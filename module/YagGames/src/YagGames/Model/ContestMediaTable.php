@@ -208,7 +208,7 @@ class ContestMediaTable extends BaseTable {
                     ->columns($columns)
                     ->where(array('cm.contest_id' => $contestId))
                     ->limit($limit)
-                    ->order("votes DESC")
+                    ->order("votes")
                     ->group('cm.media_id');
 
             if (!empty($mediaId)) {

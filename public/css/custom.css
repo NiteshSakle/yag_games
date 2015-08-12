@@ -69,6 +69,7 @@ body {
     margin: 0% 0% 10% 0%;
     color: #68398c;
     text-align: left;
+    line-height: 32px;
 }
 
 .contest-image img {
@@ -134,7 +135,7 @@ body {
     background-color: #e5da7c !important;
     border: 5px solid #d1d3d4;
     box-shadow: 3px 3px 0px 0px #8e8d8d !important;
-    width: 200px
+    width: 225px;
 }
 
 #ajaxBusy {
