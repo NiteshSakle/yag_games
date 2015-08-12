@@ -65,10 +65,16 @@ class ContestController extends BaseController
   {
       $contestId = $this->params()->fromRoute('id');
       $contestTable = $this->getServiceLocator()->get('YagGames\Model\ContestTable');
-      $data = $contestTable->getByContestId($contestId);if(strtotime($data['entry_end_date']) >= strtotime(date("Y-m-d"))){
+      $data = $contestTable->getByContestId($contestId);
+      
+      if(strtotime($data['entry_end_date']) >= strtotime(date("Y-m-d"))){
           $type = "new";
       } else {
-          $type = "past";
+        if(strtotime($data['winners_announce_date']) >= strtotime(date("Y-m-d"))){
+            $type = "active";
+        } else {
+            $type = "past";
+        }
       }
       $view = new ViewModel(array(
           'contest' => $data,
