@@ -4,14 +4,14 @@
     <meta name="twitter:card" content="summary">
     <meta name="twitter:site" content="@YourArtGallery">
     <meta name="twitter:title" content="<?php echo $contest['name']; ?>">
-    <meta name="twitter:description" content="<?php echo $contest['description']; ?>">
+    <meta name="twitter:description" content="<?php echo $contest['name']; ?> is available on YOURARTGALLERY.COM. Enter to win!”  <?php echo $this->config('main_site' ,'url') ?>/contests/description/id/<?php echo $contest['id']; ?>">
     <meta name="twitter:image" content="<?php echo $this->config('aws', 'path') . $contest['thumbnail']; ?>">
     
     <!-- Open Graph data -->
     <meta property="og:title" content="<?php echo $contest['name']; ?>" />
     <meta property="og:type" content="website" />
     <meta property="og:image" content="<?php echo $this->config('aws', 'path') . $contest['thumbnail']; ?>" />
-    <meta property="og:description" content="<?php echo $contest['description']; ?>" />
+    <meta property="og:description" content="<?php echo $contest['name']; ?> is available on YOURARTGALLERY.COM. Enter to win!”  <?php echo $this->config('main_site' ,'url') ?>/contests/description/id/<?php echo $contest['id']; ?>" />
 <script type="text/javascript" src="//s7.addthis.com/js/250/addthis_widget.js"></script>
 </head>
 <script>
@@ -27,7 +27,7 @@ $(document).ready(function() {
         "&description="+desc,"pinIt","toolbar=no, scrollbars=no, resizable=no, top=0, right=0, width=750, height=320");
         return false;
     });
-ax});
+});
 </script>
 
 <div class="inner_main clearfix">
@@ -91,7 +91,7 @@ ax});
             $partial = 'my_rsidebar.phtml';
     }
 
-    switch ($contest['type']) {
+    switch ($contest['contest_type']) {
         case 'Photo Contest':
             $contestType = 'photo-contest';
             break;

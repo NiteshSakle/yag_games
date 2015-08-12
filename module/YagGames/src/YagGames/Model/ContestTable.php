@@ -400,11 +400,8 @@ class ContestTable extends BaseTable {
     
     public function getByContestId($contestId) {        
         if ($contestId) {
-            $contestSql = $this->getSql()->select()
-                    ->from(array('c' => 'contest'))
-                    ->join(array('ct' => 'contest_type'), 'ct.id = c.type_id', array('type'))
-                    ->columns(array('*'))   
-                    ->where(array('c.id' => $contestId));
+            $contestSql =  $this->getContestBaseSelect();
+            $contestSql->where(array('c.id' => $contestId));
         }
         
         $statement = $this->getSql()->prepareStatementForSqlObject($contestSql);        
