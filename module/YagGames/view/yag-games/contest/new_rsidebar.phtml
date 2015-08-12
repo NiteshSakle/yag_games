@@ -34,19 +34,24 @@
 
     <div style="display: none;" id="blanket"></div>
     <div style="display: none; text-align: center" id="thanksPopUpDiv">
-        <div class="popup-another-img" style="font-size: 25px; font-weight: 200; text-align: center; color: #663f8e; font-family: 'franklin_gothic_bookregular';">
-            <a style="float:right;" onclick="hideThankYouPopUp();" href="#."><img alt="" src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/close.button.png" /></a>
-            <div style="border:1px solid grey; text-align: center;">
-                <b><p>Thank You</p></b>
-                <p>for entering the</p>
-                <b><p class="contest-name"></p></b>
-                <p>Your Entry</p>
-                <div>
-                    <img class="down-image" height="122" width="124" src="" style="margin-left: 10px;">
-                    <img class="upper-image" width="177" height="189" src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/man-icon-yag.png">            
+        <div class="popup-another-img">
+            <a style="float:right; margin-top: -5%; margin-right: -4%;" onclick="hideThankYouPopUp();" href="#."><img style="height: 16px; width: 16px;" alt="" src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/close.button.png" /></a>
+            <div style="border:1px solid grey; text-align: center; margin: 5%">
+                <p style="font-size: 40px; font-weight: bold; text-align: center; color: #663f8e; font-family: 'franklin_gothic_bookregular'; line-height: 1em;">Thank You
+                    <br>
+                    <span style="font-size: 25px;">for entering the</span>
+                    <br>
+                    <b style="font-size: 25px;" class="contest-name"></b>
+                    </p>
+                <div>                    
+                    <p style="font-size: 18px; font-weight: bold; text-align: center; color: #663f8e; font-family: 'franklin_gothic_bookregular';">Your Entry</p>
+                    <div style="margin-top: -10%; margin-bottom: 0%; margin-left: 10%;">
+                        <img class="down-image" height="122" width="124" src="" style="margin-left: 10px;">
+                        <img class="upper-image" width="177" height="189" src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/man-icon-yag.png">            
+                    </div>                        
                 </div>
             </div>
-            <div class="btn-upload-another-img"><input type="button" onClick="javascript:window.location.href = '<?php echo $this->basePath() ?>/new-contest'"  value="Enter Another Contest"></div>
+            <div class="btn-upload-another-img"><input type="button" onClick="javascript:window.location.href = '<?php echo $this->basePath() ?>/new-contest'"  value="More Contests"></div>
         </div>
     </div>
 </div>
