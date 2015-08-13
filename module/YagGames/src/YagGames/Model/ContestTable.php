@@ -151,7 +151,7 @@ class ContestTable extends BaseTable {
     }
 
     private function getActiveContestSelect($select) {
-        $select->where('((entry_end_date < CURDATE() AND winners_announce_date > CURDATE()) OR max_no_of_photos = total_entries) AND c.is_exclusive <> 1');
+        $select->where('((entry_end_date < CURDATE() AND winners_announce_date > CURDATE()) OR (max_no_of_photos = total_entries AND entry_end_date >= CURDATE())) AND c.is_exclusive <> 1');
 
         return $select;
     }
