@@ -79,6 +79,7 @@ body {
 }
 .contest-winner {
     position: relative;
+    float: right;
 }
 .contest-winner div.progress{
     position: relative;
