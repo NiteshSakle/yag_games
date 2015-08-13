@@ -11,7 +11,7 @@
     <div class="you_ranked">You Ranked</div>
     <div class="rank">WINNER</div>
     <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/trophy.png"  alt="contest status" style="width:40%" />
-    <?php else:?>
+    <?php elseif ($contest['rank'] >= 2 && $contest['rank'] <= 10):?>
     <div class="you_ranked">You Ranked</div>
     <div class="rank">Top 10</div>
     <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/trophy.png"  alt="contest status" style="width:40%" />

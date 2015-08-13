@@ -159,7 +159,16 @@ class ContestTable extends BaseTable {
     private function getPastContestSelect($select, $user) {
         // if user log's in, check whether his media rank
         if ($user) {
-            $select->join(array('cw' => 'contest_winner'), 'cm.contest_media_id = cw.contest_media_id', array('rank'), 'left');
+            $userMediaQry = $this->getSql()->select()
+                    ->from(array('cm_new' => 'contest_media'))
+                    ->join(array('m_new' => 'ps4_media'), 'cm_new.media_id = m_new.media_id', array('media_id', 'folder_id'))
+                    ->join(array('cw' => 'contest_winner'), 'cm_new.id = cw.contest_media_id', array('rank'), 'left')
+                    ->where(array('m_new.owner' => $user))
+                    ->columns(array(
+                'contest_id'
+            ));
+
+            $select->join(array('uc' => $userMediaQry), new Expression('c.id = uc.contest_id'), array('rank'), 'left');
         }
 
         $select->where('winners_announce_date <= CURDATE() AND c.is_exclusive <> 1');
@@ -397,16 +406,16 @@ class ContestTable extends BaseTable {
             );
         }
     }
-    
-    public function getByContestId($contestId) {        
+
+    public function getByContestId($contestId) {
         if ($contestId) {
-            $contestSql =  $this->getContestBaseSelect();
+            $contestSql = $this->getContestBaseSelect();
             $contestSql->where(array('c.id' => $contestId));
         }
-        
-        $statement = $this->getSql()->prepareStatementForSqlObject($contestSql);        
+
+        $statement = $this->getSql()->prepareStatementForSqlObject($contestSql);
         $resultSet = $statement->execute();
-        
+
         return $resultSet->current();
     }
 
