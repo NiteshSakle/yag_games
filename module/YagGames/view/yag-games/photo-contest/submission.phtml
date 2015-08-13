@@ -80,9 +80,16 @@
         text-align: left;        
     }
     .rules-heading {
-        border:1px solid grey; 
-        width: 70%; 
-        padding: 1%
+        border: 1px solid grey;
+        width: 70%;
+        padding: 10px;
+        padding-bottom: 5px;
+        padding-right: 5px;
+        border-left: 2px solid grey;
+        border-top: 2px solid grey;
+        color: #68398C;
+        font-size: 18px;
+        font-weight: 900;
     }
     .rules > ul li {
         list-style: disc;
@@ -163,31 +170,51 @@
         </div>
         <div class="rules">
             <div class="rules-heading">RULES:</div>
-            <h1>How to Enter:</h1>
+            <h1 class="learn-more-sub-head">How to Enter:</h1>
             <ul>
                 <li>All submissions are online via each  contest listing.</li>
                 <li>Upload a new image or select an image from your existing portfolio. <i>Please note:</i> You will not be able to upload a new image if you have already used all available space in your portfolio, based on your subscription level.  In this case, consider upgrading your membership or replacing an image from your portfolio.</li>
                 <li>Once your submission has been completed, you will be directed to a confirmation page.</li>
                 <li>Only one submission per artist.</li>
             </ul> 
-            <br>
-            <h1>Who May Enter:</h1>
+
+            <h1 class="learn-more-sub-head">Who May Enter:</h1>
             <p>Any professional, amateur, enthusiast or student photographic artist subscribed and a member of YOUR ART GALLERY.</p>
-            <br>
-            <h1>Entry Fee:</h1>
+
+            <h1 class="learn-more-sub-head">Prizes:</h1>
+            <h1 class="learn-more-sub-head">First Place Winner</h1>
+            <ul>
+                <li>$250 Credit to a YourArtGallery.com purchase</li>
+                <li>Gallery Plexi Mounted High Definition Photographic Print up to a 16" x 20" print <br>
+                    <span class="learn-more-sub-text">(If you are not purchasing your own images Artist Royalty will still be applicable) </span>
+                </li>
+                <li>Free 6 Month Platinum Membership <br>
+                    <span class="learn-more-sub-text">(If already a Platinum member your next 6 months are free)</span>
+                </li>
+            </ul>
+
+            <h1 class="learn-more-sub-head">Runners Up</h1>    
+            <span>(2nd, 3rd, 4th, and 5th)</span>
+            <ul style=" margin-top: 5px;">        
+                <li>High Definition Photographic Print up to 12" x 18” <br>
+                    <span class="learn-more-sub-text">(If you are not purchasing your own images Artist Royalty will still be applicable)</span>
+                </li>        
+            </ul>    
+
+            <h1 class="learn-more-sub-head">Entry Fee:</h1>
             <p>There is not cost to enter!</p>
-            <br>
-            <h1>Judging:</h1>
+
+            <h1 class="learn-more-sub-head">Judging:</h1>
             <p>Entries will be judged based on the Your Art Gallery rating system, in which the rating and voting authority your peers and thousands of YAG visitors identify the winning images.</p>
-            <br>
-            <h1>Consent Agreement:</h1>
-            <p>Submission of an entry to each contest automatically constitutes the contestant’s acceptance of all contest rules and conditions, and affirms the contestant acceptance of being in accordance with the Your Art Gallery LLC, Terms of Service.  All applicants and contestants retain full copyright of any image submitted.  The use of submitted images comply with the <a href="<?php echo $this->config('main_site', 'url') ?>/terms-of-service"><i>Terms of Service agreement</i></a> of Your Art Gallery LLC., and <a href="#"><i>Your Promotion Center</i></a> social media opt-in settings at, <a href="<?php echo $this->config('main_site', 'url') ?>/artist.welcome.php"><i>Edit Your Portfolio</i></a>.
+
+            <h1 class="learn-more-sub-head">Consent Agreement:</h1>
+            <p>Submission of an entry to each contest automatically constitutes the contestant’s acceptance of all contest rules and conditions, and affirms the contestant acceptance of being in accordance with the Your Art Gallery LLC, Terms of Service.  All applicants and contestants retain full copyright of any image submitted.  The use of submitted images comply with the <a href="<?php echo $this->config('main_site', 'url') ?>/terms-of-service"><i>Terms of Service agreement</i></a> of Your Art Gallery LLC., and <a href="<?php echo $this->config('main_site', 'url') ?>/artist.welcome.php"><i>Your Promotion Center</i></a> social media opt-in settings at, <a href="<?php echo $this->config('main_site', 'url') ?>/portfolio.php"><i>Edit Your Portfolio</i></a>.
                 <br>
                 <br>
                 <i>Entries not complying with contest rules set forth will be disqualified.</i>
                 <br>
                 <br>                
-                In you have questions about the above information or would like to know if your image is eligible, please contact us at info@yourartgallery.com.
+                If you have questions about the above information or would like to know if your image is eligible, please contact us at <span class="blue-text">info@yourartgallery.com</span>.
             </p>
             <p>
                 <span style="color: #68398C;font-weight:bold;">PLEASE NOTE:</span> You will retain full copyright of any image submitted. However, upon entering, you acknowledge and
