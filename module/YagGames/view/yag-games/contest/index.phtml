@@ -28,8 +28,16 @@
         display: block;
         width: 100%;
     }
-    // font sizes css 
 
+    ul li {
+        list-style: disc;
+    }
+
+    .footer_box ul li {
+        list-style: none;
+    }
+
+    // font sizes css 
     span .wysiwyg-font-size-fs10 {
         font-size: 10px;
     }
@@ -76,20 +84,21 @@
 
     <div class="contest-list clearfix">
         <?php if (empty($data)) { ?>
-            <br><div class="alert alert-info" role="alert"><?php echo $type=='my'? "You have not participated in any contest yet":"More Contests coming soon!"; ?></div>    
+            <br><div class="alert alert-info" role="alert"><?php echo $type == 'my' ? "You have not participated in any contest yet" : "More Contests coming soon!"; ?></div>    
             <?php
         } else {
             foreach ($data as $contest):
                 ?>
                 <div class="contest row <?php echo ($type !== 'exclusive') ? 'black-border' : '' ?>">
+                    <?php
+                    $titleClass = 'contest-title';
+                    if ($this->getHelperPluginManager()->getServiceLocator()->get('Application')->getMvcEvent()->getRouteMatch()->getParam('action') == 'exclusive-contest') {
+                        $titleClass = 'contest-title gold';
+                    }
+                    ?>
+                    <div class="<?php echo $titleClass; ?>"><?php echo $contest['name']; ?></div>
                     <div class="col-md-5">
-                        <?php
-                        $titleClass = 'contest-title';
-                        if ($this->getHelperPluginManager()->getServiceLocator()->get('Application')->getMvcEvent()->getRouteMatch()->getParam('action') == 'exclusive-contest') {
-                            $titleClass = 'contest-title gold';
-                        }
-                        ?>
-                        <div class="<?php echo $titleClass; ?>"><?php echo $contest['name']; ?></div>
+
                         <div class="contest-description">
                             <?php echo $contest['description']; ?>
                             <br>

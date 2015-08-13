@@ -5,7 +5,7 @@
         .col-md-2 {
             margin: 12px;
         }*/
-    
+
     .media-art {
         width: 150px;
         height: 150px;
@@ -74,7 +74,11 @@
             <br>
         <?php endif; ?>
         <div>
-            <div class="media-list-title">Current Standings</div>
+            <?php if ($dEnd > $dStart): ?>
+                <div class="media-list-title">Current Standings</div>
+            <?php else: ?>
+                <div class="media-list-title">Final Standings</div>
+            <?php endif; ?>
             <div class="media-list contest-list clearfix">
                 <div class="row">
                     <?php foreach ($medias as $key => $media): ?>

@@ -27,9 +27,9 @@
                     "<ul class='dropdown-menu'>" +
 //                    "<li><a class='fontSize' data-wysihtml5-command='fontSize' data-wysihtml5-command-value='fs10'>10</a></li>" +
                     "<li><a class='fontSize' data-wysihtml5-command='fontSize' data-wysihtml5-command-value='fs12'>12px</a></li>" +
-//                    "<li><a class='fontSize' data-wysihtml5-command='fontSize' data-wysihtml5-command-value='fs14'>14</a></li>" +
+                    "<li><a class='fontSize' data-wysihtml5-command='fontSize' data-wysihtml5-command-value='fs14'>14px</a></li>" +
                     "<li><a class='fontSize' data-wysihtml5-command='fontSize' data-wysihtml5-command-value='fs16'>16px</a></li>" +
-//                    "<li><a class='fontSize' data-wysihtml5-command='fontSize' data-wysihtml5-command-value='fs18'>18</a></li>" +
+                    "<li><a class='fontSize' data-wysihtml5-command='fontSize' data-wysihtml5-command-value='fs18'>18px</a></li>" +
 //                    "<li><a class='fontSize' data-wysihtml5-command='fontSize' data-wysihtml5-command-value='fs20'>20</a></li>" +
                     "</ul>" +
                     "</li>";
