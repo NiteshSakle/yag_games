@@ -49,7 +49,6 @@ body {
     //padding: 6px 70px;
     min-width: 150px;
     margin: 20px 0 0px 0;
-    float: right;
 }
 .contest-buttons button:hover {
     background-color: #818285;
@@ -74,12 +73,11 @@ body {
 }
 
 .contest-image img {
-    width: 250px;
-    height: 250px;
+    width: 225px;
+    height: 225px;
 }
 .contest-winner {
     position: relative;
-    float: right;
 }
 .contest-winner div.progress{
     position: relative;
@@ -137,7 +135,7 @@ body {
     background-color: #e5da7c !important;
     border: 5px solid #d1d3d4;
     box-shadow: 3px 3px 0px 0px #8e8d8d !important;
-    width: 240px;
+    width: 225px;
 }
 
 #ajaxBusy {
