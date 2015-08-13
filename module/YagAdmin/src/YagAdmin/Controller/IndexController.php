@@ -249,6 +249,7 @@ class IndexController extends BaseController {
 
     //deleting some contest
     public function deleteContestAction() {
+        $is_reviewer = 0;
         $response = array();
         if ($permissions = $_SESSION['admin_user']['permissions']) {
 
