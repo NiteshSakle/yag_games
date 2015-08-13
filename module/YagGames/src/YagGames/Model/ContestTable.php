@@ -121,7 +121,7 @@ class ContestTable extends BaseTable {
 
         $select = new Select;
         $select->from(array('c' => 'contest'))
-                ->columns(array('*', 'my_type' => new Expression('IF(entry_end_date >= CURDATE(), "new", IF(winners_announce_date >=CURDATE(), "active", "past"))')))
+                ->columns(array('*', 'my_type' => new Expression('IF(entry_end_date >= CURDATE(), "new", IF(winners_announce_date > CURDATE(), "active", "past"))')))
                 ->join(array('ct' => 'contest_type'), 'ct.id = c.type_id', array('contest_type' => 'type'))
                 ->join(array('cm' => $contestMediaCountQry), 'c.id = cm.contest_id', array('total_entries'), 'left')
         ;

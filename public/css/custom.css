@@ -49,6 +49,7 @@ body {
     //padding: 6px 70px;
     min-width: 150px;
     margin: 20px 0 0px 0;
+    float: right;
 }
 .contest-buttons button:hover {
     background-color: #818285;
@@ -66,7 +67,7 @@ body {
 .contest-title {
     font-size: 28px;
     font-weight: bold;
-    margin: 0% 0% 10% 0%;
+    margin: 0% 0% 3% 0%;
     color: #68398c;
     text-align: left;
     line-height: 32px;
@@ -135,7 +136,7 @@ body {
     background-color: #e5da7c !important;
     border: 5px solid #d1d3d4;
     box-shadow: 3px 3px 0px 0px #8e8d8d !important;
-    width: 225px;
+    width: 240px;
 }
 
 #ajaxBusy {
@@ -184,3 +185,4 @@ body {
 .social_link_contest {
     text-align: center;
 }
+
