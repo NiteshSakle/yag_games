@@ -47,6 +47,9 @@
                                 <i class="fa"></i> Name
                             </th>
                             <th class="hidden-xs">
+                                <i class="fa fa-calendar"></i> Entry Start Date
+                            </th>
+                            <th class="hidden-xs">
                                 <i class="fa fa-calendar"></i> Entry End Date
                             </th>
                             <th class="hidden-xs">
@@ -83,6 +86,9 @@
                                     <a class="name" contest_id="<?php echo $contest['id']; ?>">
                                         <?php echo $contest['name']; ?>
                                     </a>
+                                </td>
+                                <td>
+                                    <?php echo date("F jS, Y", strtotime($contest['entry_start_date'])); ?>
                                 </td>
                                 <td>
                                     <?php echo date("F jS, Y", strtotime($contest['entry_end_date'])); ?>
@@ -208,6 +214,20 @@
                                                 <p class="help-block">Upload a square resolution image(For best appearance-Minimum Resolution: 300px X 300px)</p>
                                             </div>
                                             <div class="form-group col-md-6">
+                                                <label class="control-label" for="entryStartDate">
+                                                    Entry Start Date
+                                                    <span class="required">
+                                                        *
+                                                    </span>
+                                                </label>
+                                                <div class="input-group input-medium date date-picker" data-date-format="dd-mm-yyyy" data-date-start-date="+0d">
+                                                    <input id="entryStartDate" name="entryStartDate" type="text" class="form-control" readonly>
+                                                    <span class="input-group-btn">
+                                                        <button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-6">
                                                 <label class="control-label" for="entryEndDate">
                                                     Entry End Date
                                                     <span class="required">
@@ -216,6 +236,20 @@
                                                 </label>
                                                 <div class="input-group input-medium date date-picker" data-date-format="dd-mm-yyyy" data-date-start-date="+0d">
                                                     <input id="entryEndDate" name="entryEndDate" type="text" class="form-control" readonly>
+                                                    <span class="input-group-btn">
+                                                        <button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
+                                                    </span>
+                                                </div>
+                                            </div>                                     
+                                            <div class="form-group col-md-6">
+                                                <label class="control-label" for="votingStartDate">
+                                                    Voting Start Date
+                                                    <span class="required">
+                                                        *
+                                                    </span>
+                                                </label>
+                                                <div class="input-group input-medium date date-picker" data-date-format="dd-mm-yyyy" data-date-start-date="+0d">
+                                                    <input id="votingStartDate" name="votingStartDate" type="text" class="form-control" readonly>
                                                     <span class="input-group-btn">
                                                         <button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
                                                     </span>
@@ -234,21 +268,7 @@
                                                         <button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
                                                     </span>
                                                 </div>
-                                            </div>                                            
-                                            <div class="form-group col-md-6">
-                                                <label class="control-label" for="votingStartDate">
-                                                    Voting Start Date
-                                                    <span class="required">
-                                                        *
-                                                    </span>
-                                                </label>
-                                                <div class="input-group input-medium date date-picker" data-date-format="dd-mm-yyyy" data-date-start-date="+0d">
-                                                    <input id="votingStartDate" name="votingStartDate" type="text" class="form-control" readonly>
-                                                    <span class="input-group-btn">
-                                                        <button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
-                                                    </span>
-                                                </div>
-                                            </div>
+                                            </div>       
                                             <div class="form-group col-md-6">
                                                 <label class="control-label" for="entryLimit">
                                                     Entries Limit
@@ -368,6 +388,7 @@
                     $('#description').data("wysihtml5").editor.setValue(response.data.description);
                     $('#thumbnail_name').show();
                     $('#thumbnail_name').val((response.data.thumbnail).substring(10));
+                    $('#entryEndDate').val(reformatDate(response.data.entry_start_date));
                     $('#entryEndDate').val(reformatDate(response.data.entry_end_date));
                     $('#winnersAnnounceDate').val(reformatDate(response.data.winners_announce_date));
                     $('#votingStartDate').val(reformatDate(response.data.voting_start_date));
@@ -396,15 +417,17 @@
 
     $("form#create-contest-form").submit(function () {
 
+        entryStartDate = $('#entryStartDate').val();
         entryEndDate = $('#entryEndDate').val();
         winnersAnnounceDate = $('#winnersAnnounceDate').val();
         votingStartDate = $('#votingStartDate').val();
 
+        entryStartDateTime = convertDateToTime(entryStartDate);
         entryEndDateTime = convertDateToTime(entryEndDate);
         winnersAnnounceDateTime = convertDateToTime(winnersAnnounceDate);
         votingStartDateTime = convertDateToTime(votingStartDate);
 
-        if (votingStartDateTime <= entryEndDateTime || winnersAnnounceDateTime <= votingStartDateTime) {
+        if (entryStartDateTime > entryEndDateTime || votingStartDateTime <= entryEndDateTime || winnersAnnounceDateTime <= votingStartDateTime) {
             $('#create-contest-modal').modal('hide');
             bootbox.alert('Please check the dates', function () {
                 $('#create-contest-modal').modal('show');

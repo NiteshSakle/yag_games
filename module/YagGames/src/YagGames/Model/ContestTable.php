@@ -41,6 +41,9 @@ class ContestTable extends BaseTable {
             if ($contest->thumbnail) {
                 $updated_data['thumbnail'] = $contest->thumbnail;
             }
+            if ($contest->entry_start_date) {
+                $updated_data['entry_start_date'] = $contest->entry_start_date;
+            }
             if ($contest->entry_end_date) {
                 $updated_data['entry_end_date'] = $contest->entry_end_date;
             }
@@ -129,7 +132,7 @@ class ContestTable extends BaseTable {
 
         $select = new Select;
         $select->from(array('c' => 'contest'))
-                ->columns(array('*', 'my_type' => new Expression('IF(entry_end_date >= CURDATE(), "new", IF(winners_announce_date > CURDATE(), "active", "past"))')))
+                ->columns(array('*', 'my_type' => new Expression('IF(entry_start_date <= CURDATE() AND entry_end_date >= CURDATE(), "new", IF(winners_announce_date > CURDATE(), "active", "past"))')))
                 ->join(array('ct' => 'contest_type'), 'ct.id = c.type_id', array('contest_type' => 'type'))
                 ->join(array('cm' => $contestMediaCountQry), 'c.id = cm.contest_id', array('total_entries'), 'left')
         ;
@@ -138,7 +141,7 @@ class ContestTable extends BaseTable {
     }
 
     private function getNewContestSelect($select, $user) {
-        $select->where('c.entry_end_date >= CURDATE()');
+        $select->where('entry_start_date <= CURDATE() AND c.entry_end_date >= CURDATE()');
         $select->where->and->notEqualTo('c.is_exclusive', '1');
         $select->where('(total_entries < c.max_no_of_photos OR total_entries IS NULL)');
 
@@ -159,7 +162,7 @@ class ContestTable extends BaseTable {
     }
 
     private function getActiveContestSelect($select) {
-        $select->where('((entry_end_date < CURDATE() AND winners_announce_date > CURDATE()) OR (max_no_of_photos = total_entries AND entry_end_date >= CURDATE())) AND c.is_exclusive <> 1');
+        $select->where('((entry_start_date <= CURDATE() AND entry_end_date < CURDATE() AND winners_announce_date > CURDATE()) OR (max_no_of_photos = total_entries AND entry_start_date <= CURDATE() AND entry_end_date >= CURDATE())) AND c.is_exclusive <> 1');
 
         return $select;
     }

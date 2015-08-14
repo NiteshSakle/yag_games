@@ -113,6 +113,7 @@ class IndexController extends BaseController {
                 $params['id'] = trim($this->getRequest()->getPost('id'));
                 $params['name'] = trim($this->getRequest()->getPost('name'));
                 $params['description'] = $this->getRequest()->getPost('description');
+                $params['entryStartDate'] = $this->getRequest()->getPost('entryStartDate');
                 $params['entryEndDate'] = $this->getRequest()->getPost('entryEndDate');
                 $params['winnersAnnounceDate'] = $this->getRequest()->getPost('winnersAnnounceDate');
                 $params['votingStartDate'] = $this->getRequest()->getPost('votingStartDate');
@@ -122,7 +123,7 @@ class IndexController extends BaseController {
                 $thumbnail = $this->getRequest()->getFiles('thumbnail');
 
                 //checking for all the empty fields here except thumbnail to avoid multiple uploading of thumbnails
-                if (empty($params['name']) || empty($params['description']) || empty($params['entryEndDate']) || empty($params['winnersAnnounceDate']) || empty($params['votingStartDate']) || empty($params['entryLimit']) || empty($params['type']) || !isset($params['exclusive'])) {
+                if (empty($params['name']) || empty($params['description']) || empty($params['entryStartDate']) || empty($params['entryEndDate']) || empty($params['winnersAnnounceDate']) || empty($params['votingStartDate']) || empty($params['entryLimit']) || empty($params['type']) || !isset($params['exclusive'])) {
 
                     $response['success'] = false;
                     $response['message'] = 'Please fill in all fields';
@@ -207,6 +208,7 @@ class IndexController extends BaseController {
 
                     $contest->name = $params['name'];
                     $contest->description = $params['description'];
+                    $contest->entry_start_date = date('Y-m-d', strtotime($params['entryStartDate']));
                     $contest->entry_end_date = date('Y-m-d', strtotime($params['entryEndDate']));
                     $contest->winners_announce_date = date('Y-m-d', strtotime($params['winnersAnnounceDate']));
                     $contest->voting_start_date = date('Y-m-d', strtotime($params['votingStartDate']));
