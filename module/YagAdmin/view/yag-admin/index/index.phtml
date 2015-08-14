@@ -19,16 +19,15 @@
     <a class="pull-left" href="<?php echo $this->config('admin_main_site', 'url') ?>">
         <i class="fa fa-backward"></i> Go to main site
     </a>
-    <?php
-    if ($is_reviewer) {
-        //don't show create contest
-    } else {
-        ?>
+    <?php if ($add_contest) { ?>
         <a class="btn btn-primary pull-right open-modal" data-toggle="modal" href="#create-contest-modal">
             Create Contest
         </a>
-    <?php } ?>
-
+        <?php
+    } else {
+        //don't show add contest
+    }
+    ?>
     <div class="portlet">
         <div class="portlet-title">
             <div class="caption">
@@ -67,13 +66,14 @@
                             <th>
                                 <i class="fa"></i> Type
                             </th>
-                            <?php
-                            if ($is_reviewer) {
-                                //don't show create contest
-                            } else {
-                                ?><th>
+                            <?php if ($add_contest || $delete_contest) { ?>
+                                <th>
                                 </th>
-                            <?php } ?>
+                                <?php
+                            } else {
+                                //don't show create contest
+                            }
+                            ?>
                         </tr>
                     </thead>
                     <tbody>
@@ -83,9 +83,13 @@
                                     <img src="<?php echo $this->config('aws', 'path') . $contest['thumbnail']; ?>" alt="Image not available" style="width:100px" />
                                 </td>
                                 <td class="highlight">
-                                    <a class="name" contest_id="<?php echo $contest['id']; ?>">
+                                    <?php if ($review_contest) { ?>
+                                        <a class="name" contest_id="<?php echo $contest['id']; ?>">
+                                            <?php echo $contest['name']; ?>
+                                        </a>
+                                    <?php } else { ?>
                                         <?php echo $contest['name']; ?>
-                                    </a>
+                                    <?php } ?>
                                 </td>
                                 <td>
                                     <?php echo date("F jS, Y", strtotime($contest['entry_start_date'])); ?>
@@ -109,19 +113,34 @@
                                     <?php echo $contest['type']; ?>
                                 </td>
                                 <?php
-                                if ($is_reviewer) {
-                                    //don't show create contest
-                                } else {
+                                if ($add_contest || $delete_contest) {
                                     ?>
                                     <td style="width: 150px;">
-                                        <a contest_id="<?php echo $contest['id']; ?>" class="btn default btn-xs purple edit">
-                                            <i class="fa fa-edit"></i> Edit
-                                        </a>
-                                        <a contest_id="<?php echo $contest['id']; ?>" class="btn default btn-xs red delete">
-                                            <i class="fa fa-trash-o"></i> Delete
-                                        </a>
+                                        <?php if ($add_contest) { ?>
+                                            <a contest_id="<?php echo $contest['id']; ?>" class="btn default btn-xs purple edit">
+                                                <i class="fa fa-edit"></i> Edit
+                                            </a>
+                                            <?php
+                                        } else {
+                                            //don't show edit contest
+                                        }
+                                        ?>
+                                        <?php if ($delete_contest) { ?>
+                                            <a contest_id="<?php echo $contest['id']; ?>" class="btn default btn-xs red delete">
+                                                <i class="fa fa-trash-o"></i> Delete
+                                            </a>
+                                            <?php
+                                        } else {
+                                            //don't show delete contest
+                                        }
+                                        ?>
+
                                     </td>
-                                <?php } ?>
+                                    <?php
+                                } else {
+                                    //don't show create and edit contest
+                                }
+                                ?>
                             </tr>
                         <?php } ?>                        
                     </tbody>
