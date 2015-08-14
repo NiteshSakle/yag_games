@@ -5,9 +5,9 @@ namespace YagGames\Model;
 class MediaTable extends BaseTable
 {
 
-    public function fetchRecord($contestMediaId)
+    public function fetchRecord($mediaId)
     {
-        $rowset = $this->tableGateway->select(array('media_id' => $contestMediaId));
+        $rowset = $this->tableGateway->select(array('media_id' => $mediaId));
         $contestRow = $rowset->current();
         return $contestRow;
     }   

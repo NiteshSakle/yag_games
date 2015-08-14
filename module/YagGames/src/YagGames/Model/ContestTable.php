@@ -85,9 +85,17 @@ class ContestTable extends BaseTable {
     }
 
     public function fetchRecord($contestId) {
-        $rowset = $this->tableGateway->select(array('id' => $contestId));
-        $contestRow = $rowset->current();
-        return $contestRow;
+        $select = new \Zend\Db\Sql\Select;
+        $select->from(array('c' => 'contest'))
+                ->columns(array('*'))
+                ->where(array('id' => $contestId));
+
+        $statement = $this->getSql()->prepareStatementForSqlObject($select);
+        $resultSet = $statement->execute();
+
+        $contest = $resultSet->current();
+
+        return $contest;
     }
 
     public function fetchAll() {
@@ -417,6 +425,21 @@ class ContestTable extends BaseTable {
         $resultSet = $statement->execute();
 
         return $resultSet->current();
+    }
+
+    public function getUserInfoByMediaId($media_id) {
+        $select = new \Zend\Db\Sql\Select;
+        $select->from(array('m' => 'ps4_media'))
+                ->join(array('me' => 'ps4_members'), 'm.owner = me.mem_id', array('*'))
+                ->columns(array('owner', 'media_id', 'title'))
+                ->where(array('m.media_id' => $media_id));
+
+        $statement = $this->getSql()->prepareStatementForSqlObject($select);
+        $resultSet = $statement->execute();
+
+        $user_data = $resultSet->current();
+
+        return $user_data;
     }
 
 }
