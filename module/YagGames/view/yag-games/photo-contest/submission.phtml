@@ -5,7 +5,7 @@
     .contest-title-blue {
         font-size: 28px;
         font-weight: bold;
-        margin: 0% 0% 5% 0%;
+        margin: 0% 0% 2% 0%;
         text-align: left;
         color: #68398c;
     }
@@ -119,10 +119,11 @@
 
     <div class="contest-list clearfix">
         <div class="contest row" style="border:none">
-            <div class="col-md-6">
-                <div class="contest-title-blue"><?php echo $contest['name']; ?></div>
-                <div>Choose from one of your uploaded images and submit it for this
-                    contest or upload a new image!</div>
+            <div class="contest-title-blue"><?php echo $contest['name']; ?></div>
+            <div>Choose from one of your uploaded images and submit it for this
+                contest or upload a new image!</div>
+            <br>
+            <div class="col-md-6">                
                 <br>
                 <div class="row row-no-padding-margin">
                     <div class="col-md-5 contest-image">
@@ -140,16 +141,14 @@
                         </div>
                     </div>  
                 </div>
-
-                <br>
                 <br>
                 <div class="contest-description">
-                    <?php echo $contest['description']; ?>
-                    <br>
-                    <br>
                     <div class="contest-dates">
-                        Open Entries End: <?php echo date("F jS, Y", strtotime($contest['entry_end_date'])); ?><br>
+                        Open Entries End: <?php echo date("F jS, Y", strtotime($contest['entry_end_date'])); ?>
+                        <br>
                         Voting Begins: <?php echo date("F jS, Y", strtotime($contest['voting_start_date'])); ?>
+                        <br>
+                        Winners Announced: <?php echo date("F jS, Y", strtotime($contest['winners_announce_date'])); ?>
                     </div>                
                 </div>
             </div> 
@@ -158,19 +157,24 @@
                     <div class="media-list-title">Your Uploaded Art</div>
                     <div class="media-list clearfix"></div>
                 </div>
-                <div class="social_link">
-                    <a href="https://www.facebook.com/YourArtGallery"><img src="<?php echo $this->basePath() ?>/img/facebook_share.png"  alt="Share to Facebook" /></a>
-                    <a href="https://twitter.com/YourArtGallery"><img src="<?php echo $this->basePath() ?>/img/twitter_share.png"  alt="Share to Twitter" /></a>
-                    <a href="https://instagram.com/Your.Art.Gallery/"><img src="<?php echo $this->basePath() ?>/img/instagram_share.png"  alt="Instagram" /></a>
-                    <a href="https://www.pinterest.com/yourartgallery/"><img src="<?php echo $this->basePath() ?>/img/pinterest_share.png"  alt="Share to Pinterest" /></a>
-                    <a href="https://plus.google.com"><img src="<?php echo $this->basePath() ?>/img/google_share.png"  alt="Share to Google" /></a>
-                    <a href="https://www.linkedin.com/company/your-art-gallery-llc"><img src="<?php echo $this->basePath() ?>/img/linkedin_share.png"  alt="Stumble It" /></a>
-                    <a href="https://www.youtube.com/YourArtGallery"><img src="<?php echo $this->basePath() ?>/img/youtube_share.png"  alt="Share to Youtube" /></a>            
-                </div>
+                <!--                <div class="social_link">
+                                    <a href="https://www.facebook.com/YourArtGallery"><img src="<?php echo $this->basePath() ?>/img/facebook_share.png"  alt="Share to Facebook" /></a>
+                                    <a href="https://twitter.com/YourArtGallery"><img src="<?php echo $this->basePath() ?>/img/twitter_share.png"  alt="Share to Twitter" /></a>
+                                    <a href="https://instagram.com/Your.Art.Gallery/"><img src="<?php echo $this->basePath() ?>/img/instagram_share.png"  alt="Instagram" /></a>
+                                    <a href="https://www.pinterest.com/yourartgallery/"><img src="<?php echo $this->basePath() ?>/img/pinterest_share.png"  alt="Share to Pinterest" /></a>
+                                    <a href="https://plus.google.com"><img src="<?php echo $this->basePath() ?>/img/google_share.png"  alt="Share to Google" /></a>
+                                    <a href="https://www.linkedin.com/company/your-art-gallery-llc"><img src="<?php echo $this->basePath() ?>/img/linkedin_share.png"  alt="Stumble It" /></a>
+                                    <a href="https://www.youtube.com/YourArtGallery"><img src="<?php echo $this->basePath() ?>/img/youtube_share.png"  alt="Share to Youtube" /></a>            
+                                </div>-->
             </div> 
         </div>
+        <br>
         <div class="rules">
             <div class="rules-heading">RULES:</div>
+            <h1 class="learn-more-sub-head">About the contest:</h1>
+            <div>
+                <?php echo $contest['description']; ?>
+            </div>
             <h1 class="learn-more-sub-head">How to Enter:</h1>
             <ul>
                 <li>All submissions are online via each  contest listing.</li>
