@@ -168,6 +168,12 @@ class PhotoContestController extends BaseController
       $this->flashMessenger()->addErrorMessage('No contest found');
       return $this->redirect()->toRoute('home');
     }
+    
+    // check voting started are not
+    if (!$this->contest['voting_started']) {
+      $this->flashMessenger()->addErrorMessage('Voting hasn\'t started yet');
+      return $this->redirect()->toRoute('photo-contest');
+    }
 
     $photoContestService = $this->getServiceLocator()->get('photoContestService');
     $data = $photoContestService->getContestMedia($contestId, $userId, $search, $page, $size, '');
@@ -206,6 +212,12 @@ class PhotoContestController extends BaseController
     if (!$this->getContest($contestId)) {
       $this->flashMessenger()->addErrorMessage('No contest found');
       return $this->redirect()->toRoute('home');
+    }
+    
+    // check voting started are not
+    if (!$this->contest['voting_started']) {
+      $this->flashMessenger()->addErrorMessage('Voting hasn\'t started yet');
+      return $this->redirect()->toRoute('photo-contest');
     }
 
     $photoContestService = $this->getServiceLocator()->get('photoContestService');
