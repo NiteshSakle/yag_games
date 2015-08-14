@@ -134,7 +134,9 @@ class PhotoContestController extends BaseController
       return new JsonModel(array(
           'success' => true,
           'data' => array(
-              'contestMediaId' => $contestMediaId
+              'contestMediaId' => $contestMediaId,
+              'mediaId' => $mediaId,
+              'contestId' => $contestId
           )
       ));
     }
