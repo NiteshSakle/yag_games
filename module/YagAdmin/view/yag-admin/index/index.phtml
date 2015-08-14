@@ -388,7 +388,7 @@
                     $('#description').data("wysihtml5").editor.setValue(response.data.description);
                     $('#thumbnail_name').show();
                     $('#thumbnail_name').val((response.data.thumbnail).substring(10));
-                    $('#entryEndDate').val(reformatDate(response.data.entry_start_date));
+                    $('#entryStartDate').val(reformatDate(response.data.entry_start_date));
                     $('#entryEndDate').val(reformatDate(response.data.entry_end_date));
                     $('#winnersAnnounceDate').val(reformatDate(response.data.winners_announce_date));
                     $('#votingStartDate').val(reformatDate(response.data.voting_start_date));

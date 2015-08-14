@@ -156,7 +156,7 @@ class PhotoContestController extends BaseController
     $page = $this->params()->fromRoute('page') ? (int) $this->params()->fromRoute('page') : 1;
     $size = $this->params()->fromRoute('size') ? (int) $this->params()->fromRoute('size') : 20;
     $contestId = $this->params()->fromRoute('id', null);
-    $search = $this->params()->fromQuery('search', null);
+    $search = $this->params()->fromPost('search', null);
     $this->session = $this->sessionPlugin();
     $userId = '';
     if (isset($this->session->mem_id)) {
