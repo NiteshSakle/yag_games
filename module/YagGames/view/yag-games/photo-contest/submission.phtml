@@ -309,6 +309,18 @@
     var contestId = "<?php echo $contest['id']; ?>";
     $('#submitImage').click(function () {
         if ($('div.checked')) {
+            function loadAddThis() {
+                addthis.init()
+            }
+            var cId = contestId;
+            var mId = $('div.checked').children('input').val();
+            $(".addthis_button_facebook").attr("addthis:url", "<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/" + cId + "/mid/" + mId);
+            $(".addthis_button_twitter").attr("addthis:url", "<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/" + cId + "/mid/" + mId);
+            $(".addthis_button_linkedin").attr("addthis:url", "<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/" + cId + "/mid/" + mId);
+            $(".addthis_button_pinterest_share").attr("addthis:url", "<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/" + cId + "/mid/" + mId);
+            addthis.update('share', 'url', "<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/" + cId + "/mid/" + mId); 
+            addthis.url = "<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/" + cId + "/mid/" + mId;                
+            addthis.toolbox(".addthis_toolbox");
             submitArt(contestId, $('div.checked').children('input').val());
         } else {
             alert('Please select your art');
@@ -354,12 +366,7 @@
 
         request.done(function (msg) {
             if (msg.success) {
-                var cId = msg.data.contestId;
-                var mId = msg.data.mediaId;
-                $(".addthis_button_facebook").attr("addthis:url", "<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/" + cId + "/mid/" + mId);
-                $(".addthis_button_twitter").attr("addthis:url", "<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/" + cId + "/mid/" + mId);
-                $(".addthis_button_linkedin").attr("addthis:url", "<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/" + cId + "/mid/" + mId);
-                showSuccessPopup('popUpDiv');
+                showSuccessPopup('popUpDiv'); 
             } else {
                 alert(msg.message)
             }
