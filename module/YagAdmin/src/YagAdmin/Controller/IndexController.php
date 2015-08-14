@@ -153,8 +153,10 @@ class IndexController extends BaseController {
 
                         return new JsonModel($response);
                     } else {
-
-                        $name = strtotime("now") . $thumbnail['name'];
+                        $fileDetails = explode(".", $thumbnail['name']);
+                        $fileName = preg_replace('/[^\da-z]/i', '', $fileDetails['0']);
+                        
+                        $name = strtotime("now") . $fileName . '.' . $fileDetails['1'];
                         $config = $this->getConfig();
                         $destination = $config['upload_path'] . $name;
 
@@ -182,7 +184,7 @@ class IndexController extends BaseController {
                             //putting the thumbnail(object) in s3 server in the specified bucket
                             try {
                                 $s3Client->putObject([
-                                    'Bucket' => 'yagdev',
+                                    'Bucket' => $bucket,
                                     'Key' => $pathToS3File,
                                     'Body' => fopen($destination, 'r'),
                                     'ACL' => 'public-read',
