@@ -1,0 +1,139 @@
+<?php
+$this->headMeta()->setProperty('twitter:card', 'summary');
+$this->headMeta()->setProperty('twitter:site', '@YourArtGallery');
+$this->headMeta()->setProperty('twitter:title', $contest['name']);
+if($media) {
+    $this->headMeta()->setProperty('twitter:image', $this->mediaImage($media, 'samples'));
+    $this->headMeta()->setProperty('twitter:description', 'I entered the ' . $contest['name'] . ' on YOURARTGALLERY.COM');    
+} else {
+    $this->headMeta()->setProperty('twitter:image', $this->config('aws', 'path') . $contest['thumbnail']);    
+    $this->headMeta()->setProperty('twitter:description', $contest['name'] . ' is available on YOURARTGALLERY.COM. Enter to win! ' . $this->config('main_site' ,'url') . '/contests/details/id/' . $contest['id']);    
+}
+$this->headMeta()->setProperty('og:title', $contest['name']);
+$this->headMeta()->setProperty('og:type', 'website');
+if($media) {
+    $this->headMeta()->setProperty('og:image', $this->mediaImage($media, 'samples'));
+    $this->headMeta()->setProperty('og:description', 'I entered the ' . $contest['name'] . ' on YOURARTGALLERY.COM');
+} else {
+    $this->headMeta()->setProperty('og:image', $this->config('aws', 'path') . $contest['thumbnail']);
+    $this->headMeta()->setProperty('og:description', $contest['name'] . ' is available on YOURARTGALLERY.COM. Enter to win! ' . $this->config('main_site' ,'url') . '/contests/details/id/' . $contest['id']);
+}
+?>
+<style>
+
+    ul li {
+        list-style: disc;
+    }
+
+    .footer_box ul li {
+        list-style: none;
+    }
+
+    // font sizes css 
+    span .wysiwyg-font-size-fs10 {
+        font-size: 10px;
+    }
+    .wysiwyg-font-size-fs12 {
+        font-size: 12px;
+    }
+    .wysiwyg-font-size-fs14 {
+        font-size: 14px;
+    }
+    .wysiwyg-font-size-fs16 {
+        font-size: 16px;
+    }
+    .wysiwyg-font-size-fs18 {
+        font-size: 18px;
+    }
+    .wysiwyg-font-size-fs20 {
+        font-size: 20px;
+    }
+</style>
+<script>
+    
+$(document).ready(function() {
+    $('.btnPinIt').click(function() {
+        var url = $(this).attr('href');
+        var media = "<?php if($media) {
+                echo ($this->mediaImage($media, 'samples'));
+            } else {
+                echo ($this->config('aws', 'path') . $contest['thumbnail']);
+                }
+        ?>";
+        var desc = $(this).attr('data-desc');
+        window.open("//www.pinterest.com/pin/create/button/"+
+        "?url="+url+
+        "&media="+media+
+        "&description="+desc,"pinIt","toolbar=no, scrollbars=no, resizable=no, top=0, right=0, width=750, height=320");
+        return false;
+    });
+});
+</script>
+
+<div class="inner_main clearfix">
+    <div class="inner_txt clearfix">
+        <h1 class="page-titleHead">Artist Challenge & Contests</h1>
+    </div>
+</div>
+<div class="contest row <?php echo ($type !== 'exclusive') ? 'black-border' : '' ?>">
+<?php
+$titleClass = 'contest-title';
+if ($this->getHelperPluginManager()->getServiceLocator()->get('Application')->getMvcEvent()->getRouteMatch()->getParam('action') == 'exclusive-contest') {
+    $titleClass = 'contest-title gold';
+}
+?>
+<div class="<?php echo $titleClass; ?>"><?php echo $contest['name']; ?></div>
+<div class="col-md-5">
+
+    <div class="contest-description">
+        <?php echo $contest['description']; ?>
+        <br>
+        <div class="contest-dates">
+            Enter by: <?php echo date("F jS, Y", strtotime($contest['entry_end_date'])); ?>
+            <br>
+            Winner Announced: <?php echo date("F jS, Y", strtotime($contest['winners_announce_date'])); ?>
+        </div>                
+    </div>
+</div>        
+<div class="contest-image col-md-3">
+    <img src="<?php echo $this->config('aws', 'path') . $contest['thumbnail']; ?>"  alt="Contest Photo" />
+</div>
+<?php
+switch ($type) {
+    case 'new':
+        $partial = 'new_rsidebar.phtml';
+        break;
+    case 'active':
+        $partial = 'active_rsidebar.phtml';
+        break;
+    case 'past':
+        $partial = 'past_rsidebar.phtml';
+        break;
+    case 'my':
+        $partial = 'my_rsidebar.phtml';
+        break;
+    case 'exclusive':
+        $partial = 'exclusive_rsidebar.phtml';
+        break;
+    case 'default':
+        $partial = 'my_rsidebar.phtml';
+}
+
+switch ($contest['contest_type']) {
+    case 'Photo Contest':
+        $contestType = 'photo-contest';
+        break;
+    case 'Fan Favorite':
+        $contestType = 'fan-favorite';
+        break;
+    case 'default':
+        $contestType = 'brackets';
+}
+
+echo $this->partial($partial, array(
+    'contest' => $contest,
+    'type' => $type,
+    'contestType' => $contestType,
+));
+?>
+</div>

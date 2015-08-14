@@ -1,0 +1,23 @@
+<div class="col-md-4 contest-buttons ">
+    <?php if ($contest['voting_started']): ?>
+        <button class="btn btn-default" onclick="window.location = '<?php echo $this->basePath() ?>/<?php echo $contestType; ?>/voting/<?php echo $contest['id']; ?>'">Vote Now</button>
+    <?php else: ?>
+        <button class="btn btn-default vote-soon" style="background-color: #d1d3d4 !important;border: 5px solid #e5da7c;">Vote Soon</button>
+    <?php endif; ?> 
+    <br>
+    <button class="btn btn-default"  onclick="window.location = '<?php echo $this->basePath() ?>/<?php echo $contestType; ?>/learn-more/<?php echo $contest['id']; ?>'">Learn More</button>
+    <br>
+    <?php if ($contest['voting_started']): ?>
+        <button class="btn btn-default" onclick="window.location = '<?php echo $this->basePath() ?>/<?php echo $contestType; ?>/rankings/<?php echo $contest['id']; ?>'">Rankings</button>
+    <?php endif; ?>       
+    <br>
+    <div class="contest-winner">
+        <?php $percentage = ($contest['total_entries']) ? ($contest['total_entries'] / $contest['max_no_of_photos']) * 100 : 0 ?>
+        <img src="<?php echo $this->basePath() ?>/img/closed.png"  alt="contest closed" style="width:40%" />
+    </div>
+    <br>
+    <div class="gold">Share this contest</div>
+    <?php echo $this->partial('social_sharing.phtml', array(
+        'contest' => $contest,       
+    )); ?>
+</div>

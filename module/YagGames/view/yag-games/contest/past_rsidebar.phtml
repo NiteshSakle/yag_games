@@ -1,0 +1,26 @@
+
+<div class="col-md-4 contest-buttons ">
+  <button class="btn btn-default" onclick="window.location='<?php echo $this->basePath() ?>/<?php echo $contestType; ?>/rankings/<?php echo $contest['id']; ?>'">Winner's Announced</button>   
+  <br>
+  <button class="btn btn-default"  onclick="window.location = '<?php echo $this->basePath() ?>/<?php echo $contestType; ?>/learn-more/<?php echo $contest['id']; ?>'">Learn More</button>
+  <br><br>
+  <div class="contest-winner">
+    <?php if (empty($contest['rank'])):?>
+    <img src="<?php echo $this->basePath() ?>/img/closed.png"  alt="contest status" style="width:40%" />
+    <?php elseif ($contest['rank'] == 1) :?>
+    <div class="you_ranked">You Ranked</div>
+    <div class="rank">WINNER</div>
+    <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/trophy.png"  alt="contest status" style="width:40%" />
+    <?php elseif ($contest['rank'] >= 2 && $contest['rank'] <= 10):?>
+    <div class="you_ranked">You Ranked</div>
+    <div class="rank">Top 10</div>
+    <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/trophy.png"  alt="contest status" style="width:40%" />
+    <?php endif;?>
+  </div>
+  
+  <br>
+  <div class="gold">Share this contest</div>
+  <?php echo $this->partial('social_sharing.phtml', array(
+        'contest' => $contest,       
+    )); ?>
+</div>

@@ -1,0 +1,17 @@
+{
+    "name": "zendframework/skeleton-application",
+    "description": "Skeleton Application for ZF2",
+    "license": "BSD-3-Clause",
+    "keywords": [
+        "framework",
+        "zf2"
+    ],
+    "homepage": "http://framework.zend.com/",
+    "require": {
+        "php": ">=5.5",
+        "zendframework/zendframework": "~2.5",
+        "aws/aws-sdk-php-zf2": "2.*",
+        "aws/aws-sdk-php": "^3.2",    
+        "symfony/process": "dev-master"
+    }, 
+}

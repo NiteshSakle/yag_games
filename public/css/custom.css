@@ -1,82 +1,193 @@
-/*Start Footer*/
+/* header nav */
 body {
-  font: 16px/26px Helvetica, Helvetica Neue, Arial;
-}
-.footer-container,
-.main aside {
+    font: 16px/26px Helvetica, Helvetica Neue, Arial;
+    color: #646567; 
 }
 
-.header-container,
-.footer-container,
-.main aside {
+.search_box label {
+    font-weight: normal;
+}
+.inner_righttop {
+    float: right;
+    padding: 10px 0px 0px 0px;
+    width: 825px;
+}
+.header-container nav {
+    margin: 10px 0px;
 }
 
-.footer-container footer {
-    width: 75%; margin: 0px auto;
-}
-.footer_box {width: 14.9%; float: left;}
-.footer_box h1 {font-size: 13px; color: #653F8C; font-family: 'franklin_gothic_bookregular'; margin: 0px; margin-top: 12px;
-                margin-bottom: 5px; font-weight: 400;}
-.footer_box ul {margin: 0px; padding: 0px;}
-.footer_box ul li {line-height: 12px;}
-.footer_box ul li a {font-size: 10px; color: #FFFFFF; font-family: 'MyriadWebPro';}
-.footer_box ul li a:hover {color: #dfdc7d;}
-.box_last {float:right !important; width: 10%;}
-
-.footer_bottom span{font-size: 13px; color: #FFFFFF; font-family: 'franklin_gothic_bookregular'; text-align: right; width: auto; margin-left: 40%; float:left; }
-.social_link {float:right; }
-.social_link ul {margin: 0px; padding: 0px;}
-.social_link ul li {display: inline-block; float: none; padding: 0px 5px;}
-.footer_bottom .social_link  a img { border-radius:3px; -webkit-border-radius:3px; -moz-border-radius:3px; -o-border-radius:3px; -ms-border-radius:3px;}
-
-.footer-container{ background-color:/* #a3a4a4 */#9D9FA2;}
-.footer-container{padding-bottom:0px; height: 150px;}
-
-.footer_box h1 {font-size: 15px; color: #68398c; font-family: 'FranklinGothicMediumRegular'; margin: 0px; margin-top: 12px;}
-.footer_box ul li {line-height: 18px;}
-.footer_box ul li a {font-size: 12px; color: #8d8d8d; font-family: 'MyriadWebPro';}
-.footer-top-container{ background-color: #C1C0C2;}
-.footer-container{ background-color: white;}
-.footer_bottom span { font-size: 12px; color: #DFDC73; font-family: 'FranklinGothicMediumRegular'; font-weight: bold; }
-.footer_box { width: 13%; }
-.footer-separator { float: left; border-right: 1px solid #2E332B; width: 0%; margin-right: 15px; height: 107px; margin-top: 15px; }
-.footer-container footer{width: 960px;}
-
-/* Sign up for exclusive offers and the latest news */
-
-.wrapper {
-  width: 960px;
-  margin: 0 auto;
-}
-.signmeup-baby h1 {
-  color: #e5da7c;
-  margin-bottom: 10px;
-  margin-top: 20px;
-  text-align: right;
-}
-.signmeup-baby {
-  width: 33%;
-}
-.signmeup-baby input[type=text] {
-  padding: 2px 4px;
-  width: 222px;
-  font-size: 12px;
-  text-align: right;
-}
-.signmeup-baby button {
-  font-size: 13px;
-  color: #68398c;
-  font-family: 'FranklinGothicMediumRegular';
-  background-color: #e5da7c;
-  border: 5px solid #d1d3d4;
-  box-shadow: 3px 3px 0px 0px #8e8d8d;
-  padding: 4px 8px;
-  min-width: 150px;
-  margin: 10px 0 5px 0;
+.inner_main .inner_txt h1.page-titleHead {
+    padding: 10px;
+    text-align: left;
 }
 
-/*End Footer*/
-
-ul li {
-  list-style: none;
+/*contest boxes start*/
+.inner_main {
+    margin:10px 0px;
 }
+.navigation {
+    margin:10px 0px;
+}
+
+.contest {
+    border: 2px solid #C8B64C;
+    margin: 10px 0px;
+    padding: 1%;
+    text-align: left;
+}
+.contest-buttons {
+    text-align: center;
+}
+
+.contest-buttons button {
+    font-size: 20px;
+    color: #68398c;
+    font-family: 'FranklinGothicMediumRegular';
+    background-color: #e5da7c;
+    border: 5px solid #d1d3d4;
+    box-shadow: 3px 3px 0px 0px #8e8d8d;
+    //padding: 6px 70px;
+    min-width: 150px;
+    margin: 20px 0 0px 0;
+}
+.contest-buttons button:hover {
+    background-color: #818285;
+    //    color: #d1d3d4;
+}
+.vote-soon:hover{
+    color: #68398c;
+    cursor: auto;
+}
+
+.contest-buttons img {
+    margin: 5% 0% 5% 0%;
+}
+
+.contest-title {
+    font-size: 28px;
+    font-weight: bold;
+    margin: 0% 0% 3% 0%;
+    color: #68398c;
+    text-align: left;
+    line-height: 32px;
+}
+
+.contest-image img {
+    width: 225px;
+    height: 225px;
+}
+.contest-winner {
+    position: relative;
+}
+.contest-winner div.progress{
+    position: relative;
+    top:-90px;
+    width:50%;
+    background-color: #d1d3d4; 
+    margin-left: 25%;
+    border-radius:0px;
+    height: 25px;
+    box-shadow:none;
+    -webkit-box-shadow:none;
+}
+.progress-bar-success{
+    background-color: #e5da7c; 
+    text-align: center;
+    height: 25px;
+    font-size: 24px;
+    color: #646567;
+    padding: 3% 0%;
+}
+.contest-winner .rank {
+    font-size: 36px;
+    color: gray;
+    text-align: center;
+    font-weight: bold;
+    margin: 10px;
+}
+.contest-winner .you_ranked {
+    font-size: 18px;
+    color: #68398c;
+    text-align: center;
+}
+
+.contest-dates {
+    color: #68398c;
+}
+
+.gold {
+    font-size: 20px;
+    color: #C8B64C;
+}
+/*contest boxes end*/
+
+/*contest navbar start*/
+.nav {
+    margin: 0% 10% 0% 10%;
+}
+/*contest navbar end*/
+
+
+.contest button {
+    opacity: 1 !important;
+    color: #68398c;
+    font-family: 'FranklinGothicMediumRegular';
+    background-color: #e5da7c !important;
+    border: 5px solid #d1d3d4;
+    box-shadow: 3px 3px 0px 0px #8e8d8d !important;
+    width: 225px;
+}
+
+#ajaxBusy {
+    position:fixed;
+    right:10px;
+    top:10px;
+    background:#c00;
+    color:#fff;
+    font-weight:700;
+    padding:5px 15px;
+    border:3px solid #fff;
+    font-size:11px;
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+    text-transform:uppercase;
+    z-index:100000;
+}
+
+.alert ul {
+    margin:0px;
+    padding-left: 0px;
+}
+
+.black-border {
+    border: 2px solid #ccc;
+}
+.learn-more-contest-title{
+    font-size: 24px;
+    font-weight: 900;
+    color: #68398C;
+    padding: 12px 0px;
+}
+.learn-more-sub-head {
+    color: #68398C;
+}
+.blue-text {
+    color: #68398C;
+}
+
+.join-popup, .join-popup:before, .join-popup:after {
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+}
+
+.social_link_contest {
+    text-align: center;
+}
+.contest-share{ text-align: center !important;}
+
+.learn-more-sub-text {
+    font-size: 14px;
+    font-style: italic;
+}
+

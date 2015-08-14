@@ -1,0 +1,196 @@
+<style>
+    .rate-it-popup .rangetitle1{
+        font-family: Arial; 
+        font-size: 20px !important; 
+        font-weight: bold !important; 
+        color: #663f8e !important;
+    }
+</style>
+<script type="text/javascript" src="<?php echo $this->config('main_site', 'url') ?>/assets/javascript/workbox.js"></script>
+<script type="text/javascript">
+    $('#closeWorkbox').click(function () {
+        $('#workbox').removeAttr('style');
+        $('#workbox').removeAttr('class');
+        $('#workbox').html('');
+    });
+
+    var starCount = $(".rate-points:first").find('.ratingStar1').size();
+    var contestId = '<?php echo $contestId ?>';
+
+    $(".rate-points").each(function (key, elem) {
+        $(elem).hover('', function () {
+            returnStarStatus(elem);
+        });
+
+        $(elem).find('.ratingStar1').each(function (key2, elem2) {
+            var starValue = key2 + 1;
+            if (starCount == 5) {
+                starValue = starValue * 2; // Double the value if there are only 5 stars instead of 10
+            }
+
+            var mediaID = $(elem).attr('mediaID'); // Get the media ID these stars are for
+
+            $(elem2).css('cursor', 'pointer') // Assign a pointer cursor to those stars that are active				
+                    .mouseover(function () {
+                        highlightStarsForPhotoContest(elem, key2);
+                    }) // Assign a mouse over on the active stars				
+                    .click(function () {
+                        $(elem) // Unbind stars to prevent double clicking
+                                .find('.ratingStar1')
+                                .unbind()
+                                .css('cursor', 'default');
+
+                        $('span.rate-points').parent().next().hide();
+                        $(elem).unbind().fadeOut(200, function () {
+                            submitVote(elem, contestId, mediaID, starValue);
+                        });
+                    }); // Do the rating when the star is clicked on
+        });
+    });
+
+    function submitVote(elem, contestId, mediaId, rating) {
+        var request = $.ajax({
+            url: gameBasePath + '/photo-contest/vote',
+            type: "POST",
+            data: {'mediaId': mediaId, 'contestId': contestId, 'rating': rating},
+            dataType: 'json',
+            beforeSend: function () {
+                $("#ajaxBusy").removeClass('hide');
+            },
+            complete: function () {
+                $("#ajaxBusy").addClass('hide');
+            }
+        });
+
+        request.done(function (msg) {
+            if (msg.success) {
+                $('p#msg').show().delay(5000).fadeOut('slow', function () {
+                    closeWorkbox();
+                });
+
+                showNextImagePopup();
+            } else {
+                alert(msg.message)
+            }
+        });
+
+        request.fail(function (jqXHR, textStatus) {
+            alert("Request failed: " + textStatus);
+        });
+    }
+
+    function showNextImagePopup() {
+        workbox({
+            page: gameBasePath + '/photo-contest/get-next-art?contestId=' + contestId,
+            mini: true
+        });
+        scroll(0, 0);
+    }
+
+    function highlightStarsForPhotoContest(elem, current) {
+        $(elem).find('.ratingStar1').each(function (key, elem2)
+        {
+            if (current >= key)
+                $(elem2).attr('src', '<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/rate-1.png');
+            else
+                $(elem2).attr('src', '<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/rate-0.png');
+        });
+    }
+</script>
+<div class="rate-it-popup">
+    <?php if (isset($media['contest_name'])) : ?>
+        <div class="rate-it-wrapper">
+            <div class="rangetitle1 animalcol"><?php echo $media['contest_name']; ?></div>
+            <div class="rate-it-image">
+                <div class="image">
+                    <img src="<?php echo $this->mediaImage($media, 'samples'); ?>"  style="max-height:250px;" />
+                </div>
+                <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/close.button.png" id="closeWorkbox">
+            </div>
+            <div class="rate-icons">
+                <span class="rate-points" mediaID="<?php echo $media['media_id'] ?>">
+                    <?php for ($i = 1; $i <= 5; $i++): ?>
+                        <img width="39" height="42" src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/rate-0.png" class="ratingStar1" originalStatus="0" />
+                    <?php endfor; ?>
+                </span>
+            </div>
+        </div>
+        <div class="bottom-wrapper">
+            <div class="rate-it-details" style="width:100% !important;margin: 0px !important;">
+                <div class="heading">Rate It!</div>
+                <div class="rate-it-details-head">Title: <?php echo $media['title'] ?></div>
+                <div>Artist: <?php echo $media['f_name'] ?></div>            	
+            </div>
+            <div class="rate-it-category">
+                <div class="category-name"> <?php echo $media['totalRated'] + 1 ?>/<?php echo $media['count'] ?></div>  
+            </div>
+
+        </div>
+    <?php elseif ($mediaId): ?>
+        <div class="rate-it-wrapper">
+      <!--    <div class="rangetitle1 animalcol"><?php echo $media['contest_name']; ?></div>-->
+            <div class="rate-it-image">
+                <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/close.button.png" id="closeWorkbox">
+            </div>
+            <div class="row" style="border:1px solid grey">
+                <span class="col-md-4">
+                    <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/thankyou1.png">
+                </span>
+                <span class="col-md-8" style="font-size: 25px; text-align: center; line-height: 1.3em; color: #663f8e; font-family: 'franklin_gothic_bookregular';">
+                    <p><b>Thank You </b><br>
+                        for your recent vote! <br>
+                        Come back <br>
+                        tomorrow <br>
+                        to vote again.</p>                
+                </span>            
+            </div>
+        </div>
+        <div class="bottom-wrapper">
+            <div class="rate-it-detail" style="font-size: 25px;text-align: center;">
+                <p><b>Want to Rate More Art?</b></p>
+                <div>
+                    <a href="<?php echo $this->config('main_site', 'url') ?>/yag-or-gag"><img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/YAGGAG.PNG" style="-webkit-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.5);-moz-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.5);box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.5);"></a>
+                </div>
+                <br>
+                OR
+                <br>
+                <div class="contest" style="border:none; text-align: center">
+                    <button onclick="window.location = '<?php echo $this->basePath() ?>/active-contest'">More Contests</button>            
+                </div>      
+            </div>
+        </div>
+    <?php else: ?>
+        <div class="rate-it-wrapper">
+      <!--    <div class="rangetitle1 animalcol"><?php echo $media['contest_name']; ?></div>-->
+            <div class="rate-it-image">
+                <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/close.button.png" id="closeWorkbox">
+            </div>
+            <div class="row" style="border:1px solid grey">
+                <span class="col-md-4">
+                    <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/thankyou1.png">
+                </span>
+                <span class="col-md-8" style="font-size: 25px; text-align: center; line-height: 1.3em; color: #663f8e; font-family: 'franklin_gothic_bookregular';">
+                    <p><b>Thank You </b><br>
+                        for your recent vote! <br>
+                        Come back <br>
+                        tomorrow <br>
+                        to vote again.</p>                
+                </span>            
+            </div>
+        </div>
+        <div class="bottom-wrapper">
+            <div class="rate-it-detail" style="font-size: 25px;text-align: center;">
+                <p><b>Want to Rate More Art?</b></p>
+                <div>
+                    <a href="<?php echo $this->config('main_site', 'url') ?>/yag-or-gag"><img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/YAGGAG.PNG" style="-webkit-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.5);-moz-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.5);box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.5);"></a>
+                </div>
+                <br>
+                OR
+                <br>
+                <div class="contest" style="border:none; text-align: center">
+                    <button onclick="window.location = '<?php echo $this->basePath() ?>/active-contest'">More Contests</button>            
+                </div>      
+            </div>
+        </div>
+    <?php endif; ?>
+</div>

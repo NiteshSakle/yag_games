@@ -1,0 +1,119 @@
+<style>
+    .col-md-2 {
+        margin: 12px;
+    }
+    .media-art {
+        width: 150px;
+        height: 150px;
+    }
+    .media-art img {
+        //width: 160px;
+        width: 100%;
+        height: 100%;
+        border: 4px solid rgb(223, 220, 125);
+        display: table-cell;
+        vertical-align: middle;
+        background-color: rgb(214, 216, 216);
+    }
+    .media-list-title {
+        background-color: #C8B64C;
+        padding: 2px;
+        margin:15px 20px;
+        width:200px;
+        font-size: 22px;
+    }
+    .contest {
+        font-family: 'franklin_gothic_bookregular';
+        font-weight: bold;
+        color: #663f8e; 
+    }
+    #workbox {
+        top: 0px !important;
+    }
+    .artist-name , .user-name, .rank {
+        text-align: center;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis
+    }
+</style>
+<div  class="home_content clearfix">
+    <div class="inner_main clearfix">
+        <div class="inner_txt clearfix">
+            <h1 class="page-titleHead">Artist Challenge & Contests</h1>
+        </div>
+    </div>
+
+    <div class="contest clearfix" style="border:none">
+        <div>What is art? It is your turn to help choose. These talented artist have been selected to show their work and need you to choose your
+            favorite image to win! You may only choose one image but can come back each day to vote again. For a list of our other contests
+            for Voting for please click here <button onclick="window.location = '<?php echo $this->basePath() ?>/active-contest'">Artist Challenge & Contests</button>
+        </div>
+        <div class="clearfix"> 
+            <div class="right">
+                <form id="searchFormTest" action="<?php echo $this->basePath() ?>/photo-contest/voting/<?php echo $contestId; ?>" method="post">
+                    <label>Search</label>&nbsp;<input type="text" id="searchPhrase" name="search" value="<?php echo $this->escapeHtmlAttr($search) ?>" placeholder="By Artist's First Name">
+                </form>
+            </div>
+        </div>
+        <br>
+        <div>
+            <div class="media-list contest-list clearfix">
+                <div class="row">
+                    <?php foreach ($medias as $key => $media): ?>
+                        <?php $i = $key + 1; ?>
+                        <div class="col-md-2">
+                            <div class="media-art">
+                                <a class="media_image" href="#." data-media_id="<?php echo $media['media_id'] ?>">
+                                    <img mediaid="<?php echo $this->KCrypt()->enc($media['media_id']) ?>" src="<?php echo $this->mediaImage($media, 'icons'); ?>" title="<?php echo $media['title'] ?>" alt="<?php echo $media['title'] ?>" />
+                                </a> 
+                                <div class="artist-name" style="font-size: 13px;">Artist Name: <?php echo $media['f_name'] ?></div>
+                                <div class="user-name" style="font-size: 13px;">User Name: <a href="<?php echo $this->config('main_site', 'url') ?>/<?php echo $media['username'] ?>"><?php echo $media['username'] ?></a></div>
+                            </div>
+                        </div>
+                        <?php if ($i != 1 && $i % 5 == 0): ?>
+                        </div>
+                        <div class="row">
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                </div>  
+            </div>
+
+        </div>
+    </div>
+
+    <?php
+    echo $this->paginationControl($this->paginator, 'Sliding', 'paginator-slide', array(
+        'route' => 'photo-contest',
+        'routeParams' => array(
+            'action' => 'voting',
+            'id' => $this->contestId,
+            'size' => $this->size
+        ),
+        'queryParams' => array(
+            'search' => $this->search
+        )
+    ));
+    ?>
+
+    <script type="text/javascript">
+
+        $(window).ready(function () {
+<?php if (empty($search)) { ?>
+                workbox({
+                    page: gameBasePath + '/photo-contest/get-next-art?contestId=' + contestId,
+                    mini: true
+                });
+<?php } ?>
+            scroll(0, 0);
+        });
+
+        var contestId = "<?php echo $contestId; ?>";
+        $('.media_image').click(function () {
+            workbox({
+                page: gameBasePath + '/photo-contest/get-next-art?contestId=' + contestId + '&mediaId=' + $(this).data('media_id'),
+                mini: true
+            });
+            scroll(0, 0);
+        });
+    </script>

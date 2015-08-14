@@ -6,7 +6,7 @@
  * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
-echo 4387;
+
 return array(
     'controllers' => array(
         'invokables' => array(
@@ -14,12 +14,27 @@ return array(
         ),
     ),
     
+    'controller_plugins' => array(
+        'factories' => array(
+            'adminSessionPlugin' => function(Zend\Mvc\Controller\PluginManager $pluginManager) {
+                $sessionService = $pluginManager->getServiceLocator()->get('adminSessionService');
+                $sessionPlugin = new YagGames\Controller\Plugin\SessionPlugin();
+                $sessionPlugin->setSessionService($sessionService);
+                return $sessionPlugin;
+            },
+        ),
+    ),
+    
     'router' => array(
         'routes' => array(
-            'yagadmin' => array(
-                'type' => 'segment',
+            'admin' => array(
+                'type' => 'Segment',
                 'options' => array(
-                    'route'    => '/yagadmin',
+                    'route'    => '/manager[/:action][/page/:page]',
+                    'constraints' => array(
+                        'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'page'     => '[0-9]+'
+                    ),
                     'defaults' => array(
                         '__NAMESPACE__' => 'YagAdmin\Controller',
                         'controller'    => 'Index',
@@ -29,47 +44,26 @@ return array(
             ),
         ),
     ),
-    'service_manager' => array(
-        'abstract_factories' => array(
-            'Zend\Cache\Service\StorageCacheAbstractServiceFactory',
-            'Zend\Log\LoggerAbstractServiceFactory',
-        ),
-        'factories' => array(
-            'translator' => 'Zend\Mvc\Service\TranslatorServiceFactory',
-        ),
-    ),
-    'translator' => array(
-        'locale' => 'en_US',
-        'translation_file_patterns' => array(
-            array(
-                'type'     => 'gettext',
-                'base_dir' => __DIR__ . '/../language',
-                'pattern'  => '%s.mo',
-            ),
-        ),
-    ),
     
     'view_manager' => array(
-        'display_not_found_reason' => true,
-        'display_exceptions'       => true,
-        'doctype'                  => 'HTML5',
-        'not_found_template'       => 'error/404',
-        'exception_template'       => 'error/index',
         'template_map' => array(
-            'layout/layout'           => __DIR__ . '/../view/layout/layout.phtml',
-            'yag-admin/index/index' => __DIR__ . '/../view/yagadmin/index/index.phtml',
-            'error/404'               => __DIR__ . '/../view/error/404.phtml',
-            'error/index'             => __DIR__ . '/../view/error/index.phtml',
+            'yag-admin/layout/layout'   => __DIR__ . '/../view/yag-admin/layout/admin-layout.phtml',
+            'yag-admin/index/index'     => __DIR__ . '/../view/yag-admin/index/index.phtml',
         ),
         'template_path_stack' => array(
-            __DIR__ . '/../view',
+            'yag-admin' => __DIR__ . '/../view',
         ),
     ),
-    // Placeholder for console routes
-    'console' => array(
-        'router' => array(
-            'routes' => array(
-            ),
-        ),
-    ),
+                    
+    'view_helpers' => array(
+      'factories' => array(
+        'adminSession' => function (Zend\View\HelperPluginManager $helperPluginManager) {
+            $sessionService = $helperPluginManager->getServiceLocator()->get('adminSessionService');
+            $sessionHelper = new YagGames\View\Helper\SessionHelper();
+            $sessionHelper->setSessionService($sessionService);
+            return $sessionHelper;
+        },  
+      ),
+    ),                
+    
 );

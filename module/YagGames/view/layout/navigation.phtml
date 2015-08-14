@@ -1,0 +1,54 @@
+<nav>
+  <ul>
+    <li><a href="<?php echo $this->config('main_site', 'url') ?>/about-us">About YAG</a></li>
+    <li><a href="<?php echo $this->config('main_site', 'url') ?>/image-search">Shop for Art</a></li>
+    <li><a href="<?php echo $this->config('main_site', 'url') ?>/sell-your-art">Sell Your Art</a></li>
+    <li><a href="<?php echo $this->config('main_site', 'url') ?>/contests">Artist Challenge/Contests</a></li>
+    <li class="myaccount-dropmenu">
+      <a href="<?php echo $this->config('main_site', 'url') ?>/artist.welcome.php">My Account</a>
+      <ul>
+        <?php $session = $this->session();  ?>
+        
+        <?php if ($session->mem_id): ?>
+            <?php if ($session->login_as_buyer == 1 && $session->membership == 1): ?>
+                <li><a href="<?php echo $this->config('main_site', 'url') ?>/create.artist.account.php">Artist Portfolio</a></li>    
+            <?php else: ?>
+                <li><a href="<?php echo $this->config('main_site', 'url') ?>/artist.welcome.php">Artist Portfolio</a></li>
+            <?php endif; ?> 
+        <?php else: ?>
+            <li><a id="loginPopup3" href="<?php echo $this->config('main_site', 'url') ?>/workbox.php?mode=loginPopup&login_type=artist">Artist Portfolio</a></li>
+        <?php endif; ?>
+
+        <?php if ($session->mem_id): ?>
+            <?php if ($session->login_as_buyer == 1): ?>
+                <li><a href="<?php echo $this->config('main_site', 'url') ?>/buyer.welcome.php" >Buyer Account</a></li>
+            <?php else: ?>
+                <li><a href="<?php echo $this->config('main_site', 'url') ?>/buyer.welcome.php" >Buyer Account</a></li>
+            <?php endif; ?> 
+        <?php else: ?>
+            <li><a id="loginPopup4" href="<?php echo $this->config('main_site', 'url') ?>/workbox.php?mode=loginPopup&login_type=buyer">Buyer Account</a></li>    
+        <?php endif; ?>
+      </ul>
+    </li>
+    
+    <?php if ($session->mem_id): ?>
+        <li style="margin: 0px 0px 0px 0px;"><div style="display: flex;">
+          <?php if ($session->login_as_buyer == 1 && $session->membership == 1): ?>
+              <a href="<?php echo $this->config('main_site', 'url') ?>/buyer.welcome.php">
+          <?php else: ?>
+              <a href="<?php echo $this->config('main_site', 'url') ?>/artist.welcome.php">
+          <?php endif; ?>
+          <?php 
+            if ($session->username != "") { 
+              echo $session->username;
+            } else {
+              echo $session->f_name;
+            }
+          ?>
+        ,</a>
+        <a href="<?php echo $this->config('main_site', 'url') ?>/login.php?cmd=logout">Logout</a></div></li>
+    <?php else: ?>
+        <li><a id="loginPopup" href="<?php echo $this->config('main_site', 'url') ?>/workbox.php?mode=loginPopup&login_type=both">Login or Join for FREE</a></li>
+    <?php endif; ?>
+  </ul>
+</nav>

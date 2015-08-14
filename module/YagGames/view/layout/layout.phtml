@@ -1,175 +1,86 @@
-<?php echo $this->doctype(); ?>
-
-<html lang="en">
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html lang="en" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html lang="en" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html lang="en" class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html lang="en" class="no-js"> <!--<![endif]-->
     <head>
         <meta charset="utf-8">
-        <?php echo $this->headTitle('ZF2 ' . $this->translate('Skeleton Application'))->setSeparator(' - ')->setAutoEscape(false) ?>
+        <?php echo $this->headTitle('Online Galleries- Your Art Gallery- Buy Sell Share Art &ndash; Your Art Gallery')->setAutoEscape(false) ?>
 
-        <?php
-        echo $this->headMeta()
-                ->appendName('viewport', 'width=device-width, initial-scale=1.0')
-                ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
-        ?>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <?php echo $this->headMeta() ?>
+        <meta name="description" content="Your Art Gallery is an easy to use online gallery for artists to share, buy, and sell Fine Art photography. Create your own gallery or browse for your perfect art piece today!">
+        <meta name="keywords" content="Art Photography, Photography, Canvas Prints, Fine Art Gallery, eGallery, Image Gallery, Stock Images, Photographic Art, Digital Imaging Photography, Stock Pictures, Create Your Gallery, Online Gallery, Buy Art, Sell My Art, Online Portfolio, Create Your Portfolio, Portfolios">
+        <meta name="robots" content="index, follow">
+        <link rel="shortcut icon" href="<?php echo $this->basePath('favicon.ico') ?>"/>
 
-        <!-- Le styles -->
-        <?php
-        echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'))
-                ->prependStylesheet($this->basePath('/css/custom.css'))
-                ->prependStylesheet($this->basePath('css/style.css'))
-                ->prependStylesheet($this->basePath('css/bootstrap-theme.min.css'))
-                ->prependStylesheet($this->basePath('css/bootstrap.min.css'))
-        ?>
+        <link rel="stylesheet" type="text/css" href="<?php echo $this->basePath() ?>/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="<?php echo $this->config('main_site', 'theme_assets_path') ?>/css/normalize.min.css">
+        <link rel="stylesheet" type="text/css" href="<?php echo $this->config('main_site', 'theme_assets_path') ?>/style.main.css">
+        <link rel="stylesheet" type="text/css" href="<?php echo $this->config('main_site', 'theme_assets_path') ?>/css/main.css">
+        <link rel="stylesheet" type="text/css" href="<?php echo $this->config('main_site', 'theme_assets_path') ?>/css/demo.css" />
+        <link rel="stylesheet" type="text/css" href="<?php echo $this->config('main_site', 'theme_assets_path') ?>/css/custom-css.css">    
+        <link rel="stylesheet" type="text/css" href="<?php echo $this->basePath() ?>/css/custom.css">
+        <link rel="stylesheet" type="text/css" href="<?php echo $this->basePath() ?>/css/square/purple.css">
 
-        <!-- Scripts -->
-        <?php
-        echo $this->headScript()
-                ->prependFile($this->basePath('js/bootstrap.min.js'))
-                ->prependFile($this->basePath('js/jquery.min.js'))
-                ->prependFile($this->basePath('js/respond.min.js'), 'text/javascript', array('conditional' => 'lt IE 9',))
-                ->prependFile($this->basePath('js/html5shiv.min.js'), 'text/javascript', array('conditional' => 'lt IE 9',))
-        ;
-        ?>
+        <script>
+            var browser = {'mobile': '0', 'iOS': '0'};
+            var baseURL = '<?php echo $this->config('main_site', 'url') ?>';
+            var gameBasePath = '<?php echo $this->basePath() ?>';
+        </script>
+        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+        <script type="text/javascript" src="<?php echo $this->basePath() ?>/js/icheck.js"></script>
+        <script type="text/javascript" src="<?php echo $this->basePath() ?>/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/js/jquery.browser.min.js"></script>
+        <script type="text/javascript" src="<?php echo $this->config('main_site', 'url') ?>/assets/javascript/shared.min.js"></script>
+        <script type="text/javascript" src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/js/theme.js"></script>
+        <script type="text/javascript" src="<?php echo $this->config('main_site', 'url') ?>/assets/javascript/public.min.js"></script>  
+        <script type="text/javascript" src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/js/modernizr.js"></script>
+        <script type="text/javascript" src="<?php echo $this->config('main_site', 'url') ?>/assets/javascript/custom.js"></script>
+        <script type="text/javascript" src="<?php echo $this->config('main_site', 'url') ?>/assets/javascript/login.js"></script>
+
     </head>
     <body>
-        <!--
-        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="<?php echo $this->url('home') ?>"><img src="<?php echo $this->basePath('img/zf2-logo.png') ?>" alt="Zend Framework 2"/>&nbsp;<?php echo $this->translate('Skeleton Application') ?></a>
+        <div id="overlay">&nbsp;</div>
+        <div id="workbox"></div>
+        <div id="hoverWindow"><div id="hoverWindowInner"></div></div>
+        <div class="header-container">    
+            <header class="wrapper clearfix">
+                <h1 class="title"><a href="<?php echo $this->config('main_site', 'url') ?>"><img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/logo.png" alt=""></a></h1>
+                <div class="inner_righttop">
+                    <div class="search_box">
+                        <form id="searchFormTest" action="<?php echo $this->config('main_site', 'url') ?>/search.php" method="get">
+                            <label>Search</label><input type="text" id="searchPhrase" name="searchPhrase">
+                            <input type="hidden" name="clearSearch" value="true">
+                        </form>
+                    </div>
+                    <?php echo $this->partial('navigation.phtml'); ?>
                 </div>
-                <div class="collapse navbar-collapse">
-                    <ul class="nav navbar-nav">
-                        <li class="active"><a href="<?php echo $this->url('home') ?>"><?php echo $this->translate('Home') ?></a></li>
-                    </ul>
-                </div>
-            </div>
-        </nav> -->
+            </header>
+        </div>
+
+        <div class="wrapper flashMessages">
+            <?php
+            $flash = $this->flashMessenger();
+            $flash->setMessageOpenFormat('<div%s>
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+              &times;
+          </button>
+          <ul><li>')
+                    ->setMessageSeparatorString('</li><li>')
+                    ->setMessageCloseString('</li></ul></div>');
+
+            echo $flash->render('error', array('alert', 'alert-dismissible', 'alert-danger'));
+            ?>
+        </div>
+
         <div class="container">
-        <?php echo $this->content; ?>
-            
-            <hr>
-            
-            
-            
-            <footer>                
-                <div class="footer-top-container">
-                    <div class="wrapper">
-                        <div class="addthis_toolbox">   
-                            <div class="social_link">
-
-                                <a href="https://www.facebook.com/YourArtGallery"><img src="<?php echo $this->basePath()  ?>/img/facebook_share.png"  alt="Share to Facebook" /></a>
-                                <a href="https://twitter.com/YourArtGallery"><img src="<?php echo $this->basePath()  ?>/img/twitter_share.png"  alt="Share to Twitter" /></a>
-                                <a href="https://instagram.com/Your.Art.Gallery/"><img src="<?php echo $this->basePath()  ?>/img/instagram_share.png"  alt="Instagram" /></a>
-                                <a href="https://www.pinterest.com/yourartgallery/"><img src="<?php echo $this->basePath()  ?>/img/pinterest_share.png"  alt="Share to Pinterest" /></a>
-                                <a href="https://plus.google.com"><img src="<?php echo $this->basePath()  ?>/img/google_share.png"  alt="Share to Google" /></a>
-                                <a href="https://www.linkedin.com/company/your-art-gallery-llc"><img src="<?php echo $this->basePath()  ?>/img/linkedin_share.png"  alt="Stumble It" /></a>
-                                <a href="https://www.youtube.com/YourArtGallery"><img src="<?php echo $this->basePath()  ?>/img/youtube_share.png"  alt="Share to Youtube" /></a>            
-
-                            </div>
-                        </div>
-                    </div>
-                    <div class="footer-container">
-                        <footer class="wrapper clearfix">
-
-                            <div class="footer_box">
-                                <a href="/about-us"><h1>COMPANY INFO</h1></a>
-                                <ul>
-                                    <li><a href="/about-us">About Us</a></li>
-                                    <li><a href="/about-our-prints">About Our Prints</a></li>
-                                    <li><a href="http://yaguniversity.tumblr.com/tagged/media" target="_blank">Media</a></li>
-                                    <li><a href="http://yaguniversity.tumblr.com/tagged/news" target="_blank">News & Press</a></li>
-                                    <li><a href="http://yaguniversity.tumblr.com/tagged/events" target="_blank">Events & Exhibitions</a></li>
-                                </ul>
-                            </div>
-
-                            <div class="footer_box">
-                                <a id="loginPopup10" href="#" ><h1>ORDER INFO</h1></a>
-                                <ul>
-                                    <li><a href="#">Track An Order</a></li>
-                                    <li><a href="#">Shipping Options</a></li>
-                                    <li><a href="#">Return Information</a></li>
-                                </ul>
-                            </div>
-
-                            <div class="footer_box">
-                                <a href="/content.php?id=81"><h1>HELP / FEEDBACK</h1></a>
-                                <ul>
-                                    <li><a href="http://yaguniversity.tumblr.com/faq" target="_blank">FAQs</a></li>
-                                    <li><a href="http://yaguniversity.tumblr.com" target="_blank">YAG University</a></li>
-                                    <li>
-                                        <a href="#">Feedback</a>
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <div class="footer_box" style="width: 14%;">
-                                <a href="/our-policies"><h1>TERMS & POLICIES</h1></a>
-                                <ul>
-                                    <li><a href="/our-policies">Sustainability Policy</a></li>
-                                    <li><a href="/our-policies">Privacy Policy</a></li>
-                                    <li><a href="/our-policies">Purchasing Policy</a></li>
-                                    <li><a href="/terms-of-service">Terms & Conditions</a></li>
-                                </ul>
-                            </div>
-
-                            <div class="footer_box" style="width: 11%;">
-                                <a href="/contact-us"><h1>CONTACT US</h1></a>
-                                <ul>
-                                    <li><a href="/contact-us">Location / Hours</a></li>
-                                    <li><a href="/jobs">Jobs / Careers</a></li>                                    
-                                </ul>
-                            </div>
-                            <div class="footer-separator" >
-                                &nbsp;    
-                            </div>
-                            <div class="footer_box signmeup-baby">
-                                <h1>Sign up for exclusive offers and the latest news</h1>
-                                <div style="float: left;">
-                                    <img src="<?php echo $this->basePath() ?>/img/bg-rateing.jpg"/>
-                                </div>
-                                <div>
-                                    <div style="float: right;"><input type="text" name="subscribe-email" placeholder="Email Address"/></div>
-                                    <div style="float: right;"><button id="signup-baby-btn">Sign Me Up, Baby!</button></div>
-                                </div>
-                            </div>
-
-                            <div class="footer_bottom clear clearfix">
-                                <span>Your Art Gallery &copy;2015</span>
-                            </div>
-                        </footer>
-                        <script>
-                            var addthis_config = addthis_config || {};
-                            addthis_config.data_track_addressbar = false;
-                            addthis_config.data_track_clickback = false;
-                        </script>
-                        <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-537097da2d2591ed"></script>                        
-
-                    </div>
-
-                    <script>
-                                (function (i, s, o, g, r, a, m) {
-                                    i['GoogleAnalyticsObject'] = r;
-                                    i[r] = i[r] || function () {
-                                        (i[r].q = i[r].q || []).push(arguments)
-                                    }, i[r].l = 1 * new Date();
-                                    a = s.createElement(o),
-                                            m = s.getElementsByTagName(o)[0];
-                                    a.async = 1;
-                                    a.src = g;
-                                    m.parentNode.insertBefore(a, m)
-                                })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
-
-                        ga('create', 'UA-60062079-1', 'auto');
-                        ga('send', 'pageview');
-
-                    </script>
-            </footer>
+            <div class="main wrapper clearfix">
+                <?php echo $this->content; ?>            
+            </div>
         </div> <!-- /container -->
-<?php echo $this->inlineScript() ?>
+        <?php echo $this->partial('footer.phtml'); ?>
+        <?php echo $this->inlineScript() ?>
     </body>
 </html>
