@@ -61,26 +61,44 @@ class ContestController extends BaseController
     return $this->getContestList('exclusive');
   }
   
-  public function descriptionAction()
+  public function detailsAction()
   {
       $contestId = $this->params()->fromRoute('id');
+      $mediaId = $this->params()->fromRoute('mid') ? (int) $this->params()->fromRoute('mid') : 0;      
       $contestTable = $this->getServiceLocator()->get('YagGames\Model\ContestTable');
-      $data = $contestTable->getByContestId($contestId);
-      
-      if(strtotime($data['entry_end_date']) >= strtotime(date("Y-m-d"))){
-          $type = "new";
-      } else {
-        if(strtotime($data['winners_announce_date']) >= strtotime(date("Y-m-d"))){
-            $type = "active";
-        } else {
-            $type = "past";
-        }
+      $contestMediaTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaTable');
+      $mediaTable = $this->getServiceLocator()->get('YagGames\Model\MediaTable');
+      $contestMedia = $contestMediaTable->fetchContestMedia($contestId,$mediaId);            
+      $media = 0;
+      if($contestMedia || !$mediaId) {
+        $data = $contestTable->getByContestId($contestId);
+        $media = $mediaTable->fetchRecord($mediaId);
+      }else{
+         $data = false; 
       }
-      $view = new ViewModel(array(
-          'contest' => $data,
-          'type' => $type, 
-        ));
-        return $view;
+      
+      if($data) {
+        if(strtotime($data['entry_end_date']) >= strtotime(date("Y-m-d"))){
+            $type = "new";
+        } else {
+          if(strtotime($data['winners_announce_date']) >= strtotime(date("Y-m-d"))){
+              $type = "active";
+          } else {
+              $type = "past";
+          }
+        }      
+        $view = new ViewModel(array(
+            'media' => $media,
+            'contest' => $data,
+            'type' => $type, 
+          ));
+          return $view;
+      } else {
+         $view = new ViewModel();
+         $view->setTemplate('error/404');
+         
+         return $view;
+      }
   }
 
   private function getContestList($type)

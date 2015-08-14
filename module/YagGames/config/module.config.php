@@ -40,7 +40,7 @@ return array(
             'home' => array(
                 'type' => 'Segment',
                 'options' => array(
-                    'route'    => '/[:action][/page/:page][/size/:size][/id/:id]',
+                    'route'    => '/[:action][/page/:page][/size/:size][/id/:id][/mid/:mid]',
                     'constraints' => array(
                         'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'page'     => '[0-9]+',
