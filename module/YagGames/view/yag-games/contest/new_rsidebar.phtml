@@ -14,7 +14,7 @@
             <button class="btn btn-default" onclick="window.location = '<?php echo $this->basePath() ?>/<?php echo $contestType; ?>/submission/<?php echo $contest['id']; ?>'">Enter Contest</button>   
         <?php endif; ?> 
     <?php else: ?>
-        <button id="loginPopup4" class="btn btn-default" onclick="window.location = '<?php echo $this->basePath() ?>/<?php echo $contestType; ?>/submission/<?php echo $contest['id']; ?>'">Enter Contest</button>
+        <button id="loginPopup2" class="btn btn-default" href="<?php echo $this->config('main_site', 'url') ?>/workbox.php?mode=loginPopup&login_type=artist">Enter Contest</button>
     <?php endif; ?> 
 
     <br>
