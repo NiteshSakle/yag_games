@@ -20,14 +20,21 @@ class IndexController extends BaseController {
     public function indexAction() {
         $this->checkLogin();
 
-        $is_reviewer = 0;
+        $add_contest = 0;
+        $delete_contest = 0;
+        $review_contest = 0;
 
         if ($permissions = $_SESSION['admin_user']['permissions']) {
 
             foreach ($permissions as $permission) {
-                if ($permission == 'reviewer') {
-                    $is_reviewer = 1;
-                    break;
+                if ($permission == 'add-contest') {
+                    $add_contest = 1;
+                }
+                if ($permission == 'delete-contest') {
+                    $delete_contest = 1;
+                }
+                if ($permission == 'review-contest') {
+                    $review_contest = 1;
                 }
             }
         }
@@ -44,7 +51,7 @@ class IndexController extends BaseController {
             $totalPages = ceil($data['total'] / 10);
         }
 
-        return new ViewModel(array('types' => $types, 'contests' => $data['contests'], 'currentPage' => $page, 'totalPages' => $totalPages, 'is_reviewer' => $is_reviewer));
+        return new ViewModel(array('types' => $types, 'contests' => $data['contests'], 'currentPage' => $page, 'totalPages' => $totalPages, 'add_contest' => $add_contest, 'delete_contest' => $delete_contest, 'review_contest' => $review_contest));
     }
 
     //displaying particular contest details and all the photos uploaded to that contest
@@ -86,14 +93,21 @@ class IndexController extends BaseController {
     //adding and editing of contest
     public function saveContestAction() {
         $this->checkLogin();
-        $is_reviewer = 0;
+        $add_contest = 0;
+        $delete_contest = 0;
+        $review_contest = 0;
 
         if ($permissions = $_SESSION['admin_user']['permissions']) {
 
             foreach ($permissions as $permission) {
-                if ($permission == 'reviewer') {
-                    $is_reviewer = 1;
-                    break;
+                if ($permission == 'add-contest') {
+                    $add_contest = 1;
+                }
+                if ($permission == 'delete-contest') {
+                    $delete_contest = 1;
+                }
+                if ($permission == 'review-contest') {
+                    $review_contest = 1;
                 }
             }
         }
@@ -101,11 +115,7 @@ class IndexController extends BaseController {
         $response = array();
 
         //checking for correct permissions
-        if ($is_reviewer) {
-            $response['success'] = false;
-            $response['message'] = "You don't have enough permissions";
-            return new JsonModel($response);
-        } else {
+        if ($add_contest) {
 
             $request = $this->getRequest();
             if ($request->isPost()) {
@@ -244,6 +254,10 @@ class IndexController extends BaseController {
                 $response['success'] = false;
                 $response['message'] = 'BAD REQUEST';
             }
+        } else {
+            $response['success'] = false;
+            $response['message'] = "You don't have enough permissions";
+            return new JsonModel($response);
         }
 
         return new JsonModel($response);
@@ -251,14 +265,21 @@ class IndexController extends BaseController {
 
     //deleting some contest
     public function deleteContestAction() {
-        $is_reviewer = 0;
-        $response = array();
+        $add_contest = 0;
+        $delete_contest = 0;
+        $review_contest = 0;
+
         if ($permissions = $_SESSION['admin_user']['permissions']) {
 
             foreach ($permissions as $permission) {
-                if ($permission == 'reviewer') {
-                    $is_reviewer = 1;
-                    break;
+                if ($permission == 'add-contest') {
+                    $add_contest = 1;
+                }
+                if ($permission == 'delete-contest') {
+                    $delete_contest = 1;
+                }
+                if ($permission == 'review-contest') {
+                    $review_contest = 1;
                 }
             }
         }
@@ -266,11 +287,7 @@ class IndexController extends BaseController {
         $response = array();
 
         //checking for correct permissions
-        if ($is_reviewer) {
-            $response['success'] = false;
-            $response['message'] = "You don't have enough permissions";
-            return new JsonModel($response);
-        } else {
+        if ($delete_contest) {
 
             $request = $this->getRequest();
             if ($request->isPost()) {
@@ -288,6 +305,10 @@ class IndexController extends BaseController {
                 $response['success'] = false;
                 $response['message'] = 'BAD REQUEST';
             }
+        } else {
+            $response['success'] = false;
+            $response['message'] = "You don't have enough permissions";
+            return new JsonModel($response);
         }
         return new JsonModel($response);
     }
@@ -301,9 +322,9 @@ class IndexController extends BaseController {
             $params['contest_id'] = trim($this->getRequest()->getPost('contest_id'));
             $params['media_id'] = trim($this->getRequest()->getPost('media_id'));
             $contestMediaTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaTable');
-            
+
             if ($contestMediaTable->delete($params)) {
-                
+
                 $contest = array();
                 $config = $this->getConfig();
                 $contestTable = $this->getServiceLocator()->get('YagGames\Model\ContestTable');
