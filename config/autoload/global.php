@@ -11,7 +11,7 @@
  * file.
  */
 
-date_default_timezone_set("EST");
+date_default_timezone_set("America/New_York");
 
 return array(
     'service_manager' => array(
