@@ -1,0 +1,1 @@
+ALTER TABLE  `contest` ADD  `entry_start_date` DATE NOT NULL AFTER  `thumbnail` ;

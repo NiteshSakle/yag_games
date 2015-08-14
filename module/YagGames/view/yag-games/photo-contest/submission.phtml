@@ -109,6 +109,7 @@
     }
 
 </style>
+
 <div  class="home_content clearfix">
     <div class="inner_main clearfix">
         <div class="inner_txt clearfix">
@@ -303,12 +304,19 @@
 
     var contestId = "<?php echo $contest['id']; ?>";
     $('#submitImage').click(function () {
-        if ($("input:radio[name=my_media]").is(":checked")) {
-            submitArt(contestId, $("input:radio[name=my_media]").val());
+        if ($('div.checked')) {
+            submitArt(contestId, $('div.checked').children('input').val());
         } else {
             alert('Please select your art');
         }
     });
+//    $('#submitImage').click(function () {
+//        if ($("input:radio[name=my_media]").is(":checked")) {
+//            submitArt(contestId, $("input:radio[name=my_media]").val());
+//        } else {
+//            alert('Please select your art');
+//        }
+//    });
 
     $('#submitNewImage').click(function () {
         uploadArt(contestId);
