@@ -57,7 +57,7 @@ return array(
             'media' => array(
                 'type' => 'Segment',
                 'options' => array(
-                    'route'    => '/media/[:action][/page/:page][/size/:size]',
+                    'route'    => '/media/[:action][/page/:page][/size/:size][/mid/:mid]',
                     'constraints' => array(
                         'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'page'     => '[0-9]+',

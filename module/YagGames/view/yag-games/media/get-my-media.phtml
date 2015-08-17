@@ -46,8 +46,19 @@ echo $this->paginationControl($this->paginator, 'Sliding', 'paginator-slide', ar
 
 <script>
     $(document).ready(function () {
+        var mediaId = <?php echo $mediaId ?>;
         $('input').iCheck({
             radioClass: 'iradio_square-purple'
+        });
+        
+        $("a.media_image").each(function () {
+            var checkbox = $(this).next();
+            if($(this).data('media_id') == mediaId){
+                $('.iradio_square-purple').removeClass('checked');
+                checkbox.addClass('checked');
+                var anchor = $(this);
+                updateImage(anchor);
+            }            
         });
 
     });

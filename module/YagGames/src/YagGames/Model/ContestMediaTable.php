@@ -251,5 +251,27 @@ class ContestMediaTable extends BaseTable {
             return false;
         }
     }
+    
+    public function getUserContestMediaCount($contestId, $userId = null) {
+        try {
+            $sql = $this->getSql();
+            $query = $sql->select()
+                    ->from(array('cm' => 'contest_media'))
+                    ->columns(array('*'))
+                    ->where(array('cm.contest_id' => $contestId));
+
+            $userId = (int) $userId;            
+            $query->join(array('m' => 'ps4_media'), 'm.media_id = cm.media_id', array(), 'left')
+                    ->where(array('m.owner' => $userId));            
+
+            $rows = $sql->prepareStatementForSqlObject($query)->execute();
+            $row = $rows->current();
+            
+            return $row;            
+        } catch (Exception $e) {
+            $this->logException($e);
+            return array('count' => 0, 'has_uploaded' => 0);
+        }
+    }
 
 }

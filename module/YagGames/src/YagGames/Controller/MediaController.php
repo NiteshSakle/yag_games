@@ -13,7 +13,8 @@ class MediaController extends BaseController
     
     $page = $this->params()->fromRoute('page') ? (int) $this->params()->fromRoute('page') : 1;
     $size = $this->params()->fromRoute('size') ? (int) $this->params()->fromRoute('size') : 10;
-    
+    $mediaId = $this->params()->fromRoute('mid') ? (int) $this->params()->fromRoute('mid') : 0;
+            
     $contestTable = $this->getServiceLocator()->get('YagGames\Model\MediaViewTable');
     $data = $contestTable->getMyMedia($this->session->mem_id, $page, $size);
     
@@ -24,6 +25,7 @@ class MediaController extends BaseController
     $vm = new ViewModel();
     $vm->setVariable('paginator', $paginator);
     $vm->setVariable('medias', $data['medias']);
+    $vm->setVariable('mediaId', $mediaId);
     $vm->setTerminal(true);
     return $vm;
   }

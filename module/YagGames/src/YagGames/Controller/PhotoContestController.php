@@ -42,15 +42,24 @@ class PhotoContestController extends BaseController
     }
 
     $showPopupDiv = 0;
+    $showSubmitPopupDiv = 0;
     $media = array();
-    if (isset($this->session['contestUpload']['contestMediaId'])) {
-      $contestMediaTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaTable');
+    $mediaId = 0;
+    
+    $contestMediaTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaTable');
+    $userContestMedia = $contestMediaTable->getUserContestMediaCount($contestId, $this->session->mem_id );
+    if($userContestMedia){
+        $mediaId = $userContestMedia['media_id'];
+        $showSubmitPopupDiv = 1;
+    }
+    
+    if (isset($this->session['contestUpload']['contestMediaId'])) {      
       $media = $contestMediaTable->getContestMediaDetails($this->session['contestUpload']['contestMediaId']);
       unset($this->session['contestUpload']['contestMediaId']);
       $showPopupDiv = 1;
     }
 
-    return new ViewModel(array('contest' => $this->contest, 'showPopupDiv' => $showPopupDiv, 'media' => $media));
+    return new ViewModel(array('contest' => $this->contest, 'showPopupDiv' => $showPopupDiv, 'media' => $media, 'mediaId' => $mediaId, 'showSubmitPopupDiv' => $showSubmitPopupDiv));
   }
 
   public function uploadSubmissionAction()

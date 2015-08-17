@@ -246,10 +246,10 @@
             <img class="icon_man" src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/thankyou1.png" /></div> 
         <div class="social-links-upload-another-img">
             <ul class="social_links">
-                <li><a class="addthis_button_facebook" addthis:url="<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/<?php echo $contest['id']; ?>"/><img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/facebook.png"  alt="Share to Facebook" /></a></li>
-                <li><a class="addthis_button_twitter" addthis:url="<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/<?php echo $contest['id']; ?>"><img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/twitter.png"  alt="Share to Twitter" /></a></li>
-                <li><a class="addthis_button_linkedin" addthis:url="<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/<?php echo $contest['id']; ?>"><img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/linkedin.png"  alt="Linkedin" /></a></li>
-                <li><a class="addthis_button_pinterest_share" pi:pinit:url="<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/<?php echo $contest['id']; ?>" pi:pinit:media="{$auto_crop_image}"><img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/pinterest.png"  alt="Share to Pinterest" /></a></li>
+                <li><a class="addthis_button_facebook" addthis:url="<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/<?php echo $contest['id']; ?>/mid/<?php echo $mediaId;?>"/><img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/facebook.png"  alt="Share to Facebook" /></a></li>
+                <li><a class="addthis_button_twitter" addthis:url="<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/<?php echo $contest['id']; ?>/mid/<?php echo $mediaId;?>"><img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/twitter.png"  alt="Share to Twitter" /></a></li>
+                <li><a class="addthis_button_linkedin" addthis:url="<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/<?php echo $contest['id']; ?>/mid/<?php echo $mediaId;?>"><img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/linkedin.png"  alt="Linkedin" /></a></li>
+                <li><a class="addthis_button_pinterest_share" pi:pinit:url="<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/<?php echo $contest['id']; ?>/mid/<?php echo $mediaId;?>" pi:pinit:media="{$auto_crop_image}"><img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/pinterest.png"  alt="Share to Pinterest" /></a></li>
             </ul>
             <span class="or">or</span>
             <div class="btn-upload-another-img"><input type="button" onClick="javascript:window.location.href = '<?php echo $this->basePath() ?>/new-contest'"  value="Enter Another Contest" name="" class="back"></div>
@@ -297,11 +297,13 @@
 <script type="text/javascript">
 <?php if ($showPopupDiv): ?>
         showSuccessPopup('uploadPopUpDiv');
+<?php elseif ($showSubmitPopupDiv) : ?>
+        showSuccessPopup('popUpDiv'); 
 <?php endif; ?>
     //disable submit button
     $('#submitImage').prop('disabled', true);
 
-    loadHtml(gameBasePath + '/media/get-my-media', '.media-list', '', function () {
+    loadHtml(gameBasePath + '/media/get-my-media/mid/<?php echo $mediaId;?>', '.media-list', '', function () {
         registerHoverFunction();
         registerFollowCursor();
     });
@@ -312,15 +314,6 @@
             function loadAddThis() {
                 addthis.init()
             }
-            var cId = contestId;
-            var mId = $('div.checked').children('input').val();
-            $(".addthis_button_facebook").attr("addthis:url", "<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/" + cId + "/mid/" + mId);
-            $(".addthis_button_twitter").attr("addthis:url", "<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/" + cId + "/mid/" + mId);
-            $(".addthis_button_linkedin").attr("addthis:url", "<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/" + cId + "/mid/" + mId);
-            $(".addthis_button_pinterest_share").attr("addthis:url", "<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/" + cId + "/mid/" + mId);
-            addthis.update('share', 'url', "<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/" + cId + "/mid/" + mId); 
-            addthis.url = "<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/" + cId + "/mid/" + mId;                
-            addthis.toolbox(".addthis_toolbox");
             submitArt(contestId, $('div.checked').children('input').val());
         } else {
             alert('Please select your art');
@@ -366,7 +359,7 @@
 
         request.done(function (msg) {
             if (msg.success) {
-                showSuccessPopup('popUpDiv'); 
+                 location.reload(); 
             } else {
                 alert(msg.message)
             }
