@@ -38,7 +38,9 @@
         white-space: nowrap;
         text-overflow: ellipsis
     }
-
+    .ranking-page {
+        height: 30px;
+    }
 </style>
 <div  class="home_content clearfix">
     <div class="inner_main clearfix">
@@ -94,11 +96,13 @@
                         </div>
                         <?php if ($i != 1 && $i % 5 == 0): ?>
                         </div>
+                        <div class="clearfix ranking-page"></div>
                         <div class="row">
                         <?php endif; ?>
 
                     <?php endforeach; ?>
-                </div>  
+                </div>
+                <div class="clearfix ranking-page"></div>
             </div>
 
         </div>
