@@ -205,3 +205,12 @@ body {
     margin-top: 4px;
     margin-bottom: 17px;
 }
+
+.upgrade-account-contest-img {
+    float: left;
+    padding-left: 3%;
+    padding-top: 2px
+}
+.upgrade-account-contest-img img {
+    height: 120px;
+}

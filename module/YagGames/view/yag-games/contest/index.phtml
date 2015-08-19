@@ -12,7 +12,7 @@
     #upgradePopUp {
         position: fixed;
         background-color: transparent;
-        width: 500px;
+        width: 600px;
         height: 330px;
         z-index: 9002;
         padding: 20px;
@@ -206,8 +206,8 @@
     });
     
     function showUpgradePopUp() {
-        $('#upgradePopUp').css('top', ($(window).height() / 2 - 200) + 'px');
-        $('#upgradePopUp').css('left', ($(window).width() / 2 - $('#upgradePopUp').width() - 50) + 'px');
+        $('#upgradePopUp').css('top', ($(window).height() / 2 - 150) + 'px');
+        $('#upgradePopUp').css('left', ($(window).width() / 2 - $('#upgradePopUp').width()) + 'px');
         $('#upgradePopUp').show();
         $('div#overlay').css('display', 'block');
         $('div#overlay').css('opacity', '0.47');
