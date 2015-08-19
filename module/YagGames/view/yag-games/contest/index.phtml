@@ -9,6 +9,15 @@
         padding: 20px;
         margin: 0 0 0 265px;
     }
+    #upgradePopUp {
+        position: fixed;
+        background-color: transparent;
+        width: 500px;
+        height: 330px;
+        z-index: 9002;
+        padding: 20px;
+        margin: 0 0 0 265px;
+    }
     .btn-upload-another-img {
         float: none;
     }
@@ -71,10 +80,8 @@
             <li><a <?php echo $type == 'active' ? 'class="nav_active"' : ""; ?> href="<?php echo $this->basePath() ?>/active-contest">Active Contests</a></li>
             <li><a <?php echo $type == 'past' ? 'class="nav_active"' : ""; ?> href="<?php echo $this->basePath() ?>/past-contest">Past Contests</a></li>
             <?php if ($session->mem_id): ?>
-                <li><a <?php echo $type == 'my' ? 'class="nav_active"' : ""; ?> href="<?php echo $this->basePath() ?>/my-contest">My Contests</a></li>
-                <?php if ($session->membership == 4): ?>
-                    <li><a <?php echo $type == 'exclusive' ? 'class="nav_active"' : ""; ?> href="<?php echo $this->basePath() ?>/exclusive-contest">Exclusive Contests</a></li>
-                <?php endif; ?>
+                <li><a <?php echo $type == 'my' ? 'class="nav_active"' : ""; ?> href="<?php echo $this->basePath() ?>/my-contest">My Contests</a></li>            
+                <li><a <?php echo $type == 'exclusive' ? 'class="nav_active"' : ""; ?> href="<?php echo $this->basePath() ?>/exclusive-contest">Exclusive Contests</a></li>                            
             <?php else: ?>
                 <li><a id="loginPopup2" <?php echo $type == 'my' ? 'class="nav_active"' : ""; ?> href="<?php echo $this->config('main_site', 'url') ?>/workbox.php?mode=loginPopup&login_type=artist&login_redirect=contests/my-contest">My Contests</a></li>
                 <li><a id="loginPopup5" <?php echo $type == 'my' ? 'class="nav_active"' : ""; ?> href="<?php echo $this->config('main_site', 'url') ?>/workbox.php?mode=loginPopup&login_type=artist&login_redirect=contests">Exclusive Contests</a></li>
@@ -180,8 +187,8 @@
         $('div#overlay').css('display', 'block');
         $('div#overlay').css('opacity', '0.47');
         $('div#blanket').css('height', '0');
-    }
-
+    }    
+   
     function hideThankYouPopUp() {
         $('#thanksPopUpDiv').hide();
         $('div#overlay').css('display', 'none');
@@ -198,4 +205,23 @@
         return false;
     });
     
+    function showUpgradePopUp() {
+        $('#upgradePopUp').css('top', ($(window).height() / 2 - 200) + 'px');
+        $('#upgradePopUp').css('left', ($(window).width() / 2 - $('#upgradePopUp').width() - 50) + 'px');
+        $('#upgradePopUp').show();
+        $('div#overlay').css('display', 'block');
+        $('div#overlay').css('opacity', '0.47');
+        $('div#blanket').css('height', '0');
+        
+    }
+    
+    function hideUpgradePopUp() {
+        $('#upgradePopUp').hide();
+        $('div#overlay').css('display', 'none');
+        window.location.href = "<?php echo $this->config('main_site', 'url') ?>/contests";
+    }
+
+    <?php if ($type == 'exclusive' && $session->mem_id && $session->membership != 4): ?>
+        showUpgradePopUp();           
+    <?php endif; ?>
 </script>
