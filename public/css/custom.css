@@ -191,3 +191,17 @@ body {
     font-style: italic;
 }
 
+.new-header {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    text-align: center !important;
+    font-size: 40px !important;
+    padding-bottom: 9px !important;
+    margin: 5px 0 20px !important;
+    font-weight: 300 !important;
+    color: #5D5D5D !important;
+}
+
+.thumb-rm-btn {
+    margin-top: 4px;
+    margin-bottom: 17px;
+}
