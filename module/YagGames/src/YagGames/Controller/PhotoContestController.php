@@ -40,6 +40,11 @@ class PhotoContestController extends BaseController
                   'action' => 'voting'
       ));
     }
+    
+    if ($this->contest['is_exclusive'] && $this->session->membership != 4) {        
+        $this->flashMessenger()->addErrorMessage('Please Upgrade your account to participate in exclusive contest');
+        return $this->redirect()->toRoute('home');        
+    }
 
     $showPopupDiv = 0;
     $showSubmitPopupDiv = 0;
