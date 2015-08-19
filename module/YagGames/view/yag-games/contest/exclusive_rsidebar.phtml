@@ -17,20 +17,3 @@ echo $this->partial($partial, array(
     'contestType' => $contestType,
 ));
 ?>
-<div style="display: none; text-align: center" id="upgradePopUp">
-    <div class="popup-another-img">
-        <a style="float:right; margin-top: -3%; margin-right: -1.5%;" onclick="hideUpgradePopUp();" href="#."><img style="height: 16px; width: 16px;" alt="" src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/close.button.png" /></a>
-        <div style=" margin: 4%; width: 100%;">
-            <div style=" float: left; width: 65%">                
-                <p style="font-size: 18px; color: #6e6e70; font-family: 'franklin_gothic_bookregular'; line-height: 1em; width: 60">
-                   Sorry, Please Upgrade your account to participate in exclusive contests
-                </p>
-                <div class="btn-upload-another-img"><input type="button" onClick="javascript:window.location.href = '<?php echo $this->config('main_site', 'url') ?>/upgrade.account.php'"  value="Upgrade Membership"></div>
-            </div>
-            <div class="upgrade-account-contest-img">
-                <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/mesg-img-1.png">
-            </div>
-        </div>
-        
-    </div>
-</div>
