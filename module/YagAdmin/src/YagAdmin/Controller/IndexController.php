@@ -66,7 +66,7 @@ class IndexController extends BaseController {
             $id = trim($this->getRequest()->getPost('id'));
 
             $contestDetails = $this->getContestDetails($id);
-            $contestPhotos = $this->getContestPhotos($id);
+            $contestPhotos = $this->getUserContestPhotos($id);
         } else {
             $this->redirect()->toRoute('admin');
         }
@@ -371,6 +371,12 @@ class IndexController extends BaseController {
     private function getContestPhotos($id) {
         $contestMediaTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaTable');
         $data = $contestMediaTable->fetchAllByContest($id);
+        return $data;
+    }
+    
+    private function getUserContestPhotos($id) {
+        $contestMediaTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaTable');
+        $data = $contestMediaTable->fetchAllUserMediaDetailsByContest($id);
         return $data;
     }
 

@@ -1,3 +1,53 @@
+<style>
+    #contestMediaDetails {
+        position: fixed;
+        width: 700px;
+        height: 500px;
+        z-index: 900;
+        padding: 20px;
+        margin: 0 0 0 265px;
+        border: 1.5px solid rgb(61, 61, 61);;
+        padding: 0px;
+        background-color: rgb(236, 236, 236);
+    }
+    .contest-media-header {
+        background-color: rgb(61, 61, 61);;
+        color: whitesmoke;
+        line-height: 25px;
+        text-align: left;
+        font-size: 18px;
+        padding: 5px;
+    }
+    
+    #contestMediaImg {
+        padding: 10px;        
+        height: 310px;
+    }
+    .details-main {
+        font-size: 16px;
+        color: black;
+        font-weight: bold;        
+        font-style: italic;
+        margin-bottom: 15px;
+    }
+    .details-sub {
+        font-size: 14px;
+        color: #3D3D3D;;
+        font-weight: 600; 
+    }
+    #overlay-admin {
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 800;
+        background-color: grey;
+        background-repeat: repeat;
+        display: none;
+    }
+</style>
+<div id="overlay-admin">&nbsp;</div>
 <div class="jumbotron">
     <div class="row">
         
@@ -16,7 +66,7 @@
                 ?>
 
                 <div class="col-lg-2 col-md-3 col-xs-4 thumb">
-                    <img class="img-responsive" src="<?php echo $this->mediaImage($photo, 'icons'); ?>" alt="<?php echo $photo['filename']; ?>">                    
+                    <a href="#"><img class="img-responsive" src="<?php echo $this->mediaImage($photo, 'icons'); ?>" alt="<?php echo $photo['filename']; ?>" data-media_src="<?php echo $this->mediaImage($photo, 'samples'); ?>" data-image_title="<?php echo $photo['title']; ?>" data-image_photo_id="<?php echo $photo['umedia_id']; ?>" data-image_name="<?php echo $photo['f_name'] . ' ' . $photo['l_name']; ?>" data-image_mail_id="<?php echo $photo['email']; ?>" data-image_media_id="<?php echo $photo['media_id']; ?>" data-image_contest_id="<?php echo $photo['contest_id']; ?>"></a>
                     <button media_id="<?php echo $photo['media_id']; ?>" contest_id="<?php echo $photo['contest_id']; ?>" type="button" class="btn btn-danger center-block remove thumb-rm-btn">Remove</button>
                 </div>
             <?php }
@@ -25,6 +75,26 @@
 
     </div>
 </div>
+<div style="display: none; text-align: center" id="contestMediaDetails">
+    <div class="contest-media-header "> Image Details
+        <a style="float:right; margin: 3px" onclick="hideshowImageDetails();" href="#">
+            <img style="height: 16px; width: 16px;" alt="" src="<?php echo $this->config('main_site', 'url') ?>/manager/images/mgr.button.close2.png" />
+        </a>
+    </div>
+    <div>
+        <img  id="contestMediaImg" src="http://localhost/yag/samples/NjI1ZGZiYmQ1ZDQ3MA==/NjRkZmJiZDVkNDcw/photo.jpg" >
+    </div>
+    <div class="details-main">
+        <div> Image Title : <span class="details-sub" id="image_title"></span> </div>
+        <!--<div> Media Id : <span class="details-sub"></span> </div>-->
+        <div> Photo Id : <span class="details-sub" id="image_photo_id"></span> </div>
+        <div> Owner Name : <span class="details-sub" id="image_name"></span> </div>
+        <div> Owner Email-Id : <span class="details-sub" id="image_mail_id"></span> </div>
+        <!--<div> Owner Email-Id : <span class="details-sub"></span> </div>-->
+    </div>
+    <button id="image_remove_btn" type="button" class="btn btn-danger center-block remove thumb-rm-btn">Remove</button>
+</div>
+
 <script>
 
     $('.remove').click(function () {
@@ -36,11 +106,46 @@
                 success: function (response) {
                     bootbox.alert(response.message, function () {
                         location.reload();
-                    });
+                    });                    
                     location.reload();
                 }
             });
         }
         return false;
     });
+    
+    $(".thumb img.img-responsive").click(function (e) {    
+        $('#contestMediaImg').attr('src', $(this).data('media_src'));
+        $('#image_title').html($(this).data('image_title'));
+        $('#image_photo_id').html($(this).data('image_photo_id'));
+        $('#image_name').html($(this).data('image_name'));
+        $('#image_mail_id').html($(this).data('image_mail_id'));
+        $('#image_remove_btn').attr('media_id', $(this).data('image_media_id'));
+        $('#image_remove_btn').attr('contest_id', $(this).data('image_contest_id'));
+        $('#contestMediaDetails').css('top', ($(window).height() / 2 - 250) + 'px');
+        $('#contestMediaDetails').css('left', (($(window).width())/ 2 - $('#contestMediaDetails').width() + 110) + 'px');
+        $('#contestMediaDetails').show();
+        
+        $('div#overlay-admin').css('display', 'block');
+        $('div#overlay-admin').css('opacity', '0.47');
+        $('div#blanket').css('height', '0');
+        
+    });
+    
+    function hideshowImageDetails() {
+        $('#contestMediaDetails').hide();
+        $('div#overlay-admin').css('display', 'none');
+    }
+    function showImageDetails(){
+        $('#contestMediaImg').attr('src', $(this).data('media_src'));
+        $('#contestMediaDetails').css('top', ($(window).height() / 2 - 250) + 'px');
+        $('#contestMediaDetails').css('left', (($(window).width())/ 2 - $('#contestMediaDetails').width() + 110) + 'px');
+        $('#contestMediaDetails').show();
+        
+        $('div#overlay-admin').css('display', 'block');
+        $('div#overlay-admin').css('opacity', '0.47');
+        $('div#blanket').css('height', '0');
+    }
+    
+//    showImageDetails();
 </script>

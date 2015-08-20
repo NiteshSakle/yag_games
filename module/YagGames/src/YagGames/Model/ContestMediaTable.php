@@ -274,4 +274,22 @@ class ContestMediaTable extends BaseTable {
         }
     }
 
+    public function fetchAllUserMediaDetailsByContest($contestId) {
+        $select = new \Zend\Db\Sql\Select;
+        $select->from(array('c' => 'contest_media'))
+                ->columns(array('*'))
+                ->join(array('m' => 'ps4_media'), 'c.media_id = m.media_id')
+                ->join(array('mem' => 'ps4_members'), 'mem.mem_id = m.owner')
+                ->where(array('contest_id' => $contestId));
+
+        $statement = $this->getSql()->prepareStatementForSqlObject($select);
+        $resultSet = $statement->execute();
+
+        $photos = array();
+        foreach ($resultSet as $row) {
+            $photos[] = $row;
+        }
+
+        return $photos;
+    }
 }
