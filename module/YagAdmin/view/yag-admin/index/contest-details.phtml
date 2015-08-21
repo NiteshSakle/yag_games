@@ -82,7 +82,7 @@
         </a>
     </div>
     <div>
-        <img  id="contestMediaImg" src="http://localhost/yag/samples/NjI1ZGZiYmQ1ZDQ3MA==/NjRkZmJiZDVkNDcw/photo.jpg" >
+        <img  id="contestMediaImg" src="" >
     </div>
     <div class="details-main">
         <div> Image Title : <span class="details-sub" id="image_title"></span> </div>
@@ -136,16 +136,4 @@
         $('#contestMediaDetails').hide();
         $('div#overlay-admin').css('display', 'none');
     }
-    function showImageDetails(){
-        $('#contestMediaImg').attr('src', $(this).data('media_src'));
-        $('#contestMediaDetails').css('top', ($(window).height() / 2 - 250) + 'px');
-        $('#contestMediaDetails').css('left', (($(window).width())/ 2 - $('#contestMediaDetails').width() + 110) + 'px');
-        $('#contestMediaDetails').show();
-        
-        $('div#overlay-admin').css('display', 'block');
-        $('div#overlay-admin').css('opacity', '0.47');
-        $('div#blanket').css('height', '0');
-    }
-    
-//    showImageDetails();
 </script>
