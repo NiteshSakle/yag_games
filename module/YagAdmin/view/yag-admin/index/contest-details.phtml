@@ -4,11 +4,12 @@
         width: 700px;
         height: 500px;
         z-index: 900;
-        padding: 20px;
         margin: 0 0 0 265px;
         border: 1.5px solid rgb(61, 61, 61);;
         padding: 0px;
         background-color: rgb(236, 236, 236);
+        top: 85px;
+        left: 7px;        
     }
     .contest-media-header {
         background-color: rgb(61, 61, 61);;
@@ -122,8 +123,6 @@
         $('#image_mail_id').html($(this).data('image_mail_id'));
         $('#image_remove_btn').attr('media_id', $(this).data('image_media_id'));
         $('#image_remove_btn').attr('contest_id', $(this).data('image_contest_id'));
-        $('#contestMediaDetails').css('top', ($(window).height() / 2 - 250) + 'px');
-        $('#contestMediaDetails').css('left', (($(window).width())/ 2 - $('#contestMediaDetails').width() + 110) + 'px');
         $('#contestMediaDetails').show();
         
         $('div#overlay-admin').css('display', 'block');
