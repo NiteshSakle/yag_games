@@ -1,5 +1,7 @@
 <style>
     #contestMediaDetails {
+        top: 85px;
+        left: 7px; 
         position: fixed;
         width: 700px;
         height: 500px;
@@ -7,9 +9,7 @@
         margin: 0 0 0 265px;
         border: 1.5px solid rgb(61, 61, 61);;
         padding: 0px;
-        background-color: rgb(236, 236, 236);
-        top: 85px;
-        left: 7px;        
+        background-color: rgb(236, 236, 236);               
     }
     .contest-media-header {
         background-color: rgb(61, 61, 61);;
@@ -76,7 +76,7 @@
 
     </div>
 </div>
-<div style="display: none; text-align: center" id="contestMediaDetails">
+<div style="display: none; text-align: center; top: 85px;left:7px;" id="contestMediaDetails">
     <div class="contest-media-header "> Image Details
         <a style="float:right; margin: 3px" onclick="hideshowImageDetails();" href="#">
             <img style="height: 16px; width: 16px;" alt="" src="<?php echo $this->config('main_site', 'url') ?>/manager/images/mgr.button.close2.png" />
