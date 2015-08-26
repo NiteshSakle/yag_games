@@ -110,7 +110,18 @@
                             <?php echo $contest['description']; ?>
                             <br>
                             <div class="contest-dates">
-                                Enter by: <?php echo date("F jS, Y", strtotime($contest['entry_end_date'])); ?>
+                                <?php 
+                                    if($contest['max_no_of_photos'] == $contest['total_entries']) {
+                                        $date_details = 'active';
+                                    } else {
+                                        $date_details = $contest['my_type'];
+                                    }   
+                                    
+                                    if($date_details == 'new') { ?>
+                                    Enter by: <?php echo date("F jS, Y", strtotime($contest['entry_end_date'])); ?>
+                                <?php } elseif($date_details == 'active') { ?>
+                                    Voting Begins: <?php echo date("F jS, Y", strtotime($contest['voting_start_date'])); ?>
+                                <?php } ?>
                                 <br>
                                 Winner Announced: <?php echo date("F jS, Y", strtotime($contest['winners_announce_date'])); ?>
                             </div>                
