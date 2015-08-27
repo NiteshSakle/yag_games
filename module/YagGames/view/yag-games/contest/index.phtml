@@ -12,8 +12,8 @@
     #upgradePopUp {
         position: fixed;
         background-color: transparent;
-        width: 600px;
-        height: 330px;
+        width: 650px;
+        height: 290px;
         z-index: 9002;
         padding: 20px;
         margin: 0 0 0 265px;
@@ -188,16 +188,16 @@
     ?>
 </div>
 <div style="display: none; text-align: center" id="upgradePopUp">
-    <div class="popup-another-img">
-        <a style="float:right; margin-top: -3%; margin-right: -1.5%;" onclick="hideUpgradePopUp();" href="#."><img style="height: 16px; width: 16px;" alt="" src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/close.button.png" /></a>
-        <div style=" margin: 4%; width: 100%;">
-            <div style=" float: left; width: 65%">                
-                <p style="font-size: 18px; color: #6e6e70; font-family: 'franklin_gothic_bookregular'; line-height: 1em; width: 60">
-                   Sorry, Please Upgrade your account to participate in exclusive contests
+    <div class="popup-another-img" style="padding: 15px; width: 96%;">
+        <a style="float:right; margin-top: -2%; margin-right: -1%;" onclick="hideUpgradePopUp();" href="#."><img style="height: 16px; width: 16px;" alt="" src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/close.button.png" /></a>
+        <div style=" margin: 2%; width: 100%; margin-top: 5px;">
+            <div style=" float: left; width: 67%">                
+                <p style="font-size: 18px; color: #6e6e70; font-family: 'franklin_gothic_bookregular'; line-height: 1.3em; width: 100%; margin: 9px 0px;">
+                    This contest is available for Platinum members only. Simply upgrade your membership level to enter or take advantage of all membership level contests <a href="<?php echo $this->config('main_site', 'url') ?>/contests" style="color: #6E6E70;">here.</a>
                 </p>
-                <div class="btn-upload-another-img"><input type="button" onClick="javascript:window.location.href = '<?php echo $this->config('main_site', 'url') ?>/upgrade.account.php'"  value="Upgrade Membership"></div>
+                <div class="btn-upload-another-img" style="margin-top: 6px; "><input type="button" onClick="javascript:window.location.href = '<?php echo $this->config('main_site', 'url') ?>/upgrade.account.php'"  value="Upgrade Membership"></div>
             </div>
-            <div class="upgrade-account-contest-img">
+            <div class="upgrade-account-contest-img" style=" margin: 10px;">
                 <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/mesg-img-1.png">
             </div>
         </div>
@@ -234,8 +234,8 @@
     });
     
     function showUpgradePopUp() {
-        $('#upgradePopUp').css('top', ($(window).height() / 2 - 150) + 'px');
-        $('#upgradePopUp').css('left', ($(window).width() / 2 - $('#upgradePopUp').width()) + 'px');
+        $('#upgradePopUp').css('top', ($(window).height() / 2 - 160) + 'px');
+        $('#upgradePopUp').css('left', ($(window).width() / 2 - $('#upgradePopUp').width() + 15) + 'px');
         $('#upgradePopUp').show();
         $('div#overlay').css('display', 'block');
         $('div#overlay').css('opacity', '0.47');
