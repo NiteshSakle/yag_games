@@ -16,8 +16,16 @@
         <img src="<?php echo $this->basePath() ?>/img/closed.png"  alt="contest closed" style="width:40%" />
     </div>
     <br>
-    <div class="gold">Share this contest</div>
+    <div class="gold">
+        <?php if (isset($contest['entered']) && $contest['entered']): ?>
+            Share Your Submission for Votes
+        <?php else: ?>
+            Share this contest
+        <?php endif;?>
+    </div>
     <?php echo $this->partial('social_sharing.phtml', array(
-        'contest' => $contest,       
+        'contest' => $contest, 
+        'type' => $type,
+        'contestType' => $contestType,
     )); ?>
 </div>

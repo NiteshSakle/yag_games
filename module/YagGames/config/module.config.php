@@ -46,6 +46,7 @@ return array(
                         'page'     => '[0-9]+',
                         'size'     => '[0-9]+',
                         'id'     => '[0-9]+',
+                        'mid'     => '[0-9]+',
                     ),
                     'defaults' => array(
                         '__NAMESPACE__' => 'YagGames\Controller',
@@ -73,12 +74,13 @@ return array(
             'photo-contest' => array(
                 'type' => 'Segment',
                 'options' => array(
-                    'route'    => '/photo-contest[/:action][/:id][/page/:page][/size/:size]',
+                    'route'    => '/photo-contest[/:action][/:id][/page/:page][/size/:size][/mid/:mid]',
                     'constraints' => array(
                         'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'     => '[0-9]+',
                         'page'     => '[0-9]+',
                         'size'     => '[0-9]+',
+                        'mid'     => '[0-9]+',
                     ),
                     'defaults' => array(
                         '__NAMESPACE__' => 'YagGames\Controller',

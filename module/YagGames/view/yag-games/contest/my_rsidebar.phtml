@@ -13,7 +13,7 @@ switch ($contest['my_type']) {
 
 echo $this->partial($partial, array(
     'contest' => $contest,
-    'type' => $type,
+    'type' => $contest['my_type'],
     'contestType' => $contestType,
 ));
 ?>
