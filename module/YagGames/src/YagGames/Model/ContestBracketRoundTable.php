@@ -9,11 +9,11 @@ class ContestBracketRoundTable extends BaseTable
     {
         try {
             
-            $this->created($contest);
-            if (!$this->isValid($contest)) {
+            $this->created($contestBracketRound);
+            if (!$this->isValid($contestBracketRound)) {
                 return false;
             }
-            $this->tableGateway->insert($contest->getArrayCopy());
+            $this->tableGateway->insert($contestBracketRound->getArrayCopy());
             $filedId = $this->tableGateway->getLastInsertValue();
             return $filedId;
         } catch (\Exception $e) {
@@ -55,4 +55,11 @@ class ContestBracketRoundTable extends BaseTable
         
         return $resultSet;
     }
+    
+    public function fetchRecordOnContestId($contestId)
+    {
+        $rowset = $this->tableGateway->select(array('contest_id' => $contestId));
+        $contestRow = $rowset->current();
+        return $contestRow;
+    }  
 }
