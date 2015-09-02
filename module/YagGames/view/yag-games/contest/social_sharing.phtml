@@ -1,9 +1,11 @@
 <div class="social_link contest-share">
     <?php 
         $session = $this->session();
-        $media = array();
-        $media['media_id'] = $contest['media_id'];
-        $media['folder_id'] = $contest['folder_id'];
+        if(isset($contest['entered']) && $contest['entered']) {
+            $media = array();
+            $media['media_id'] = $contest['media_id'];
+            $media['folder_id'] = $contest['folder_id'];
+        }
     ?>
     <?php if ($type == "past" && isset($contest['entered']) && $contest['entered']) { ?>
         <a class="addthis_button_facebook" addthis:url="<?php echo $this->config('main_site' ,'url') ?>/contests/<?php echo $contestType; ?>/rankings/<?php echo $contest['id']; ?>/mid/<?php echo $contest['media_id']; ?>" title="Faceebook" ><img src="<?php echo $this->basePath() ?>/img/facebook_share.png"  alt="Share to Facebook" /></a>
