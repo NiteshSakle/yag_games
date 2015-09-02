@@ -214,3 +214,9 @@ body {
 .upgrade-account-contest-img img {
     height: 120px;
 }
+
+@media (max-width: 992px){
+    .container {
+        width: 100% !important;
+    }
+}

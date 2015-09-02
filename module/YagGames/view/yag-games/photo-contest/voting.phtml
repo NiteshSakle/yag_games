@@ -65,7 +65,7 @@
                 <div class="row">
                     <?php foreach ($medias as $key => $media): ?>
                         <?php $i = $key + 1; ?>
-                        <div class="col-md-2">
+                        <div class="col-md-2 col-xs-2">
                             <div class="media-art">
                                 <a class="media_image" href="#." data-media_id="<?php echo $media['media_id'] ?>">
                                     <img mediaid="<?php echo $this->KCrypt()->enc($media['media_id']) ?>" src="<?php echo $this->mediaImage($media, 'icons'); ?>" title="<?php echo $media['title'] ?>" alt="<?php echo $media['title'] ?>" />
