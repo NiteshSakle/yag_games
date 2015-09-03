@@ -250,6 +250,11 @@ body {
         padding: 1% 0;
         text-align: center;
     }
+    
+    .contest-image img {
+        width: 350px;
+        height: 350px;
+    }
 }
 
 @media (max-width: 768px){
