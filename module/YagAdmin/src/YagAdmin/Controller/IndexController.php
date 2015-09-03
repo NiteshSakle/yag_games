@@ -228,6 +228,7 @@ class IndexController extends BaseController {
                     $contest->is_exclusive = $params['exclusive'];
                     $contest->type_id = $params['type'];
 
+                    $fbscrap = $this->getServiceLocator()->get('fbScrapService');
                     //checking for editing(updating) or creating(insert) the contest
                     if ($params['id']) {
                         $contest->id = $params['id'];
@@ -240,6 +241,8 @@ class IndexController extends BaseController {
 
                         $response['success'] = true;
                         $response['message'] = 'Contest updated successfully';
+                        
+                        $fbscrap->informFbToScrap($params['id']);
                     } else {
                         $contest->thumbnail = $params['thumbnail'];
                         $contest->voting_started = 0;
@@ -249,6 +252,8 @@ class IndexController extends BaseController {
 
                         $response['success'] = true;
                         $response['message'] = 'Contest created successfully';
+                        
+                        $fbscrap->informFbToScrap($data);
                     }
                 }
             } else {

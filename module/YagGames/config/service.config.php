@@ -30,6 +30,7 @@ use Zend\Log\Logger;
 use Zend\Log\Writer\Stream;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Session\Container;
+use YagGames\Service\FbScrapService;
 
 return array(
     
@@ -70,7 +71,12 @@ return array(
             $kcryptService->setSettingsTable($serviceLocator->get('YagGames\Model\SettingsTable'));
             $kcryptService->setConfig($serviceLocator->get('Config'));
             return $kcryptService;
-        },        
+        },
+                
+        'fbScrapService' => function(ServiceLocatorInterface $serviceLocator) {
+            $fbScrapService = new FbScrapService($serviceLocator);
+            return $fbScrapService;
+        }, 
         
         'YagGames\Model\ContestTable' => function ($sm) {
             $tableGateway = $sm->get('ContestTableGateway');
