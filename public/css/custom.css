@@ -214,3 +214,51 @@ body {
 .upgrade-account-contest-img img {
     height: 120px;
 }
+
+@media (max-width: 992px){
+    .container {
+        width: 100% !important;
+    }    
+    .contest-winner {
+        width: 50%;
+        text-align: -webkit-center;
+        margin: auto;
+    }
+    .contest-image{
+        text-align: -webkit-center !important;
+    }
+    .col-md-5{
+        text-align: -webkit-center !important;
+    }
+    
+    .contest-winner div.progress {
+        background-color: #d1d3d4;
+        border-radius: 0;
+        box-shadow: none;
+        height: 24px;
+        left: 25%;
+        margin: 0 auto;
+        position: absolute;
+        top: 40%;
+        width: 50%;
+    }
+    .progress-bar-success {
+        background-color: #e5da7c;
+        color: #646567;
+        font-size: 24px;
+        height: 100%;
+        padding: 1% 0;
+        text-align: center;
+    }
+    
+    .contest-image img {
+        width: 350px;
+        height: 350px;
+    }
+}
+
+@media (max-width: 768px){
+    .contest-description {
+        font-size: 13px !important;
+    }
+}

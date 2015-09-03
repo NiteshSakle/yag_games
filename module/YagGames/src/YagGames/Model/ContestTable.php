@@ -162,9 +162,22 @@ class ContestTable extends BaseTable {
         return $select;
     }
 
-    private function getActiveContestSelect($select) {
+    private function getActiveContestSelect($select, $user) {
         $select->where('((entry_start_date <= CURDATE() AND entry_end_date < CURDATE() AND winners_announce_date > CURDATE()) OR (max_no_of_photos = total_entries AND entry_start_date <= CURDATE() AND entry_end_date >= CURDATE())) AND c.is_exclusive <> 1');
+        
+        // if user log's in, check whether he entered the contest or not
+        if ($user) {
+            $userMediaQry = $this->getSql()->select()
+                    ->from(array('cm_new' => 'contest_media'))
+                    ->join(array('m_new' => 'ps4_media'), 'cm_new.media_id = m_new.media_id', array('media_id', 'folder_id'))
+                    ->where(array('m_new.owner' => $user))
+                    ->columns(array(
+                'contest_id'
+            ));
 
+            $select->join(array('uc' => $userMediaQry), new Expression('c.id = uc.contest_id'), array('entered' => new Expression('IF(uc.contest_id, 1, 0 )'), 'media_id', 'folder_id'), 'left');
+        }
+        
         return $select;
     }
 
@@ -180,7 +193,7 @@ class ContestTable extends BaseTable {
                 'contest_id'
             ));
 
-            $select->join(array('uc' => $userMediaQry), new Expression('c.id = uc.contest_id'), array('rank'), 'left');
+            $select->join(array('uc' => $userMediaQry), new Expression('c.id = uc.contest_id'), array('rank', 'entered' => new Expression('IF(uc.contest_id, 1, 0 )'), 'media_id', 'folder_id'), 'left');
         }
 
         $select->where('winners_announce_date <= CURDATE() AND c.is_exclusive <> 1');
@@ -237,7 +250,7 @@ class ContestTable extends BaseTable {
             if ($type == 'new') {
                 $select = $this->getNewContestSelect($select, $user);
             } elseif ($type == 'active') {
-                $select = $this->getActiveContestSelect($select);
+                $select = $this->getActiveContestSelect($select, $user);
             } elseif ($type == 'past') {
                 $select = $this->getPastContestSelect($select, $user);
             } elseif ($type == 'my') {

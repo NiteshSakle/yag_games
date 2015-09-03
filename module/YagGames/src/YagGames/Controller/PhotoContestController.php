@@ -213,6 +213,7 @@ class PhotoContestController extends BaseController
 
   public function rankingsAction()
   {
+    $mediaId = $this->params()->fromRoute('mid') ? (int) $this->params()->fromRoute('mid') : 0;
     $page = $this->params()->fromRoute('page') ? (int) $this->params()->fromRoute('page') : 1;
     $size = $this->params()->fromRoute('size') ? (int) $this->params()->fromRoute('size') : 20;
     $contestId = $this->params()->fromRoute('id', null);
@@ -233,7 +234,12 @@ class PhotoContestController extends BaseController
       $this->flashMessenger()->addErrorMessage('Voting hasn\'t started yet');
       return $this->redirect()->toRoute('photo-contest');
     }
-
+    $media = 0;
+    if($mediaId) { 
+      $mediaTable = $this->getServiceLocator()->get('YagGames\Model\MediaTable');
+      $media = $mediaTable->fetchRecord($mediaId);
+    }
+    
     $photoContestService = $this->getServiceLocator()->get('photoContestService');
     $data = $photoContestService->getContestMedia($contestId, $userId, null, $page, $size, 'rank');
 
@@ -246,6 +252,7 @@ class PhotoContestController extends BaseController
     $vm->setVariable('medias', $data['medias']);
     $vm->setVariable('contestId', $contestId);
     $vm->setVariable('contest', $this->contest);
+    $vm->setVariable('media', $media);
     $vm->setVariable('page', $page);
     $vm->setVariable('size', $size);
     return $vm;

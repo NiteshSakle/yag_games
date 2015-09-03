@@ -1,3 +1,26 @@
+<?php
+    $this->headMeta()->setProperty('twitter:card', 'summary');
+    $this->headMeta()->setProperty('twitter:site', '@YourArtGallery');
+    $this->headMeta()->setProperty('twitter:title', $contest['name']);
+    
+    if($media) {
+        $this->headMeta()->setProperty('twitter:image', $this->mediaImage($media, 'samples'));
+        $this->headMeta()->setProperty('twitter:description', 'Thanks for your votes in  YOURARTGALLERY.COM ' . $contest['name'] . ' Checkout I did');    
+    } else {
+        $this->headMeta()->setProperty('twitter:image', $this->config('aws', 'path') . $contest['thumbnail']);    
+        $this->headMeta()->setProperty('twitter:description', $contest['name'] . ' is available on YOURARTGALLERY.COM. Enter to win! ' . $this->config('main_site' ,'url') . '/contests/details/id/' . $contest['id']);    
+    }
+    
+    $this->headMeta()->setProperty('og:title', $contest['name']);
+    $this->headMeta()->setProperty('og:type', 'website');
+    if($media) {
+        $this->headMeta()->setProperty('og:image', $this->mediaImage($media, 'samples'));
+        $this->headMeta()->setProperty('og:description', 'Thanks for your votes in  YOURARTGALLERY.COM ' . $contest['name'] . ' Checkout I did');
+    } else {
+        $this->headMeta()->setProperty('og:image', $this->config('aws', 'path') . $contest['thumbnail']);
+        $this->headMeta()->setProperty('og:description', $contest['name'] . ' is available on YOURARTGALLERY.COM. Enter to win! ' . $this->config('main_site' ,'url') . '/contests/details/id/' . $contest['id']);
+    }
+?>
 <style>
     /*    .media-art {
             padding: 5px;
@@ -85,7 +108,7 @@
                 <div class="row">
                     <?php foreach ($medias as $key => $media): ?>
                         <?php $i = $key + 1; ?>
-                        <div class="col-md-2">
+                        <div class="col-md-2 col-xs-2">
                             <div class="media-art">
                                 <a class="media_image" href="#." data-media_id="<?php echo $media['media_id'] ?>">
                                     <img style="cursor: default;" mediaid="<?php echo $this->KCrypt()->enc($media['media_id']) ?>" class="mediaThumb showHoverWindow" src="<?php echo $this->mediaImage($media, 'icons'); ?>" title="<?php echo $media['title'] ?>" alt="<?php echo $media['title'] ?>" />
