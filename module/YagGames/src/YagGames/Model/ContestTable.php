@@ -91,7 +91,8 @@ class ContestTable extends BaseTable {
         $select = new \Zend\Db\Sql\Select;
         $select->from(array('c' => 'contest'))
                 ->columns(array('*'))
-                ->where(array('id' => $contestId));
+                ->join(array('cbr' => 'contest_bracket_round'), new Expression('c.id = cbr.contest_id'), array('bracket_round_id' => 'id', 'round1', 'round2', 'round3', 'round4', 'round5', 'round6'), 'left')
+                ->where(array('c.id' => $contestId));
 
         $statement = $this->getSql()->prepareStatementForSqlObject($select);
         $resultSet = $statement->execute();

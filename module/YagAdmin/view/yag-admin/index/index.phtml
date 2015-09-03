@@ -501,6 +501,7 @@
                 type: 'POST',
                 data: 'id=' + $(this).attr('contest_id'),
                 success: function (response) {
+                    console.log(response);
                     $('#id').val(response.data.id);
                     $('#name').val(response.data.name);
                     $('#description').data("wysihtml5").editor.setValue(response.data.description);
@@ -523,6 +524,12 @@
                     if(response.data.type_id == "3"){
                         $('#entryLimit').attr('readonly',true);
                         $('div#bracket_rounds_dates').css('display', 'block');
+                        $('#br_round1').val(reformatDate(response.data.round1));
+                        $('#br_round2').val(reformatDate(response.data.round2));
+                        $('#br_round3').val(reformatDate(response.data.round3));
+                        $('#br_round4').val(reformatDate(response.data.round4));
+                        $('#br_round5').val(reformatDate(response.data.round5));
+                        $('#br_round6').val(reformatDate(response.data.round6));                        
                     }
                 }
             });
