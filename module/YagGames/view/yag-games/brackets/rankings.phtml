@@ -74,7 +74,8 @@
     </div>
 
     <div class="contest clearfix" style="border:none">
-        <div>What is art? It is your turn to help choose. These talented artist have been selected to show their work and need you to choose your
+        <div style=" margin: 2px;margin-bottom: 5px; ">
+            What is art? It is your turn to help choose. These talented artist have been selected to show their work and need you to choose your
             favorite image to win! You may only choose one image but can come back each day to vote again. For a list of our other contests
             for Voting for please click here <button onclick="window.location = '<?php echo $this->basePath() ?>/active-contest'">Artist Challenge & Contests</button>
         </div>
@@ -86,12 +87,12 @@
         <?php if ($dEnd > $dStart): ?>
             <div class="clearfix"> 
                 <div class="row">
-                    <div class="right" style="width: 400px;">
-                        <button style="width: 100%;font-size: 35px;" onclick="window.location = '<?php echo $this->basePath() ?>/photo-contest/voting/<?php echo $contestId; ?>'">Get to Voting!</button>
+                    <div class="right col-md-4" >
+                        <button style="width: 100%;font-size: 28px;" onclick="window.location = '<?php echo $this->basePath() ?>/photo-contest/voting/<?php echo $contestId; ?>'">Get to Voting!</button>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="right" style="font-weight: bold;color: #000;">
+                    <div class="right" style="font-weight: bold;color: #000; padding-right: 12px;">
                         Contest countdown: <?php echo $dDiff->days; ?> days remaining
                     </div>
                 </div>
