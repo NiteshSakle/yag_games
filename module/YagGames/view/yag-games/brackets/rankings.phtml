@@ -1,0 +1,144 @@
+<?php
+    $this->headMeta()->setProperty('twitter:card', 'summary');
+    $this->headMeta()->setProperty('twitter:site', '@YourArtGallery');
+    $this->headMeta()->setProperty('twitter:title', $contest['name']);
+    
+    if($media) {
+        $this->headMeta()->setProperty('twitter:image', $this->mediaImage($media, 'samples'));
+        $this->headMeta()->setProperty('twitter:description', 'Thanks for your votes in  YOURARTGALLERY.COM ' . $contest['name'] . ' Checkout I did');    
+    } else {
+        $this->headMeta()->setProperty('twitter:image', $this->config('aws', 'path') . $contest['thumbnail']);    
+        $this->headMeta()->setProperty('twitter:description', $contest['name'] . ' is available on YOURARTGALLERY.COM. Enter to win! ' . $this->config('main_site' ,'url') . '/contests/details/id/' . $contest['id']);    
+    }
+    
+    $this->headMeta()->setProperty('og:title', $contest['name']);
+    $this->headMeta()->setProperty('og:type', 'website');
+    if($media) {
+        $this->headMeta()->setProperty('og:image', $this->mediaImage($media, 'samples'));
+        $this->headMeta()->setProperty('og:description', 'Thanks for your votes in  YOURARTGALLERY.COM ' . $contest['name'] . ' Checkout I did');
+    } else {
+        $this->headMeta()->setProperty('og:image', $this->config('aws', 'path') . $contest['thumbnail']);
+        $this->headMeta()->setProperty('og:description', $contest['name'] . ' is available on YOURARTGALLERY.COM. Enter to win! ' . $this->config('main_site' ,'url') . '/contests/details/id/' . $contest['id']);
+    }
+?>
+<style>
+    /*    .media-art {
+            padding: 5px;
+        }
+    */
+    .col-md-2 {
+        margin: 12px;
+    }
+
+    .media-art {
+        width: 150px;
+        height: 150px;
+    }
+    .media-art img {
+        //width: 160px;
+        width: 100%;
+        height: 100%;
+        border: 4px solid rgb(223, 220, 125);
+        display: table-cell;
+        vertical-align: middle;
+        background-color: rgb(214, 216, 216);
+    }
+    .media-list-title {
+        background-color: #e5da7c;
+        padding: 10px;
+        margin: 15px 0px;
+        width: 450px;
+        font-size: 22px;
+        color: #646567;
+    }
+    .contest {
+        font-family: 'franklin_gothic_bookregular';
+        font-weight: bold;
+        color: #663f8e; 
+    }
+    .artist-name , .user-name, .rank {
+        text-align: center;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis
+    }
+    .ranking-page {
+        height: 70px;
+    }
+</style>
+<div  class="home_content clearfix">
+    <div class="inner_main clearfix">
+        <div class="inner_txt clearfix">
+            <h1 class="page-titleHead">Artist Challenge & Contests</h1>
+        </div>
+    </div>
+
+    <div class="contest clearfix" style="border:none">
+        <div>What is art? It is your turn to help choose. These talented artist have been selected to show their work and need you to choose your
+            favorite image to win! You may only choose one image but can come back each day to vote again. For a list of our other contests
+            for Voting for please click here <button onclick="window.location = '<?php echo $this->basePath() ?>/active-contest'">Artist Challenge & Contests</button>
+        </div>
+        <?php
+        $dStart = new DateTime(date("Y-m-d"));
+        $dEnd = new DateTime($contest['winners_announce_date']);
+        $dDiff = $dStart->diff($dEnd);
+        ?>
+        <?php if ($dEnd > $dStart): ?>
+            <div class="clearfix"> 
+                <div class="row">
+                    <div class="right" style="width: 400px;">
+                        <button style="width: 100%;font-size: 35px;" onclick="window.location = '<?php echo $this->basePath() ?>/photo-contest/voting/<?php echo $contestId; ?>'">Get to Voting!</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="right" style="font-weight: bold;color: #000;">
+                        Contest countdown: <?php echo $dDiff->days; ?> days remaining
+                    </div>
+                </div>
+            </div>
+            <br>
+        <?php endif; ?>
+        <div>
+            <?php if ($dEnd > $dStart): ?>
+                <div class="media-list-title">Current Standings</div>
+            <?php else: ?>
+                <div class="media-list-title">Final Standings</div>
+            <?php endif; ?>
+            <div class="media-list contest-list clearfix">
+                <div class="row">
+                    <?php foreach ($medias as $key => $media): ?>
+                        <?php $i = $key + 1; ?>
+                        <div class="col-md-2 col-xs-2">
+                            <div class="media-art">
+                                <a class="media_image" href="#." data-media_id="<?php echo $media['media_id'] ?>">
+                                    <img style="cursor: default;" mediaid="<?php echo $this->KCrypt()->enc($media['media_id']) ?>" class="mediaThumb showHoverWindow" src="<?php echo $this->mediaImage($media, 'icons'); ?>" title="<?php echo $media['title'] ?>" alt="<?php echo $media['title'] ?>" />
+                                </a> 
+                                <div class="artist-name" style="font-size: 13px;">Artist Name: <?php echo $media['f_name'] ?></div>
+                                <div class="user-name" style="font-size: 13px;">User Name: <a href="<?php echo $this->config('main_site', 'url') ?>/<?php echo $media['username'] ?>"><?php echo $media['username'] ?></a></div>
+                                <div class="rank"><strong style="font-size: 25px;color: #646567;"><?php echo $this->ordinal((($page - 1) * $size) + $i); ?></strong></div>
+                            </div>
+                        </div>
+                        <?php if ($i != 1 && $i % 5 == 0): ?>
+                        </div>
+                        <div class="clearfix ranking-page"></div>
+                        <div class="row">
+                        <?php endif; ?>
+
+                    <?php endforeach; ?>
+                </div>
+                <div class="clearfix ranking-page"></div>
+            </div>
+
+        </div>
+    </div>
+
+    <?php
+    echo $this->paginationControl($this->paginator, 'Sliding', 'paginator-slide', array(
+        'route' => 'photo-contest',
+        'routeParams' => array(
+            'action' => 'rankings',
+            'id' => $this->contestId,
+            'size' => $this->size
+        )
+    ));
+    ?>

@@ -13,6 +13,7 @@ return array(
             'YagGames\Controller\Contest' => 'YagGames\Controller\ContestController',
             'YagGames\Controller\FanFavorite' => 'YagGames\Controller\FanFavoriteController',
             'YagGames\Controller\PhotoContest' => 'YagGames\Controller\PhotoContestController',
+            'YagGames\Controller\Brackets' => 'YagGames\Controller\BracketsController',
             'YagGames\Controller\Media' => 'YagGames\Controller\MediaController',
             
             // Console
@@ -85,6 +86,24 @@ return array(
                     'defaults' => array(
                         '__NAMESPACE__' => 'YagGames\Controller',
                         'controller'    => 'PhotoContest',
+                        'action'        => 'rankings',
+                    ),
+                ),
+            ),
+            'brackets' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/brackets[/:action][/:id][/page/:page][/size/:size][/mid/:mid]',
+                    'constraints' => array(
+                        'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]+',
+                        'page'     => '[0-9]+',
+                        'size'     => '[0-9]+',
+                        'mid'     => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'YagGames\Controller',
+                        'controller'    => 'Brackets',
                         'action'        => 'rankings',
                     ),
                 ),
