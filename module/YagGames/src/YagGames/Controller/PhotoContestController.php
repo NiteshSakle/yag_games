@@ -34,7 +34,7 @@ class PhotoContestController extends BaseController
 
     if ($this->contest['voting_started']) {
       $this->flashMessenger()->addErrorMessage('Voting has already started');
-
+    
       return $this->redirect()->toRoute('photo-contest', array(
                   'id' => $contestId,
                   'action' => 'voting'
@@ -58,6 +58,7 @@ class PhotoContestController extends BaseController
         $mediaId = $userContestMedia['media_id'];
         $showSubmitPopupDiv = 1;
         $fbscrap->informFbToScrap($contestId,$mediaId);
+        $media = $contestMediaTable->getContestMediaDetails($userContestMedia['id']);
     }
     
     if (isset($this->session['contestUpload']['contestMediaId'])) {      
