@@ -275,6 +275,9 @@ body {
     color: black;
     font-size: 14px;
 }
+.violet-text{
+    color: #68398C !important;
+}
 /* Brackets Game CSS  Start */
 .height-25{
     height:25px;
@@ -445,16 +448,36 @@ body {
     margin: auto;
     margin-bottom: 3px;
 }
-.round6-first{ margin-top: 605px;}
-.round6-second{ margin-top: 905px;}
+.round6-first{ margin-top: 555px;}
+.round6-second{ margin-top: 5px;}
 .left-round6-up {
     border-bottom: 1px #68398C solid;
     border-right: 1px white solid;
-    height: 675px;
+    height: 625px;
 }
 .right-round6-up {
     border-bottom: 1px #68398C solid;
     border-left: 1px white solid;
-    height: 975px;
+    height: 75px;
+}
+.round6-center-outer{
+    height: 325px;
+}
+.round6-center{
+    height: 110px;
+    width: 110px;
+    border: 1px #68398C solid;
+    padding: 4px;
+    margin-left: 23px;
+    margin-right: 23px;
+    margin-top: 107px;
+}
+.round6-center-text{
+    color: black;
+    font-size: 10px;
+    text-align: center;
+    line-height: 15px;
+    margin-top: 10px !important;
+    font-weight: 100;
 }
 /* Brackets Game CSS  End */

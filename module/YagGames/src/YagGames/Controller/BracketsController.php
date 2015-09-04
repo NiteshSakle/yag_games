@@ -84,13 +84,13 @@ class BracketsController extends BaseController
         $this->flashMessenger()->addErrorMessage($e->getMessage());
       }
 
-      return $this->redirect()->toRoute('photo-contest', array(
+      return $this->redirect()->toRoute('brackets', array(
                   'id' => $contestId,
                   'action' => 'submission'
       ));
     }
 
-    return $this->redirect()->toRoute('photo-contest');
+    return $this->redirect()->toRoute('brackets');
   }
 
   public function uploadArtAction()
@@ -114,7 +114,7 @@ class BracketsController extends BaseController
       ));
     }
 
-    return $this->redirect()->toRoute('photo-contest');
+    return $this->redirect()->toRoute('brackets');
   }
 
   public function artSubmissionAction()
@@ -186,7 +186,7 @@ class BracketsController extends BaseController
     // check voting started are not
     if (!$this->contest['voting_started']) {
       $this->flashMessenger()->addErrorMessage('Voting hasn\'t started yet');
-      return $this->redirect()->toRoute('photo-contest');
+      return $this->redirect()->toRoute('brackets');
     }
 
     $photoContestService = $this->getServiceLocator()->get('photoContestService');
@@ -232,7 +232,7 @@ class BracketsController extends BaseController
     // check voting started are not
     if (!$this->contest['voting_started']) {
       $this->flashMessenger()->addErrorMessage('Voting hasn\'t started yet');
-      return $this->redirect()->toRoute('photo-contest');
+      return $this->redirect()->toRoute('brackets');
     }
     $media = 0;
     if($mediaId) { 
