@@ -275,9 +275,23 @@ body {
     color: black;
     font-size: 14px;
 }
+/* Brackets Game CSS  Start */
+.height-25{
+    height:25px;
+}
 
+/* Round - 1 (Staring 64) */
+.round1 {
+    border: 1px black solid;
+    height: 40px;
+    width: 40px;
+    margin: auto;
+    margin-bottom: 3px;
+    margin-top: 5px;
+}
 .left-round1-up {
     border-bottom: 1px #68398C solid;
+    border-right: 1px white solid;
     height: 50px;
 }
 .left-round1-down {
@@ -287,6 +301,7 @@ body {
 }
 .right-round1-up {
     border-bottom: 1px #68398C solid;
+    border-left: 1px white solid;
     height: 50px;
 }
 .right-round1-down {
@@ -294,8 +309,21 @@ body {
     border-left: 1px #68398C solid;
     height: 50px;
 }
+
+/* Round - 2 (Top 32) */
+.round2 {
+    border: 1px black solid;
+    height: 45px;
+    width: 45px;
+    margin: auto;
+    margin-bottom: 3px;
+    margin-top: 50px;
+}
+.round2-first{ margin-top: 25px;}
+.round2-up-first {height: 75px !important;}
 .left-round2-up {
     border-bottom: 1px #68398C solid;
+    border-right: 1px white solid;
     height: 100px;
 }
 .left-round2-down {
@@ -305,6 +333,7 @@ body {
 }
 .right-round2-up {
     border-bottom: 1px #68398C solid;
+    border-left: 1px white solid;
     height: 100px;
 }
 .right-round2-down {
@@ -312,6 +341,120 @@ body {
     border-left: 1px #68398C solid;
     height: 100px;
 }
-.height-25{
-    height:25px;
+
+/* Round - 3 (Sweet 16) */
+.round3 {
+    border: 1px black solid;
+    height: 50px;
+    width: 50px;
+    margin: auto;
+    margin-bottom: 3px;
+    margin-top: 145px;
 }
+.round3-first{ margin-top: 70px;}
+.round3-up-first { height: 125px !important;}
+.left-round3-up {
+    border-bottom: 1px #68398C solid;
+    border-right: 1px white solid;
+    height: 200px;
+}
+.left-round3-down {
+    border-bottom: 1px #68398C solid;
+    border-right: 1px #68398C solid;
+    height: 200px;
+}
+.right-round3-up {
+    border-bottom: 1px #68398C solid;
+    border-left: 1px white solid;
+    height: 200px;
+}
+.right-round3-down {
+    border-bottom: 1px #68398C solid;
+    border-left: 1px #68398C solid;
+    height: 200px;
+}
+
+/* Round - 4 (Elite 8) */
+.round4 {
+    border: 1px black solid;
+    height: 55px;
+    width: 55px;
+    margin: auto;
+    margin-bottom: 3px;
+    margin-top: 340px;
+}
+.round4-first{ margin-top: 165px;}
+.round4-up-first {height: 225px !important;}
+.left-round4-up {
+    border-bottom: 1px #68398C solid;
+    border-right: 1px white solid;
+    height: 400px;
+}
+.left-round4-down {
+    border-bottom: 1px #68398C solid;
+    border-right: 1px #68398C solid;
+    height: 400px;
+}
+.right-round4-up {
+    border-bottom: 1px #68398C solid;
+    border-left: 1px white solid;
+    height: 400px;
+}
+.right-round4-down {
+    border-bottom: 1px #68398C solid;
+    border-left: 1px #68398C solid;
+    height: 400px;
+}
+
+/* Round - 5 (Final 4) */
+.round5 {
+    border: 1px black solid;
+    height: 60px;
+    width: 60px;
+    margin: auto;
+    margin-bottom: 3px;
+    margin-top: 735px;
+}
+.round5-first{ margin-top: 360px;}
+.round5-up-first { height: 425px !important;}
+.left-round5-up {
+    border-bottom: 1px #68398C solid;
+    border-right: 1px white solid;
+    height: 800px;
+}
+.left-round5-down {
+    border-bottom: 1px #68398C solid;
+    border-right: 1px #68398C solid;
+    height: 800px;
+}
+.right-round5-up {
+    border-bottom: 1px #68398C solid;
+    border-left: 1px white solid;
+    height: 800px;
+}
+.right-round5-down {
+    border-bottom: 1px #68398C solid;
+    border-left: 1px #68398C solid;
+    height: 800px;
+}
+/* Round - 6 (Semi-Final) */
+.round6 {
+    border: 1px black solid;
+    height: 65px;
+    width: 65px;
+    margin: auto;
+    margin-bottom: 3px;
+}
+.round6-first{ margin-top: 605px;}
+.round6-second{ margin-top: 905px;}
+.left-round6-up {
+    border-bottom: 1px #68398C solid;
+    border-right: 1px white solid;
+    height: 675px;
+}
+.right-round6-up {
+    border-bottom: 1px #68398C solid;
+    border-left: 1px white solid;
+    height: 975px;
+}
+/* Brackets Game CSS  End */
