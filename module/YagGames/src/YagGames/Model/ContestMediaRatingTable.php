@@ -144,5 +144,31 @@ class ContestMediaRatingTable extends BaseTable
       return false;
     }
   }
+  
+  public function hasAlreadyVotedForThisBracketContest($round, $contestComboId , $userId){
+    try {
+      $sql = $this->getSql();
+      $columns = array('count' => new Expression('COUNT(cmr.id)'));
+      $query = $sql->select()
+              ->from(array('cmr' => 'contest_media_rating'))
+              ->columns($columns)
+              ->where(array(
+                  'cmr.bracket_combo_id' => $contestComboId,
+                  'cmr.member_id' => $userId,
+                  'round' => $round,
+              ));
+
+      $rows = $sql->prepareStatementForSqlObject($query)->execute();
+      $row = $rows->current();
+      if ($row) {
+        return $row['count'];
+      } else {
+        return false;
+      }
+    } catch (Exception $e) {
+      $this->logException($e);
+      return false;
+    }
+  }
 
 }

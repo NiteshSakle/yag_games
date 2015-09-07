@@ -55,4 +55,25 @@ class ContestBracketMediaComboTable extends BaseTable
         
         return $resultSet;
     }
+    
+    public function fetchRecordByRoundAndMedia($round, $mediaId, $contestId)
+    {
+        $select = new \Zend\Db\Sql\Select ;
+        $select->from(array('c' => 'contest_bracket_media_combo'))
+                ->columns(array('*'))
+                ->where(array(
+                    'c.round' => $round,
+                    'c.contest_id' => $contestId));
+        $select->where
+                ->NEST
+                ->equalTo('c.contest_media_id1', $mediaId)
+                ->OR
+                ->equalTo('c.contest_media_id2', $mediaId)
+                ->UNNEST;                
+         
+        $statement = $this->getSql()->prepareStatementForSqlObject($select); 
+        $resultSet = $statement->execute(); 
+        
+        return $resultSet;;
+    } 
 }

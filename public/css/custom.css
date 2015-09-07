@@ -282,7 +282,16 @@ body {
 .height-25{
     height:25px;
 }
-
+.bracket-round-dates{
+    color: grey;
+    font-size: 14px;
+    margin-top: 10px;
+    line-height: 22px;
+}
+.bracket-current-round{
+    color: #68398C !important;
+    font-weight: bold;
+}
 /* Round - 1 (Staring 64) */
 .round1 {
     border: 1px black solid;

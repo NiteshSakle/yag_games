@@ -8,7 +8,8 @@ class ContestMediaRating extends BaseModel
     public $contest_media_id;
     public $member_id;
     public $round;
-    public $rating;    
+    public $rating;
+    public $bracket_combo_id;
     public $created_at;
     public $updated_at;
 

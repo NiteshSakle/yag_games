@@ -22,6 +22,7 @@ use YagGames\Model\SettingsTable;
 use YagGames\Service\FanFavoriteService;
 use YagGames\Service\KCryptService;
 use YagGames\Service\PhotoContestService;
+use YagGames\Service\BracketService;
 use YagGames\Service\SessionService;
 use YagGames\Utils\Process;
 use Zend\Db\ResultSet\ResultSet;
@@ -52,6 +53,11 @@ return array(
         'photoContestService' => function(ServiceLocatorInterface $serviceLocator) {
             $photoContestService = new PhotoContestService($serviceLocator);
             return $photoContestService;
+        },
+        
+        'bracketService' => function(ServiceLocatorInterface $serviceLocator) {
+            $bracketService = new BracketService($serviceLocator);
+            return $bracketService;
         },
                 
         'fanFavoriteService' => function(ServiceLocatorInterface $serviceLocator) {

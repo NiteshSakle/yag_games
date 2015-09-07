@@ -3,7 +3,7 @@
 namespace YagGames\Controller;
 
 use Exception;
-use YagGames\Exception\PhotoContestException;
+use YagGames\Exception\BracketException;
 use Zend\Mvc\MvcEvent;
 use Zend\Paginator\Adapter\NullFill;
 use Zend\Paginator\Paginator;
@@ -41,7 +41,7 @@ class BracketsController extends BaseController
       ));
     }
     
-    if ($this->contest['is_exclusive'] && $this->session->membership != 4) {        
+    if ($this->contest['is_exclusive'] && $this->session->membership != 4) {
         $this->flashMessenger()->addErrorMessage('Please Upgrade your account to participate in exclusive contest');
         return $this->redirect()->toRoute('home');        
     }
@@ -71,16 +71,16 @@ class BracketsController extends BaseController
   {
     $this->checkLogin();
     if (isset($this->session['contestUpload']['contestId'], $this->session['contestUpload']['mediaId'])) {
-      $photoContestService = $this->getServiceLocator()->get('photoContestService');
+      $bracketService = $this->getServiceLocator()->get('bracketService');
       try {
         $contestId = $this->session['contestUpload']['contestId'];
-        $contestMediaId = $photoContestService->addArtToContest($contestId, $this->session['contestUpload']['mediaId'], $this->session);
+        $contestMediaId = $bracketService->addArtToContest($contestId, $this->session['contestUpload']['mediaId'], $this->session);
 
         $process = new \YagGames\Utils\Process($this->getRequest());
         $process->start('SendSuccessSubmissionEmail ' . $contestMediaId);
 
         $this->session['contestUpload'] = array('contestMediaId' => $contestMediaId);
-      } catch (PhotoContestException $e) {
+      } catch (BracketException $e) {
         $this->flashMessenger()->addErrorMessage($e->getMessage());
       }
 
@@ -132,13 +132,13 @@ class BracketsController extends BaseController
         ));
       }
 
-      $photoContestService = $this->getServiceLocator()->get('photoContestService');
+      $bracketService = $this->getServiceLocator()->get('bracketService');
       try {
-        $contestMediaId = $photoContestService->addArtToContest($contestId, $mediaId, $this->session);
+        $contestMediaId = $bracketService->addArtToContest($contestId, $mediaId, $this->session);
 
         $process = new \YagGames\Utils\Process($request);
         $process->start('SendSuccessSubmissionEmail ' . $contestMediaId);
-      } catch (PhotoContestException $e) {
+      } catch (BracketException $e) {
         return new JsonModel(array(
             'success' => false,
             'message' => $e->getMessage()
@@ -189,8 +189,8 @@ class BracketsController extends BaseController
       return $this->redirect()->toRoute('brackets');
     }
 
-    $photoContestService = $this->getServiceLocator()->get('photoContestService');
-    $data = $photoContestService->getContestMedia($contestId, $userId, $search, $page, $size, '');
+    $bracketService = $this->getServiceLocator()->get('bracketService');
+    $data = $bracketService->getContestMedia($contestId, $userId, $search, $page, $size, '');
 
     $paginator = new Paginator(new NullFill($data['total']));
     $paginator->setCurrentPageNumber($page);
@@ -240,8 +240,8 @@ class BracketsController extends BaseController
       $media = $mediaTable->fetchRecord($mediaId);
     }
     
-    $photoContestService = $this->getServiceLocator()->get('photoContestService');
-    $data = $photoContestService->getContestMedia($contestId, $userId, null, $page, $size, 'rank');
+    $bracketService = $this->getServiceLocator()->get('bracketService');
+    $data = $bracketService->getContestMedia($contestId, $userId, null, $page, $size, 'rank');
 
     $paginator = new Paginator(new NullFill($data['total']));
     $paginator->setCurrentPageNumber($page);
@@ -272,8 +272,8 @@ class BracketsController extends BaseController
       $ratedMedia = $this->getRatedMedia($contestId); //fill the data from cookie
     }
 
-    $photoContestService = $this->getServiceLocator()->get('photoContestService');
-    $media = $photoContestService->getNextContestMedia($contestId, $userId, $mediaId, $ratedMedia);
+    $bracketService = $this->getServiceLocator()->get('bracketService');
+    $media = $bracketService->getNextContestMedia($contestId, $userId, $mediaId, $ratedMedia);
     if (!isset($this->session->mem_id)) {
       $media['totalRated'] = count($ratedMedia);
     }
@@ -315,10 +315,10 @@ class BracketsController extends BaseController
         }
       }
 
-      $photoContestService = $this->getServiceLocator()->get('photoContestService');
+      $bracketService = $this->getServiceLocator()->get('bracketService');
       try {
-        $contestMediaRatingId = $photoContestService->addVoteToArt($contestId, $mediaId, $this->session, $rating);
-      } catch (PhotoContestException $e) {
+        $contestMediaRatingId = $bracketService->addVoteToArt($contestId, $mediaId, $this->session, $rating);
+      } catch (BracketException $e) {
         return new JsonModel(array(
             'success' => false,
             'message' => $e->getMessage()
