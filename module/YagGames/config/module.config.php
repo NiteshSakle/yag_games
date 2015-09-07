@@ -22,6 +22,7 @@ return array(
             'YagGames\Console\SendVotingStartEmail' => 'YagGames\Console\SendVotingStartEmailController',
             'YagGames\Console\StartVoting' => 'YagGames\Console\StartVotingController',
             'YagGames\Console\AnnounceWinners' => 'YagGames\Console\AnnounceWinnersController',
+            'YagGames\Console\BracketsRoundCheck' => 'YagGames\Console\BracketsRoundCheckController'
         ),
     ),
     
@@ -200,6 +201,15 @@ return array(
                       'route'    => 'SendVotingStartEmail <contestId>',
                       'defaults' => array(
                           'controller' => 'YagGames\Console\SendVotingStartEmail',
+                          'action'     => 'index'
+                      )
+                  )
+                ),
+                'BracketsRoundCheck' => array(
+                  'options' => array(
+                      'route'    => 'BracketsRoundCheck',
+                      'defaults' => array(
+                          'controller' => 'YagGames\Console\BracketsRoundCheck',
                           'action'     => 'index'
                       )
                   )

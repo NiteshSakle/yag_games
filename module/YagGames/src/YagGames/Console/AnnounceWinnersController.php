@@ -33,7 +33,7 @@ class AnnounceWinnersController extends BaseConsoleController {
                 $contestArtists = $contestMediaTable->getContestArtistData($contest['id']);
                 $contest['main_site_url'] = $config['main_site']['url'];
                 foreach ($contestArtists as $contestArtist) {
-                    $contest['user_data'] = $contestArtist;
+                    $contest['user_data'] = $contestArtist;                    
                     $this->sendEmail('Winners for contest - ' . $contest['name'], $contestArtist['email'], 'winners_announced', $contest);
                     //$mailer->send($config['from_address_email'], $email, $subject, $body);
                 }
@@ -42,28 +42,58 @@ class AnnounceWinnersController extends BaseConsoleController {
     }
 
     private function announceWinners($contestData) {
-        $contestMediaRatingTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaRatingTable');
-        $winners = $contestMediaRatingTable->getTop10RatedMedia($contestData['id']);
 
-        $contestWinnerTable = $this->getServiceLocator()->get('YagGames\Model\ContestWinnerTable');
-        foreach ($winners as $key => $winner) {
-            $rank = $key+1;
-            $contestWinner = new \YagGames\Model\ContestWinner();
-            $contestWinner->contest_media_id = $winner['contest_media_id'];
-            $contestWinner->rank = $rank;
+        if ($contestData['type_id'] == 3) {
 
-            if ($contestWinnerTable->insert($contestWinner)) {
-                if ((int) $rank === 1) {
-                    $this->awardTropyToWinner($winner, $contestData);
+            $contestBracketMediaComboTable = $this->getServiceLocator()->get('YagGames\Model\ContestBracketMediaComboTable');
+
+            $winner = $contestBracketMediaComboTable->getTopRatedMediaForNextRound($contestData['id'], 6);
+
+            if (count($winner)) {
+
+                $contestWinner = new \YagGames\Model\ContestWinner();
+                $contestWinner->contest_media_id = $winner[0]['next_round_media_id'];
+                $contestWinner->rank = 1;
+                
+                $contestWinnerTable = $this->getServiceLocator()->get('YagGames\Model\ContestWinnerTable');
+                
+                if ($contestWinnerTable->insert($contestWinner)) {
+
+                    $contestMediaTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaTable');
+                    $contestMedia = $contestMediaTable->getContestMediaDetails($winner[0]['next_round_media_id']);
+
+                    $this->awardTropyToWinner(array('media_id' => $contestMedia['media_id'], 'owner' => $contestMedia['owner']), $contestData);
+
+                    return TRUE;
                 }
             }
-        }
 
-        if (count($winners)) {
-            return true;
-        }
+            return FALSE;
+        } else {
 
-        return false;
+            $contestMediaRatingTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaRatingTable');
+            $winners = $contestMediaRatingTable->getTop10RatedMedia($contestData['id']);
+
+            $contestWinnerTable = $this->getServiceLocator()->get('YagGames\Model\ContestWinnerTable');
+            foreach ($winners as $key => $winner) {
+                $rank = $key + 1;
+                $contestWinner = new \YagGames\Model\ContestWinner();
+                $contestWinner->contest_media_id = $winner['contest_media_id'];
+                $contestWinner->rank = $rank;
+
+                if ($contestWinnerTable->insert($contestWinner)) {
+                    if ((int) $rank === 1) {
+                        $this->awardTropyToWinner($winner, $contestData);
+                    }
+                }
+            }
+
+            if (count($winners)) {
+                return true;
+            }
+
+            return false;
+        }
     }
 
     private function awardTropyToWinner($winner, $contestData) {
