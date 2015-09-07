@@ -37,6 +37,9 @@ class AnnounceWinnersController extends BaseConsoleController {
                     $this->sendEmail('Winners for contest - ' . $contest['name'], $contestArtist['email'], 'winners_announced', $contest);
                     //$mailer->send($config['from_address_email'], $email, $subject, $body);
                 }
+                
+                //Email to Admin
+                $this->sendEmail('Winners for contest - ' . $contest['name'], 'info@yourartgallery.com', 'winners_announced_admin', $contest);
             }
         }
     }

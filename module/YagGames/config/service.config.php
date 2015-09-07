@@ -22,6 +22,7 @@ use YagGames\Model\SettingsTable;
 use YagGames\Service\FanFavoriteService;
 use YagGames\Service\KCryptService;
 use YagGames\Service\PhotoContestService;
+use YagGames\Service\BracketService;
 use YagGames\Service\SessionService;
 use YagGames\Utils\Process;
 use Zend\Db\ResultSet\ResultSet;
@@ -30,6 +31,7 @@ use Zend\Log\Logger;
 use Zend\Log\Writer\Stream;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Session\Container;
+use YagGames\Service\FbScrapService;
 
 return array(
     
@@ -52,6 +54,11 @@ return array(
             $photoContestService = new PhotoContestService($serviceLocator);
             return $photoContestService;
         },
+        
+        'bracketService' => function(ServiceLocatorInterface $serviceLocator) {
+            $bracketService = new BracketService($serviceLocator);
+            return $bracketService;
+        },
                 
         'fanFavoriteService' => function(ServiceLocatorInterface $serviceLocator) {
             $fanFavoriteService = new FanFavoriteService($serviceLocator);
@@ -70,7 +77,12 @@ return array(
             $kcryptService->setSettingsTable($serviceLocator->get('YagGames\Model\SettingsTable'));
             $kcryptService->setConfig($serviceLocator->get('Config'));
             return $kcryptService;
-        },        
+        },
+                
+        'fbScrapService' => function(ServiceLocatorInterface $serviceLocator) {
+            $fbScrapService = new FbScrapService($serviceLocator);
+            return $fbScrapService;
+        }, 
         
         'YagGames\Model\ContestTable' => function ($sm) {
             $tableGateway = $sm->get('ContestTableGateway');

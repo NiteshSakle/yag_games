@@ -91,7 +91,7 @@ class ContestTable extends BaseTable {
         $select = new \Zend\Db\Sql\Select;
         $select->from(array('c' => 'contest'))
                 ->columns(array('*'))
-                ->join(array('cbr' => 'contest_bracket_round'), new Expression('c.id = cbr.contest_id'), array('bracket_round_id' => 'id', 'round1', 'round2', 'round3', 'round4', 'round5', 'round6'), 'left')
+                ->join(array('cbr' => 'contest_bracket_round'), new Expression('c.id = cbr.contest_id'), array('bracket_round_id' => 'id', 'round1', 'round2', 'round3', 'round4', 'round5', 'round6', 'current_round'), 'left')
                 ->where(array('c.id' => $contestId));
 
         $statement = $this->getSql()->prepareStatementForSqlObject($select);
@@ -136,6 +136,7 @@ class ContestTable extends BaseTable {
                 ->columns(array('*', 'my_type' => new Expression('IF(entry_start_date <= CURDATE() AND entry_end_date >= CURDATE(), "new", IF(winners_announce_date > CURDATE(), "active", "past"))')))
                 ->join(array('ct' => 'contest_type'), 'ct.id = c.type_id', array('contest_type' => 'type'))
                 ->join(array('cm' => $contestMediaCountQry), 'c.id = cm.contest_id', array('total_entries'), 'left')
+                ->join(array('cbr' => 'contest_bracket_round'), new Expression('c.id = cbr.contest_id'), array('bracket_round_id' => 'id', 'round1', 'round2', 'round3', 'round4', 'round5', 'round6', 'current_round'), 'left')
         ;
 
         return $select;

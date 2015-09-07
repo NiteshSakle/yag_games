@@ -26,10 +26,6 @@
             padding: 5px;
         }
     */
-    .col-md-2 {
-        margin: 12px;
-    }
-
     .media-art {
         width: 150px;
         height: 150px;
@@ -74,7 +70,8 @@
     </div>
 
     <div class="contest clearfix" style="border:none">
-        <div>What is art? It is your turn to help choose. These talented artist have been selected to show their work and need you to choose your
+        <div style=" margin: 2px;margin-bottom: 5px; ">
+            What is art? It is your turn to help choose. These talented artist have been selected to show their work and need you to choose your
             favorite image to win! You may only choose one image but can come back each day to vote again. For a list of our other contests
             for Voting for please click here <button onclick="window.location = '<?php echo $this->basePath() ?>/active-contest'">Artist Challenge & Contests</button>
         </div>
@@ -86,12 +83,12 @@
         <?php if ($dEnd > $dStart): ?>
             <div class="clearfix"> 
                 <div class="row">
-                    <div class="right" style="width: 400px;">
-                        <button style="width: 100%;font-size: 35px;" onclick="window.location = '<?php echo $this->basePath() ?>/photo-contest/voting/<?php echo $contestId; ?>'">Get to Voting!</button>
+                    <div class="right col-md-4" >
+                        <button style="width: 100%;font-size: 28px;" onclick="window.location = '<?php echo $this->basePath() ?>/photo-contest/voting/<?php echo $contestId; ?>'">Get to Voting!</button>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="right" style="font-weight: bold;color: #000;">
+                    <div class="right" style="font-weight: bold;color: #000; padding-right: 12px;">
                         Contest countdown: <?php echo $dDiff->days; ?> days remaining
                     </div>
                 </div>
@@ -104,41 +101,111 @@
             <?php else: ?>
                 <div class="media-list-title">Final Standings</div>
             <?php endif; ?>
-            <div class="media-list contest-list clearfix">
-                <div class="row">
-                    <?php foreach ($medias as $key => $media): ?>
-                        <?php $i = $key + 1; ?>
-                        <div class="col-md-2 col-xs-2">
-                            <div class="media-art">
-                                <a class="media_image" href="#." data-media_id="<?php echo $media['media_id'] ?>">
-                                    <img style="cursor: default;" mediaid="<?php echo $this->KCrypt()->enc($media['media_id']) ?>" class="mediaThumb showHoverWindow" src="<?php echo $this->mediaImage($media, 'icons'); ?>" title="<?php echo $media['title'] ?>" alt="<?php echo $media['title'] ?>" />
-                                </a> 
-                                <div class="artist-name" style="font-size: 13px;">Artist Name: <?php echo $media['f_name'] ?></div>
-                                <div class="user-name" style="font-size: 13px;">User Name: <a href="<?php echo $this->config('main_site', 'url') ?>/<?php echo $media['username'] ?>"><?php echo $media['username'] ?></a></div>
-                                <div class="rank"><strong style="font-size: 25px;color: #646567;"><?php echo $this->ordinal((($page - 1) * $size) + $i); ?></strong></div>
-                            </div>
-                        </div>
-                        <?php if ($i != 1 && $i % 5 == 0): ?>
-                        </div>
-                        <div class="clearfix ranking-page"></div>
-                        <div class="row">
-                        <?php endif; ?>
-
-                    <?php endforeach; ?>
-                </div>
-                <div class="clearfix ranking-page"></div>
+            <div class="col-md-12 col-xs-12 no-margin-padding bracket-round" >
+                <div class="left col-md-1 col-xs-1 no-margin-padding" >Starting 64</div>
+                <div class="left col-md-1 col-xs-1 no-margin-padding" >Top 32</div>
+                <div class="left col-md-1 col-xs-1 no-margin-padding" >Sweet 16</div>
+                <div class="left col-md-1 col-xs-1 no-margin-padding" >Elite 8</div>
+                <div class="left col-md-1 col-xs-1 no-margin-padding" >Final 4</div>
+                <div class="left col-md-2 col-xs-2 no-margin-padding" >Semi-Final</div>
+                <div class="left col-md-1 col-xs-1 no-margin-padding" >Final 4</div>
+                <div class="left col-md-1 col-xs-1 no-margin-padding" >Elite 8</div>
+                <div class="left col-md-1 col-xs-1 no-margin-padding" >Sweet 16</div>
+                <div class="left col-md-1 col-xs-1 no-margin-padding" >Top 32</div>
+                <div class="left col-md-1 col-xs-1 no-margin-padding" >Starting 64</div>
             </div>
-
+            <div class="left col-md-12 col-xs-12 no-margin-padding height-25"> </div>
+            <div class="col-md-12 col-xs-12 no-margin-padding bracket-round" >
+                <div class="left col-md-1 col-xs-1 no-margin-padding" >                    
+                    <?php for($i=0;$i<16;$i++) { ?>
+                    <div class="left col-md-12 col-xs-12 no-margin-padding left-round1-up"><div class="round1"></div></div>
+                    <div class="left col-md-12 col-xs-12 no-margin-padding left-round1-down"><div class=" round1"></div></div>
+                    <?php } ?>
+                </div>
+                <div class="left col-md-1 col-xs-1 no-margin-padding" >
+                    <div class="left col-md-12 col-xs-12 no-margin-padding left-round2-up round2-up-first"><div class="round2 round2-first"></div></div>
+                    <?php for($i=0;$i<7;$i++) { ?>
+                    <div class="left col-md-12 col-xs-12 no-margin-padding left-round2-down"><div class="round2"></div></div>
+                    <div class="left col-md-12 col-xs-12 no-margin-padding left-round2-up"><div class="round2"></div></div>
+                    <?php } ?>
+                    <div class="left col-md-12 col-xs-12 no-margin-padding left-round2-down"><div class="round2"></div></div>
+                </div>
+                <div class="left col-md-1 col-xs-1 no-margin-padding" >
+                    <div class="left col-md-12 col-xs-12 no-margin-padding left-round3-up round3-up-first"><div class="round3 round3-first"></div></div>
+                    <?php for($i=0;$i<3;$i++) { ?>
+                    <div class="left col-md-12 col-xs-12 no-margin-padding left-round3-down"><div class="round3"></div></div>
+                    <div class="left col-md-12 col-xs-12 no-margin-padding left-round3-up"><div class="round3"></div></div>
+                    <?php } ?>
+                    <div class="left col-md-12 col-xs-12 no-margin-padding left-round3-down"><div class="round3"></div></div>
+                </div>
+                <div class="left col-md-1 col-xs-1 no-margin-padding" >
+                    <div class="left col-md-12 col-xs-12 no-margin-padding left-round4-up round4-up-first"><div class="round4 round4-first"></div></div>
+                    <?php for($i=0;$i<1;$i++) { ?>
+                    <div class="left col-md-12 col-xs-12 no-margin-padding left-round4-down"><div class="round4"></div></div>
+                    <div class="left col-md-12 col-xs-12 no-margin-padding left-round4-up"><div class="round4"></div></div>
+                    <?php } ?>
+                    <div class="left col-md-12 col-xs-12 no-margin-padding left-round4-down"><div class="round4"></div></div>
+                </div>
+                <div class="left col-md-1 col-xs-1 no-margin-padding" >
+                    <div class="left col-md-12 col-xs-12 no-margin-padding left-round5-up round5-up-first"><div class="round5 round5-first"></div></div>
+                    <div class="left col-md-12 col-xs-12 no-margin-padding left-round5-down"><div class="round5"></div></div>                    
+                </div>
+                <div class="left col-md-2 col-xs-2 no-margin-padding" >
+                    <div class="col-md-12 col-xs-12 no-margin-padding" >
+                        <div class="left col-md-6 col-xs-6 no-margin-padding left-round6-up"><div class=" round6 round6-first "></div></div>
+                    </div>
+                    <div class="col-md-12 col-xs-12 no-margin-padding round6-center-outer" >
+                        <div class="col-md-12 col-xs-12 round6-center">
+                            
+                        </div>
+                        <div class="col-md-12 col-xs-12 no-margin-padding round6-center-text">
+                            Total Votes: 158<br>
+                            <span class="violet-text">
+                            Artist Name: Matthews Thomas<br>
+                            User Name: ThomasPhoto
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-xs-12 no-margin-padding" >
+                        <div class="col-md-6 col-xs-6 no-margin-padding" ></div>
+                        <div class="left col-md-6 col-xs-6 no-margin-padding right-round6-up"><div class="round6 round6-second "></div></div>
+                    </div>
+                </div>
+                <div class="left col-md-1 col-xs-1 no-margin-padding" >
+                    <div class="left col-md-12 col-xs-12 no-margin-padding right-round5-up round5-up-first"><div class="round5 round5-first"></div></div>
+                    <div class="left col-md-12 col-xs-12 no-margin-padding right-round5-down"><div class="round5"></div></div> 
+                </div>
+                <div class="left col-md-1 col-xs-1 no-margin-padding" >
+                    <div class="left col-md-12 col-xs-12 no-margin-padding right-round4-up round4-up-first"><div class="round4 round4-first"></div></div>
+                    <?php for($i=0;$i<1;$i++) { ?>
+                    <div class="left col-md-12 col-xs-12 no-margin-padding right-round4-down"><div class="round4"></div></div>
+                    <div class="left col-md-12 col-xs-12 no-margin-padding right-round4-up"><div class="round4"></div></div>
+                    <?php } ?>
+                    <div class="left col-md-12 col-xs-12 no-margin-padding right-round4-down"><div class="round4"></div></div>
+                </div>
+                <div class="left col-md-1 col-xs-1 no-margin-padding" >
+                    <div class="left col-md-12 col-xs-12 no-margin-padding right-round3-up round3-up-first"><div class="round3 round3-first"></div></div>
+                    <?php for($i=0;$i<3;$i++) { ?>
+                    <div class="left col-md-12 col-xs-12 no-margin-padding right-round3-down"><div class="round3"></div></div>
+                    <div class="left col-md-12 col-xs-12 no-margin-padding right-round3-up"><div class="round3"></div></div>
+                    <?php } ?>
+                    <div class="left col-md-12 col-xs-12 no-margin-padding right-round3-down"><div class="round3"></div></div>
+                </div>
+                <div class="left col-md-1 col-xs-1 no-margin-padding" >
+                    <div class="left col-md-12 col-xs-12 no-margin-padding right-round2-up round2-up-first"><div class="round2 round2-first"></div></div>
+                    <?php for($i=0;$i<7;$i++) { ?>
+                    <div class="left col-md-12 col-xs-12 no-margin-padding right-round2-down"><div class="round2"></div></div>
+                    <div class="left col-md-12 col-xs-12 no-margin-padding right-round2-up"><div class="round2"></div></div>
+                    <?php } ?>
+                    <div class="left col-md-12 col-xs-12 no-margin-padding right-round2-down"><div class="round2"></div></div>
+                </div>
+                <div class="left col-md-1 col-xs-1 no-margin-padding" >
+                    <?php for($i=0;$i<16;$i++) { ?>
+                    <div class="left col-md-12 col-xs-12 no-margin-padding right-round1-up"><div class="round1"></div></div>
+                    <div class="left col-md-12 col-xs-12 no-margin-padding right-round1-down"><div class=" round1"></div></div>
+                    <?php } ?>
+                </div>
+            </div>
+            <div class="clearfix ranking-page"></div>
         </div>
     </div>
-
-    <?php
-    echo $this->paginationControl($this->paginator, 'Sliding', 'paginator-slide', array(
-        'route' => 'photo-contest',
-        'routeParams' => array(
-            'action' => 'rankings',
-            'id' => $this->contestId,
-            'size' => $this->size
-        )
-    ));
-    ?>
