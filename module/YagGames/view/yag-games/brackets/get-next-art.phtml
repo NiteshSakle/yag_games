@@ -97,34 +97,45 @@
         });
     }
 </script>
-<div class="rate-it-popup">
+<div class="brk-vote-it-popup">
     <?php if (isset($media['contest_name'])) : ?>
-        <div class="rate-it-wrapper">
-            <div class="rangetitle1 animalcol"><?php echo $media['contest_name']; ?></div>
-            <div class="rate-it-image">
-                <div class="image">
-                    <img src="<?php echo $this->mediaImage($media, 'samples'); ?>"  style="max-height:250px;" />
-                </div>
-                <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/close.button.png" id="closeWorkbox">
-            </div>
-            <div class="rate-icons">
-                <span class="rate-points" mediaID="<?php echo $media['media_id'] ?>">
-                    <?php for ($i = 1; $i <= 5; $i++): ?>
-                        <img width="39" height="42" src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/rate-0.png" class="ratingStar1" originalStatus="0" />
-                    <?php endfor; ?>
-                </span>
-            </div>
-        </div>
-        <div class="bottom-wrapper">
-            <div class="rate-it-details" style="width:100% !important;margin: 0px !important;">
-                <div class="heading">Rate It!</div>
-                <div class="rate-it-details-head">Title: <?php echo $media['title'] ?></div>
-                <div>Artist: <?php echo $media['f_name'] ?></div>            	
-            </div>
-            <div class="rate-it-category">
-                <div class="category-name"> <?php echo $media['totalRated'] + 1 ?>/<?php echo $media['count'] ?></div>  
-            </div>
+    <div class="brk-vote-it-wrapper">
+            <div>
+                <div class="brk-vote-it-image pull-left text-center">
+                    <div class="image">
+                        <img src="<?php echo $this->mediaImage($media, 'samples'); ?>"  style="max-height:180px;" />
+                    </div>
 
+                </div>               
+                <div class="brk-vote-it-image pull-right text-center">
+                    <div class="image">
+                        <img src="<?php echo $this->mediaImage($media, 'samples'); ?>"  style="max-height:180px;" />
+                    </div>
+                    <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/close.button.png" id="closeWorkbox" class="brk-closeWorkbox">
+                </div>
+            </div>                     
+        </div>
+        <div class="brk-bottom-wrapper col-md-12">
+            <div class="col-md-5">
+                <div class="text-center">
+                    <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/star.0.png">
+                    <p>Artist Name:&nbsp;<?php echo $media['f_name']; ?></p>
+                </div>
+            </div>
+            <div class="col-md-2 text-center no-padding">
+                <div class="rate-it-details">
+                    <div class="brk-heading-1">OR</div>
+                    <div class="brk-heading-2">STARTING 64</div>                    
+                    <div class="brk-heading-3"><strong><?php echo $media['totalRated'] + 1 ?>/<?php echo $media['count'] ?></strong></div>
+                    <div class="brk-heading-4"><strong>FACEOFF</strong></div>
+                </div>                
+            </div>
+            <div class="col-md-5">
+                <div class="text-center">
+                    <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/star.1.png">
+                    <p>Artist Name:&nbsp;<?php echo $media['f_name']; ?></p>
+                </div>
+            </div>            
         </div>
     <?php elseif ($mediaId): ?>
         <div class="rate-it-wrapper">
