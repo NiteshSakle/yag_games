@@ -25,7 +25,7 @@ class BracketsRoundCheckController extends BaseConsoleController {
     private function process() {
 
         $contestBracketRoundTable = $this->getServiceLocator()->get('YagGames\Model\ContestBracketRoundTable');
-        $records = $contestBracketRoundTable->fetchAll();
+        $records = $contestBracketRoundTable->fetchAllActiveContests();
 
         $today = new \DateTime(date("Y-m-d"));
 
@@ -34,16 +34,21 @@ class BracketsRoundCheckController extends BaseConsoleController {
             //Round 1 - Special Case we won't consider votes here
             $roundDate = new \DateTime($record["round1"]);
 
-            if ($today == $roundDate) {
+            if (empty($record['current_round']) && $roundDate <= $today) {
 
                 $contestMediaTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaTable');
                 $contestMedia = $contestMediaTable->fetchAllByContest($record['contest_id']);
-
-                $contestBracketMediaComboTable = $this->getServiceLocator()->get('YagGames\Model\ContestBracketMediaComboTable');
-
-                shuffle($contestMedia); // Shuffle the array for more randomization                              
                 
                 $mediaCount = count($contestMedia);
+                
+                if ($mediaCount == 0) {                    
+                    
+                    throw new \RuntimeException('No Contestants found for the Contest'. $record['name']);
+                }
+                
+                $contestBracketMediaComboTable = $this->getServiceLocator()->get('YagGames\Model\ContestBracketMediaComboTable');
+
+                shuffle($contestMedia); // Shuffle the array for more randomization                                                              
                 
                 $comboCount = (int) ($mediaCount/2); // Should be 32;
 
@@ -114,6 +119,16 @@ class BracketsRoundCheckController extends BaseConsoleController {
                         $i++;
                     }
                 }
+                
+               // Update Current Round
+               $contestBracketRound = new \YagGames\Model\ContestBracketRound();
+               
+               $contestBracketRound->id = $record['id'];               
+               $contestBracketRound->current_round = 1;
+               
+               $contestBracketRoundTable->update($contestBracketRound);
+               
+               $record['current_round'] = 1;
             }
             
             // From round 2 - need to consider number of votes recieved
@@ -121,7 +136,7 @@ class BracketsRoundCheckController extends BaseConsoleController {
                 
                 $roundDate = new \DateTime($record["round".$round]);
                 
-                if ($today == $roundDate) {
+                if (($round-1) == $record['current_round'] && $roundDate <= $today) {
                    
                    $contestBracketMediaComboTable = $this->getServiceLocator()->get('YagGames\Model\ContestBracketMediaComboTable');
                    
@@ -148,6 +163,17 @@ class BracketsRoundCheckController extends BaseConsoleController {
                         $contestBracketMediaComboTable->insert($bracketMediaCombo);
                         
                         $i++;
+                        
+                        // Update Current Round
+                       $contestBracketRound = new \YagGames\Model\ContestBracketRound();
+
+                       $contestBracketRound->id = $record['id'];               
+                       $contestBracketRound->current_round = $round;
+
+                       $contestBracketRoundTable->update($contestBracketRound);
+                       
+                       // Pending Rounds Get Fired
+                       $record['current_round'] = $round;
                     }
                 }
             }

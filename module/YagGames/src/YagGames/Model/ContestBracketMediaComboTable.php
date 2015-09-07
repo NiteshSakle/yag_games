@@ -64,20 +64,17 @@ class ContestBracketMediaComboTable extends BaseTable
                        CASE
                          WHEN x.cmediaid1_votes > x.cmediaid2_votes THEN x.contest_media_id1
                          WHEN x.cmediaid2_votes > x.cmediaid1_votes THEN x.contest_media_id2
-                         WHEN ( x.cmediaid1_cdate IS NOT NULL && x.cmediaid2_cdate IS NOT NULL ) THEN
+                         WHEN ( x.contest_media_id1 != 0 && x.contest_media_id2 != 0 ) THEN
                            CASE
-                             WHEN Date(x.cmediaid1_cdate) >= Date(x.cmediaid2_cdate) THEN x.contest_media_id1
+                             WHEN contest_media_id1 < contest_media_id2 THEN x.contest_media_id1
                              ELSE x.contest_media_id2
                            END
                          WHEN x.contest_media_id2 = 0 THEN x.contest_media_id1
-                         ELSE x.contest_media_id1
+                         ELSE x.contest_media_id2
                        END AS next_round_media_id
                       FROM (SELECT cbmc.*,
                                (SELECT COUNT(id) FROM contest_media_rating cmr1 WHERE  cmr1.contest_media_id = cbmc.contest_media_id1 AND round = :round) AS cmediaid1_votes,
-                               (SELECT COUNT(id) FROM contest_media_rating cmr1 WHERE  cmr1.contest_media_id = cbmc.contest_media_id2 AND round = :round) AS cmediaid2_votes,
-                               (SELECT created_at FROM contest_media cm1 WHERE cm1.id = cbmc.contest_media_id1) AS cmediaid1_cdate,
-                               (SELECT created_at FROM contest_media cm1 WHERE  cm1.id = cbmc.contest_media_id2) AS cmediaid2_cdate
-                            FROM contest_bracket_media_combo cbmc WHERE cbmc.contest_id = :contestId AND cbmc.round = :round) 
+                               (SELECT COUNT(id) FROM contest_media_rating cmr1 WHERE  cmr1.contest_media_id = cbmc.contest_media_id2 AND round = :round) AS cmediaid2_votes FROM contest_bracket_media_combo cbmc WHERE cbmc.contest_id = :contestId AND cbmc.round = :round) 
                       x ORDER  BY x.combo_id ASC";
             
             $sqlStmt = $this->tableGateway->adapter->createStatement($sqlStr, array(

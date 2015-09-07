@@ -29,7 +29,50 @@ class ContestBracketRoundTable extends BaseTable
             if (!$this->isValid($contestBracketRound)) {
                 return false;
             }
-            $this->tableGateway->update($contestBracketRound->getArrayCopy());
+            
+            $updateData = array();
+            
+            if($contestBracketRound->contest_id) {                
+                $updateData['contest_id'] = $contestBracketRound->contest_id;
+            }
+            
+            if ($contestBracketRound->round1) {
+                $updateData['round1'] = $contestBracketRound->round1;
+            }
+            
+            if ($contestBracketRound->round2) {
+                $updateData['round2'] = $contestBracketRound->round2;
+            }
+            
+            if ($contestBracketRound->round3) {
+                $updateData['round3'] = $contestBracketRound->round3;
+            }
+            
+            if ($contestBracketRound->round4) {
+                $updateData['round4'] = $contestBracketRound->round4;
+            }
+            
+            if ($contestBracketRound->round5) {
+                $updateData['round5'] = $contestBracketRound->round5;
+            }
+            
+            if ($contestBracketRound->round6) {
+                $updateData['round6'] = $contestBracketRound->round6;
+            }
+            
+            if ($contestBracketRound->current_round) {
+                $updateData['current_round'] = $contestBracketRound->current_round;
+            }
+            
+            if ($contestBracketRound->created_at) {
+                $updateData['created_at'] = $contestBracketRound->created_at;
+            }
+            
+            if ($contestBracketRound->updated_at) {
+                $updateData['updated_at'] = $contestBracketRound->updated_at;
+            }
+            
+            $this->tableGateway->update($updateData, array('id' => $contestBracketRound->id));
             return true;
         } catch (\Exception $e) {
             $this->logger->err($e->getMessage());
@@ -61,5 +104,19 @@ class ContestBracketRoundTable extends BaseTable
         $rowset = $this->tableGateway->select(array('contest_id' => $contestId));
         $contestRow = $rowset->current();
         return $contestRow;
-    }  
+    }
+    
+    public function fetchAllActiveContests() 
+    {
+        $select = new \Zend\Db\Sql\Select ;
+        $select->from(array('cbr' => 'contest_bracket_round'))
+                ->columns(array('*'))
+                ->join(array('c' => 'contest'), 'c.id = cbr.contest_id', array('name'))
+                ->where(array('c.voting_started' => 1));
+         
+        $statement = $this->getSql()->prepareStatementForSqlObject($select); 
+        $resultSet = $statement->execute(); 
+        
+        return $resultSet;
+    }
 }
