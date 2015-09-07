@@ -118,36 +118,36 @@
                                         $date_details = $contest['my_type'];
                                     }   
                                     
-                                    if($date_details == 'new') { ?>
-                                        <?php if($contest['type_id'] == 3) { ?>
-                                            Open Entries End: <?php echo date("F jS, Y", strtotime($contest['entry_end_date'])); ?>
-                                            Voting Begins: <?php echo date("F jS, Y", strtotime($contest['voting_start_date'])); ?>
-                                            <br>
-                                            <div class="bracket-round-dates">
-                                                <span <?php echo $contest['current_round'] == '1' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("d/m/Y", strtotime($contest['round1'])); ?> - Round One 64</span><br>
-                                                <span <?php echo $contest['current_round'] == '2' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("d/m/Y", strtotime($contest['round2'])); ?> - Round One 32</span><br>
-                                                <span <?php echo $contest['current_round'] == '3' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("d/m/Y", strtotime($contest['round3'])); ?> - Sweet 16</span><br>
-                                                <span <?php echo $contest['current_round'] == '4' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("d/m/Y", strtotime($contest['round4'])); ?> - Elite 8</span><br>
-                                                <span <?php echo $contest['current_round'] == '5' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("d/m/Y", strtotime($contest['round5'])); ?> - Final 4</span><br>
-                                                <span <?php echo $contest['current_round'] == '6' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("d/m/Y", strtotime($contest['round6'])); ?> - Championship Round!</span><br>
-                                            </div>
-                                        <?php } else { ?>
-                                            Enter by: <?php echo date("F jS, Y", strtotime($contest['entry_end_date'])); ?>
-                                        <?php } ?>
+                                if($date_details == 'new') { ?>
+                                    <?php if($contest['type_id'] == 3) { ?>
+                                        Open Entries End: <?php echo date("F jS, Y", strtotime($contest['entry_end_date'])); ?>
+                                        Voting Begins: <?php echo date("F jS, Y", strtotime($contest['voting_start_date'])); ?>
+                                        <br>
+                                        <div class="bracket-round-dates">
+                                            <span <?php echo $contest['current_round'] == '1' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("d/m/Y", strtotime($contest['round1'])); ?> - Round One 64</span><br>
+                                            <span <?php echo $contest['current_round'] == '2' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("d/m/Y", strtotime($contest['round2'])); ?> - Round One 32</span><br>
+                                            <span <?php echo $contest['current_round'] == '3' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("d/m/Y", strtotime($contest['round3'])); ?> - Sweet 16</span><br>
+                                            <span <?php echo $contest['current_round'] == '4' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("d/m/Y", strtotime($contest['round4'])); ?> - Elite 8</span><br>
+                                            <span <?php echo $contest['current_round'] == '5' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("d/m/Y", strtotime($contest['round5'])); ?> - Final 4</span><br>
+                                            <span <?php echo $contest['current_round'] == '6' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("d/m/Y", strtotime($contest['round6'])); ?> - Championship Round!</span><br>
+                                        </div>
+                                    <?php } else { ?>
+                                        Enter by: <?php echo date("F jS, Y", strtotime($contest['entry_end_date'])); ?>
+                                    <?php } ?>
                                         
                                 <?php } elseif($date_details == 'active') { ?>
-                                             <?php if($contest['type_id'] == 3) { ?>
-                                                CURRENTLY IN ROUND:
-                                                <br>
-                                                <div class="bracket-round-dates">
-                                                    <span <?php echo $contest['current_round'] == '1' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("d/m/Y", strtotime($contest['round1'])); ?> - Round One 64</span><br>
-                                                    <span <?php echo $contest['current_round'] == '2' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("d/m/Y", strtotime($contest['round2'])); ?> - Round One 32</span><br>
-                                                    <span <?php echo $contest['current_round'] == '3' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("d/m/Y", strtotime($contest['round3'])); ?> - Sweet 16</span><br>
-                                                    <span <?php echo $contest['current_round'] == '4' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("d/m/Y", strtotime($contest['round4'])); ?> - Elite 8</span><br>
-                                                    <span <?php echo $contest['current_round'] == '5' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("d/m/Y", strtotime($contest['round5'])); ?> - Final 4</span><br>
-                                                    <span <?php echo $contest['current_round'] == '6' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("d/m/Y", strtotime($contest['round6'])); ?> - Championship Round!</span><br>
-                                                </div>
-                                            <?php } ?>
+                                    <?php if($contest['type_id'] == 3) { ?>
+                                       CURRENTLY IN ROUND:
+                                       <br>
+                                       <div class="bracket-round-dates">
+                                           <span <?php echo $contest['current_round'] == '1' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("d/m/Y", strtotime($contest['round1'])); ?> - Round One 64</span><br>
+                                           <span <?php echo $contest['current_round'] == '2' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("d/m/Y", strtotime($contest['round2'])); ?> - Round One 32</span><br>
+                                           <span <?php echo $contest['current_round'] == '3' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("d/m/Y", strtotime($contest['round3'])); ?> - Sweet 16</span><br>
+                                           <span <?php echo $contest['current_round'] == '4' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("d/m/Y", strtotime($contest['round4'])); ?> - Elite 8</span><br>
+                                           <span <?php echo $contest['current_round'] == '5' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("d/m/Y", strtotime($contest['round5'])); ?> - Final 4</span><br>
+                                           <span <?php echo $contest['current_round'] == '6' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("d/m/Y", strtotime($contest['round6'])); ?> - Championship Round!</span><br>
+                                       </div>
+                                   <?php } ?>
                                     Voting Begins: <?php echo date("F jS, Y", strtotime($contest['voting_start_date'])); ?>
                                 <?php } ?>
                                 <br>

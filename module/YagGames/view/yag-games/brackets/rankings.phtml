@@ -206,42 +206,6 @@
                     <?php } ?>
                 </div>
             </div>
-                
-            <div class="media-list contest-list clearfix">
-                <div class="row">
-                    <?php foreach ($medias as $key => $media): ?>
-                        <?php $i = $key + 1; ?>
-                        <div class="col-md-2 col-xs-2">
-                            <div class="media-art">
-                                <a class="media_image" href="#." data-media_id="<?php echo $media['media_id'] ?>">
-                                    <img style="cursor: default;" mediaid="<?php echo $this->KCrypt()->enc($media['media_id']) ?>" class="mediaThumb showHoverWindow" src="<?php echo $this->mediaImage($media, 'icons'); ?>" title="<?php echo $media['title'] ?>" alt="<?php echo $media['title'] ?>" />
-                                </a> 
-                                <div class="artist-name" style="font-size: 13px;">Artist Name: <?php echo $media['f_name'] ?></div>
-                                <div class="user-name" style="font-size: 13px;">User Name: <a href="<?php echo $this->config('main_site', 'url') ?>/<?php echo $media['username'] ?>"><?php echo $media['username'] ?></a></div>
-                                <div class="rank"><strong style="font-size: 25px;color: #646567;"><?php echo $this->ordinal((($page - 1) * $size) + $i); ?></strong></div>
-                            </div>
-                        </div>
-                        <?php if ($i != 1 && $i % 5 == 0): ?>
-                        </div>
-                        <div class="clearfix ranking-page"></div>
-                        <div class="row">
-                        <?php endif; ?>
-
-                    <?php endforeach; ?>
-                </div>
-                <div class="clearfix ranking-page"></div>
-            </div>
-
+            <div class="clearfix ranking-page"></div>
         </div>
     </div>
-
-    <?php
-    echo $this->paginationControl($this->paginator, 'Sliding', 'paginator-slide', array(
-        'route' => 'photo-contest',
-        'routeParams' => array(
-            'action' => 'rankings',
-            'id' => $this->contestId,
-            'size' => $this->size
-        )
-    ));
-    ?>
