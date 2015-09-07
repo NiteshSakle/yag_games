@@ -77,7 +77,7 @@ class ContestMediaTable extends BaseTable {
         $select = new \Zend\Db\Sql\Select;
         $select->from(array('c' => 'contest_media'))
                 ->columns(array('*'))
-                //->join(array('m' => 'ps4_media'), 'c.media_id = m.media_id')
+                ->join(array('m' => 'ps4_media'), 'c.media_id = m.media_id')
                 ->where(array('contest_id' => $contestId));
 
         $statement = $this->getSql()->prepareStatementForSqlObject($select);
