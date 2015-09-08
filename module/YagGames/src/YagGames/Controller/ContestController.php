@@ -81,7 +81,7 @@ class ContestController extends BaseController
         if(strtotime($data['entry_end_date']) >= strtotime(date("Y-m-d"))){
             $type = "new";
         } else {
-          if(strtotime($data['winners_announce_date']) >= strtotime(date("Y-m-d"))){
+          if(strtotime($data['winners_announce_date']) > strtotime(date("Y-m-d"))){
               $type = "active";
           } else {
               $type = "past";
