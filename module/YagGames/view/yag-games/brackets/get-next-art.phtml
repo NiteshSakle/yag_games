@@ -14,41 +14,36 @@
         $('#workbox').html('');
     });
 
-    var starCount = $(".rate-points:first").find('.ratingStar1').size();
     var contestId = '<?php echo $contestId ?>';
 
-    $(".rate-points").each(function (key, elem) {
-        $(elem).hover('', function () {
-            returnStarStatus(elem);
-        });
+    $(".brk-vote-lt,.brk-vote-rt").each(function (key, elem) {        
+        $(elem).find('.voteStar').each(function (key2, elem2) {
+            var starValue = 10;
 
-        $(elem).find('.ratingStar1').each(function (key2, elem2) {
-            var starValue = key2 + 1;
-            if (starCount == 5) {
-                starValue = starValue * 2; // Double the value if there are only 5 stars instead of 10
-            }
-
-            var mediaID = $(elem).attr('mediaID'); // Get the media ID these stars are for
+            var mediaID = $(elem).data('media-id'); // Get the media ID these stars are for
 
             $(elem2).css('cursor', 'pointer') // Assign a pointer cursor to those stars that are active				
                     .mouseover(function () {
                         highlightStarsForPhotoContest(elem, key2);
                     }) // Assign a mouse over on the active stars				
                     .click(function () {
-                        $(elem) // Unbind stars to prevent double clicking
-                                .find('.ratingStar1')
+                        // Unbind stars to prevent double clicking
+                        $(".voteStar")                                
                                 .unbind()
-                                .css('cursor', 'default');
-
-                        $('span.rate-points').parent().next().hide();
-                        $(elem).unbind().fadeOut(200, function () {
+                                .css('cursor', 'default');                        
+//                        $(elem).unbind().fadeOut(200, function () {
                             submitVote(elem, contestId, mediaID, starValue);
-                        });
+//                        });
                     }); // Do the rating when the star is clicked on
-        });
+        });        
     });
-
-    function submitVote(elem, contestId, mediaId, rating) {
+    
+    $('div[class^=brk-vote-it-img-]').on('mouseover click', function(e){
+        var targetStar = $(this).data('target-star');
+        $(targetStar).find('.voteStar').trigger(e.type);        
+    });    
+   
+    function submitVote(elem, contestId, mediaId, rating) {        
         var request = $.ajax({
             url: gameBasePath + '/photo-contest/vote',
             type: "POST",
@@ -88,43 +83,55 @@
     }
 
     function highlightStarsForPhotoContest(elem, current) {
-        $(elem).find('.ratingStar1').each(function (key, elem2)
-        {
-            if (current >= key)
-                $(elem2).attr('src', '<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/rate-1.png');
-            else
-                $(elem2).attr('src', '<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/rate-0.png');
+        $(elem).find('.voteStar').each(function (key, elem2)
+        {            
+            $(elem2).attr('src', '<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/star.1.png');                        
+            $('.voteStar').not(elem2).attr('src', '<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/star.0.png');
+            $('div[class^=brk-vote-it-img-]').removeClass('brk-vote-it-img-hover');
+            var targetImg = $(elem).data('target-img');
+            $(targetImg).addClass('brk-vote-it-img-hover');
         });
     }
 </script>
-<div class="rate-it-popup">
+<div class="brk-vote-it-popup">
     <?php if (isset($media['contest_name'])) : ?>
-        <div class="rate-it-wrapper">
-            <div class="rangetitle1 animalcol"><?php echo $media['contest_name']; ?></div>
-            <div class="rate-it-image">
-                <div class="image">
-                    <img src="<?php echo $this->mediaImage($media, 'samples'); ?>"  style="max-height:250px;" />
-                </div>
-                <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/close.button.png" id="closeWorkbox">
-            </div>
-            <div class="rate-icons">
-                <span class="rate-points" mediaID="<?php echo $media['media_id'] ?>">
-                    <?php for ($i = 1; $i <= 5; $i++): ?>
-                        <img width="39" height="42" src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/rate-0.png" class="ratingStar1" originalStatus="0" />
-                    <?php endfor; ?>
-                </span>
-            </div>
-        </div>
-        <div class="bottom-wrapper">
-            <div class="rate-it-details" style="width:100% !important;margin: 0px !important;">
-                <div class="heading">Rate It!</div>
-                <div class="rate-it-details-head">Title: <?php echo $media['title'] ?></div>
-                <div>Artist: <?php echo $media['f_name'] ?></div>            	
-            </div>
-            <div class="rate-it-category">
-                <div class="category-name"> <?php echo $media['totalRated'] + 1 ?>/<?php echo $media['count'] ?></div>  
-            </div>
+    <div class="brk-vote-it-wrapper">
+            <div>
+                <div class="brk-vote-it-img-lt pull-left text-center" data-target-star=".brk-vote-lt">
+                    <div class="image">
+                        <img src="<?php echo $this->mediaImage($media, 'samples'); ?>"  style="max-height:180px;" />
+                    </div>
 
+                </div>               
+                <div class="brk-vote-it-img-rt pull-right text-center" data-target-star=".brk-vote-rt">
+                    <div class="image">
+                        <img src="<?php echo $this->mediaImage($media, 'samples'); ?>"  style="max-height:180px;" />
+                    </div>
+                    <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/close.button.png" id="closeWorkbox" class="brk-closeWorkbox">
+                </div>
+            </div>                     
+        </div>
+        <div class="brk-bottom-wrapper col-md-12">
+            <div class="col-md-5">
+                <div class="brk-vote-lt text-center" data-media-id="<?php echo $media['media_id'] ?>" data-target-img=".brk-vote-it-img-lt">
+                    <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/star.0.png" class="voteStar">
+                    <p>Artist Name:&nbsp;<?php echo $media['f_name']; ?></p>
+                </div>
+            </div>
+            <div class="col-md-2 text-center no-padding">
+                <div class="rate-it-details">
+                    <div class="brk-heading-1">OR</div>
+                    <div class="brk-heading-2">STARTING 64</div>                    
+                    <div class="brk-heading-3"><strong><?php echo $media['totalRated'] + 1 ?>/<?php echo $media['count'] ?></strong></div>
+                    <div class="brk-heading-4"><strong>FACEOFF</strong></div>
+                </div>                
+            </div>
+            <div class="col-md-5">
+                <div class="brk-vote-rt text-center" data-media-id="<?php echo $media['media_id'] ?>" data-target-img=".brk-vote-it-img-rt">
+                    <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/star.0.png" class="voteStar">
+                    <p>Artist Name:&nbsp;<?php echo $media['f_name']; ?></p>
+                </div>
+            </div>            
         </div>
     <?php elseif ($mediaId): ?>
         <div class="rate-it-wrapper">
