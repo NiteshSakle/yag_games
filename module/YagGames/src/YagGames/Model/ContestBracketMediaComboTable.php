@@ -115,6 +115,25 @@ class ContestBracketMediaComboTable extends BaseTable
         $statement = $this->getSql()->prepareStatementForSqlObject($select); 
         $resultSet = $statement->execute(); 
         
-        return $resultSet;;
+        return $resultSet->current();
     } 
+    
+    public function fetchContestComboDetails($contestId)
+    {
+        $select = new \Zend\Db\Sql\Select ;
+        $select->from(array('c' => 'contest_bracket_media_combo'))
+                ->columns(array('*'))
+                ->where(array('c.contest_id' => $contestId))
+                ->order(array('c.round','c.combo_id'));
+         
+        $statement = $this->getSql()->prepareStatementForSqlObject($select); 
+        $resultSet = $statement->execute(); 
+        
+        $comboDetails = array();
+        foreach ($resultSet as $row) {
+            $comboDetails[$row['round']][] = $row;
+        }
+        
+        return $comboDetails;
+    }
 }

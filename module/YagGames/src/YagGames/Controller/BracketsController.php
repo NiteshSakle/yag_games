@@ -167,8 +167,6 @@ class BracketsController extends BaseController
 
   public function votingAction()
   {
-    $page = $this->params()->fromRoute('page') ? (int) $this->params()->fromRoute('page') : 1;
-    $size = $this->params()->fromRoute('size') ? (int) $this->params()->fromRoute('size') : 20;
     $contestId = $this->params()->fromRoute('id', null);
     $search = $this->params()->fromPost('search', null);
     $this->session = $this->sessionPlugin();
@@ -190,19 +188,16 @@ class BracketsController extends BaseController
     }
 
     $bracketService = $this->getServiceLocator()->get('bracketService');
-    $data = $bracketService->getContestMedia($contestId, $userId, $search, $page, $size, '');
-
-    $paginator = new Paginator(new NullFill($data['total']));
-    $paginator->setCurrentPageNumber($page);
-    $paginator->setItemCountPerPage($size);
-
+    $data = $bracketService->getContestMedia($contestId, $userId);
+    
+    $contestBracketMediaComboTable = $this->getServiceLocator()->get('YagGames\Model\ContestBracketMediaComboTable');
+    $contestComboDetails = $contestBracketMediaComboTable->fetchContestComboDetails($contestId);
+    
     $vm = new ViewModel();
-    $vm->setVariable('paginator', $paginator);
     $vm->setVariable('medias', $data['medias']);
     $vm->setVariable('contestId', $contestId);
-    $vm->setVariable('search', $search);
-    $vm->setVariable('page', $page);
-    $vm->setVariable('size', $size);
+    $vm->setVariable('contest', $this->contest);
+    $vm->setVariable('comboDetails', $contestComboDetails);
     return $vm;
   }
 
@@ -214,8 +209,6 @@ class BracketsController extends BaseController
   public function rankingsAction()
   {
     $mediaId = $this->params()->fromRoute('mid') ? (int) $this->params()->fromRoute('mid') : 0;
-    $page = $this->params()->fromRoute('page') ? (int) $this->params()->fromRoute('page') : 1;
-    $size = $this->params()->fromRoute('size') ? (int) $this->params()->fromRoute('size') : 20;
     $contestId = $this->params()->fromRoute('id', null);
     $this->session = $this->sessionPlugin();
     $userId = '';
@@ -241,20 +234,17 @@ class BracketsController extends BaseController
     }
     
     $bracketService = $this->getServiceLocator()->get('bracketService');
-    $data = $bracketService->getContestMedia($contestId, $userId, null, $page, $size, 'rank');
+    $data = $bracketService->getContestMedia($contestId, $userId);
 
-    $paginator = new Paginator(new NullFill($data['total']));
-    $paginator->setCurrentPageNumber($page);
-    $paginator->setItemCountPerPage($size);
-
+    $contestBracketMediaComboTable = $this->getServiceLocator()->get('YagGames\Model\ContestBracketMediaComboTable');
+    $contestComboDetails = $contestBracketMediaComboTable->fetchContestComboDetails($contestId);
+    
     $vm = new ViewModel();
-    $vm->setVariable('paginator', $paginator);
     $vm->setVariable('medias', $data['medias']);
     $vm->setVariable('contestId', $contestId);
     $vm->setVariable('contest', $this->contest);
+    $vm->setVariable('comboDetails', $contestComboDetails);
     $vm->setVariable('media', $media);
-    $vm->setVariable('page', $page);
-    $vm->setVariable('size', $size);
     return $vm;
   }
 

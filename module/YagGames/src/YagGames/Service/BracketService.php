@@ -123,7 +123,7 @@ class BracketService
   public function getContestMedia($contestId,  $userId = null, $keyword = null, $page = 1, $offset = 20, $sort = 'rank')
   {
     $contestMediaTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaTable');
-    $contestData = $contestMediaTable->getContestMedia($contestId, $userId, $keyword , $page, $offset, $sort);
+    $contestData = $contestMediaTable->fetchBracketContestMedia($contestId, $userId);
     
     return $contestData;
   }

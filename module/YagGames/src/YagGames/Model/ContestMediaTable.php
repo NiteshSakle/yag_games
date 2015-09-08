@@ -292,4 +292,19 @@ class ContestMediaTable extends BaseTable {
 
         return $photos;
     }
+    
+    public function fetchBracketContestMedia($contestId, $userId = null) {
+        
+        $resultSet = $this->getContestMedia($contestId, $userId, NULL, 1, 64);
+
+        $photos = array();
+        foreach ($resultSet['medias'] as $row) {
+            $photos[$row['id']] = $row;
+        }
+
+        return array(
+                "total" => $this->getFoundRows(),
+                "medias" => $photos
+            );
+    }
 }
