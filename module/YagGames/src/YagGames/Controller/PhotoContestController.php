@@ -192,6 +192,15 @@ class PhotoContestController extends BaseController
       $this->flashMessenger()->addErrorMessage('Voting hasn\'t started yet');
       return $this->redirect()->toRoute('photo-contest');
     }
+    
+    // check winner Announced are not if so redirect to winners announced page
+    if (strtotime($this->contest['winners_announce_date']) <= strtotime(date("Y-m-d"))) {
+      $this->flashMessenger()->addErrorMessage('Winners Announced');
+      return $this->redirect()->toRoute('photo-contest', array(
+                  'id' => $contestId,
+                  'action' => 'rankings'
+      ));
+    }
 
     $photoContestService = $this->getServiceLocator()->get('photoContestService');
     $data = $photoContestService->getContestMedia($contestId, $userId, $search, $page, $size, '');
