@@ -511,10 +511,14 @@ body {
 .brk-vote-it-wrapper{
     margin: 29px 30px;
 }
-.brk-vote-it-image{
+.brk-vote-it-img-lt, .brk-vote-it-img-rt{
     border: 1px solid #c1c1c1;
     width: 300px;
     padding: 50px 0;    
+}
+.brk-vote-it-img-hover{
+   background-color: #A9A5A5;
+   cursor: pointer;
 }
 .brk-bottom-wrapper{    
     margin: 0 auto;
