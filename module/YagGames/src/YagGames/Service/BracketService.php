@@ -71,15 +71,15 @@ class BracketService
     
   }
 
-  public function addVoteToArt($contestId, $mediaId, $userSession, $rating)
-  {   
+  public function addVoteToArt($contestId, $mediaId, $userSession, $comboId)
+  {
     $contestTable = $this->getServiceLocator()->get('YagGames\Model\ContestTable');
     $contestData = $contestTable->fetchRecord($contestId);
     $contestData = (array) $contestData;
     if (!$contestData) {
       throw new \YagGames\Exception\BracketException("No contest found");
     }
-
+    
     //check voting_started flag for contest
     if (!$contestData['voting_started']) {
       throw new \YagGames\Exception\BracketException("Voting has not started");
@@ -88,17 +88,15 @@ class BracketService
     //get contest & media id fetchRecordByRoundAndMedia
     $contestMediaTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaTable');
     $contestMediaData = $contestMediaTable->fetchContestMedia($contestId, $mediaId);
-    $contestMediaComboTable = $this->getServiceLocator()->get('YagGames\Model\ContestBracketMediaComboTable');
-    $contestMediaComboData = (array) $contestMediaComboTable->fetchRecordByRoundAndMedia($contestData['current_round'], $mediaId, $contestId);
     $contestMediaData = (array) $contestMediaData;
     if (!$contestMediaData) {
       throw new \YagGames\Exception\BracketException("No contest media found");
     }
     
-    // Can rate once for a media in one day
+    // Can rate once for a media in one round
     $contestMediaRatingTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaRatingTable');
     if (!empty($userSession['mem_id'])) {
-      $count = $contestMediaRatingTable->hasAlreadyVotedForThisBracketContest($contestData['current_round'], $contestMediaComboData['combo_id'], $userSession['mem_id']);
+      $count = $contestMediaRatingTable->hasAlreadyVotedForThisBracketContest($contestData['current_round'], $comboId, $userSession['mem_id']);
       if ($count) {
         throw new \YagGames\Exception\BracketException("You have already voted fot this media in this Round");
       }
@@ -108,9 +106,9 @@ class BracketService
     $contestMediaRating = new \YagGames\Model\ContestMediaRating();
     $contestMediaRating->contest_media_id = $contestMediaData['id'];
     $contestMediaRating->member_id = (!empty($userSession['mem_id'])) ? $userSession['mem_id'] : 0;
-    $contestMediaRating->rating = $rating;
+    $contestMediaRating->rating = 10;
     $contestMediaRating->round = $contestData['current_round'];
-    $contestMediaRating->bracket_combo_id = $contestMediaComboData['combo_id'];
+    $contestMediaRating->bracket_combo_id = $comboId;
     
     $contestMediaRatingId = $contestMediaRatingTable->insert($contestMediaRating);   
     if (!$contestMediaRatingId) {
@@ -120,7 +118,7 @@ class BracketService
     return $contestMediaRatingId;
   }
   
-  public function getContestMedia($contestId,  $userId = null, $keyword = null, $page = 1, $offset = 20, $sort = 'rank')
+  public function getContestMedia($contestId,  $userId = null)
   {
     $contestMediaTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaTable');
     $contestData = $contestMediaTable->fetchBracketContestMedia($contestId, $userId);
@@ -128,15 +126,15 @@ class BracketService
     return $contestData;
   }
   
-  public function getNextContestMedia($contestId,  $userId = null, $mediaId = null, $ratedMedia = array())
+  public function getNextContestMedia($contestId,  $userId = null, $contestMediaId = null, $ratedMedia = array(), $round)
   {
     $contestMediaTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaTable');
-    $contestData = $contestMediaTable->getNextContestMedia($contestId, $userId, $mediaId, $ratedMedia);
+    $contestData = $contestMediaTable->getNextBracketMedia($contestId, $userId, $contestMediaId, $ratedMedia);
     
     $count = 0;
     if ($userId) {
       $contestMediaRatingTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaRatingTable');
-      $count = $contestMediaRatingTable->totalRatedForThisContestToday($contestId, $userId);
+      $count = $contestMediaRatingTable->totalRatedForThisBracketRound($contestId, $userId, $round);
     }
     $contestData['totalRated'] = $count;
     

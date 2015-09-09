@@ -15,7 +15,9 @@
     });
 
     var contestId = '<?php echo $contestId ?>';
-
+    var round = <?php echo $contestData['contestDetails']['current_round']; ?>;
+    
+    
     $(".brk-vote-lt,.brk-vote-rt").each(function (key, elem) {        
         $(elem).find('.voteStar').each(function (key2, elem2) {
             var starValue = 10;
@@ -30,10 +32,9 @@
                         // Unbind stars to prevent double clicking
                         $(".voteStar")                                
                                 .unbind()
-                                .css('cursor', 'default');                        
-//                        $(elem).unbind().fadeOut(200, function () {
-                            submitVote(elem, contestId, mediaID, starValue);
-//                        });
+                                .css('cursor', 'default');
+                        var comboId = <?php echo $contestData['contestDetails']['combo_id']; ?>;
+                        submitVote(contestId, mediaID, round, comboId);
                     }); // Do the rating when the star is clicked on
         });        
     });
@@ -43,11 +44,11 @@
         $(targetStar).find('.voteStar').trigger(e.type);        
     });    
    
-    function submitVote(elem, contestId, mediaId, rating) {        
+    function submitVote(contestId, mediaId, round, comboId) {        
         var request = $.ajax({
-            url: gameBasePath + '/photo-contest/vote',
+            url: gameBasePath + '/brackets/vote',
             type: "POST",
-            data: {'mediaId': mediaId, 'contestId': contestId, 'rating': rating},
+            data: {'contestId': contestId, 'mediaId': mediaId, 'round': round, 'comboId' : comboId },
             dataType: 'json',
             beforeSend: function () {
                 $("#ajaxBusy").removeClass('hide');
@@ -76,7 +77,7 @@
 
     function showNextImagePopup() {
         workbox({
-            page: gameBasePath + '/photo-contest/get-next-art?contestId=' + contestId,
+            page: gameBasePath + '/brackets/get-next-art?contestId=' + contestId + '&round=' + round,
             mini: true
         });
         scroll(0, 0);
@@ -94,44 +95,41 @@
     }
 </script>
 <div class="brk-vote-it-popup">
-    <?php if (isset($media['contest_name'])) : ?>
+    <?php if ($contestData['contestDetails']) : ?>
     <div class="brk-vote-it-wrapper">
-            <div>
-                <div class="brk-vote-it-img-lt pull-left text-center" data-target-star=".brk-vote-lt">
-                    <div class="image">
-                        <img src="<?php echo $this->mediaImage($media, 'samples'); ?>"  style="max-height:180px;" />
-                    </div>
-
-                </div>               
-                <div class="brk-vote-it-img-rt pull-right text-center" data-target-star=".brk-vote-rt">
-                    <div class="image">
-                        <img src="<?php echo $this->mediaImage($media, 'samples'); ?>"  style="max-height:180px;" />
-                    </div>
-                    <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/close.button.png" id="closeWorkbox" class="brk-closeWorkbox">
-                </div>
-            </div>                     
+        <div>
+            <div class="brk-vote-it-img-lt pull-left text-center" data-target-star=".brk-vote-lt">
+                <img class="brk-image" src="<?php echo $this->mediaImage($media1, 'samples', 300); ?>" />
+            </div>               
+            <div class="brk-vote-it-img-rt pull-right text-center" data-target-star=".brk-vote-rt">
+                <img class="brk-image" src="<?php echo $this->mediaImage($media2, 'samples', 300); ?>" />                    
+                <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/close.button.png" id="closeWorkbox" class="brk-closeWorkbox">
+            </div>
+        </div>                     
         </div>
         <div class="brk-bottom-wrapper col-md-12">
-            <div class="col-md-5">
-                <div class="brk-vote-lt text-center" data-media-id="<?php echo $media['media_id'] ?>" data-target-img=".brk-vote-it-img-lt">
+            <div class="col-md-1"></div>
+            <div class="col-md-4">
+                <div class="brk-vote-lt text-center" data-media-id="<?php echo $media1['media_id'] ?>" data-target-img=".brk-vote-it-img-lt">
                     <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/star.0.png" class="voteStar">
-                    <p>Artist Name:&nbsp;<?php echo $media['f_name']; ?></p>
+                    <p>Artist Name:&nbsp;<?php echo $media1['f_name']; ?></p>
                 </div>
             </div>
             <div class="col-md-2 text-center no-padding">
                 <div class="rate-it-details">
                     <div class="brk-heading-1">OR</div>
-                    <div class="brk-heading-2">STARTING 64</div>                    
-                    <div class="brk-heading-3"><strong><?php echo $media['totalRated'] + 1 ?>/<?php echo $media['count'] ?></strong></div>
+                    <div class="brk-heading-2"><?php echo $contestData['round_name']; ?></div>                    
+                    <div class="brk-heading-3"><strong><?php echo $contestData['totalRated'] + 1 ?>/<?php echo $contestData['count'] ?></strong></div>
                     <div class="brk-heading-4"><strong>FACEOFF</strong></div>
                 </div>                
             </div>
-            <div class="col-md-5">
-                <div class="brk-vote-rt text-center" data-media-id="<?php echo $media['media_id'] ?>" data-target-img=".brk-vote-it-img-rt">
+            <div class="col-md-4">
+                <div class="brk-vote-rt text-center" data-media-id="<?php echo $media2['media_id'] ?>" data-target-img=".brk-vote-it-img-rt">
                     <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/star.0.png" class="voteStar">
-                    <p>Artist Name:&nbsp;<?php echo $media['f_name']; ?></p>
+                    <p>Artist Name:&nbsp;<?php echo $media2['f_name']; ?></p>
                 </div>
-            </div>            
+            </div>
+            <div class="col-md-1"></div>
         </div>
     <?php elseif ($mediaId): ?>
         <div class="rate-it-wrapper">

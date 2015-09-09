@@ -516,8 +516,11 @@ body {
 }
 .brk-vote-it-img-lt, .brk-vote-it-img-rt{
     border: 1px solid #c1c1c1;
-    width: 300px;
-    padding: 50px 0;    
+    width: 310px;
+    height: 280px;
+    padding: 4px;
+    justify-content: center;
+    position: relative;
 }
 .brk-vote-it-img-hover{
    background-color: #A9A5A5;
@@ -549,9 +552,19 @@ body {
     margin-top: -6px;
 }
 .brk-closeWorkbox{
-    right: 6px !important;
-    top: 5px !important;
-    height: 21px !important;
-    width: 22px !important;
+    right: -25px !important;
+    top: -25px !important;
+    height: 18px !important;
+    width: 18px !important;
+}
+.brk-image{
+    margin: auto;
+    max-height: 98%;
+    max-width: 98%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
 }
 /* Voting Popup End */

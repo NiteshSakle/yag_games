@@ -145,7 +145,7 @@ class ContestMediaRatingTable extends BaseTable
     }
   }
   
-  public function hasAlreadyVotedForThisBracketContest($round, $contestComboId , $userId){
+  public function hasAlreadyVotedForThisBracketContest($round, $comboId , $userId){
     try {
       $sql = $this->getSql();
       $columns = array('count' => new Expression('COUNT(cmr.id)'));
@@ -153,7 +153,7 @@ class ContestMediaRatingTable extends BaseTable
               ->from(array('cmr' => 'contest_media_rating'))
               ->columns($columns)
               ->where(array(
-                  'cmr.bracket_combo_id' => $contestComboId,
+                  'cmr.bracket_combo_id' => $comboId,
                   'cmr.member_id' => $userId,
                   'round' => $round,
               ));
@@ -170,5 +170,32 @@ class ContestMediaRatingTable extends BaseTable
       return false;
     }
   }
+  
+  public function totalRatedForThisBracketRound($contestId, $userId, $round)
+  {
+    try {
+      $sql = $this->getSql();
+      $columns = array('count' => new Expression('COUNT(cmr.id)'));
+      $query = $sql->select()
+              ->from(array('cmr' => 'contest_media_rating'))
+              ->join(array('cm' => 'contest_media'), 'cm.id = cmr.contest_media_id')
+              ->columns($columns)
+              ->where(array(
+                'cm.contest_id' => $contestId,
+                'cmr.member_id' => $userId,
+                'cmr.round' => $round
+            ));
 
+      $rows = $sql->prepareStatementForSqlObject($query)->execute();
+      $row = $rows->current();
+      if ($row) {
+        return $row['count'];
+      } else {
+        return false;
+      }
+    } catch (Exception $e) {
+      $this->logException($e);
+      return false;
+    }
+  }
 }

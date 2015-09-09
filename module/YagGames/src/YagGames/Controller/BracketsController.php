@@ -168,7 +168,6 @@ class BracketsController extends BaseController
   public function votingAction()
   {
     $contestId = $this->params()->fromRoute('id', null);
-    $search = $this->params()->fromPost('search', null);
     $this->session = $this->sessionPlugin();
     $userId = '';
     if (isset($this->session->mem_id)) {
@@ -252,6 +251,7 @@ class BracketsController extends BaseController
   {
     $contestId = $this->params()->fromQuery('contestId', null);
     $mediaId = $this->params()->fromQuery('mediaId', null);
+    $round = $this->params()->fromQuery('round', null);
     $this->session = $this->sessionPlugin();
 
     if (isset($this->session->mem_id)) {
@@ -259,16 +259,37 @@ class BracketsController extends BaseController
       $ratedMedia = array();
     } else {
       $userId = '';
-      $ratedMedia = $this->getRatedMedia($contestId); //fill the data from cookie
+      $ratedMedia = $this->getRatedMedia($contestId, $round); //fill the data from cookie
     }
+    $contestMediaId = Null;
+    if($mediaId) {
+        $contestMediaTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaTable');
+        $contestMediaData = (array) $contestMediaTable->fetchContestMedia($contestId,$mediaId);
 
+        if (!$contestMediaData) {
+          throw new \YagGames\Exception\BracketException("No contest media found");
+        }
+        $contestMediaId = $contestMediaData['id'];
+    }
+    
     $bracketService = $this->getServiceLocator()->get('bracketService');
-    $media = $bracketService->getNextContestMedia($contestId, $userId, $mediaId, $ratedMedia);
-    if (!isset($this->session->mem_id)) {
-      $media['totalRated'] = count($ratedMedia);
+    $contestData = $bracketService->getNextContestMedia($contestId, $userId, $contestMediaId, $ratedMedia, $round);
+    
+    $media1=array();
+    $media2=array();
+    if($contestData['contestDetails']){
+        $media1 = $contestData['medias'][$contestData['contestDetails']['contest_media_id1']];
+        $media2 = $contestData['medias'][$contestData['contestDetails']['contest_media_id2']];
+        $roundDetails = $this->getRoundNameAndCount($round);
+        $contestData['count'] = $roundDetails['count'];
+        $contestData['round_name'] = $roundDetails['round_name'];
     }
-
-    $viewModel = new ViewModel(array('media' => $media, 'contestId' => $contestId, 'mediaId' => $mediaId));
+    
+    if (!isset($this->session->mem_id)) {
+        $contestData['totalRated'] = count($ratedMedia);
+    }
+    
+    $viewModel = new ViewModel(array('media1' => $media1, 'media2' => $media2 , 'contestId' => $contestId, 'mediaId' => $mediaId, 'contestData' => $contestData));
 
     return $viewModel->setTerminal(true);
   }
@@ -284,9 +305,10 @@ class BracketsController extends BaseController
     $request = $this->getRequest();
     if ($request->isPost()) {
       $mediaId = $request->getPost('mediaId');
+      $comboId = $request->getPost('comboId');
       $contestId = $request->getPost('contestId');
-      $rating = $request->getPost('rating');
-      if (!$mediaId || !$contestId) {
+      $round = $request->getPost('round');
+      if (!$mediaId || !$contestId || !$comboId|| !$round) {
         return new JsonModel(array(
             'success' => false,
             'message' => 'Bad Request'
@@ -296,7 +318,7 @@ class BracketsController extends BaseController
       // for non logged in user
       // check user already rated the contest media from this browser
       if (!$userId) {
-        $resp = $this->isAlreadyRated($contestId, $mediaId);
+        $resp = $this->isAlreadyRated($contestId, $comboId, $round);
         if ($resp) {
           return new JsonModel(array(
               'success' => false,
@@ -307,7 +329,7 @@ class BracketsController extends BaseController
 
       $bracketService = $this->getServiceLocator()->get('bracketService');
       try {
-        $contestMediaRatingId = $bracketService->addVoteToArt($contestId, $mediaId, $this->session, $rating);
+        $contestMediaRatingId = $bracketService->addVoteToArt($contestId, $mediaId, $this->session, $comboId);
       } catch (BracketException $e) {
         return new JsonModel(array(
             'success' => false,
@@ -316,7 +338,7 @@ class BracketsController extends BaseController
       }
 
       if (!$userId) {
-        $this->storeRate($contestId, $mediaId);
+        $this->storeRate($contestId, $comboId,$round);
       }
 
       return new JsonModel(array(
@@ -333,30 +355,30 @@ class BracketsController extends BaseController
     ));
   }
 
-  private function storeRate($contestId, $mediaId)
+  private function storeRate($contestId, $comboId, $round)
   {
     try {
       //store in cookie
       $rmArray = $this->getRmCookie();
 
-      if (!isset($rmArray[$contestId])) {
-        $rmArray[$contestId] = array();
+      if (!isset($rmArray[$contestId][$round])) {
+        $rmArray[$contestId][$round] = array();
       }
-      $rmArray[$contestId][] = $mediaId;
+      $rmArray[$contestId][$round][$comboId] = $comboId;
 
-      $cookie = new \Zend\Http\Header\SetCookie('rm', \json_encode($rmArray), mktime(24, 0, 0), '/');
+      $cookie = new \Zend\Http\Header\SetCookie('rm', \json_encode($rmArray), time() + 30 * 60 * 60 * 24, '/');
       $this->getResponse()->getHeaders()->addHeader($cookie);
     } catch (\Exception $e) {
       $this->getServiceLocator()->get('YagGames\Logger')->err($e->getMessage());
     }
   }
 
-  private function isAlreadyRated($contestId, $mediaId)
+  private function isAlreadyRated($contestId, $comboId, $round)
   {
     try {
       $rmArray = $this->getRmCookie();
 
-      if (isset($rmArray[$contestId][$mediaId])) {
+      if (isset($rmArray[$contestId][$round][$comboId])) {
         return true;
       }
     } catch (\Exception $e) {
@@ -366,13 +388,13 @@ class BracketsController extends BaseController
     return false;
   }
 
-  private function getRatedMedia($contestId)
+  private function getRatedMedia($contestId, $round)
   {
     try {
       $rmArray = $this->getRmCookie();
 
-      if (isset($rmArray[$contestId])) {
-        return $rmArray[$contestId];
+      if (isset($rmArray[$contestId][$round])) {
+        return $rmArray[$contestId][$round];
       }
     } catch (\Exception $e) {
       $this->getServiceLocator()->get('YagGames\Logger')->err($e->getMessage());
@@ -402,6 +424,35 @@ class BracketsController extends BaseController
     }
 
     return $this->contest;
+  }
+  private function getRoundNameAndCount($round) {
+      $roundDetails = array();
+      switch ($round){
+          case 1: $roundDetails['count'] = 32;
+              $roundDetails['round_name'] = 'STARTING 64';
+              break;
+          case 2: $roundDetails['count'] = 16;
+              $roundDetails['round_name'] = 'TOP 64';
+              break;
+          case 3: $roundDetails['count'] = 8;
+              $roundDetails['round_name'] = 'SWEET 16';
+              break;
+          case 4: $roundDetails['count'] = 4;
+              $roundDetails['round_name'] = 'Elite 8';
+              break;
+          case 5: $roundDetails['count'] = 2;
+              $roundDetails['round_name'] = 'Final 4';
+              break;
+          case 6: $roundDetails['count'] = 1;
+              $roundDetails['round_name'] = 'SEMI-FINAL';
+              break;
+          
+          default: $roundDetails['count'] = 0;
+              $roundDetails['round_name'] = 'Error';
+              break;
+          
+      }
+      return $roundDetails;
   }
 
 }

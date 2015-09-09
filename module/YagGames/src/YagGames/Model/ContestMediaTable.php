@@ -307,4 +307,103 @@ class ContestMediaTable extends BaseTable {
                 "medias" => $photos
             );
     }
+    
+    public function getNextBracketCombo($contestId, $userId = null, $contestMediaId, $ratedComboMedia = array()) {
+        try {
+            $limit = 1;
+            $sql = $this->getSql();
+            $columns = array('contest_name' => 'name', 'votes' => new Expression('COUNT(cbmc.combo_id)'));
+            $query = $sql->select()
+                    ->from(array('c' => 'contest'))
+                    ->columns($columns)
+                    ->join(array('cbr' => 'contest_bracket_round'), 'cbr.contest_id = c.id', array('*'))
+                    ->join(array('cbmc' => 'contest_bracket_media_combo'), new Expression(' c.id = cbmc.contest_id AND cbr.current_round = cbmc.round') , array('*'))
+                    ->join(array('cmr' => 'contest_media_rating'), new Expression('cbmc.combo_id = cmr.bracket_combo_id AND cbmc.round = cmr.round'), array(), 'left')
+                    ->where(array('c.id' => $contestId))
+                    ->limit($limit)
+                    ->group('cbmc.combo_id')
+                    ->order('cbmc.combo_id');
+            
+            if (!empty($contestMediaId)) {
+                $query->where
+                    ->NEST
+                    ->equalTo('cbmc.contest_media_id1', $contestMediaId)
+                    ->OR
+                    ->equalTo('cbmc.contest_media_id2', $contestMediaId)
+                    ->UNNEST; 
+            }
+
+            if (!empty($userId)) {
+                //exclude already rated media of this round
+                $subQry = $sql->select()
+                        ->from(array('cmr2' => 'contest_media_rating'))
+                        ->columns(array('bracket_combo_id'))
+                        ->where(array(
+                    'cmr2.member_id' => $userId,
+                    'cmr2.round' => `cbr`.`current_round`
+                ));
+
+                $query->where(
+                        new \Zend\Db\Sql\Predicate\PredicateSet(
+                        array(
+                    new \Zend\Db\Sql\Predicate\NotIn('cbmc.combo_id', $subQry)
+                        )
+                        )
+                );
+            } else if (count($ratedComboMedia)) {
+                //add not in condition to eliminate rated media
+                $query->where(new \Zend\Db\Sql\Predicate\NotIn('cbmc.combo_id', $ratedComboMedia));
+            }
+            $rows = $sql->prepareStatementForSqlObject($query)->execute();
+            
+            return $rows->current();
+        } catch (Exception $e) {
+            $this->logException($e);
+            return false;
+        }
+    }
+    
+    public function getNextBracketMedia($contestId, $userId = null, $contestMediaId, $ratedMedia = array())
+    {
+        try {
+            $comboDetails = $this->getNextBracketCombo($contestId, $userId, $contestMediaId, $ratedMedia);
+            
+            $media = array();
+            if($comboDetails) {
+                $limit = 2;
+                $sql = $this->getSql();            
+                $query = $sql->select()                    
+                        ->from(array('cm' => 'contest_media'))
+                        ->columns(array('*'))
+                        ->join(array('m' => 'ps4_media'), 'm.media_id = cm.media_id', array('*'))
+                        ->join(array('u' => 'ps4_members'), 'm.owner = u.mem_id', array('username', 'f_name'))
+                        ->where(array('cm.contest_id' => $contestId))
+                        ->limit($limit)
+                        ->group('cm.media_id');
+                
+                $query->where
+                        ->NEST
+                        ->equalTo('cm.id', $comboDetails['contest_media_id1'])
+                        ->OR
+                        ->equalTo('cm.id', $comboDetails['contest_media_id2'])
+                        ->UNNEST;  
+                 
+                $rows = $sql->prepareStatementForSqlObject($query)->execute();
+                
+                foreach ($rows as $row) {
+                    $media[$row['id']] = $row;
+                }
+            } else {
+                
+            }
+            
+            return array(
+                "contestDetails" => $comboDetails,
+                "medias" => $media
+            );         
+        } catch (Exception $e) {
+            $this->logException($e);
+            return false;
+        }
+    }
 }
