@@ -93,8 +93,8 @@
         });
     }
 </script>
-<div class="brk-vote-it-popup">
     <?php if (isset($media['contest_name'])) : ?>
+    <div class="brk-vote-it-popup">
     <div class="brk-vote-it-wrapper">
             <div>
                 <div class="brk-vote-it-img-lt pull-left text-center" data-target-star=".brk-vote-lt">
@@ -133,7 +133,9 @@
                 </div>
             </div>            
         </div>
+    </div>
     <?php elseif ($mediaId): ?>
+    <div class="rate-it-popup">
         <div class="rate-it-wrapper">
       <!--    <div class="rangetitle1 animalcol"><?php echo $media['contest_name']; ?></div>-->
             <div class="rate-it-image">
@@ -144,13 +146,15 @@
                     <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/thankyou1.png">
                 </span>
                 <span class="col-md-8" style="font-size: 25px; text-align: center; line-height: 1.3em; color: #663f8e; font-family: 'franklin_gothic_bookregular';">
-                    <p><b>Thank You </b><br>
-                        for your recent vote! <br>
-                        Come back <br>
-                        tomorrow <br>
-                        to vote again.</p>                
+                     <p><b>Congratulation, </b><br>
+                        you have already voted! <br>
+                        Be sure to vote again<br>                        
+                        next round.</p>                
                 </span>            
-            </div>
+            </div>            
+            <div class="col-md-12 text-center">
+                <p class="brk-popup-label-3">Next round start: 10/19/15</p>
+            </div>           
         </div>
         <div class="bottom-wrapper">
             <div class="rate-it-detail" style="font-size: 25px;text-align: center;">
@@ -166,7 +170,9 @@
                 </div>      
             </div>
         </div>
+    </div>
     <?php else: ?>
+    <div class="rate-it-popup">
         <div class="rate-it-wrapper">
       <!--    <div class="rangetitle1 animalcol"><?php echo $media['contest_name']; ?></div>-->
             <div class="rate-it-image">
@@ -199,5 +205,5 @@
                 </div>      
             </div>
         </div>
+    </div>
     <?php endif; ?>
-</div>
