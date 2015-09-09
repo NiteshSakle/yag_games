@@ -309,6 +309,14 @@ class PhotoContestController extends BaseController
       $mediaId = $request->getPost('mediaId');
       $contestId = $request->getPost('contestId');
       $rating = $request->getPost('rating');
+      
+      if (!($rating >= 2 || $rating <= 10)) {
+        return new JsonModel(array(
+            'success' => false,
+            'message' => 'Something is wrong!'
+        ));
+      }
+      
       if (!$mediaId || !$contestId) {
         return new JsonModel(array(
             'success' => false,
