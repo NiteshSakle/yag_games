@@ -94,18 +94,19 @@
         });
     }
 </script>
-<div class="brk-vote-it-popup">
-    <?php if ($contestData['contestDetails']) : ?>
-    <div class="brk-vote-it-wrapper">
-        <div>
-            <div class="brk-vote-it-img-lt pull-left text-center" data-target-star=".brk-vote-lt">
-                <img class="brk-image" src="<?php echo $this->mediaImage($media1, 'samples', 300); ?>" />
-            </div>               
-            <div class="brk-vote-it-img-rt pull-right text-center" data-target-star=".brk-vote-rt">
-                <img class="brk-image" src="<?php echo $this->mediaImage($media2, 'samples', 300); ?>" />                    
-                <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/close.button.png" id="closeWorkbox" class="brk-closeWorkbox">
-            </div>
-        </div>                     
+
+<?php if ($contestData['contestDetails']) : ?>
+    <div class="brk-vote-it-popup">
+        <div class="brk-vote-it-wrapper">
+            <div>
+                <div class="brk-vote-it-img-lt pull-left text-center" data-target-star=".brk-vote-lt">
+                    <img class="brk-image" src="<?php echo $this->mediaImage($media1, 'samples', 300); ?>" />
+                </div>               
+                <div class="brk-vote-it-img-rt pull-right text-center" data-target-star=".brk-vote-rt">
+                    <img class="brk-image" src="<?php echo $this->mediaImage($media2, 'samples', 300); ?>" />                    
+                    <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/close.button.png" id="closeWorkbox" class="brk-closeWorkbox">
+                </div>
+            </div>                     
         </div>
         <div class="brk-bottom-wrapper col-md-12">
             <div class="col-md-1"></div>
@@ -131,7 +132,9 @@
             </div>
             <div class="col-md-1"></div>
         </div>
-    <?php elseif ($mediaId): ?>
+    </div>
+    <?php else : ?>
+    <div class="rate-it-popup">
         <div class="rate-it-wrapper">
       <!--    <div class="rangetitle1 animalcol"><?php echo $media['contest_name']; ?></div>-->
             <div class="rate-it-image">
@@ -142,13 +145,15 @@
                     <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/thankyou1.png">
                 </span>
                 <span class="col-md-8" style="font-size: 25px; text-align: center; line-height: 1.3em; color: #663f8e; font-family: 'franklin_gothic_bookregular';">
-                    <p><b>Thank You </b><br>
-                        for your recent vote! <br>
-                        Come back <br>
-                        tomorrow <br>
-                        to vote again.</p>                
+                     <p><b>Congratulation, </b><br>
+                        you have already voted! <br>
+                        Be sure to vote again<br>                        
+                        next round.</p>                
                 </span>            
-            </div>
+            </div>            
+            <div class="col-md-12 text-center">
+                <p class="brk-popup-label-3">Next round start: 10/19/15</p>
+            </div>           
         </div>
         <div class="bottom-wrapper">
             <div class="rate-it-detail" style="font-size: 25px;text-align: center;">
@@ -164,38 +169,5 @@
                 </div>      
             </div>
         </div>
-    <?php else: ?>
-        <div class="rate-it-wrapper">
-      <!--    <div class="rangetitle1 animalcol"><?php echo $media['contest_name']; ?></div>-->
-            <div class="rate-it-image">
-                <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/close.button.png" id="closeWorkbox">
-            </div>
-            <div class="row" style="border:1px solid grey">
-                <span class="col-md-4">
-                    <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/thankyou1.png">
-                </span>
-                <span class="col-md-8" style="font-size: 25px; text-align: center; line-height: 1.3em; color: #663f8e; font-family: 'franklin_gothic_bookregular';">
-                    <p><b>Thank You </b><br>
-                        for your recent vote! <br>
-                        Come back <br>
-                        tomorrow <br>
-                        to vote again.</p>                
-                </span>            
-            </div>
-        </div>
-        <div class="bottom-wrapper">
-            <div class="rate-it-detail" style="font-size: 25px;text-align: center;">
-                <p><b>Want to Rate More Art?</b></p>
-                <div>
-                    <a href="<?php echo $this->config('main_site', 'url') ?>/yag-or-gag"><img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/YAGGAG.PNG" style="-webkit-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.5);-moz-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.5);box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.5);"></a>
-                </div>
-                <br>
-                OR
-                <br>
-                <div class="contest" style="border:none; text-align: center">
-                    <button onclick="window.location = '<?php echo $this->basePath() ?>/active-contest'">More Contests</button>            
-                </div>      
-            </div>
-        </div>
+    </div>    
     <?php endif; ?>
-</div>
