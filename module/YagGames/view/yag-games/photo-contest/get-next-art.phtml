@@ -35,15 +35,20 @@
                         highlightStarsForPhotoContest(elem, key2);
                     }) // Assign a mouse over on the active stars				
                     .click(function () {
-                        $(elem) // Unbind stars to prevent double clicking
-                                .find('.ratingStar1')
-                                .unbind()
-                                .css('cursor', 'default');
+                       
+                       if (starValue >= 2 || starValue <= 10) {
+                            $(elem) // Unbind stars to prevent double clicking
+                                    .find('.ratingStar1')
+                                    .unbind()
+                                    .css('cursor', 'default');
 
-                        $('span.rate-points').parent().next().hide();
-                        $(elem).unbind().fadeOut(200, function () {
-                            submitVote(elem, contestId, mediaID, starValue);
-                        });
+                            $('span.rate-points').parent().next().hide();
+                            $(elem).unbind().fadeOut(200, function () {
+                                submitVote(elem, contestId, mediaID, starValue);
+                            });
+                       } else {
+                           alert('Something is wrong!');
+                       }
                     }); // Do the rating when the star is clicked on
         });
     });
