@@ -206,7 +206,7 @@ class ContestTable extends BaseTable {
         // show only user medias
         $select->join(array('cm1' => 'contest_media'), 'c.id = cm1.contest_id', 'media_id')
                 ->join(array('m' => 'ps4_media'), 'cm1.media_id = m.media_id', 'media_id')
-                ->join(array('cw' => 'contest_winner'), 'cm1.id = cw.contest_media_id', array('rank'), 'left')
+                ->join(array('cw' => 'contest_winner'), 'cm1.id = cw.contest_media_id', array('rank','no_of_votes'), 'left')
                 ->where(array('m.owner' => $user));
 
         // if user log's in, check whether he entered the contest or not

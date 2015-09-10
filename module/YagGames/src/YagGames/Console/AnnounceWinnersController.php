@@ -57,6 +57,7 @@ class AnnounceWinnersController extends BaseConsoleController {
                 $contestWinner = new \YagGames\Model\ContestWinner();
                 $contestWinner->contest_media_id = $winner[0]['next_round_media_id'];
                 $contestWinner->rank = 1;
+                $contestWinner->no_of_votes = ($winner[0]['next_round_media_id'] == $winner[0]['contest_media_id1'])? $winner[0]['cmediaid1_votes'] : $winner[0]['cmediaid2_votes'];
                 
                 $contestWinnerTable = $this->getServiceLocator()->get('YagGames\Model\ContestWinnerTable');
                 
