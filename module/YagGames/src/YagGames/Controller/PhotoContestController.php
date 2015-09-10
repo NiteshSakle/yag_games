@@ -274,7 +274,7 @@ class PhotoContestController extends BaseController
     $vm->setVariable('medias', $data['medias']);
     $vm->setVariable('contestId', $contestId);
     $vm->setVariable('contest', $this->contest);
-    $vm->setVariable('media', $media);
+    $vm->setVariable('shareMedia', $media);
     $vm->setVariable('page', $page);
     $vm->setVariable('size', $size);
     return $vm;
