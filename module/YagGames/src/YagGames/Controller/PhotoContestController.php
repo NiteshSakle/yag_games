@@ -171,6 +171,7 @@ class PhotoContestController extends BaseController
 
   public function votingAction()
   {
+    $mediaId = $this->params()->fromRoute('mid') ? (int) $this->params()->fromRoute('mid') : 0;
     $page = $this->params()->fromRoute('page') ? (int) $this->params()->fromRoute('page') : 1;
     $size = $this->params()->fromRoute('size') ? (int) $this->params()->fromRoute('size') : 20;
     $contestId = $this->params()->fromRoute('id', null);
@@ -214,6 +215,7 @@ class PhotoContestController extends BaseController
     $vm->setVariable('medias', $data['medias']);
     $vm->setVariable('contestId', $contestId);
     $vm->setVariable('search', $search);
+    $vm->setVariable('mid', $mediaId);
     $vm->setVariable('page', $page);
     $vm->setVariable('size', $size);
     return $vm;

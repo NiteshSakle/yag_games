@@ -103,15 +103,22 @@
 
     <script type="text/javascript">
 
-        $(window).ready(function () {
-<?php if (empty($search)) { ?>
-                workbox({
-                    page: gameBasePath + '/photo-contest/get-next-art?contestId=' + contestId,
-                    mini: true
-                });
-<?php } ?>
+    $(window).ready(function () {
+    <?php if (empty($search) && !$mid) { ?>
+            workbox({
+                page: gameBasePath + '/photo-contest/get-next-art?contestId=' + contestId,
+                mini: true
+            });
+    <?php } else { ?>
+            var mediaId = <?php echo $mid; ?>;
+            workbox({
+                page: gameBasePath + '/photo-contest/get-next-art?contestId=' + contestId + '&mediaId=' + mediaId,
+                mini: true
+            });
+    
+    <?php } ?>
             scroll(0, 0);
-        });
+    });
 
         var contestId = "<?php echo $contestId; ?>";
         $('.media_image').click(function () {
