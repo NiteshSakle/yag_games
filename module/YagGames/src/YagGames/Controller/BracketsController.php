@@ -354,6 +354,24 @@ class BracketsController extends BaseController
         'message' => 'Bad Request'
     ));
   }
+  
+  public function getImageUrlAction() 
+  {      
+    $request = $this->getRequest();    
+    if ($request->isPost()) {
+      $mediaId = $request->getPost('mediaId');
+    }
+    $config = $this->getServiceLocator()->get('config');
+    $KCrypt = $this->getServiceLocator()->get('kcryptService');
+    $kcryptHelper = new \YagGames\View\Helper\KCryptHelper();
+    $kcryptHelper->setKCryptService($KCrypt);    
+    $mediaUrl = $config['main_site']['url'] . '/photo/' . $kcryptHelper->enc($mediaId) . '/photo.html' ;
+    
+    return new JsonModel(array(
+        'success' => true,
+        'mediaUrl' => $mediaUrl
+    ));
+  }
 
   private function storeRate($contestId, $comboId, $round)
   {

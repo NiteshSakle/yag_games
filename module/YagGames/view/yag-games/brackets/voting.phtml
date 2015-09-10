@@ -1,40 +1,17 @@
-<style>
-    .media-art {
-        width: 150px;
-        height: 150px;
-    }
-    .media-art img {
-        //width: 160px;
-        width: 100%;
-        height: 100%;
-        border: 4px solid rgb(223, 220, 125);
-        display: table-cell;
-        vertical-align: middle;
-        background-color: rgb(214, 216, 216);
-    }
-    .media-list-title {
-        background-color: #C8B64C;
-        padding: 2px;
-        margin:15px 20px;
-        width:200px;
-        font-size: 22px;
-    }
+<style>    
     .contest {
         font-family: 'franklin_gothic_bookregular';
         font-weight: bold;
         color: #663f8e; 
     }
     #workbox {
-        top: 0px !important;
+        /*top: 0px !important;*/
     }
     .artist-name , .user-name, .rank {
         text-align: center;
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis
-    }
-    .voting-page {
-        height: 40px;
     }
     .media-list-title {
         background-color: #e5da7c;
@@ -43,6 +20,11 @@
         width: 450px;
         font-size: 22px;
         color: #646567;
+    }
+    .bracket-champion{
+        padding: 0px;
+        margin-top: 80px;
+        margin-bottom: 1px;
     }
 </style>
 <div  class="home_content clearfix">
@@ -315,6 +297,7 @@
                         <div class="round5 white-border" comboId="<?php echo $comboId ?>" mediaId="<?php echo $medias[$media2]['media_id']; ?>">
                             <img mediaid="<?php echo $this->KCrypt()->enc($medias[$media2]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media2], 'icons', '50'); ?>" title="<?php echo $medias[$media2]['title'] ?>" alt="<?php echo $medias[$media2]['title'] ?>" />
                         </div>
+                        <div class="artist-name violet-text" style="font-size: 10px;"><a href="<?php echo $this->config('main_site', 'url') ?>/<?php echo $media['username'] ?>" class="violet-text"><?php echo $medias[$media2]['f_name'] ?></a></div>
                         <?php } else { ?>
                         <div class="round5"></div>
                         <?php } ?>
@@ -343,15 +326,20 @@
                         </div>
                     </div>
                     <div class="col-md-12 col-xs-12 no-margin-padding round6-center-outer" >
-                        <div class="col-md-12 col-xs-12 round6-center">
-                            
+                        <div class="col-md-12 col-xs-12 no-margin-padding">
+                            <div class="col-md-12 col-xs-12 bracket-champion">
+                                Champion
+                            </div>
+                            <div class="col-md-12 col-xs-12 round6-center">
+
+                            </div>
                         </div>
                         <div class="col-md-12 col-xs-12 no-margin-padding round6-center-text">
-                            Total Votes: 158<br>
+<!--                            Total Votes: 158<br>
                             <span class="violet-text">
                             Artist Name: Matthews Thomas<br>
                             User Name: ThomasPhoto
-                            </span>
+                            </span>-->
                         </div>
                     </div>
                     <div class="col-md-12 col-xs-12 no-margin-padding" >
@@ -361,6 +349,7 @@
                             <div class="round6 round6-second white-border" comboId="<?php echo $comboId ?>" mediaId="<?php echo $medias[$media2]['media_id']; ?>">
                                 <img mediaid="<?php echo $this->KCrypt()->enc($medias[$media2]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media2], 'icons', '50'); ?>" title="<?php echo $medias[$media2]['title'] ?>" alt="<?php echo $medias[$media2]['title'] ?>" />
                             </div>
+                            <div class="artist-name violet-text" style="font-size: 10px;"><a href="<?php echo $this->config('main_site', 'url') ?>/<?php echo $media['username'] ?>" class="violet-text"><?php echo $medias[$media2]['f_name'] ?></a></div>
                             <?php } else { ?>
                             <div class="round6 round6-second "></div>
                             <?php } ?>
@@ -392,6 +381,7 @@
                         <div class="round5 white-border" comboId="<?php echo $comboId ?>" mediaId="<?php echo $medias[$media2]['media_id']; ?>">
                             <img mediaid="<?php echo $this->KCrypt()->enc($medias[$media2]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media2], 'icons', '50'); ?>" title="<?php echo $medias[$media2]['title'] ?>" alt="<?php echo $medias[$media2]['title'] ?>" />
                         </div>
+                        <div class="artist-name violet-text" style="font-size: 10px;"><a href="<?php echo $this->config('main_site', 'url') ?>/<?php echo $media['username'] ?>" class="violet-text"><?php echo $medias[$media2]['f_name'] ?></a></div>
                         <?php } else { ?>
                         <div class="round5"></div>
                         <?php } ?>
@@ -611,7 +601,7 @@
                     <?php } ?>
                 </div>
             </div>           
-            <div class="clearfix voting-page"></div>
+            <div class="clearfix"></div>
         </div>
     </div>
     <script type="text/javascript">
@@ -631,6 +621,6 @@
                 page: gameBasePath + '/brackets/get-next-art?contestId=' + contestId + '&mediaId=' + $(this).attr('mediaid') + '&round=' + round,
                 mini: true
             });
-            scroll(0, 0);
+//            scroll(0, 0);
         });
     </script>
