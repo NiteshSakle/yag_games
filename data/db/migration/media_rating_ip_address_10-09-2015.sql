@@ -1,0 +1,1 @@
+ALTER TABLE  `contest_media_rating` ADD  `ip_address` VARCHAR( 100 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL AFTER `rating`;

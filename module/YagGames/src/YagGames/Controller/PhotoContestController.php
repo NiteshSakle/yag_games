@@ -324,7 +324,23 @@ class PhotoContestController extends BaseController
         ));
       }
 
-      // for non logged in user
+      //check user already rated the contest media from this IP Address
+      $config = $this->getServiceLocator()->get('Config');
+      
+      if (is_array($config) && !in_array($request->getServer()->get('REMOTE_ADDR'), $config['white_listed_ips'])) {
+          
+        $constestMediaRatingTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaRatingTable');
+        $isMediaRatedFromIpToday = $constestMediaRatingTable->isMediaRatedFromIpToday($contestId, $mediaId, $request->getServer()->get('REMOTE_ADDR'));
+
+        if ($isMediaRatedFromIpToday) {
+            return new JsonModel(array(
+                'success' => false,
+                'message' => 'You have already rated'
+            ));
+        }        
+      }
+
+            // for non logged in user
       // check user already rated the contest media from this browser
       if (!$userId) {
         $resp = $this->isAlreadyRated($contestId, $mediaId);
@@ -338,7 +354,7 @@ class PhotoContestController extends BaseController
 
       $photoContestService = $this->getServiceLocator()->get('photoContestService');
       try {
-        $contestMediaRatingId = $photoContestService->addVoteToArt($contestId, $mediaId, $this->session, $rating);
+        $contestMediaRatingId = $photoContestService->addVoteToArt($contestId, $mediaId, $this->session, $rating, $request);
       } catch (PhotoContestException $e) {
         return new JsonModel(array(
             'success' => false,
@@ -434,5 +450,5 @@ class PhotoContestController extends BaseController
 
     return $this->contest;
   }
-
-}
+  
+  }

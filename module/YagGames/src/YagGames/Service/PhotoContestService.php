@@ -71,7 +71,7 @@ class PhotoContestService
     
   }
 
-  public function addVoteToArt($contestId, $mediaId, $userSession, $rating)
+  public function addVoteToArt($contestId, $mediaId, $userSession, $rating, $request)
   {
    
     $contestTable = $this->getServiceLocator()->get('YagGames\Model\ContestTable');
@@ -102,13 +102,14 @@ class PhotoContestService
         throw new \YagGames\Exception\PhotoContestException("You have already voted fot this media in this contest today.");
       }
     }
-            
+    
     // now submit vote
     $contestMediaRating = new \YagGames\Model\ContestMediaRating();
     $contestMediaRating->contest_media_id = $contestMediaData['id'];
     $contestMediaRating->member_id = (!empty($userSession['mem_id'])) ? $userSession['mem_id'] : 0;
     $contestMediaRating->rating = $rating;
     $contestMediaRating->round = 0;
+    $contestMediaRating->ip_address = $request->getServer()->get('REMOTE_ADDR');
     
     $contestMediaRatingId = $contestMediaRatingTable->insert($contestMediaRating);   
     if (!$contestMediaRatingId) {
@@ -127,9 +128,10 @@ class PhotoContestService
   }
   
   public function getNextContestMedia($contestId,  $userId = null, $mediaId = null, $ratedMedia = array())
-  {
+  {    
+    $config = $this->getServiceLocator()->get('Config');  
     $contestMediaTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaTable');
-    $contestData = $contestMediaTable->getNextContestMedia($contestId, $userId, $mediaId, $ratedMedia);
+    $contestData = $contestMediaTable->getNextContestMedia($contestId, $userId, $mediaId, $ratedMedia, $config);
     
     $count = 0;
     if ($userId) {
@@ -145,5 +147,5 @@ class PhotoContestService
   {
     return $this->serviceManager;
   }
-
+  
 }
