@@ -202,6 +202,12 @@ class PhotoContestController extends BaseController
                   'action' => 'rankings'
       ));
     }
+    
+    $media = 0;
+    if($mediaId) { 
+      $mediaTable = $this->getServiceLocator()->get('YagGames\Model\MediaTable');
+      $media = $mediaTable->fetchRecord($mediaId);
+    }
 
     $photoContestService = $this->getServiceLocator()->get('photoContestService');
     $data = $photoContestService->getContestMedia($contestId, $userId, $search, $page, $size, '');
@@ -215,7 +221,8 @@ class PhotoContestController extends BaseController
     $vm->setVariable('medias', $data['medias']);
     $vm->setVariable('contestId', $contestId);
     $vm->setVariable('search', $search);
-    $vm->setVariable('mid', $mediaId);
+    $vm->setVariable('shareMedia', $media);
+    $vm->setVariable('contest', $this->contest);
     $vm->setVariable('page', $page);
     $vm->setVariable('size', $size);
     return $vm;

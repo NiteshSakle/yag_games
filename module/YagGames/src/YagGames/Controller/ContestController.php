@@ -95,7 +95,7 @@ class ContestController extends BaseController
           }
         }      
         $view = new ViewModel(array(
-            'media' => $media,
+            'shareMedia' => $media,
             'contest' => $data,
             'type' => $type, 
           ));
