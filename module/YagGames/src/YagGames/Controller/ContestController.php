@@ -76,14 +76,13 @@ class ContestController extends BaseController
       }else{
          $data = false; 
       }
-      if ($data['voting_started']) {
+      if ($data['voting_started'] && $mediaId) {
         return $this->redirect()->toRoute($this->getRouteName($data['contest_type']), array(
             'id' => $contestId,
             'mid' => $mediaId,
             'action' => 'voting'
         ));
       }
-      var_dump($data);
       
       if($data) {
         if(strtotime($data['entry_end_date']) >= strtotime(date("Y-m-d"))){
