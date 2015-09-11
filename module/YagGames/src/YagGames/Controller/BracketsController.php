@@ -277,19 +277,25 @@ class BracketsController extends BaseController
     
     $media1=array();
     $media2=array();
+    $noImages = 0;
     if($contestData['contestDetails']){
-        $media1 = $contestData['medias'][$contestData['contestDetails']['contest_media_id1']];
-        $media2 = $contestData['medias'][$contestData['contestDetails']['contest_media_id2']];
+        if($contestData['contestDetails']['contest_media_id1'] != 0 ) {
+        $media1 = $contestData['medias'][$contestData['contestDetails']['contest_media_id1']]; }
+        if($contestData['contestDetails']['contest_media_id2'] != 0 ) {
+        $media2 = $contestData['medias'][$contestData['contestDetails']['contest_media_id2']]; }
         $roundDetails = $this->getRoundNameAndCount($round);
         $contestData['count'] = $roundDetails['count'];
         $contestData['round_name'] = $roundDetails['round_name'];
+        if($contestData['contestDetails']['contest_media_id1'] == 0 && $contestData['contestDetails']['contest_media_id2'] == 0 ) {
+            $noImages = 1;
+        }
     }
     
     if (!isset($this->session->mem_id)) {
         $contestData['totalRated'] = count($ratedMedia);
     }
     
-    $viewModel = new ViewModel(array('media1' => $media1, 'media2' => $media2 , 'contestId' => $contestId, 'mediaId' => $mediaId, 'contestData' => $contestData));
+    $viewModel = new ViewModel(array('media1' => $media1, 'media2' => $media2 , 'contestId' => $contestId, 'mediaId' => $mediaId, 'contestData' => $contestData, 'noImages' => $noImages, 'contest' => $this->getContest($contestId)));
 
     return $viewModel->setTerminal(true);
   }

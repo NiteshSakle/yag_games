@@ -5,6 +5,9 @@
         font-weight: bold !important; 
         color: #663f8e !important;
     }
+    .brk-rate-it{
+        top: -140px;        
+    }
 </style>
 <script type="text/javascript" src="<?php echo $this->config('main_site', 'url') ?>/assets/javascript/workbox.js"></script>
 <script type="text/javascript">
@@ -14,8 +17,8 @@
         $('#workbox').html('');
     });
 
-    var contestId = '<?php echo $contestId ?>';
-    var round = <?php echo $contestData['contestDetails']['current_round']; ?>;
+    var contestId = '<?php echo isset($contestId)?$contestId:0; ?>';
+    var round = <?php echo isset($contestData['contestDetails']['current_round'])?$contestData['contestDetails']['current_round']:0; ?>;
     
     
     $(".brk-vote-lt,.brk-vote-rt").each(function (key, elem) {        
@@ -33,7 +36,7 @@
                         $(".voteStar")                                
                                 .unbind()
                                 .css('cursor', 'default');
-                        var comboId = <?php echo $contestData['contestDetails']['combo_id']; ?>;
+                        var comboId = <?php echo isset($contestData['contestDetails']['combo_id'])? $contestData['contestDetails']['combo_id'] : 0; ?>;
                         submitVote(contestId, mediaID, round, comboId);
                     }); // Do the rating when the star is clicked on
         });        
@@ -95,7 +98,7 @@
     }
 </script>
 
-<?php if ($contestData['contestDetails']) : ?>
+<?php if ($contestData['contestDetails'] && !$noImages) : ?>
     <div class="brk-vote-it-popup">
         <div class="brk-vote-it-wrapper">
             <div>
@@ -125,16 +128,16 @@
                 </div>                
             </div>
             <div class="col-md-4">
-                <div class="brk-vote-rt text-center" data-media-id="<?php echo $media2['media_id'] ?>" data-target-img=".brk-vote-it-img-rt">
+                <div class="brk-vote-rt text-center" data-media-id="<?php echo isset($media2['media_id']) ? $media2['media_id'] : ""; ?>" data-target-img=".brk-vote-it-img-rt">
                     <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/star.0.png" class="voteStar">
-                    <p>Artist Name:&nbsp;<?php echo $media2['f_name']; ?></p>
+                    <p>Artist Name:&nbsp;<?php echo isset($media2['f_name'])?$media2['f_name'] : ""; ?></p>
                 </div>
             </div>
             <div class="col-md-1"></div>
         </div>
     </div>
     <?php else : ?>
-    <div class="rate-it-popup">
+    <div class="rate-it-popup brk-rate-it">
         <div class="rate-it-wrapper">
       <!--    <div class="rangetitle1 animalcol"><?php echo $media['contest_name']; ?></div>-->
             <div class="rate-it-image">
@@ -152,7 +155,7 @@
                 </span>            
             </div>            
             <div class="col-md-12 text-center">
-                <p class="brk-popup-label-3">Next round start: 10/19/15</p>
+                <p class="brk-popup-label-3">Next round start: <?php $round = "round" . $contest['current_round']; echo date("d/m/Y", strtotime($contest[$round])); ?></p>
             </div>           
         </div>
         <div class="bottom-wrapper">
