@@ -24,7 +24,9 @@ class FbScrapService
             }
             $url = preg_replace("/ /", "%20", $url);
             
-            file_get_contents("https://graph.facebook.com/?id=" . urlencode($url) . '&scrape=true');
+            if($config['main_site']['cloudfront_url'] != '') {
+                file_get_contents("https://graph.facebook.com/?id=" . urlencode($url) . '&scrape=true');
+            }
         } catch (Exception $ex) {
         }        
     }    
