@@ -7,7 +7,7 @@
         $this->headMeta()->setProperty('og:description', 'I entered the ' . $contest['name'] . ' on YOURARTGALLERY.COM. Check out now');
     } else {
         $this->headMeta()->setProperty('og:image', $this->config('aws', 'path') . $contest['thumbnail']);
-        $this->headMeta()->setProperty('og:description', $contest['name'] . ' is available on YOURARTGALLERY.COM. Enter to win! ' . $this->config('main_site' ,'url') . '/contests/details/id/' . $contest['id']);
+        $this->headMeta()->setProperty('og:description', $contest['name'] . ' is available on YOURARTGALLERY.COM. CHECKOUT NOW! ' . $this->config('main_site' ,'url') . '/contests/details/id/' . $contest['id']);
     }
     
     $this->headMeta()->setProperty('twitter:card', 'summary');
@@ -19,7 +19,7 @@
         $this->headMeta()->setProperty('twitter:description', 'I entered the ' . $contest['name'] . ' on YOURARTGALLERY.COM. Check out now ');    
     } else {
         $this->headMeta()->setProperty('twitter:image', $this->config('aws', 'path') . $contest['thumbnail']);    
-        $this->headMeta()->setProperty('twitter:description', $contest['name'] . ' is available on YOURARTGALLERY.COM. Enter to win! ' . $this->config('main_site' ,'url') . '/contests/details/id/' . $contest['id']);    
+        $this->headMeta()->setProperty('twitter:description', $contest['name'] . ' is available on YOURARTGALLERY.COM. CHECKOUT NOW! ' . $this->config('main_site' ,'url') . '/contests/details/id/' . $contest['id']);    
     }
 ?>
 <style>
