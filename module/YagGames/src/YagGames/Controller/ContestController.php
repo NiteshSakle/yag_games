@@ -76,6 +76,13 @@ class ContestController extends BaseController
       }else{
          $data = false; 
       }
+      if ($data['voting_started'] && $mediaId) {
+        return $this->redirect()->toRoute($this->getRouteName($data['contest_type']), array(
+            'id' => $contestId,
+            'mid' => $mediaId,
+            'action' => 'voting'
+        ));
+      }
       
       if($data) {
         if(strtotime($data['entry_end_date']) >= strtotime(date("Y-m-d"))){
@@ -88,7 +95,7 @@ class ContestController extends BaseController
           }
         }      
         $view = new ViewModel(array(
-            'media' => $media,
+            'shareMedia' => $media,
             'contest' => $data,
             'type' => $type, 
           ));
@@ -129,5 +136,20 @@ class ContestController extends BaseController
 
     return $view;
   }
-
+  
+  private function getRouteName($contestName) {
+    switch ($contestName) {
+        case 'Photo Contest':
+            $contestType = 'photo-contest';
+            break;
+        case 'Fan Favorite':
+            $contestType = 'fan-favorite';
+            break;
+        case 'Brackets':
+            $contestType = 'brackets';
+        case 'default':
+            $contestType = 'brackets';
+    }
+    return $contestType;
+  }
 }

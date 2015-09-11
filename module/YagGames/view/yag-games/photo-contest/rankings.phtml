@@ -3,8 +3,8 @@
     $this->headMeta()->setProperty('twitter:site', '@YourArtGallery');
     $this->headMeta()->setProperty('twitter:title', $contest['name']);
     
-    if($media) {
-        $this->headMeta()->setProperty('twitter:image', $this->mediaImage($media, 'samples'));
+    if($shareMedia) {
+        $this->headMeta()->setProperty('twitter:image', $this->mediaImage($shareMedia, 'samples'));
         $this->headMeta()->setProperty('twitter:description', 'Thanks for your votes in  YOURARTGALLERY.COM ' . $contest['name'] . '. Checkout how I did');    
     } else {
         $this->headMeta()->setProperty('twitter:image', $this->config('aws', 'path') . $contest['thumbnail']);    
@@ -13,8 +13,8 @@
     
     $this->headMeta()->setProperty('og:title', $contest['name']);
     $this->headMeta()->setProperty('og:type', 'website');
-    if($media) {
-        $this->headMeta()->setProperty('og:image', $this->mediaImage($media, 'samples'));
+    if($shareMedia) {
+        $this->headMeta()->setProperty('og:image', $this->mediaImage($shareMedia, 'samples'));
         $this->headMeta()->setProperty('og:description', 'Thanks for your votes in  YOURARTGALLERY.COM ' . $contest['name'] . '. Checkout how I did');
     } else {
         $this->headMeta()->setProperty('og:image', $this->config('aws', 'path') . $contest['thumbnail']);
