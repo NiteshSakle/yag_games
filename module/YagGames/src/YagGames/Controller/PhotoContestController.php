@@ -171,6 +171,7 @@ class PhotoContestController extends BaseController
 
   public function votingAction()
   {
+    $mediaId = $this->params()->fromRoute('mid') ? (int) $this->params()->fromRoute('mid') : 0;
     $page = $this->params()->fromRoute('page') ? (int) $this->params()->fromRoute('page') : 1;
     $size = $this->params()->fromRoute('size') ? (int) $this->params()->fromRoute('size') : 20;
     $contestId = $this->params()->fromRoute('id', null);
@@ -201,6 +202,12 @@ class PhotoContestController extends BaseController
                   'action' => 'rankings'
       ));
     }
+    
+    $media = 0;
+    if($mediaId) { 
+      $mediaTable = $this->getServiceLocator()->get('YagGames\Model\MediaTable');
+      $media = $mediaTable->fetchRecord($mediaId);
+    }
 
     $photoContestService = $this->getServiceLocator()->get('photoContestService');
     $data = $photoContestService->getContestMedia($contestId, $userId, $search, $page, $size, '');
@@ -214,6 +221,8 @@ class PhotoContestController extends BaseController
     $vm->setVariable('medias', $data['medias']);
     $vm->setVariable('contestId', $contestId);
     $vm->setVariable('search', $search);
+    $vm->setVariable('shareMedia', $media);
+    $vm->setVariable('contest', $this->contest);
     $vm->setVariable('page', $page);
     $vm->setVariable('size', $size);
     return $vm;
@@ -265,7 +274,7 @@ class PhotoContestController extends BaseController
     $vm->setVariable('medias', $data['medias']);
     $vm->setVariable('contestId', $contestId);
     $vm->setVariable('contest', $this->contest);
-    $vm->setVariable('media', $media);
+    $vm->setVariable('shareMedia', $media);
     $vm->setVariable('page', $page);
     $vm->setVariable('size', $size);
     return $vm;

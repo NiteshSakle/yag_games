@@ -1,8 +1,8 @@
 <?php
 $this->headMeta()->setProperty('og:title', $contest['name']);
 $this->headMeta()->setProperty('og:type', 'website');
-if($media) {
-    $this->headMeta()->setProperty('og:image', $this->mediaImage($media, 'samples'));
+if($shareMedia) {
+    $this->headMeta()->setProperty('og:image', $this->mediaImage($shareMedia, 'samples'));
     $this->headMeta()->setProperty('og:description', 'I entered the ' . $contest['name'] . ' on YOURARTGALLERY.COM. Check out now');
 } else {
     $this->headMeta()->setProperty('og:image', $this->config('aws', 'path') . $contest['thumbnail']);
@@ -11,8 +11,8 @@ if($media) {
 $this->headMeta()->setProperty('twitter:card', 'summary');
 $this->headMeta()->setProperty('twitter:site', '@YourArtGallery');
 $this->headMeta()->setProperty('twitter:title', $contest['name']);
-if($media) {
-    $this->headMeta()->setProperty('twitter:image', $this->mediaImage($media, 'samples'));
+if($shareMedia) {
+    $this->headMeta()->setProperty('twitter:image', $this->mediaImage($shareMedia, 'samples'));
     $this->headMeta()->setProperty('twitter:description', 'I entered the ' . $contest['name'] . ' on YOURARTGALLERY.COM. Check out now ');    
 } else {
     $this->headMeta()->setProperty('twitter:image', $this->config('aws', 'path') . $contest['thumbnail']);    
@@ -54,8 +54,8 @@ if($media) {
 $(document).ready(function() {
     $('.btnPinIt').click(function() {
         var url = $(this).attr('href');
-        var media = "<?php if($media) {
-                echo ($this->mediaImage($media, 'samples'));
+        var media = "<?php if($shareMedia) {
+                echo ($this->mediaImage($shareMedia, 'samples'));
             } else {
                 echo ($this->config('aws', 'path') . $contest['thumbnail']);
                 }
