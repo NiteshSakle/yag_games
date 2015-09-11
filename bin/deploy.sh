@@ -46,7 +46,7 @@ elif [ $APPLICATION_ENV == "staging" ]; then
 
   chown -R www-data:www-data *
   chmod -R 755 *
-  chmod -R 777 data/cache data/logs 
+  chmod -R 777 data/cache data/logs data/log
 else
     echo "Environment is not allowed"
 fi
