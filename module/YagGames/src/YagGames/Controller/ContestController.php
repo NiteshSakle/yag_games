@@ -87,6 +87,9 @@ class ContestController extends BaseController
       if($data) {
         if(strtotime($data['entry_end_date']) >= strtotime(date("Y-m-d"))){
             $type = "new";
+            if($data['max_no_of_photos'] == $data['total_entries']) {
+                $type = "active";
+            }
         } else {
           if(strtotime($data['winners_announce_date']) > strtotime(date("Y-m-d"))){
               $type = "active";
