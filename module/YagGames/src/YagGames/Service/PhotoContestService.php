@@ -37,7 +37,7 @@ class PhotoContestService
     //max 200 in contest
     $contestMediaTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaTable');
     $contestMediaCount = $contestMediaTable->getContestMediaCount($contestId, $userSession['mem_id']);
-    if ($contestMediaCount && $contestMediaCount['count'] >= 200) {
+    if ($contestMediaCount && $contestMediaCount['count'] >= $contestData['max_no_of_photos']) {
       throw new \YagGames\Exception\PhotoContestException("Contest is already full");
     }
     
