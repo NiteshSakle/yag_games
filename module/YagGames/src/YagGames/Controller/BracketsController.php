@@ -167,6 +167,7 @@ class BracketsController extends BaseController
 
   public function votingAction()
   {
+    $mediaId = $this->params()->fromRoute('mid') ? (int) $this->params()->fromRoute('mid') : 0;
     $contestId = $this->params()->fromRoute('id', null);
     $this->session = $this->sessionPlugin();
     $userId = '';
@@ -186,6 +187,12 @@ class BracketsController extends BaseController
       return $this->redirect()->toRoute('brackets');
     }
 
+    $media = 0;
+    if($mediaId) { 
+      $mediaTable = $this->getServiceLocator()->get('YagGames\Model\MediaTable');
+      $media = $mediaTable->fetchRecord($mediaId);
+    }
+    
     $bracketService = $this->getServiceLocator()->get('bracketService');
     $data = $bracketService->getContestMedia($contestId, $userId);
     
@@ -197,6 +204,7 @@ class BracketsController extends BaseController
     $vm->setVariable('contestId', $contestId);
     $vm->setVariable('contest', $this->contest);
     $vm->setVariable('comboDetails', $contestComboDetails);
+    $vm->setVariable('shareMedia', $media);
     return $vm;
   }
 
@@ -243,7 +251,7 @@ class BracketsController extends BaseController
     $vm->setVariable('contestId', $contestId);
     $vm->setVariable('contest', $this->contest);
     $vm->setVariable('comboDetails', $contestComboDetails);
-    $vm->setVariable('media', $media);
+    $vm->setVariable('shareMedia', $media);
     return $vm;
   }
 
