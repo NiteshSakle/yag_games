@@ -308,7 +308,7 @@ class ContestMediaTable extends BaseTable {
             );
     }
     
-    public function getNextBracketCombo($contestId, $userId = null, $contestMediaId, $ratedComboMedia = array()) {
+    public function getNextBracketCombo($contestId, $userId = null, $contestMediaId, $ratedComboMedia = array(), $round) {
         try {
             $limit = 1;
             $sql = $this->getSql();
@@ -340,7 +340,7 @@ class ContestMediaTable extends BaseTable {
                         ->columns(array('bracket_combo_id'))
                         ->where(array(
                     'cmr2.member_id' => $userId,
-                    'cmr2.round' => `cbr`.`current_round`
+                    'cmr2.round' => $round
                 ));
 
                 $query->where(
@@ -354,6 +354,9 @@ class ContestMediaTable extends BaseTable {
                 //add not in condition to eliminate rated media
                 $query->where(new \Zend\Db\Sql\Predicate\NotIn('cbmc.combo_id', $ratedComboMedia));
             }
+            
+            echo $sql->prepareStatementForSqlObject($query)->getSql();
+            exit;
             $rows = $sql->prepareStatementForSqlObject($query)->execute();
             
             return $rows->current();
@@ -363,10 +366,10 @@ class ContestMediaTable extends BaseTable {
         }
     }
     
-    public function getNextBracketMedia($contestId, $userId = null, $contestMediaId, $ratedMedia = array())
+    public function getNextBracketMedia($contestId, $userId = null, $contestMediaId, $ratedMedia = array(), $round)
     {
         try {
-            $comboDetails = $this->getNextBracketCombo($contestId, $userId, $contestMediaId, $ratedMedia);
+            $comboDetails = $this->getNextBracketCombo($contestId, $userId, $contestMediaId, $ratedMedia, $round);
             
             $media = array();
             if($comboDetails) {
