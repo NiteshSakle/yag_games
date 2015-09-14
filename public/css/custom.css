@@ -303,6 +303,7 @@ body {
 }
 .white-border{
     border-color: white !important;
+    cursor: pointer;
 }
 .left-round1-up {
     border-bottom: 1px #68398C solid;

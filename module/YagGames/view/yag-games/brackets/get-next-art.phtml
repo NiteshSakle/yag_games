@@ -5,9 +5,9 @@
         font-weight: bold !important; 
         color: #663f8e !important;
     }
-    .brk-rate-it{
-        top: -50px;        
-    }
+    .brk-rate-it{ top: -50px; }
+    .brk-old-round{ top: 100px; }
+    .rate-it-image-close{ margin:5px; background-color: #d3d2d2; }
 </style>
 <script type="text/javascript" src="<?php echo $this->config('main_site', 'url') ?>/assets/javascript/workbox.js"></script>
 <script type="text/javascript">
@@ -82,8 +82,7 @@
         workbox({
             page: gameBasePath + '/brackets/get-next-art?contestId=' + contestId + '&round=' + round,            
         });
-        scroll(0, 0);
-//        $('#workbox').css('top', '0px');        
+        scroll(0, 0);       
     }
 
     function highlightStarsForPhotoContest(elem, current) {
@@ -134,6 +133,25 @@
                 </div>
             </div>
             <div class="col-md-1"></div>
+        </div>
+    </div>
+    <?php elseif($showThankq && $noImages): ?>
+    <div class="rate-it-popup brk-old-round">
+            <div class="rate-it-image-close" >
+                <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/close.button.png" id="closeWorkbox" style=" top: 5px; right: 5px;">
+                <div class="col-md-12 text-center" style="margin-top: 10px;">
+                    <p class="brk-popup-label-3">
+                        Welcome to the "<?php echo $contest['name']?>" tournament, vote now on the top contenders!! 
+                    </p>
+                </div>
+            </div>  
+             
+        <div class="bottom-wrapper">
+            <div class="rate-it-detail" style="font-size: 25px;text-align: center;">                
+                <div class="contest" style="border:none; text-align: center;">
+                    <button id="get-next-image" onclick="showNextImagePopup()" style=" width: 110px;">Ok</button>            
+                </div>      
+            </div>
         </div>
     </div>
     <?php else : ?>

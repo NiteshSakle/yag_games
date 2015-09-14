@@ -261,39 +261,62 @@ class BracketsController extends BaseController
     $contestComboId = $this->params()->fromQuery('comboId', null);
     $round = $this->params()->fromQuery('round', null);
     $this->session = $this->sessionPlugin();
-
-    if (isset($this->session->mem_id)) {
-      $userId = $this->session->mem_id;
-      $ratedMedia = array();
-    } else {
-      $userId = '';
-      $ratedMedia = $this->getRatedMedia($contestId, $round); //fill the data from cookie
+    $this->getContest($contestId);
+    if($round == null || $round == 0){
+        $round = $this->contest['current_round'];
     }
-    
-    $bracketService = $this->getServiceLocator()->get('bracketService');
-    $contestData = $bracketService->getNextContestMedia($contestId, $userId, $contestComboId, $ratedMedia, $round);
     
     $media1=array();
     $media2=array();
     $noImages = 0;
-    if($contestData['contestDetails']){
-        if($contestData['contestDetails']['contest_media_id1'] != 0 ) {
-        $media1 = $contestData['medias'][$contestData['contestDetails']['contest_media_id1']]; }
-        if($contestData['contestDetails']['contest_media_id2'] != 0 ) {
-        $media2 = $contestData['medias'][$contestData['contestDetails']['contest_media_id2']]; }
-        $roundDetails = $this->getRoundNameAndCount($round);
-        $contestData['count'] = $roundDetails['count'];
-        $contestData['round_name'] = $roundDetails['round_name'];
-        if($contestData['contestDetails']['contest_media_id1'] == 0 && $contestData['contestDetails']['contest_media_id2'] == 0 ) {
+    $previousRoundCheck = 1;
+    $showThankq = 0;
+    $contestData = array();
+    if($round != $this->contest['current_round'] || $contestComboId == null){        
+        $mediaId = $this->params()->fromQuery('mediaId', null);
+        $previousRound = $this->previousRoundImage($mediaId);
+        if(!$previousRound['show_thankq']) {
+            $round = $previousRound['round'];
+            $contestComboId = $previousRound['combo_id'];            
+        } else {
+            $previousRoundCheck = 0;
             $noImages = 1;
+            $showThankq = 1;
+            $contestData['contestDetails'] = 0;
         }
     }
     
-    if (!isset($this->session->mem_id)) {
-        $contestData['totalRated'] = count($ratedMedia);
+    if($previousRoundCheck) {
+        if (isset($this->session->mem_id)) {
+          $userId = $this->session->mem_id;
+          $ratedMedia = array();
+        } else {
+          $userId = '';
+          $ratedMedia = $this->getRatedMedia($contestId, $round); //fill the data from cookie
+        }
+
+        $bracketService = $this->getServiceLocator()->get('bracketService');
+        $contestData = $bracketService->getNextContestMedia($contestId, $userId, $contestComboId, $ratedMedia, $round);
+
+        if($contestData['contestDetails']){
+            if($contestData['contestDetails']['contest_media_id1'] != 0 ) {
+            $media1 = $contestData['medias'][$contestData['contestDetails']['contest_media_id1']]; }
+            if($contestData['contestDetails']['contest_media_id2'] != 0 ) {
+            $media2 = $contestData['medias'][$contestData['contestDetails']['contest_media_id2']]; }
+            $roundDetails = $this->getRoundNameAndCount($round);
+            $contestData['count'] = $roundDetails['count'];
+            $contestData['round_name'] = $roundDetails['round_name'];
+            if($contestData['contestDetails']['contest_media_id1'] == 0 && $contestData['contestDetails']['contest_media_id2'] == 0 ) {
+                $noImages = 1;
+            }
+        }
+
+        if (!isset($this->session->mem_id)) {
+            $contestData['totalRated'] = count($ratedMedia);
+        }
     }
     
-    $viewModel = new ViewModel(array('media1' => $media1, 'media2' => $media2 , 'contestId' => $contestId, 'contestData' => $contestData, 'noImages' => $noImages, 'contest' => $this->getContest($contestId)));
+    $viewModel = new ViewModel(array('media1' => $media1, 'media2' => $media2 , 'contestId' => $contestId, 'contestData' => $contestData, 'noImages' => $noImages, 'contest' => $this->contest, 'showThankq' => $showThankq));
 
     return $viewModel->setTerminal(true);
   }
@@ -447,6 +470,7 @@ class BracketsController extends BaseController
 
     return $this->contest;
   }
+  
   private function getRoundNameAndCount($round) {
       $roundDetails = array();
       switch ($round){
@@ -476,5 +500,24 @@ class BracketsController extends BaseController
       }
       return $roundDetails;
   }
-
+  
+  private function previousRoundImage($mediaId) {
+      $contestMediaTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaTable');
+      $contestMediaData = (array) $contestMediaTable->fetchContestMedia($this->contest['id'],$mediaId);
+      
+      if (!$contestMediaData) {
+        throw new \YagGames\Exception\BracketException("No contest media found");
+      }
+      
+      $bracketMediaTable = $this->getServiceLocator()->get('YagGames\Model\ContestBracketMediaComboTable');
+      $bracketMediaData = $bracketMediaTable->fetchRecordByRoundAndMedia($this->contest['current_round'], $contestMediaData['id'], $this->contest['id']);
+      
+      if(!$bracketMediaData) {
+          $bracketMediaData['show_thankq'] = 1 ;
+      } else {
+          $bracketMediaData['show_thankq'] = 0 ;
+      }
+      
+      return $bracketMediaData;
+  }
 }
