@@ -633,7 +633,7 @@
         $(window).ready(function () {
             workbox({
                 page: gameBasePath + '/brackets/get-next-art?contestId=' + contestId + '&round=' + round,
-                mini: true
+//                mini: true
             });
             scroll(0, 0);
         });
@@ -642,8 +642,8 @@
         var contestId = "<?php echo $contestId; ?>";
         $('.white-border').click(function () {
             workbox({
-                page: gameBasePath + '/brackets/get-next-art?contestId=' + contestId + '&mediaId=' + $(this).attr('mediaid') + '&round=' + round,
-                mini: true
+                page: gameBasePath + '/brackets/get-next-art?contestId=' + contestId + '&comboId=' + $(this).attr('comboid') + '&round=' + round,
+//                mini: true
             });
 //            scroll(0, 0);
         });

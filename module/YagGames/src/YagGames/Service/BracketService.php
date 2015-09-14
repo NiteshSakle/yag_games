@@ -126,10 +126,10 @@ class BracketService
     return $contestData;
   }
   
-  public function getNextContestMedia($contestId,  $userId = null, $contestMediaId = null, $ratedMedia = array(), $round)
+  public function getNextContestMedia($contestId,  $userId = null, $contestComboId = null, $ratedMedia = array(), $round)
   {
     $contestMediaTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaTable');
-    $contestData = $contestMediaTable->getNextBracketMedia($contestId, $userId, $contestMediaId, $ratedMedia, $round);
+    $contestData = $contestMediaTable->getNextBracketMedia($contestId, $userId, $contestComboId, $ratedMedia, $round);
     
     $count = 0;
     if ($userId) {

@@ -308,7 +308,7 @@ class ContestMediaTable extends BaseTable {
             );
     }
     
-    public function getNextBracketCombo($contestId, $userId = null, $contestMediaId, $ratedComboMedia = array(), $round) {
+    public function getNextBracketCombo($contestId, $userId = null, $contestComboId, $ratedComboMedia = array(), $round) {
         try {
             $limit = 1;
             $sql = $this->getSql();
@@ -324,13 +324,8 @@ class ContestMediaTable extends BaseTable {
                     ->group('cbmc.combo_id')
                     ->order('cbmc.combo_id');
             
-            if (!empty($contestMediaId)) {
-                $query->where
-                    ->NEST
-                    ->equalTo('cbmc.contest_media_id1', $contestMediaId)
-                    ->OR
-                    ->equalTo('cbmc.contest_media_id2', $contestMediaId)
-                    ->UNNEST; 
+            if (!empty($contestComboId)) {
+                $query->where(array('cbmc.combo_id' => $contestComboId)); 
             }
 
             if (!empty($userId)) {
@@ -355,8 +350,6 @@ class ContestMediaTable extends BaseTable {
                 $query->where(new \Zend\Db\Sql\Predicate\NotIn('cbmc.combo_id', $ratedComboMedia));
             }
             
-//            echo $sql->prepareStatementForSqlObject($query)->getSql();
-//            exit;
             $rows = $sql->prepareStatementForSqlObject($query)->execute();
             
             return $rows->current();
@@ -366,10 +359,10 @@ class ContestMediaTable extends BaseTable {
         }
     }
     
-    public function getNextBracketMedia($contestId, $userId = null, $contestMediaId, $ratedMedia = array(), $round)
+    public function getNextBracketMedia($contestId, $userId = null, $contestComboId, $ratedMedia = array(), $round)
     {
         try {
-            $comboDetails = $this->getNextBracketCombo($contestId, $userId, $contestMediaId, $ratedMedia, $round);
+            $comboDetails = $this->getNextBracketCombo($contestId, $userId, $contestComboId, $ratedMedia, $round);
             
             $media = array();
             if($comboDetails) {

@@ -258,7 +258,7 @@ class BracketsController extends BaseController
   public function getNextArtAction()
   {
     $contestId = $this->params()->fromQuery('contestId', null);
-    $mediaId = $this->params()->fromQuery('mediaId', null);
+    $contestComboId = $this->params()->fromQuery('comboId', null);
     $round = $this->params()->fromQuery('round', null);
     $this->session = $this->sessionPlugin();
 
@@ -269,19 +269,9 @@ class BracketsController extends BaseController
       $userId = '';
       $ratedMedia = $this->getRatedMedia($contestId, $round); //fill the data from cookie
     }
-    $contestMediaId = Null;
-    if($mediaId) {
-        $contestMediaTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaTable');
-        $contestMediaData = (array) $contestMediaTable->fetchContestMedia($contestId,$mediaId);
-
-        if (!$contestMediaData) {
-          throw new \YagGames\Exception\BracketException("No contest media found");
-        }
-        $contestMediaId = $contestMediaData['id'];
-    }
     
     $bracketService = $this->getServiceLocator()->get('bracketService');
-    $contestData = $bracketService->getNextContestMedia($contestId, $userId, $contestMediaId, $ratedMedia, $round);
+    $contestData = $bracketService->getNextContestMedia($contestId, $userId, $contestComboId, $ratedMedia, $round);
     
     $media1=array();
     $media2=array();
@@ -303,7 +293,7 @@ class BracketsController extends BaseController
         $contestData['totalRated'] = count($ratedMedia);
     }
     
-    $viewModel = new ViewModel(array('media1' => $media1, 'media2' => $media2 , 'contestId' => $contestId, 'mediaId' => $mediaId, 'contestData' => $contestData, 'noImages' => $noImages, 'contest' => $this->getContest($contestId)));
+    $viewModel = new ViewModel(array('media1' => $media1, 'media2' => $media2 , 'contestId' => $contestId, 'contestData' => $contestData, 'noImages' => $noImages, 'contest' => $this->getContest($contestId)));
 
     return $viewModel->setTerminal(true);
   }
@@ -464,7 +454,7 @@ class BracketsController extends BaseController
               $roundDetails['round_name'] = 'STARTING 64';
               break;
           case 2: $roundDetails['count'] = 16;
-              $roundDetails['round_name'] = 'TOP 64';
+              $roundDetails['round_name'] = 'TOP 32';
               break;
           case 3: $roundDetails['count'] = 8;
               $roundDetails['round_name'] = 'SWEET 16';

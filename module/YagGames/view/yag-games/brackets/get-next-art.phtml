@@ -6,7 +6,7 @@
         color: #663f8e !important;
     }
     .brk-rate-it{
-        top: -140px;        
+        top: -50px;        
     }
 </style>
 <script type="text/javascript" src="<?php echo $this->config('main_site', 'url') ?>/assets/javascript/workbox.js"></script>
@@ -80,10 +80,10 @@
 
     function showNextImagePopup() {
         workbox({
-            page: gameBasePath + '/brackets/get-next-art?contestId=' + contestId + '&round=' + round,
-            mini: true
+            page: gameBasePath + '/brackets/get-next-art?contestId=' + contestId + '&round=' + round,            
         });
         scroll(0, 0);
+//        $('#workbox').css('top', '0px');        
     }
 
     function highlightStarsForPhotoContest(elem, current) {
@@ -147,14 +147,14 @@
                 <span class="col-md-4">
                     <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/thankyou1.png">
                 </span>
-                <span class="col-md-8" style="font-size: 25px; text-align: center; line-height: 1.3em; color: #663f8e; font-family: 'franklin_gothic_bookregular';">
+                <span class="col-md-8" style="font-size: 25px; text-align: center; line-height: 1.2em; color: #663f8e; font-family: 'franklin_gothic_bookregular';">
                      <p><b>Congratulation, </b><br>
                         you have already voted! <br>
                         Be sure to vote again<br>                        
                         next round.</p>                
                 </span>            
             </div>            
-            <div class="col-md-12 text-center">
+            <div class="col-md-12 text-center" style="margin-top: 10px;">
                 <p class="brk-popup-label-3">Next round start: <?php $round = "round" . $contest['current_round']; echo date("d/m/Y", strtotime($contest[$round])); ?></p>
             </div>           
         </div>
@@ -162,7 +162,7 @@
             <div class="rate-it-detail" style="font-size: 25px;text-align: center;">
                 <p><b>Want to Rate More Art?</b></p>
                 <div>
-                    <a href="<?php echo $this->config('main_site', 'url') ?>/yag-or-gag"><img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/YAGGAG.PNG" style="-webkit-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.5);-moz-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.5);box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.5);"></a>
+                    <a href="<?php echo $this->config('main_site', 'url') ?>/yag-or-gag"><img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/YAGGAG.PNG" style="-webkit-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.5);-moz-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.5);box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.5); height: 100px;"></a>
                 </div>
                 <br>
                 OR
