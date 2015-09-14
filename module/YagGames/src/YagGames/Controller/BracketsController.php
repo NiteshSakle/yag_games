@@ -260,6 +260,7 @@ class BracketsController extends BaseController
     $contestId = $this->params()->fromQuery('contestId', null);
     $contestComboId = $this->params()->fromQuery('comboId', null);
     $round = $this->params()->fromQuery('round', null);
+    $mediaId = $this->params()->fromQuery('mediaId', null);
     $this->session = $this->sessionPlugin();
     $this->getContest($contestId);
     if($round == null || $round == 0){
@@ -272,8 +273,7 @@ class BracketsController extends BaseController
     $previousRoundCheck = 1;
     $showThankq = 0;
     $contestData = array();
-    if($round != $this->contest['current_round'] || $contestComboId == null){        
-        $mediaId = $this->params()->fromQuery('mediaId', null);
+    if($round != $this->contest['current_round'] && $mediaId){
         $previousRound = $this->previousRoundImage($mediaId);
         if(!$previousRound['show_thankq']) {
             $round = $previousRound['round'];
@@ -283,7 +283,7 @@ class BracketsController extends BaseController
             $noImages = 1;
             $showThankq = 1;
             $contestData['contestDetails'] = 0;
-        }
+        }            
     }
     
     if($previousRoundCheck) {
