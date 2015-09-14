@@ -355,8 +355,8 @@ class ContestMediaTable extends BaseTable {
                 $query->where(new \Zend\Db\Sql\Predicate\NotIn('cbmc.combo_id', $ratedComboMedia));
             }
             
-            echo $sql->prepareStatementForSqlObject($query)->getSql();
-            exit;
+//            echo $sql->prepareStatementForSqlObject($query)->getSql();
+//            exit;
             $rows = $sql->prepareStatementForSqlObject($query)->execute();
             
             return $rows->current();
