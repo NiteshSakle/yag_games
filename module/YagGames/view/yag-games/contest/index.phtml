@@ -166,7 +166,9 @@
                                     <?php } ?>                
                                 <?php } ?>
                                 <br>
+                                <?php if($contest['type_id'] != 3 && $date_details != 'past') { ?>
                                 Winner Announced: <?php echo date("F jS, Y", strtotime($contest['winners_announce_date'])); ?>
+                                <?php } ?>
                             </div>                
                         </div>
                     </div>        
