@@ -141,9 +141,9 @@ class ContestTable extends BaseTable {
     }
 
     private function getNewContestSelect($select, $user) {
-        $select->where('entry_start_date <= CURDATE() AND c.entry_end_date >= CURDATE()');
+        $select->where('entry_start_date <= CURDATE() AND winners_announce_date > CURDATE()');
         $select->where->and->notEqualTo('c.is_exclusive', '1');
-        $select->where('(total_entries < c.max_no_of_photos OR total_entries IS NULL)');
+        //$select->where('(total_entries < c.max_no_of_photos OR total_entries IS NULL)');
 
         // if user log's in, check whether he entered the contest or not
         if ($user) {

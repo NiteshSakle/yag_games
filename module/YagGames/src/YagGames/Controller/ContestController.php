@@ -39,7 +39,8 @@ class ContestController extends BaseController
 
   public function activeContestAction()
   {
-    return $this->getContestList('active');
+    return $this->redirect()->toRoute('home');  
+    //return $this->getContestList('active');
   }
 
   public function pastContestAction()

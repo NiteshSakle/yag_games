@@ -162,6 +162,9 @@ body {
 .black-border {
     border: 2px solid #ccc;
 }
+.purple-border{
+    border: 2px solid #68398C !important;
+}
 .learn-more-contest-title{
     font-size: 24px;
     font-weight: 900;

@@ -1,6 +1,15 @@
 <div class="col-md-4 contest-buttons ">
-    <?php $session = $this->session(); ?>
-    <?php if (isset($contest['entered']) && $contest['entered']): ?>
+    <?php
+        $today = strtotime(date('Y-m-d'));
+        $entryEndDate = strtotime($contest['entry_end_date']);
+        $session = $this->session();
+        $percentage = ($contest['total_entries']) ? floor(($contest['total_entries'] / $contest['max_no_of_photos']) * 100) : 0; 
+    ?>
+    <?php if ($contest['voting_started']) : ?>
+        <button class="btn btn-default" onclick="window.location = '<?php echo $this->basePath() ?>/<?php echo $contestType; ?>/voting/<?php echo $contest['id']; ?>'">Vote Now</button>
+    <?php elseif ($percentage == 100 || ($entryEndDate < $today)) : ?>    
+        <button class="btn btn-default vote-soon" style="background-color: #d1d3d4 !important;border: 5px solid #e5da7c;">Vote Soon</button>
+    <?php elseif (isset($contest['entered']) && $contest['entered']): ?>
         <?php
         $media = array();
         $media['media_id'] = $contest['media_id'];
@@ -20,13 +29,19 @@
     <br>
     <button class="btn btn-default"  onclick="window.location = '<?php echo $this->basePath() ?>/<?php echo $contestType; ?>/learn-more'">Learn More</button>
     <br>
+    <?php if ($contest['voting_started']): ?>
+        <button class="btn btn-default" onclick="window.location = '<?php echo $this->basePath() ?>/<?php echo $contestType; ?>/rankings/<?php echo $contest['id']; ?>'">Rankings</button>
+    <?php endif; ?>       
     <br>
-    <div class="contest-winner">
-        <img src="<?php echo $this->basePath() ?>/img/congratulation.png" style="width:50%" alt="contest status" />
-        <?php $percentage = ($contest['total_entries']) ? floor(($contest['total_entries'] / $contest['max_no_of_photos']) * 100) : 0 ?>
+    <div class="contest-winner">        
+        <?php if ($contest['voting_started'] || $percentage == 100 || ($entryEndDate < $today)): ?>
+        <img src="<?php echo $this->basePath() ?>/img/closed.png"  alt="contest closed" style="width:40%" />
+        <?php else:?>
+        <img src="<?php echo $this->basePath() ?>/img/congratulation.png" style="width:50%" alt="contest status" />        
         <div class="progress">
             <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="<?php echo $percentage ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $percentage ?>%"> <span class="progress-percentage"><?php echo $percentage ?><span style="font-size: 20px;">%</span>&nbsp;FULL</span></div>
         </div>
+        <?php endif;?>
         <br>
         <div class="gold">            
             <?php if (isset($contest['entered']) && $contest['entered']): ?>

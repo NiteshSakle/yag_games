@@ -77,7 +77,7 @@
     <div class="navigation clearfix">
         <ul>
             <li><a <?php echo $type == 'new' ? 'class="nav_active"' : ""; ?> href="<?php echo $this->basePath() ?>/new-contest">New Contests</a></li>
-            <li><a <?php echo $type == 'active' ? 'class="nav_active"' : ""; ?> href="<?php echo $this->basePath() ?>/active-contest">Active Contests</a></li>
+<!--            <li><a <?php //echo $type == 'active' ? 'class="nav_active"' : ""; ?> href="<?php //echo $this->basePath() ?>/active-contest">Active Contests</a></li>-->
             <li><a <?php echo $type == 'past' ? 'class="nav_active"' : ""; ?> href="<?php echo $this->basePath() ?>/past-contest">Past Contests</a></li>
             <?php if ($session->mem_id): ?>
                 <li><a <?php echo $type == 'my' ? 'class="nav_active"' : ""; ?> href="<?php echo $this->basePath() ?>/my-contest">My Contests</a></li>            
@@ -96,8 +96,19 @@
             <?php
         } else {
             foreach ($data as $contest):
+                
+                $cssClass = '';
+                
+                if($type !== 'exclusive') {
+                    
+                    if ($contest['voting_started'])
+                       $cssClass = 'black-border';
+                    else
+                       $cssClass = 'purple-border'; 
+                }
+                
                 ?>
-                <div class="contest row <?php echo ($type !== 'exclusive') ? 'black-border' : '' ?>">
+                <div class="contest row <?php echo $cssClass ?>">
                     <?php
                     $titleClass = 'contest-title';
                     if ($this->getHelperPluginManager()->getServiceLocator()->get('Application')->getMvcEvent()->getRouteMatch()->getParam('action') == 'exclusive-contest') {
