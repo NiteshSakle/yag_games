@@ -31,6 +31,7 @@ use Zend\Log\Writer\Stream;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Session\Container;
 use YagGames\Service\FbScrapService;
+use YagGames\Service\ClientIPService;
 
 return array(
     
@@ -78,6 +79,11 @@ return array(
             return $fbScrapService;
         }, 
         
+        'clientIPService' => function(ServiceLocatorInterface $serviceLocator) {
+            $clientIPService = new ClientIPService($serviceLocator);
+            return $clientIPService;
+        },
+                
         'YagGames\Model\ContestTable' => function ($sm) {
             $tableGateway = $sm->get('ContestTableGateway');
             $table = new ContestTable($tableGateway, $sm->get('YagGames\Logger'));

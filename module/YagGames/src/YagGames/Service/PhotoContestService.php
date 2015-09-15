@@ -37,7 +37,7 @@ class PhotoContestService
     //max 200 in contest
     $contestMediaTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaTable');
     $contestMediaCount = $contestMediaTable->getContestMediaCount($contestId, $userSession['mem_id']);
-    if ($contestMediaCount && $contestMediaCount['count'] >= 200) {
+    if ($contestMediaCount && $contestMediaCount['count'] >= $contestData['max_no_of_photos']) {
       throw new \YagGames\Exception\PhotoContestException("Contest is already full");
     }
     
@@ -71,7 +71,7 @@ class PhotoContestService
     
   }
 
-  public function addVoteToArt($contestId, $mediaId, $userSession, $rating, $request)
+  public function addVoteToArt($contestId, $mediaId, $userSession, $rating)
   {
    
     $contestTable = $this->getServiceLocator()->get('YagGames\Model\ContestTable');
@@ -103,13 +103,16 @@ class PhotoContestService
       }
     }
     
+    $clientIPService = $this->getServiceLocator()->get('clientIPService');            
+    $clientIP = $clientIPService->getClientIPAddress();
+    
     // now submit vote
     $contestMediaRating = new \YagGames\Model\ContestMediaRating();
     $contestMediaRating->contest_media_id = $contestMediaData['id'];
     $contestMediaRating->member_id = (!empty($userSession['mem_id'])) ? $userSession['mem_id'] : 0;
     $contestMediaRating->rating = $rating;
     $contestMediaRating->round = 0;
-    $contestMediaRating->ip_address = $request->getServer()->get('REMOTE_ADDR');
+    $contestMediaRating->ip_address = $clientIP;
     
     $contestMediaRatingId = $contestMediaRatingTable->insert($contestMediaRating);   
     if (!$contestMediaRatingId) {
@@ -131,7 +134,7 @@ class PhotoContestService
   {    
     $config = $this->getServiceLocator()->get('Config');  
     $contestMediaTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaTable');
-    $contestData = $contestMediaTable->getNextContestMedia($contestId, $userId, $mediaId, $ratedMedia, $config);
+    $contestData = $contestMediaTable->getNextContestMedia($contestId, $mediaId, $this->getServiceLocator(), $config, $userId, $ratedMedia);
     
     $count = 0;
     if ($userId) {

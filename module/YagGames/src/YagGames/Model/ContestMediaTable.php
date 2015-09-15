@@ -99,7 +99,7 @@ class ContestMediaTable extends BaseTable {
                     ->from(array('c' => 'contest'))
                     ->join(array('cm' => 'contest_media'), 'cm.contest_id = c.id', array('*'))
                     ->join(array('m' => 'ps4_media'), 'm.media_id = cm.media_id', array('*'))
-                    ->join(array('u' => 'ps4_members'), 'm.owner = u.mem_id', array('username', 'f_name', 'email'))
+                    ->join(array('u' => 'ps4_members'), 'm.owner = u.mem_id', array('username', 'f_name', 'l_name', 'email'))
                     ->where(array('cm.id' => $contestMediaId))
                     ->group('cm.media_id');
             
@@ -194,7 +194,7 @@ class ContestMediaTable extends BaseTable {
         }
     }
 
-    public function getNextContestMedia($contestId, $userId = null, $mediaId, $ratedMedia = array(), $config = NULL) {
+    public function getNextContestMedia($contestId, $mediaId, $serviceManager, $config, $userId = null, $ratedMedia = array()) {
         try {
             $limit = 1;
             $sql = $this->getSql();
@@ -216,9 +216,9 @@ class ContestMediaTable extends BaseTable {
             }
 
             //IP Address Check
-            $request = new \Zend\Http\PhpEnvironment\Request();
-            $clientIP = $request->getServer()->get('REMOTE_ADDR');        
-            
+            $clientIPService = $serviceManager->get('clientIPService');            
+            $clientIP = $clientIPService->getClientIPAddress();        
+           
             if (is_array($config) && !in_array($clientIP, $config['white_listed_ips'])) {           
                
                $subQry1 = $sql->select()

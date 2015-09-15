@@ -336,10 +336,13 @@ class PhotoContestController extends BaseController
       //check user already rated the contest media from this IP Address
       $config = $this->getServiceLocator()->get('Config');
       
-      if (is_array($config) && !in_array($request->getServer()->get('REMOTE_ADDR'), $config['white_listed_ips'])) {
+      $clientIPService = $this->getServiceLocator()->get('clientIPService');            
+      $clientIP = $clientIPService->getClientIPAddress();  
+      
+      if (is_array($config) && !in_array($clientIP, $config['white_listed_ips'])) {
           
         $constestMediaRatingTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaRatingTable');
-        $isMediaRatedFromIpToday = $constestMediaRatingTable->isMediaRatedFromIpToday($contestId, $mediaId, $request->getServer()->get('REMOTE_ADDR'));
+        $isMediaRatedFromIpToday = $constestMediaRatingTable->isMediaRatedFromIpToday($contestId, $mediaId, $clientIP);
 
         if ($isMediaRatedFromIpToday) {
             return new JsonModel(array(
@@ -363,7 +366,7 @@ class PhotoContestController extends BaseController
 
       $photoContestService = $this->getServiceLocator()->get('photoContestService');
       try {
-        $contestMediaRatingId = $photoContestService->addVoteToArt($contestId, $mediaId, $this->session, $rating, $request);
+        $contestMediaRatingId = $photoContestService->addVoteToArt($contestId, $mediaId, $this->session, $rating);
       } catch (PhotoContestException $e) {
         return new JsonModel(array(
             'success' => false,
