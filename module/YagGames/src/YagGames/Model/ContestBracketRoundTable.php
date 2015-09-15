@@ -85,7 +85,14 @@ class ContestBracketRoundTable extends BaseTable
         $rowset = $this->tableGateway->select(array('id' => $contestBracketRoundId));
         $contestRow = $rowset->current();
         return $contestRow;
-    }   
+    }  
+    
+    public function updateByContestId($data, $contestId)
+    {
+        $this->tableGateway->update($data, array('contest_id' => $contestId));
+        
+        return true;
+    }  
     
     public function fetchAll()
     {
