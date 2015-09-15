@@ -31,7 +31,13 @@ class PhotoContestController extends BaseController
       $this->flashMessenger()->addErrorMessage('No contest found');
       return $this->redirect()->toRoute('home');
     }
-
+    
+    // Contest Entry Started or Not
+    if(strtotime($this->contest['entry_start_date']) > strtotime(date('Y-m-d'))) {
+        $this->flashMessenger()->addErrorMessage('Contest entry is not yet started');
+        return $this->redirect()->toRoute('home');
+    }
+    
     if ($this->contest['voting_started']) {
       $this->flashMessenger()->addErrorMessage('Voting has already started');
     

@@ -12,6 +12,17 @@
         font-size: inherit !important;
         font-weight: inherit !important;
     }
+    a.btn-circle{
+        width: 30px;
+        height: 30px;
+        text-align: center;
+        padding: 6px 0;
+        font-size: 12px;
+        line-height: 18px;
+        border-radius: 50% !important;
+        -moz-border-radius: 50% !important;
+        -webkit-border-radius: 50% !important;
+    }
 </style>
 <!-- END PAGE LEVEL STYLES -->
 
@@ -65,15 +76,8 @@
                             </th>
                             <th>
                                 <i class="fa"></i> Type
-                            </th>
-                            <?php if ($add_contest || $delete_contest) { ?>
-                                <th>
-                                </th>
-                                <?php
-                            } else {
-                                //don't show create contest
-                            }
-                            ?>
+                            </th>                           
+                            <th></th>                               
                         </tr>
                     </thead>
                     <tbody>
@@ -112,13 +116,10 @@
                                 <td>
                                     <?php echo $contest['type']; ?>
                                 </td>
-                                <?php
-                                if ($add_contest || $delete_contest) {
-                                    ?>
-                                    <td style="width: 150px;">
+                                <td style="width: 150px;">                                   
                                         <?php if ($add_contest) { ?>
-                                            <a contest_id="<?php echo $contest['id']; ?>" class="btn default btn-xs purple edit">
-                                                <i class="fa fa-edit"></i> Edit
+                                    <a contest_id="<?php echo $contest['id']; ?>" class="btn btn-default btn-xs edit btn-circle" title="Edit Contest">
+                                                <i class="fa fa-pencil-square-o"></i>
                                             </a>
                                             <?php
                                         } else {
@@ -126,21 +127,18 @@
                                         }
                                         ?>
                                         <?php if ($delete_contest) { ?>
-                                            <a contest_id="<?php echo $contest['id']; ?>" class="btn default btn-xs red delete">
-                                                <i class="fa fa-trash-o"></i> Delete
+                                    <a contest_id="<?php echo $contest['id']; ?>" class="btn btn-default btn-xs delete btn-circle" title="Delete Contest">
+                                                <i class="fa fa-trash-o"></i>
                                             </a>
                                             <?php
                                         } else {
                                             //don't show delete contest
                                         }
                                         ?>
-
-                                    </td>
-                                    <?php
-                                } else {
-                                    //don't show create and edit contest
-                                }
-                                ?>
+                                    <a href="<?php echo $this->config('main_site', 'url').'/contests/details/id/'.$contest['id']; ?>" class='btn btn-default btn-xs btn-circle' target="_blank" title="View Contest">
+                                             <i class="fa fa-eye"></i>
+                                        </a>
+                                   </td>                                    
                             </tr>
                         <?php } ?>                        
                     </tbody>
