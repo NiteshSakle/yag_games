@@ -339,7 +339,7 @@ class IndexController extends BaseController {
                 $user_data = $contestTable->getUserInfoByMediaId($params['media_id']);
                 $contest['main_site_url'] = $config['main_site']['url'];
                 $contest['user_data'] = $user_data;
-                $this->sendEmail('Your image has been disqualified and removed from the ' . $contest['name'], $user_data['email'], 'image_disqualified', $contest);
+                //$this->sendEmail('Your image has been disqualified and removed from the ' . $contest['name'], $user_data['email'], 'image_disqualified', $contest);
 
                 $response['success'] = true;
                 $response['message'] = 'Removed successfully';
