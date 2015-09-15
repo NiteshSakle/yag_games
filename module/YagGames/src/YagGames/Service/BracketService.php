@@ -29,10 +29,12 @@ class BracketService
     //check end date
     $now = new \DateTime();
     $now = $now->format('Y-m-d');
-    
-    if ($now < $contestData['entry_start_date']) {
+    $endDate = $contestData['entry_end_date'];
+    $startDate = $contestData['entry_start_date'];
+
+    if ($now < $startDate) {
       throw new \YagGames\Exception\BracketException("You cannot upload art as contest has not yet started");
-    } elseif ($now > $contestData['entry_end_date']) {
+    } elseif ($now > $endDate) {
       throw new \YagGames\Exception\BracketException("You cannot upload art as contest has already ended");
     }
     
