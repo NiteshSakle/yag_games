@@ -432,6 +432,8 @@ body {
     margin-top: 735px;
 }
 .round5-first{ margin-top: 360px;}
+.round5-first-text{ margin-top: 334px;}
+.round5-first-zero { margin-top: 0px;}
 .round5-up-first { height: 425px !important;}
 .left-round5-up {
     border-bottom: 1px #68398C solid;
@@ -462,6 +464,8 @@ body {
     margin-bottom: 3px;
 }
 .round6-first{ margin-top: 555px;}
+.round6-first-text{ margin-top: 530px;}
+.round6-first-zero{ margin-top: 0px;}
 .round6-second{ margin-top: 5px;}
 .left-round6-up {
     border-bottom: 1px #68398C solid;

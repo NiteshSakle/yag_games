@@ -111,7 +111,8 @@ class PhotoContestController extends BaseController
       }
 
       $this->session->contestUpload = array(
-          'contestId' => $contestId
+          'contestId' => $contestId,
+          'contestType' => 'photo-contest'
       );
       return new JsonModel(array(
           'success' => true

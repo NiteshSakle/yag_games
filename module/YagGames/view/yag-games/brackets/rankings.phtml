@@ -325,7 +325,8 @@
                         ?>
                     <div class="left col-md-12 col-xs-12 no-margin-padding left-round5-up round5-up-first">
                         <?php if(isset($medias[$media1])){ ?>
-                        <div class="round5 round5-first white-border" data-round="5" data-comboId="<?php echo $comboId ?>" data-mediaId="<?php echo $medias[$media1]['media_id']; ?>">
+                        <div class="artist-name round5-first-text violet-text" style="font-size: 12px;"><a href="<?php echo $this->config('main_site', 'url') ?>/<?php echo $medias[$media1]['username'] ?>" class="violet-text"><?php echo $medias[$media1]['f_name'] ?></a></div>
+                        <div class="round5 round5-first-zero white-border" data-round="5" data-comboId="<?php echo $comboId ?>" data-mediaId="<?php echo $medias[$media1]['media_id']; ?>">
                             <img mediaid="<?php echo $this->KCrypt()->enc($medias[$media1]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media1], 'icons', '50'); ?>" title="<?php echo $medias[$media1]['title'] ?>" alt="<?php echo $medias[$media1]['title'] ?>" />
                         </div>
                         <?php } else { ?> 
@@ -337,7 +338,7 @@
                         <div class="round5 white-border" data-round="5" data-comboId="<?php echo $comboId ?>" data-mediaId="<?php echo $medias[$media2]['media_id']; ?>">
                             <img mediaid="<?php echo $this->KCrypt()->enc($medias[$media2]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media2], 'icons', '50'); ?>" title="<?php echo $medias[$media2]['title'] ?>" alt="<?php echo $medias[$media2]['title'] ?>" />
                         </div>
-                        <div class="artist-name violet-text" style="font-size: 10px;"><a href="<?php echo $this->config('main_site', 'url') ?>/<?php echo $media['username'] ?>" class="violet-text"><?php echo $medias[$media2]['f_name'] ?></a></div>
+                        <div class="artist-name violet-text" style="font-size: 12px;"><a href="<?php echo $this->config('main_site', 'url') ?>/<?php echo $medias[$media2]['username'] ?>" class="violet-text"><?php echo $medias[$media2]['f_name'] ?></a></div>
                         <?php } else { ?>
                         <div class="round5"></div>
                         <?php } ?>
@@ -357,7 +358,8 @@
                     <div class="col-md-12 col-xs-12 no-margin-padding" >
                         <div class="left col-md-6 col-xs-6 no-margin-padding left-round6-up">
                             <?php if(isset($medias[$media1])){ ?>
-                            <div class=" round6 round6-first white-border" data-round="6" data-comboId="<?php echo $comboId ?>" data-mediaId="<?php echo $medias[$media1]['media_id']; ?>">
+                            <div class="artist-name round6-first-text violet-text" style="font-size: 12px;"><a href="<?php echo $this->config('main_site', 'url') ?>/<?php echo $medias[$media1]['username'] ?>" class="violet-text"><?php echo $medias[$media1]['f_name'] ?></a></div>
+                            <div class=" round6 round6-first-zero white-border" data-round="6" data-comboId="<?php echo $comboId ?>" data-mediaId="<?php echo $medias[$media1]['media_id']; ?>">
                                 <img mediaid="<?php echo $this->KCrypt()->enc($medias[$media1]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media1], 'icons', '50'); ?>" title="<?php echo $medias[$media1]['title'] ?>" alt="<?php echo $medias[$media1]['title'] ?>" />
                             </div>
                             <?php } else { ?> 
@@ -371,15 +373,26 @@
                                 Champion
                             </div>
                             <div class="col-md-12 col-xs-12 round6-center">
-
+                                <?php if(isset($contestWinners[0])){ ?>
+                                <div class="col-md-12 col-xs-12 round7 no-margin-padding" data-round="7" data-comboId="<?php echo $comboId ?>" data-mediaId="<?php echo $medias[$media1]['media_id']; ?>">
+                                    <img mediaid="<?php echo $this->KCrypt()->enc($contestWinners[0]['media_id']) ?>" src="<?php echo $this->mediaImage($contestWinners[0], 'icons', '100'); ?>" title="<?php echo $contestWinners[0]['title'] ?>" alt="<?php echo $contestWinners[0]['title'] ?>" />
+                                </div>
+                                <?php } else { ?> 
+                                <div class="col-md-12 col-xs-12 round7 no-margin-padding"></div>
+                                <?php } ?>
                             </div>
                         </div>
                         <div class="col-md-12 col-xs-12 no-margin-padding round6-center-text">
+                            <?php if(isset($contestWinners[0])){ ?>
+                            <b>Total Votes: <?php echo $contestWinners[0]['no_of_votes']; ?></b>
+                            <div class="artist-name violet-text" style="font-size: 12px;">Artist Name: <?php echo $contestWinners[0]['f_name']; ?></div>
+                            <div class="artist-name violet-text" style="font-size: 12px;">User Name:<a href="<?php echo $this->config('main_site', 'url') ?>/<?php echo $contestWinners[0]['username'] ?>" class="violet-text"><?php echo $contestWinners[0]['username']; ?></a></div>
 <!--                            Total Votes: 158<br>
                             <span class="violet-text">
                             Artist Name: Matthews Thomas<br>
                             User Name: ThomasPhoto
                             </span>-->
+                            <?php } ?>
                         </div>
                     </div>
                     <div class="col-md-12 col-xs-12 no-margin-padding" >
@@ -389,7 +402,7 @@
                             <div class="round6 round6-second white-border" data-round="6" data-comboId="<?php echo $comboId ?>" data-mediaId="<?php echo $medias[$media2]['media_id']; ?>">
                                 <img mediaid="<?php echo $this->KCrypt()->enc($medias[$media2]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media2], 'icons', '50'); ?>" title="<?php echo $medias[$media2]['title'] ?>" alt="<?php echo $medias[$media2]['title'] ?>" />
                             </div>
-                            <div class="artist-name violet-text" style="font-size: 10px;"><a href="<?php echo $this->config('main_site', 'url') ?>/<?php echo $media['username'] ?>" class="violet-text"><?php echo $medias[$media2]['f_name'] ?></a></div>
+                            <div class="artist-name violet-text" style="font-size: 12px;"><a href="<?php echo $this->config('main_site', 'url') ?>/<?php echo $medias[$media2]['username'] ?>" class="violet-text"><?php echo $medias[$media2]['f_name'] ?></a></div>
                             <?php } else { ?>
                             <div class="round6 round6-second "></div>
                             <?php } ?>
@@ -409,7 +422,8 @@
                         ?>
                     <div class="left col-md-12 col-xs-12 no-margin-padding right-round5-up round5-up-first">
                         <?php if(isset($medias[$media1])){ ?>
-                        <div class="round5 round5-first white-border" data-round="5" data-comboId="<?php echo $comboId ?>" data-mediaId="<?php echo $medias[$media1]['media_id']; ?>">
+                        <div class="artist-name round5-first-text violet-text" style="font-size: 12px;"><a href="<?php echo $this->config('main_site', 'url') ?>/<?php echo $medias[$media1]['username'] ?>" class="violet-text"><?php echo $medias[$media1]['f_name'] ?></a></div>
+                        <div class="round5 round5-first-zero white-border" data-round="5" data-comboId="<?php echo $comboId ?>" data-mediaId="<?php echo $medias[$media1]['media_id']; ?>">
                             <img mediaid="<?php echo $this->KCrypt()->enc($medias[$media1]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media1], 'icons', '50'); ?>" title="<?php echo $medias[$media1]['title'] ?>" alt="<?php echo $medias[$media1]['title'] ?>" />
                         </div>
                         <?php } else { ?> 
@@ -421,7 +435,7 @@
                         <div class="round5 white-border" data-round="5" data-comboId="<?php echo $comboId ?>" data-mediaId="<?php echo $medias[$media2]['media_id']; ?>">
                             <img mediaid="<?php echo $this->KCrypt()->enc($medias[$media2]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media2], 'icons', '50'); ?>" title="<?php echo $medias[$media2]['title'] ?>" alt="<?php echo $medias[$media2]['title'] ?>" />
                         </div>
-                        <div class="artist-name violet-text" style="font-size: 10px;"><a href="<?php echo $this->config('main_site', 'url') ?>/<?php echo $media['username'] ?>" class="violet-text"><?php echo $medias[$media2]['f_name'] ?></a></div>
+                        <div class="artist-name violet-text" style="font-size: 12px;"><a href="<?php echo $this->config('main_site', 'url') ?>/<?php echo $medias[$media2]['username'] ?>" class="violet-text"><?php echo $medias[$media2]['f_name'] ?></a></div>
                         <?php } else { ?>
                         <div class="round5"></div>
                         <?php } ?>

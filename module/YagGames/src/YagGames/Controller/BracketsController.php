@@ -107,7 +107,8 @@ class BracketsController extends BaseController
       }
 
       $this->session->contestUpload = array(
-          'contestId' => $contestId
+          'contestId' => $contestId,
+          'contestType' => 'brackets'
       );
       return new JsonModel(array(
           'success' => true
@@ -186,6 +187,15 @@ class BracketsController extends BaseController
       $this->flashMessenger()->addErrorMessage('Voting hasn\'t started yet');
       return $this->redirect()->toRoute('brackets');
     }
+    
+    // check winner Announced are not if so redirect to winners announced page
+    if (strtotime($this->contest['winners_announce_date']) <= strtotime(date("Y-m-d"))) {
+      $this->flashMessenger()->addErrorMessage('Winners Announced');
+      return $this->redirect()->toRoute('brackets', array(
+                  'id' => $contestId,
+                  'action' => 'rankings'
+      ));
+    }
 
     $media = 0;
     if($mediaId) { 
@@ -234,8 +244,15 @@ class BracketsController extends BaseController
       $this->flashMessenger()->addErrorMessage('Voting hasn\'t started yet');
       return $this->redirect()->toRoute('brackets');
     }
+    
+    $contestWinners = array();
+    if (strtotime($this->contest['winners_announce_date']) <= strtotime(date("Y-m-d"))) {
+      $ContestWinnerTable = $this->getServiceLocator()->get('YagGames\Model\ContestWinnerTable');
+      $contestWinners = $ContestWinnerTable->fetchAllWinnersOfContest($contestId);      
+    }
+    
     $media = 0;
-    if($mediaId) { 
+    if($mediaId) {
       $mediaTable = $this->getServiceLocator()->get('YagGames\Model\MediaTable');
       $media = $mediaTable->fetchRecord($mediaId);
     }
@@ -252,6 +269,8 @@ class BracketsController extends BaseController
     $vm->setVariable('contest', $this->contest);
     $vm->setVariable('comboDetails', $contestComboDetails);
     $vm->setVariable('shareMedia', $media);
+    $vm->setVariable('contestWinners', $contestWinners);
+    
     return $vm;
   }
 
