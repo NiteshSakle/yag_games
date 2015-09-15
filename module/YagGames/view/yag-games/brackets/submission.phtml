@@ -323,14 +323,15 @@
     var contestId = "<?php echo $contest['id']; ?>";
     $('#submitImage').click(function () {
         if ($('div.checked')) {
-            function loadAddThis() {
-                addthis.init()
-            }
+            loadAddThis();
             submitArt(contestId, $('div.checked').children('input').val());
         } else {
             alert('Please select your art');
         }
     });
+    function loadAddThis() {
+        addthis.init();
+    }
 //    $('#submitImage').click(function () {
 //        if ($("input:radio[name=my_media]").is(":checked")) {
 //            submitArt(contestId, $("input:radio[name=my_media]").val());
