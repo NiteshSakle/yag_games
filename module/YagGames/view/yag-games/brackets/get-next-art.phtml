@@ -173,7 +173,7 @@
                 </span>            
             </div>            
             <div class="col-md-12 text-center" style="margin-top: 10px;">
-                <p class="brk-popup-label-3">Next round start: <?php $round = "round" . $contest['current_round']; echo date("d/m/Y", strtotime($contest[$round])); ?></p>
+                <p class="brk-popup-label-3">Next round start: <?php $round_number = $contest['current_round']+1; $round = "round" . $round_number; echo date("d/m/Y", strtotime($contest[$round])); ?></p>
             </div>           
         </div>
         <div class="bottom-wrapper">
