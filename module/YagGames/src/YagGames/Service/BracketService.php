@@ -100,9 +100,9 @@ class BracketService
     // Can rate once for a media in one round
     $contestMediaRatingTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaRatingTable');
     if (!empty($userSession['mem_id'])) {
-      $count = $contestMediaRatingTable->hasAlreadyVotedForThisBracketContest($contestData['current_round'], $comboId, $userSession['mem_id']);
+      $count = $contestMediaRatingTable->hasAlreadyVotedForThisBracketContest($contestData['current_round'], $comboId, $userSession['mem_id'], $contestData['id']);
       if ($count) {
-        throw new \YagGames\Exception\BracketException("You have already voted fot this media in this Round");
+        throw new \YagGames\Exception\BracketException("You have already voted for this combo in this Round");
       }
     }
             

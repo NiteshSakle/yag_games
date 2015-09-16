@@ -109,7 +109,7 @@ class PhotoContestService
     if (!empty($userSession['mem_id'])) {
       $count = $contestMediaRatingTable->hasAlreadyVotedForThisContestMediaToday($contestMediaData['id'], $userSession['mem_id']);
       if ($count) {
-        throw new \YagGames\Exception\PhotoContestException("You have already voted fot this media in this contest today.");
+        throw new \YagGames\Exception\PhotoContestException("You have already voted for this media in this contest today.");
       }
     }
             

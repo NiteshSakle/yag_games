@@ -89,7 +89,7 @@ class FanFavoriteService
     $contestMediaRatingTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaRatingTable');
     $count = $contestMediaRatingTable->hasAlreadyVotedForThisContest($contestId);
     if ($count) {
-      throw new \YagGames\Exception\FanFavoriteException("You have already voted fot this contest today.");
+      throw new \YagGames\Exception\FanFavoriteException("You have already voted for this contest today.");
     }
     
     //get contest & media id

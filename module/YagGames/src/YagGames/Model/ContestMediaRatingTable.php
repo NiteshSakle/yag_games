@@ -145,17 +145,19 @@ class ContestMediaRatingTable extends BaseTable
     }
   }
   
-  public function hasAlreadyVotedForThisBracketContest($round, $comboId , $userId){
+  public function hasAlreadyVotedForThisBracketContest($round, $comboId , $userId, $contestId){
     try {
       $sql = $this->getSql();
       $columns = array('count' => new Expression('COUNT(cmr.id)'));
       $query = $sql->select()
               ->from(array('cmr' => 'contest_media_rating'))
+              ->join(array('cm' => 'contest_media'), 'cm.id = cmr.contest_media_id')
               ->columns($columns)
               ->where(array(
                   'cmr.bracket_combo_id' => $comboId,
                   'cmr.member_id' => $userId,
-                  'round' => $round,
+                  'cmr.round' => $round,
+                  'cm.contest_id' => $contestId,
               ));
 
       $rows = $sql->prepareStatementForSqlObject($query)->execute();
