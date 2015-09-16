@@ -100,9 +100,9 @@ body {
 }
 .contest-winner .rank {
     font-size: 36px;
-    color: gray;
+    color: #505050;
     text-align: center;
-    font-weight: bold;
+    font-weight: 500;
     margin: 10px;
 }
 .contest-winner .you_ranked {
