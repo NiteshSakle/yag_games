@@ -58,15 +58,19 @@ class BracketsController extends BaseController
     
     $contestMediaTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaTable');
     $userContestMedia = $contestMediaTable->getUserContestMediaCount($contestId, $this->session->mem_id );
+    $fbscrap = $this->getServiceLocator()->get('fbScrapService');
     if($userContestMedia){
         $mediaId = $userContestMedia['media_id'];
         $showSubmitPopupDiv = 1;
+        $fbscrap->informFbToScrap($contestId,$mediaId);
+        $media = $contestMediaTable->getContestMediaDetails($userContestMedia['id']);
     }
     
     if (isset($this->session['contestUpload']['contestMediaId'])) {      
       $media = $contestMediaTable->getContestMediaDetails($this->session['contestUpload']['contestMediaId']);
       unset($this->session['contestUpload']['contestMediaId']);
       $showPopupDiv = 1;
+      $fbscrap->informFbToScrap($contestId,$media['media_id']);
     }
 
     return new ViewModel(array('contest' => $this->contest, 'showPopupDiv' => $showPopupDiv, 'media' => $media, 'mediaId' => $mediaId, 'showSubmitPopupDiv' => $showSubmitPopupDiv));
