@@ -333,9 +333,11 @@ class ContestMediaTable extends BaseTable {
                 $subQry = $sql->select()
                         ->from(array('cmr2' => 'contest_media_rating'))
                         ->columns(array('bracket_combo_id'))
+                        ->join(array('cm2' => 'contest_media'), new Expression('cm2.id = cmr2.contest_media_id'), array())
                         ->where(array(
                     'cmr2.member_id' => $userId,
-                    'cmr2.round' => $round
+                    'cmr2.round' => $round,
+                    'cm2.contest_id' => $contestId,
                 ));
 
                 $query->where(
