@@ -64,7 +64,8 @@ class ContestWinnerTable extends BaseTable
                 ->join(array('cm' => 'contest_media'), 'cm.id = cw.contest_media_id')
                 ->join(array('m' => 'ps4_media'), 'm.media_id = cm.media_id', array('*'))
                 ->join(array('u' => 'ps4_members'), 'm.owner = u.mem_id', array('username', 'f_name', 'l_name', 'email'))
-                ->where(array('cm.contest_id' => $contestId));
+                ->where(array('cm.contest_id' => $contestId))
+                ->order('cw.rank');
          
         $statement = $this->getSql()->prepareStatementForSqlObject($select);                 
         $resultSet = $statement->execute(); 

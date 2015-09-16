@@ -374,7 +374,7 @@
                             </div>
                             <div class="col-md-12 col-xs-12 round6-center">
                                 <?php if(isset($contestWinners[0])){ ?>
-                                <div class="col-md-12 col-xs-12 round7 no-margin-padding" data-round="7" data-comboId="<?php echo $comboId ?>" data-mediaId="<?php echo $medias[$media1]['media_id']; ?>">
+                                <div class="col-md-12 col-xs-12 round7 no-margin-padding" data-round="7" data-comboId="<?php echo $comboId ?>" data-mediaId="<?php echo $contestWinners[0]['media_id']; ?>">
                                     <img mediaid="<?php echo $this->KCrypt()->enc($contestWinners[0]['media_id']) ?>" src="<?php echo $this->mediaImage($contestWinners[0], 'icons', '100'); ?>" title="<?php echo $contestWinners[0]['title'] ?>" alt="<?php echo $contestWinners[0]['title'] ?>" />
                                 </div>
                                 <?php } else { ?> 
