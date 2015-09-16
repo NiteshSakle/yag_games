@@ -34,6 +34,7 @@ class AnnounceWinnersController extends BaseConsoleController {
                 $contest['main_site_url'] = $config['main_site']['url'];
                 foreach ($contestArtists as $contestArtist) {
                     $contest['user_data'] = $contestArtist;                    
+                    $contest['contest_type'] = $this->getRouteName($contest['type_id']);
                     $this->sendEmail('Winners for contest - ' . $contest['name'], $contestArtist['email'], 'winners_announced', $contest);
                     //$mailer->send($config['from_address_email'], $email, $subject, $body);
                 }
@@ -152,6 +153,24 @@ class AnnounceWinnersController extends BaseConsoleController {
 
             return true;        
         }
+    }
+    
+    private function getRouteName($contestTypeId) {
+        switch ($contestTypeId) {
+            case 1:
+                $contestType = 'photo-contest';
+                break;
+            case 2:
+                $contestType = 'fan-favorite';
+                break;
+            case 3:
+                $contestType = 'brackets';
+                break;
+            default :
+                $contestType = 'photo-contest';
+                break;
+        }
+        return $contestType;
     }
 
 }
