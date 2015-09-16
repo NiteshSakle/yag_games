@@ -61,7 +61,7 @@
     <div style="display: none; text-align: center" id="thanksPopUpDiv">
         <div class="popup-another-img">
             <a style="float:right; margin-top: -5%; margin-right: -4%;" onclick="hideThankYouPopUp();" href="#."><img style="height: 16px; width: 16px;" alt="" src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/close.button.png" /></a>
-            <div style="border:1px solid grey; text-align: center; margin: 5%">
+            <div style="border:1px solid rgba(128,128,128,0.4); text-align: center; margin: 5%">
                 <p style="font-size: 40px; font-weight: bold; text-align: center; color: #663f8e; font-family: 'franklin_gothic_bookregular'; line-height: 1em;">Thank You
                     <br>
                     <span style="font-size: 25px;">for entering the</span>
@@ -76,7 +76,7 @@
                     </div>                        
                 </div>
             </div>
-            <div class="btn-upload-another-img"><input type="button" onClick="javascript:window.location.href = '<?php echo $this->basePath() ?>/new-contest'"  value="More Contests"></div>
+            <div class="btn-upload-another-img"><input type="button" onClick="javascript:window.location.href = '<?php echo $this->basePath() ?>/new-contest'"  value="More Contests" style="font-weight: bold;"></div>
         </div>
     </div>
 </div>

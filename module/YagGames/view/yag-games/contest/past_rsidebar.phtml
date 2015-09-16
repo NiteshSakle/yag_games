@@ -7,15 +7,19 @@
   <div class="contest-winner">
     <?php if (empty($contest['rank'])):?>
     <img src="<?php echo $this->basePath() ?>/img/closed.png"  alt="contest status" style="width:40%" />
-    <?php elseif ($contest['rank'] == 1) :?>
+    <?php elseif ($contest['rank'] == 1 && $contest['type_id'] != 3) :?>
     <div class="you_ranked">You Ranked</div>
     <div class="rank">WINNER</div>
     <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/trophy.png"  alt="contest status" style="width:40%" />
-    <?php elseif ($contest['rank'] >= 2 && $contest['rank'] <= 10):?>
+    <?php elseif ($contest['rank'] >= 2 && $contest['rank'] <= 10 && $contest['type_id'] != 3):?>
     <div class="you_ranked">You Ranked</div>
     <div class="rank">Top 10</div>
     <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/trophy.png"  alt="contest status" style="width:40%" />
-    <?php endif;?>
+    <?php elseif ($contest['type_id'] == 3):?>
+    <div class="you_ranked">You Ranked</div>
+    <div class="rank"><?php echo $contest['barcket_badge']; ?></div>
+    <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/trophy.png"  alt="contest status" style="width:40%" />
+    <?php endif; ?>
   </div>  
   <br>
   

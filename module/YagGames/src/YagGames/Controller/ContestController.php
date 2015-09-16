@@ -122,7 +122,10 @@ class ContestController extends BaseController
     $paginator->setItemCountPerPage($this->size);
     foreach ($data['contests'] as $key => $contest) {
         $data['contests'][$key]['entry_end_date'] = date("jS F, Y", strtotime($contest['entry_end_date'])); 
-        $data['contests'][$key]['winners_announce_date'] = date("jS F, Y", strtotime($contest['winners_announce_date'])); 
+        $data['contests'][$key]['winners_announce_date'] = date("jS F, Y", strtotime($contest['winners_announce_date']));
+        if($contest['type_id'] == 3 && $contest['rank'] != null ){
+            $data['contests'][$key]['barcket_badge'] = $this->getBracketWinnerBadge($contest['rank']);
+        }
     }
     return $this->getViewModal(array(
         'paginator' => $paginator,
@@ -155,5 +158,22 @@ class ContestController extends BaseController
             $contestType = 'brackets';
     }
     return $contestType;
+  }
+  
+  private function getBracketWinnerBadge($rank)
+  {
+    if($rank == 1) {
+        return "CHAMPION";
+    } elseif ($rank == 2 ) {
+        return "SEMI-FINAL";
+    } elseif ($rank > 2 && $rank <=4) {
+        return "FINAL 4";
+    } elseif ($rank > 4 && $rank <=8) {
+        return "ELITE 8";
+    } elseif ($rank > 8 && $rank <=16) {
+        return "SWEET 16";
+    } else {
+        return "";
+    }
   }
 }
