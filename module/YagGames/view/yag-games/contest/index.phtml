@@ -99,9 +99,13 @@
                 
                 $cssClass = '';
                 
+                $today = strtotime(date('Y-m-d'));
+                $entryEndDate = strtotime($contest['entry_end_date']);        
+                $percentage = ($contest['total_entries']) ? floor(($contest['total_entries'] / $contest['max_no_of_photos']) * 100) : 0;
+                
                 if($type !== 'exclusive') {
                     
-                    if ($contest['voting_started'])
+                    if ($contest['voting_started'] || $percentage == 100 || ($entryEndDate < $today))
                        $cssClass = 'black-border';
                     else
                        $cssClass = 'purple-border'; 
