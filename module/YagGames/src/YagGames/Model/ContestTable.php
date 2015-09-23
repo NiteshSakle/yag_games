@@ -141,6 +141,9 @@ class ContestTable extends BaseTable {
     }
 
     private function getNewContestSelect($select, $user) {
+        $select->columns(array('*',                          
+                         'my_type' => new Expression('IF(entry_start_date <= CURDATE() AND entry_end_date >= CURDATE(), "new", IF(winners_announce_date > CURDATE(), "active", "past"))'),
+                         'new_sort' => new Expression('IF(voting_started = 1, 2, IF(total_entries > 0 && (FLOOR(total_entries/max_no_of_photos) = 1 || entry_end_date < CURDATE()), 3, 1))')));
         $select->where('entry_start_date <= CURDATE() AND winners_announce_date > CURDATE()');
         $select->where->and->notEqualTo('c.is_exclusive', '1');
         //$select->where('(total_entries < c.max_no_of_photos OR total_entries IS NULL)');
@@ -259,7 +262,13 @@ class ContestTable extends BaseTable {
             }
 
             $select->quantifier(new Expression('SQL_CALC_FOUND_ROWS'));
-            $select->order('c.entry_end_date');
+            
+            if ($type == 'new') {
+                $select->order(array('new_sort' => 'ASC', 'c.entry_end_date' => 'ASC'));
+            } else {
+                $select->order('c.entry_end_date');
+            }
+            
             $select->group('c.id');
             $select->limit($offset);
             $select->offset(($page - 1) * $offset);
