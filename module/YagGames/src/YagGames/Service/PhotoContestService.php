@@ -26,13 +26,23 @@ class PhotoContestService
       throw new \YagGames\Exception\PhotoContestException("You have to be Artist to participate in contest");
     }
     
-    //check end date
     $now = new \DateTime();
     $now = $now->format('Y-m-d');
+    
+    //check start date
+    $startDate = new \DateTime($contestData['entry_start_date']);
+    $startDate = $startDate->format('Y-m-d');
+    
+    if ($startDate > $now) {
+      throw new \YagGames\Exception\PhotoContestException("Contest entry is not yet started");
+    }
+    
+    //check end date
     $endDate = new \DateTime($contestData['entry_end_date']);
+    $endDate = $endDate->format('Y-m-d');
     if ($now > $endDate) {
       throw new \YagGames\Exception\PhotoContestException("You cannot upload art as contest has already ended");
-    }
+    }  
     
     //max 200 in contest
     $contestMediaTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaTable');

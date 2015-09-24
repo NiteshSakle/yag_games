@@ -43,4 +43,7 @@ return array(
     
     'SITE_DOMAIN' => 'http://localhost/yag_games',
     'SITE_BASE_PATH' => '',
+    
+    'to_address_email' => 'staging@yourartgallery.com',
+    'from_address_email' => 'staging@yourartgallery.com',
 );
