@@ -143,8 +143,11 @@ class PhotoContestService
   public function getNextContestMedia($contestId,  $userId = null, $mediaId = null, $ratedMedia = array())
   {    
     $config = $this->getServiceLocator()->get('Config');  
+    //IP Address Check
+    $clientIPService = $this->getServiceLocator()->get('clientIPService');            
+    $clientIP = $clientIPService->getClientIPAddress();   
     $contestMediaTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaTable');
-    $contestData = $contestMediaTable->getNextContestMedia($contestId, $mediaId, $this->getServiceLocator(), $config, $userId, $ratedMedia);
+    $contestData = $contestMediaTable->getNextContestMedia($contestId, $mediaId, $clientIP, $config, $userId, $ratedMedia);
     
     $count = 0;
     if ($userId) {

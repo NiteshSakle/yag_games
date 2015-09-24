@@ -194,7 +194,7 @@ class ContestMediaTable extends BaseTable {
         }
     }
 
-    public function getNextContestMedia($contestId, $mediaId, $serviceManager, $config, $userId = null, $ratedMedia = array()) {
+    public function getNextContestMedia($contestId, $mediaId, $clientIP, $config, $userId = null, $ratedMedia = array()) {
         try {
             $limit = 1;
             $sql = $this->getSql();
@@ -215,9 +215,9 @@ class ContestMediaTable extends BaseTable {
                 $query->where(array('cm.media_id' => $mediaId));
             }
 
-            //IP Address Check
-            $clientIPService = $serviceManager->get('clientIPService');            
-            $clientIP = $clientIPService->getClientIPAddress();        
+//            //IP Address Check
+//            $clientIPService = $serviceManager->get('clientIPService');            
+//            $clientIP = $clientIPService->getClientIPAddress();        
            
             if (is_array($config) && !in_array($clientIP, $config['white_listed_ips'])) {           
                
