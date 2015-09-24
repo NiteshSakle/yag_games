@@ -23,7 +23,7 @@ fi
 echo "Using environment $APPLICATION_ENV"
 
 if [ $APPLICATION_ENV == "prod" ]; then
-  if [ "$VERSION" == "master" ]; then
+  if [ "$VERSION" != "" ]; then
     deploy_branch 
   elif [[ "$VERSION" == v* ]]; then
     deploy_tag
