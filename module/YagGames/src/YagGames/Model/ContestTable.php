@@ -457,5 +457,30 @@ class ContestTable extends BaseTable {
 
         return $user_data;
     }
+    
+    public function getContestsForEmailSending() {
+        try {
+
+            $where = new \Zend\Db\Sql\Where();
+            $where->equalTo('c.voting_started', '1')
+                    ->equalTo('c.voting_start_date', new Expression('CURDATE()'));
+            $sql = $this->getSql();
+            $query = $sql->select()
+                    ->from(array('c' => 'contest'))
+                    ->where($where)
+                    ->group('c.id');
+
+            $rows = $sql->prepareStatementForSqlObject($query)->execute();
+            $contest = array();
+            foreach ($rows as $row) {
+                $contest[] = $row;
+            }
+
+            return $contest;
+        } catch (\Exception $e) {
+            $this->logException($e);
+            return false;
+        }
+    }
 
 }
