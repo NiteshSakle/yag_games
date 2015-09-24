@@ -19,7 +19,7 @@ class StartVotingController extends BaseConsoleController {
 
         $this->process();
 
-        echo "Sent email";
+        echo "Contest Voting has started. \n";
     }
 
     public function process() {
@@ -29,14 +29,10 @@ class StartVotingController extends BaseConsoleController {
         $config = $this->getConfig();
 
         foreach ($contests as $contest) {
-            if ($this->startVoting($contest)) {
-                $contestArtists = $contestMediaTable->getContestArtistData($contest['id']);
+            if ($this->startVoting($contest)) {                
+                //Sending Email To Admin
                 $contest['main_site_url'] = $config['main_site']['url'];
-                foreach ($contestArtists as $contestArtist) {
-                    $contest['user_data'] = $contestArtist;
-                    $this->sendEmail('Voting Started for - ' . $contest['name'], $contestArtist['email'], 'voting_started', $contest);
-                    //$mailer->send($config['from_address_email'], $email, $subject, $body);
-                }
+//                $this->sendEmail('Voting Started for - ' . $contest['name'], $config['to_address_email'], 'voting_started_admin', $contest);                 
             }
         }
     }
@@ -49,5 +45,4 @@ class StartVotingController extends BaseConsoleController {
         $contest->voting_started = 1;
         return $contestMediaTable->update($contest);
     }
-
 }
