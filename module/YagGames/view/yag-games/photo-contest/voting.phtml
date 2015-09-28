@@ -133,7 +133,8 @@
                 page: gameBasePath + '/photo-contest/get-next-art?contestId=' + contestId,
                 mini: true
             });
-    <?php } else { ?>
+    <?php } elseif (isset ($shareMedia['media_id'])) {                
+             ?>
             var mediaId = <?php echo $shareMedia['media_id']; ?>;
             workbox({
                 page: gameBasePath + '/photo-contest/get-next-art?contestId=' + contestId + '&mediaId=' + mediaId,
