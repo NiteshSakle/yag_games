@@ -145,6 +145,31 @@ class ContestMediaRatingTable extends BaseTable
     }
   }
   
+  public function isMediaRatedFromIpToday($contestId, $mediaId, $ipAddress) 
+  {
+      try {
+            $sql = $this->getSql();
+
+            $query = $sql->select()
+                    ->from(array('cmr' => 'contest_media_rating'))
+                    ->join(array('cm' => 'contest_media'), 'cm.id = cmr.contest_media_id')
+                    ->where(array('cm.contest_id' => $contestId, 'cm.media_id' => $mediaId, 'cmr.ip_address' => $ipAddress))
+                    ->where(new Expression('HOUR(TIMEDIFF(NOW() , cmr.created_at)) <= 24'));
+                    
+
+            $rows = $sql->prepareStatementForSqlObject($query)->execute();
+            
+            if ($rows->count() > 0) {                
+                return TRUE;
+            }
+            
+            return FALSE;
+        } catch (Exception $ex) {
+            $this->logException($ex);
+            return false;
+        }
+  }
+    
   public function hasAlreadyVotedForThisBracketContest($round, $comboId , $userId, $contestId){
     try {
       $sql = $this->getSql();
