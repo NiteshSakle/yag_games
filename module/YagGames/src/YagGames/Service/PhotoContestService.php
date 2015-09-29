@@ -112,13 +112,17 @@ class PhotoContestService
         throw new \YagGames\Exception\PhotoContestException("You have already voted for this media in this contest today.");
       }
     }
-            
+    
+    $clientIPService = $this->getServiceLocator()->get('clientIPService');            
+    $clientIP = $clientIPService->getClientIPAddress();
+    
     // now submit vote
     $contestMediaRating = new \YagGames\Model\ContestMediaRating();
     $contestMediaRating->contest_media_id = $contestMediaData['id'];
     $contestMediaRating->member_id = (!empty($userSession['mem_id'])) ? $userSession['mem_id'] : 0;
     $contestMediaRating->rating = $rating;
     $contestMediaRating->round = 0;
+    $contestMediaRating->ip_address = $clientIP;
     
     $contestMediaRatingId = $contestMediaRatingTable->insert($contestMediaRating);   
     if (!$contestMediaRatingId) {
@@ -137,9 +141,13 @@ class PhotoContestService
   }
   
   public function getNextContestMedia($contestId,  $userId = null, $mediaId = null, $ratedMedia = array())
-  {
+  {    
+    $config = $this->getServiceLocator()->get('Config');  
+    //IP Address Check
+    $clientIPService = $this->getServiceLocator()->get('clientIPService');            
+    $clientIP = $clientIPService->getClientIPAddress();   
     $contestMediaTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaTable');
-    $contestData = $contestMediaTable->getNextContestMedia($contestId, $userId, $mediaId, $ratedMedia);
+    $contestData = $contestMediaTable->getNextContestMedia($contestId, $mediaId, $clientIP, $config, $userId, $ratedMedia);
     
     $count = 0;
     if ($userId) {
@@ -155,5 +163,5 @@ class PhotoContestService
   {
     return $this->serviceManager;
   }
-
+  
 }

@@ -340,7 +340,26 @@ class PhotoContestController extends BaseController
         ));
       }
 
-      // for non logged in user
+      //check user already rated the contest media from this IP Address
+      $config = $this->getServiceLocator()->get('Config');
+      
+      $clientIPService = $this->getServiceLocator()->get('clientIPService');            
+      $clientIP = $clientIPService->getClientIPAddress();  
+      
+      if (is_array($config) && !in_array($clientIP, $config['white_listed_ips'])) {
+          
+        $constestMediaRatingTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaRatingTable');
+        $isMediaRatedFromIpToday = $constestMediaRatingTable->isMediaRatedFromIpToday($contestId, $mediaId, $clientIP);
+
+        if ($isMediaRatedFromIpToday) {
+            return new JsonModel(array(
+                'success' => false,
+                'message' => 'You have already rated'
+            ));
+        }        
+      }
+
+            // for non logged in user
       // check user already rated the contest media from this browser
       if (!$userId) {
         $resp = $this->isAlreadyRated($contestId, $mediaId);
@@ -450,5 +469,5 @@ class PhotoContestController extends BaseController
 
     return $this->contest;
   }
-
-}
+  
+  }

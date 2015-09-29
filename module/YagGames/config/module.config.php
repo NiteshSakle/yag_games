@@ -198,7 +198,7 @@ return array(
                 ),
                 'SendVotingStartEmail' => array(
                   'options' => array(
-                      'route'    => 'SendVotingStartEmail <contestId>',
+                      'route'    => 'SendVotingStartEmail [<contestId>]',
                       'defaults' => array(
                           'controller' => 'YagGames\Console\SendVotingStartEmail',
                           'action'     => 'index'

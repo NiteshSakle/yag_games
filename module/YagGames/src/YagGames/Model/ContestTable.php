@@ -143,9 +143,12 @@ class ContestTable extends BaseTable {
     }
 
     private function getNewContestSelect($select, $user) {
-        $select->where('entry_start_date <= CURDATE() AND c.entry_end_date >= CURDATE()');
+        $select->columns(array('*',                          
+                         'my_type' => new Expression('IF(entry_start_date <= CURDATE() AND entry_end_date >= CURDATE(), "new", IF(winners_announce_date > CURDATE(), "active", "past"))'),
+                         'new_sort' => new Expression('IF(voting_started = 1, 2, IF(total_entries > 0 && (FLOOR(total_entries/max_no_of_photos) = 1 || entry_end_date < CURDATE()), 3, 1))')));
+        $select->where('entry_start_date <= CURDATE() AND winners_announce_date > CURDATE()');
         $select->where->and->notEqualTo('c.is_exclusive', '1');
-        $select->where('(total_entries < c.max_no_of_photos OR total_entries IS NULL)');
+        //$select->where('(total_entries < c.max_no_of_photos OR total_entries IS NULL)');
 
         // if user log's in, check whether he entered the contest or not
         if ($user) {
@@ -261,7 +264,13 @@ class ContestTable extends BaseTable {
             }
 
             $select->quantifier(new Expression('SQL_CALC_FOUND_ROWS'));
-            $select->order('c.entry_end_date');
+            
+            if ($type == 'new') {
+                $select->order(array('new_sort' => 'ASC', 'c.entry_end_date' => 'ASC'));
+            } else {
+                $select->order('c.entry_end_date');
+            }
+            
             $select->group('c.id');
             $select->limit($offset);
             $select->offset(($page - 1) * $offset);
@@ -458,6 +467,31 @@ class ContestTable extends BaseTable {
         $user_data = $resultSet->current();
 
         return $user_data;
+    }
+    
+    public function getContestsForEmailSending() {
+        try {
+
+            $where = new \Zend\Db\Sql\Where();
+            $where->equalTo('c.voting_started', '1')
+                    ->equalTo('c.voting_start_date', new Expression('CURDATE()'));
+            $sql = $this->getSql();
+            $query = $sql->select()
+                    ->from(array('c' => 'contest'))
+                    ->where($where)
+                    ->group('c.id');
+
+            $rows = $sql->prepareStatementForSqlObject($query)->execute();
+            $contest = array();
+            foreach ($rows as $row) {
+                $contest[] = $row;
+            }
+
+            return $contest;
+        } catch (\Exception $e) {
+            $this->logException($e);
+            return false;
+        }
     }
 
 }

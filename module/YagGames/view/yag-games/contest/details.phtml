@@ -3,20 +3,20 @@ $this->headMeta()->setProperty('og:title', $contest['name']);
 $this->headMeta()->setProperty('og:type', 'website');
 if($shareMedia) {
     $this->headMeta()->setProperty('og:image', $this->mediaImage($shareMedia, 'samples'));
-    $this->headMeta()->setProperty('og:description', 'I entered the ' . $contest['name'] . ' on YOURARTGALLERY.COM. Check it out now!');
+    $this->headMeta()->setProperty('og:description', 'I entered the ' . $contest['name'] . ' on YOURARTGALLERY.COM. Check it out now! ');
 } else {
     $this->headMeta()->setProperty('og:image', $this->config('aws', 'path') . $contest['thumbnail']);
-    $this->headMeta()->setProperty('og:description', $contest['name'] . ' is available on YOURARTGALLERY.COM. Check it out!' . $this->config('main_site' ,'url') . '/contests/details/id/' . $contest['id']);
+    $this->headMeta()->setProperty('og:description', $contest['name'] . ' is available on YOURARTGALLERY.COM. Check it out! ' . $this->config('main_site' ,'url') . '/contests/details/id/' . $contest['id']);
 }
 $this->headMeta()->setProperty('twitter:card', 'summary');
 $this->headMeta()->setProperty('twitter:site', '@YourArtGallery');
 $this->headMeta()->setProperty('twitter:title', $contest['name']);
 if($shareMedia) {
     $this->headMeta()->setProperty('twitter:image', $this->mediaImage($shareMedia, 'samples'));
-    $this->headMeta()->setProperty('twitter:description', 'I entered the ' . $contest['name'] . ' on YOURARTGALLERY.COM. Check it out now!');    
+    $this->headMeta()->setProperty('twitter:description', 'I entered the ' . $contest['name'] . ' on YOURARTGALLERY.COM. Check it out now! ');    
 } else {
     $this->headMeta()->setProperty('twitter:image', $this->config('aws', 'path') . $contest['thumbnail']);    
-    $this->headMeta()->setProperty('twitter:description', $contest['name'] . ' is available on YOURARTGALLERY.COM. Check it out!' . $this->config('main_site' ,'url') . '/contests/details/id/' . $contest['id']);    
+    $this->headMeta()->setProperty('twitter:description', $contest['name'] . ' is available on YOURARTGALLERY.COM. Check it out! ' . $this->config('main_site' ,'url') . '/contests/details/id/' . $contest['id']);    
 }
 ?>
 <style>
@@ -82,7 +82,22 @@ $(document).ready(function() {
         <h1 class="page-titleHead">Artist Challenge & Contests</h1>
     </div>
 </div>
-<div class="contest row <?php echo ($type !== 'exclusive') ? 'black-border' : '' ?>">
+<?php 
+$cssClass = '';
+                
+$today = strtotime(date('Y-m-d'));
+$entryEndDate = strtotime($contest['entry_end_date']);        
+$percentage = ($contest['total_entries']) ? floor(($contest['total_entries'] / $contest['max_no_of_photos']) * 100) : 0;
+
+if($type !== 'exclusive') {
+
+    if ($contest['voting_started'] || $percentage == 100 || ($entryEndDate < $today))
+       $cssClass = 'black-border';
+    else
+       $cssClass = 'purple-border'; 
+}
+?>
+<div class="contest row <?php echo $cssClass ?>">
 <?php
 $titleClass = 'contest-title';
 if ($this->getHelperPluginManager()->getServiceLocator()->get('Application')->getMvcEvent()->getRouteMatch()->getParam('action') == 'exclusive-contest') {
