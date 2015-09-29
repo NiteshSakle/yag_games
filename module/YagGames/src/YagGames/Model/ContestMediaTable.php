@@ -194,7 +194,7 @@ class ContestMediaTable extends BaseTable {
         }
     }
 
-    public function getNextContestMedia($contestId, $userId = null, $mediaId, $ratedMedia = array()) {
+    public function getNextContestMedia($contestId, $mediaId, $clientIP, $config, $userId = null, $ratedMedia = array()) {
         try {
             $limit = 1;
             $sql = $this->getSql();
@@ -215,6 +215,28 @@ class ContestMediaTable extends BaseTable {
                 $query->where(array('cm.media_id' => $mediaId));
             }
 
+//            //IP Address Check
+//            $clientIPService = $serviceManager->get('clientIPService');            
+//            $clientIP = $clientIPService->getClientIPAddress();        
+           
+            if (is_array($config) && !in_array($clientIP, $config['white_listed_ips'])) {           
+               
+               $subQry1 = $sql->select()
+                          ->from(array('cmr3' => 'contest_media_rating'))
+                          ->columns(array('contest_media_id'))
+                          ->where(new Expression('HOUR(TIMEDIFF(NOW() , created_at)) <= 24'))
+                          ->where(array('cmr3.ip_address' => $clientIP));
+                          
+               
+               $query->where(
+                        new \Zend\Db\Sql\Predicate\PredicateSet(
+                        array(
+                    new \Zend\Db\Sql\Predicate\NotIn('cm.id', $subQry1)
+                        )
+                        )
+                );
+            }
+            
             if (!empty($userId)) {
                 //exclude already rated media of today
                 $subQry = $sql->select()

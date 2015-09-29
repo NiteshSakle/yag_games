@@ -5,6 +5,10 @@
         font-weight: bold !important; 
         color: #663f8e !important;
     }
+    .rate-it-image .photo-contest-popup {
+        padding: 1.2% !important;
+        text-align: center;
+    }
 </style>
 <script type="text/javascript" src="<?php echo $this->config('main_site', 'url') ?>/assets/javascript/workbox.js"></script>
 <script type="text/javascript">
@@ -107,8 +111,8 @@
         <div class="rate-it-wrapper">
             <div class="rangetitle1 animalcol"><?php echo $media['contest_name']; ?></div>
             <div class="rate-it-image">
-                <div class="image">
-                    <img src="<?php echo $this->mediaImage($media, 'samples'); ?>"  style="max-height:250px;" />
+                <div class="image photo-contest-popup">
+                    <img src="<?php echo $this->mediaImage($media, 'samples'); ?>" />
                 </div>
                 <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/close.button.png" id="closeWorkbox">
             </div>

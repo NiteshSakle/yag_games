@@ -46,4 +46,9 @@ return array(
     
     'to_address_email' => 'staging@yourartgallery.com',
     'from_address_email' => 'staging@yourartgallery.com',
+    
+    'white_listed_ips' => array(
+       '64.61.171.34',
+       '183.82.4.110'
+   ),
 );
