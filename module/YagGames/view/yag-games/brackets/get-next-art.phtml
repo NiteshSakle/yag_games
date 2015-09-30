@@ -8,6 +8,12 @@
     .brk-rate-it{ top: -50px; }
     .brk-old-round{ top: 100px; }
     .rate-it-image-close{ margin:5px; background-color: #d3d2d2; }
+    .brk-thankq-popup{
+        border: 1px #D3D2D2 solid;
+        width: 400px;
+        text-align: center;
+        margin-bottom: 3px;
+    }
 </style>
 <script type="text/javascript" src="<?php echo $this->config('main_site', 'url') ?>/assets/javascript/workbox.js"></script>
 <script type="text/javascript">
@@ -158,8 +164,8 @@
     <div class="rate-it-popup brk-rate-it">
         <div class="rate-it-wrapper">
       <!--    <div class="rangetitle1 animalcol"><?php echo $media['contest_name']; ?></div>-->
-            <div class="rate-it-image">
-                <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/close.button.png" id="closeWorkbox">
+            <div class="brk-thankq-popup">
+                <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/close.button.png" id="closeWorkbox" style=" top: 3px;">
             </div>
             <div class="row" style="border:1px solid grey">
                 <span class="col-md-4">
