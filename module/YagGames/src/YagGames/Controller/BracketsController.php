@@ -416,11 +416,11 @@ class BracketsController extends BaseController
     if ($request->isPost()) {
       $mediaId = $request->getPost('mediaId');
     }
-    $config = $this->getServiceLocator()->get('config');
+    $this->getConfig();
     $KCrypt = $this->getServiceLocator()->get('kcryptService');
     $kcryptHelper = new \YagGames\View\Helper\KCryptHelper();
     $kcryptHelper->setKCryptService($KCrypt);    
-    $mediaUrl = $config['main_site']['url'] . '/photo/' . $kcryptHelper->enc($mediaId) . '/photo.html' ;
+    $mediaUrl = $this->config['main_site']['url'] . '/photo/' . $kcryptHelper->enc($mediaId) . '/photo.html' ;
     
     return new JsonModel(array(
         'success' => true,

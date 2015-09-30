@@ -214,11 +214,7 @@ class ContestMediaTable extends BaseTable {
             if (!empty($mediaId)) {
                 $query->where(array('cm.media_id' => $mediaId));
             }
-
-//            //IP Address Check
-//            $clientIPService = $serviceManager->get('clientIPService');            
-//            $clientIP = $clientIPService->getClientIPAddress();        
-           
+            
             if (is_array($config) && !in_array($clientIP, $config['white_listed_ips'])) {           
                
                $subQry1 = $sql->select()
@@ -330,7 +326,7 @@ class ContestMediaTable extends BaseTable {
             );
     }
     
-    public function getNextBracketCombo($contestId, $userId = null, $contestComboId, $ratedComboMedia = array(), $round) {
+    public function getNextBracketCombo($contestId, $userId = null, $contestComboId, $ratedComboMedia = array(), $round, $whiteListedIP, $clientIP) {
         try {
             $limit = 1;
             $sql = $this->getSql();
@@ -349,7 +345,23 @@ class ContestMediaTable extends BaseTable {
             if (!empty($contestComboId)) {
                 $query->where(array('cbmc.combo_id' => $contestComboId)); 
             }
-
+            
+            if (is_array($whiteListedIP) && !in_array($clientIP, $whiteListedIP)) {
+               $subQry1 = $sql->select()
+                          ->from(array('cmr3' => 'contest_media_rating'))
+                          ->columns(array('bracket_combo_id'))
+                          ->join(array('cm3' => 'contest_media'), new Expression('cm3.id = cmr3.contest_media_id'), array())
+                          ->where(array(
+                                 'cmr3.ip_address' => $clientIP,
+                                 'cmr3.round' => $round,
+                                 'cm3.contest_id' => $contestId,
+                             ));
+               
+               $query->where(new \Zend\Db\Sql\Predicate\PredicateSet(
+                       array(new \Zend\Db\Sql\Predicate\NotIn('cbmc.combo_id', $subQry1))
+                        ));
+            }
+            
             if (!empty($userId)) {
                 //exclude already rated media of this round
                 $subQry = $sql->select()
@@ -383,11 +395,10 @@ class ContestMediaTable extends BaseTable {
         }
     }
     
-    public function getNextBracketMedia($contestId, $userId = null, $contestComboId, $ratedMedia = array(), $round)
+    public function getNextBracketMedia($contestId, $userId = null, $contestComboId, $ratedMedia = array(), $round, $whiteListedIP = array(), $clientIP)
     {
         try {
-            $comboDetails = $this->getNextBracketCombo($contestId, $userId, $contestComboId, $ratedMedia, $round);
-            
+            $comboDetails = $this->getNextBracketCombo($contestId, $userId, $contestComboId, $ratedMedia, $round, $whiteListedIP, $clientIP);
             $media = array();
             if($comboDetails) {
                 $limit = 2;
@@ -413,10 +424,7 @@ class ContestMediaTable extends BaseTable {
                 foreach ($rows as $row) {
                     $media[$row['id']] = $row;
                 }
-            } else {
-                
-            }
-            
+            } 
             return array(
                 "contestDetails" => $comboDetails,
                 "medias" => $media

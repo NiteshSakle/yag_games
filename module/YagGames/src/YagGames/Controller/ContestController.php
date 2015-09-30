@@ -122,13 +122,13 @@ class ContestController extends BaseController
     $paginator->setItemCountPerPage($this->size);
     foreach ($data['contests'] as $key => $contest) {
         $data['contests'][$key]['entry_end_date'] = date("jS F, Y", strtotime($contest['entry_end_date'])); 
-        $data['contests'][$key]['winners_announce_date'] = date("jS F, Y", strtotime($contest['winners_announce_date']));
-        if($type == 'my') {
-            if($contest['type_id'] == 3 && $contest['rank'] != null ){
-                $data['contests'][$key]['barcket_badge'] = $this->getBracketWinnerBadge($contest['rank']);
-            }
+        $data['contests'][$key]['winners_announce_date'] = date("jS F, Y", strtotime($contest['winners_announce_date']));        
+        if(!empty($contest['rank']) && $contest['type_id'] == 3 ){
+            $data['contests'][$key]['barcket_badge'] = $this->getBracketWinnerBadge($contest['rank']);
         }
+        
     }
+    
     return $this->getViewModal(array(
         'paginator' => $paginator,
         'data' => $data['contests'], 

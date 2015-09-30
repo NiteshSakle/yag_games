@@ -105,7 +105,10 @@ class BracketService
         throw new \YagGames\Exception\BracketException("You have already voted for this combo in this Round");
       }
     }
-            
+     
+    $clientIPService = $this->getServiceLocator()->get('clientIPService');            
+    $clientIP = $clientIPService->getClientIPAddress();
+    
     // now submit vote
     $contestMediaRating = new \YagGames\Model\ContestMediaRating();
     $contestMediaRating->contest_media_id = $contestMediaData['id'];
@@ -113,6 +116,7 @@ class BracketService
     $contestMediaRating->rating = 10;
     $contestMediaRating->round = $contestData['current_round'];
     $contestMediaRating->bracket_combo_id = $comboId;
+    $contestMediaRating->ip_address = $clientIP;
     
     $contestMediaRatingId = $contestMediaRatingTable->insert($contestMediaRating);   
     if (!$contestMediaRatingId) {
@@ -133,7 +137,10 @@ class BracketService
   public function getNextContestMedia($contestId,  $userId = null, $contestComboId = null, $ratedMedia = array(), $round)
   {
     $contestMediaTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaTable');
-    $contestData = $contestMediaTable->getNextBracketMedia($contestId, $userId, $contestComboId, $ratedMedia, $round);
+    $config = $this->getServiceLocator()->get('Config');  
+    $clientIPService = $this->getServiceLocator()->get('clientIPService');      //Get IP Address      
+    $clientIP = $clientIPService->getClientIPAddress();
+    $contestData = $contestMediaTable->getNextBracketMedia($contestId, $userId, $contestComboId, $ratedMedia, $round, $config['white_listed_ips'], $clientIP);
     
     $count = 0;
     if ($userId) {
