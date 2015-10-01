@@ -187,9 +187,11 @@
                                     $contestType = 'brackets';
                             }
                             ?>
-                        <div class="col-md-4 pull-right">
-                            <span class="wysiwyg-font-size-fs16">Share the Winners</span>
-                            <div class="social-icons-1">
+                        <div class="col-md-5 pull-right">
+                            <div class="col-md-6" style="padding-left: 60px;padding-right: 0px;margin-top: 3px;">
+                                <span class="wysiwyg-font-size-fs16">Share the Winners</span>
+                            </div>
+                            <div class="col-md-6 social-icons-1" style="margin: 0px;">
                                 <?php
                                 echo $this->partial('social_sharing.phtml', array(
                                     'contest' => $contest,
@@ -218,3 +220,15 @@
     ));
     ?>
 </div>
+<script>
+$('.btnPinIt').click(function() {
+    var url = $(this).attr('href');
+    var media = encodeURIComponent($(this).attr('data-image'));
+    var desc = $(this).attr('data-desc');
+    window.open("//www.pinterest.com/pin/create/button/"+
+    "?url="+url+
+    "&media="+media+
+    "&description="+desc,"pinIt","toolbar=no, scrollbars=no, resizable=no, top=0, right=0, width=750, height=320");
+    return false;
+});
+</script>
