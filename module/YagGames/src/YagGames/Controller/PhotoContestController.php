@@ -410,7 +410,8 @@ class PhotoContestController extends BaseController
       }
       $rmArray[$contestId][] = $mediaId;
 
-      $cookie = new \Zend\Http\Header\SetCookie('rm', \json_encode($rmArray), mktime(24, 0, 0), '/');
+      $expireTime = (mktime(0, 0, 0, date("n"), date("j")+1, date("Y")) - mktime(date("H"), date("i"), date("s"), date("n"), date("j"), date("Y")));
+      $cookie = new \Zend\Http\Header\SetCookie('rm', \json_encode($rmArray), $expireTime, '/');
       $this->getResponse()->getHeaders()->addHeader($cookie);
     } catch (\Exception $e) {
       $this->getServiceLocator()->get('YagGames\Logger')->err($e->getMessage());

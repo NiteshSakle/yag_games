@@ -207,7 +207,6 @@ class ContestMediaTable extends BaseTable {
                     ->join(array('cmr' => 'contest_media_rating'), 'cm.id = cmr.contest_media_id', array(), 'left')
                     ->columns($columns)
                     ->where(array('cm.contest_id' => $contestId))
-                    ->limit($limit)
                     ->order("votes")
                     ->group('cm.media_id');
 
@@ -220,9 +219,8 @@ class ContestMediaTable extends BaseTable {
                $subQry1 = $sql->select()
                           ->from(array('cmr3' => 'contest_media_rating'))
                           ->columns(array('contest_media_id'))
-                          ->where(new Expression('HOUR(TIMEDIFF(NOW() , created_at)) <= 24'))
-                          ->where(array('cmr3.ip_address' => $clientIP));
-                          
+                          ->where(new Expression('DATE(cmr3.created_at) = CURDATE()'))
+                          ->where(array('cmr3.ip_address' => $clientIP));                          
                
                $query->where(
                         new \Zend\Db\Sql\Predicate\PredicateSet(
@@ -255,8 +253,13 @@ class ContestMediaTable extends BaseTable {
                 $query->where(new \Zend\Db\Sql\Predicate\NotIn('cm.media_id', $ratedMedia));
             }
 
-            $rows = $sql->prepareStatementForSqlObject($query)->execute();
-            $row = $rows->current();
+            $rows = $sql->prepareStatementForSqlObject($query)->execute();            
+            $contestMedia = array();
+            foreach ($rows as $row) {
+                $contestMedia[] = $row;
+            }                   
+            // Get a Random Image from det of all Contest Media's
+            $row = isset($contestMedia[rand(0, count($contestMedia)-1)])?$contestMedia[rand(0, count($contestMedia)-1)]:null;
             if ($row) {
                 $count = $this->getContestMediaCount($contestId, $userId);
                 $row['count'] = $count['count'];
