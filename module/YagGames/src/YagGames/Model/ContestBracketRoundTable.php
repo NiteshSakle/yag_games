@@ -2,6 +2,9 @@
 
 namespace YagGames\Model;
 
+use Zend\Db\Sql\Expression;
+use Zend\Db\Sql\Select;
+
 class ContestBracketRoundTable extends BaseTable
 {
 
@@ -115,13 +118,18 @@ class ContestBracketRoundTable extends BaseTable
     
     public function fetchAllActiveContests() 
     {
+        $where = new \Zend\Db\Sql\Where();
+        $where->lessThanOrEqualTo('c.voting_start_date', new Expression('CURDATE()'))
+                ->greaterThanOrEqualTo('c.winners_announce_date', new Expression('CURDATE()'));
+        
         $select = new \Zend\Db\Sql\Select ;
         $select->from(array('cbr' => 'contest_bracket_round'))
                 ->columns(array('*'))
                 ->join(array('c' => 'contest'), 'c.id = cbr.contest_id', array('name'))
-                ->where(array('c.voting_started' => 1));
+                ->where($where);
          
         $statement = $this->getSql()->prepareStatementForSqlObject($select); 
+        echo $statement->getSql();exit;
         $resultSet = $statement->execute(); 
         
         return $resultSet;
