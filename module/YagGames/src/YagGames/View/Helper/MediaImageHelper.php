@@ -26,7 +26,7 @@ class MediaImageHelper extends AbstractHelper
     $imglink = $mediaUrl .'/'. 
                $type .'/'.
                $this->kcryptService->enc($media['media_id']) .'/'.
-               $this->kcryptService->enc($media['folder_id']) . $sizes .'/photo.jpg';
+               $this->kcryptService->enc($media['folder_id']) .'/photo.jpg' . $sizes;
 
     return $imglink;
   }
