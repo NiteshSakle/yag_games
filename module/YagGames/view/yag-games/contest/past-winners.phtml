@@ -141,6 +141,9 @@
             <?php
         } else {
             foreach ($data as $contest):
+                
+                $isParticipant = FALSE;            
+            
                 ?>
                 <div class="contest row black-border">                    
                     <div class="contest-title">
@@ -149,8 +152,15 @@
                     </div>  
                     <div class="media-list contest-list clearfix">
                         <div class="row">
-                            <?php foreach ($contest['winners']['medias'] as $key => $media): ?>
-                                <?php $i = $key + 1; ?>
+                            <?php foreach ($contest['winners']['medias'] as $key => $media): 
+                                
+                                if (isset($session->mem_id) && $isParticipant === FALSE && $media['owner'] == $session->mem_id) {
+                                    
+                                    $isParticipant = TRUE;
+                                }
+                                
+                                $i = $key + 1; 
+                            ?>
                                 <div class="col-md-2 col-xs-2">
                                     <div class="media-art">
                                         <a class="media_image" href="<?php echo $this->config('main_site', 'url') . '/photo/' . $this->KCrypt()->enc($media['media_id']) . '/' . str_replace(" ", "-", $media['title']) . '.html' ?>" data-media_id="<?php echo $media['media_id'] ?>">
@@ -188,8 +198,14 @@
                             }
                             ?>
                         <div class="col-md-5 pull-right">
-                            <div class="col-md-6" style="padding-left: 0;padding-right: 0px;margin-top: 3px;margin-left: 0;left: 52px;">
-                                <span class="wysiwyg-font-size-fs16" style="padding-left: 7px;">Share the Winners</span>
+                            <div class="col-md-6" style="padding-left: 0;padding-right: 0px;margin-top: 3px;margin-left: 0;left: 52px;">                                
+                                    <?php                                     
+                                        if ($isParticipant) {
+                                            echo '<span class="wysiwyg-font-size-fs16" style="padding-left: 3px;">Checkout how I did</span>';
+                                        } else {
+                                            echo '<span class="wysiwyg-font-size-fs16" style="padding-left: 7px;">Share the Winners</span>';
+                                        }
+                                    ?>                                
                             </div>
                             <div class="col-md-6 social-icons-1" style="margin: 0px;">
                                 <?php
