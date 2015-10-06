@@ -78,7 +78,8 @@
         <ul>
             <li><a <?php echo $type == 'new' ? 'class="nav_active"' : ""; ?> href="<?php echo $this->basePath() ?>/new-contest">New Contests</a></li>
 <!--            <li><a <?php //echo $type == 'active' ? 'class="nav_active"' : ""; ?> href="<?php //echo $this->basePath() ?>/active-contest">Active Contests</a></li>-->
-            <li><a <?php echo $type == 'past' ? 'class="nav_active"' : ""; ?> href="<?php echo $this->basePath() ?>/past-contest">Past Contests</a></li>
+<!--            <li><a <?php //echo $type == 'past' ? 'class="nav_active"' : ""; ?> href="<?php //echo $this->basePath() ?>/past-contest">Past Contests</a></li>-->
+            <li><a <?php echo $type == 'past-winners' ? 'class="nav_active"' : ""; ?> href="<?php echo $this->basePath() ?>/past-winners">Past Winners</a></li>
             <?php if ($session->mem_id): ?>
                 <li><a <?php echo $type == 'my' ? 'class="nav_active"' : ""; ?> href="<?php echo $this->basePath() ?>/my-contest">My Contests</a></li>            
                 <li><a <?php echo $type == 'exclusive' ? 'class="nav_active"' : ""; ?> href="<?php echo $this->basePath() ?>/exclusive-contest">Exclusive Contests</a></li>                            

@@ -1,0 +1,250 @@
+<script type="text/javascript" src="//s7.addthis.com/js/250/addthis_widget.js"></script>
+<style>
+    #thanksPopUpDiv {
+        position: fixed;
+        background-color: transparent;
+        width: 500px;
+        height: 330px;
+        z-index: 9002;
+        padding: 20px;
+        margin: 0 0 0 265px;
+    }
+    #upgradePopUp {
+        position: fixed;
+        background-color: transparent;
+        width: 650px;
+        height: 290px;
+        z-index: 9002;
+        padding: 20px;
+        margin: 0 0 0 265px;
+    }
+    .btn-upload-another-img {
+        float: none;
+    }
+    .down-image {
+        position: absolute;
+        margin: 2%;
+        margin-left: -15%;
+        border: 4px solid rgb(223, 220, 125);
+    }
+    .upper-image {
+        position: relative;
+    }
+    .progress-percentage {
+        color: #646567;
+        font-size: 24px;
+        position: absolute;
+        display: block;
+        width: 100%;
+    }
+
+/*    ul li {
+        list-style: disc;
+    }*/
+
+    .footer_box ul li {
+        list-style: none;
+    }
+
+    // font sizes css 
+    span .wysiwyg-font-size-fs10 {
+        font-size: 10px;
+    }
+    .wysiwyg-font-size-fs12 {
+        font-size: 12px;
+    }
+    .wysiwyg-font-size-fs14 {
+        font-size: 14px;
+    }
+    .wysiwyg-font-size-fs16 {
+        font-size: 16px;
+    }
+    .wysiwyg-font-size-fs18 {
+        font-size: 18px;
+    }
+    .wysiwyg-font-size-fs20 {
+        font-size: 20px;
+    }
+    .col-md-2 {
+        margin: 12px;
+    }
+
+    .media-art {
+        width: 150px;
+        height: 150px;
+    }
+    .media-art img {
+        //width: 160px;
+        width: 100%;
+        height: 100%;
+        border: 3px solid rgb(214, 216, 216);
+        display: table-cell;
+        vertical-align: middle;
+        background-color: rgb(214, 216, 216);
+    }
+    .media-list-title {
+        background-color: #e5da7c;
+        padding: 10px;
+        margin: 15px 0px;
+        width: 450px;
+        font-size: 22px;
+        color: #646567;
+    }
+    .contest {
+        font-family: 'franklin_gothic_bookregular';
+        font-weight: bold;
+        color: #663f8e; 
+    }
+    .artist-name , .user-name, .rank {
+        text-align: center;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis
+    }
+    .ranking-page {
+        height: 70px;
+    }
+    div.social-icons-holder {
+        margin-bottom: 42px;
+        margin-top: 30px;
+    }
+    div.social-icons-1{
+        margin-right: -130px;
+        margin-top: -34px;
+    }
+</style>
+<div  class="home_content clearfix">
+    <div class="inner_main clearfix">
+        <div class="inner_txt clearfix">
+            <h1 class="page-titleHead">Artist Challenge & Contests</h1>
+        </div>
+    </div>
+    <?php $session = $this->session(); ?>
+    <div class="navigation clearfix">
+        <ul>
+            <li><a <?php echo $type == 'new' ? 'class="nav_active"' : ""; ?> href="<?php echo $this->basePath() ?>/new-contest">New Contests</a></li>
+<!--            <li><a <?php //echo $type == 'active' ? 'class="nav_active"' : "";      ?> href="<?php //echo $this->basePath()      ?>/active-contest">Active Contests</a></li>-->
+            <li><a <?php echo $type == 'past-winners' ? 'class="nav_active"' : ""; ?> href="<?php echo $this->basePath() ?>/past-winners">Past Winners</a></li>
+            <?php if ($session->mem_id): ?>
+                <li><a <?php echo $type == 'my' ? 'class="nav_active"' : ""; ?> href="<?php echo $this->basePath() ?>/my-contest">My Contests</a></li>            
+                <li><a <?php echo $type == 'exclusive' ? 'class="nav_active"' : ""; ?> href="<?php echo $this->basePath() ?>/exclusive-contest">Exclusive Contests</a></li>                            
+            <?php else: ?>
+                <li><a id="loginPopup2" <?php echo $type == 'my' ? 'class="nav_active"' : ""; ?> href="<?php echo $this->config('main_site', 'url') ?>/workbox.php?mode=loginPopup&login_type=artist&login_redirect=contests/my-contest">My Contests</a></li>
+                <li><a id="loginPopup5" <?php echo $type == 'my' ? 'class="nav_active"' : ""; ?> href="<?php echo $this->config('main_site', 'url') ?>/workbox.php?mode=loginPopup&login_type=artist&login_redirect=contests/exclusive-contest">Exclusive Contests</a></li>
+            <?php endif; ?> 
+        </ul>
+    </div>
+    <div class="contest-list clearfix">
+        <div class=" clearfix"></div>
+        <?php if (empty($data)) { ?>
+            <br><div class="alert alert-info" role="alert"><?php echo $type == 'my' ? "You have not participated in any contest yet" : "More contests coming soon!"; ?></div>    
+            <?php
+        } else {
+            foreach ($data as $contest):
+                
+                $isParticipant = FALSE;            
+            
+                ?>
+                <div class="contest row black-border">                    
+                    <div class="contest-title">
+                        <?php echo $contest['name']; ?>
+                        <span class="pull-right wysiwyg-font-size-fs16"> Winner Announced: <?php echo date("F jS, Y", strtotime($contest['winners_announce_date'])); ?></span>
+                    </div>  
+                    <div class="media-list contest-list clearfix">
+                        <div class="row">
+                            <?php foreach ($contest['winners']['medias'] as $key => $media): 
+                                
+                                if (isset($session->mem_id) && $isParticipant === FALSE && $media['owner'] == $session->mem_id) {
+                                    
+                                    $isParticipant = TRUE;
+                                }
+                                
+                                $i = $key + 1; 
+                            ?>
+                                <div class="col-md-2 col-xs-2">
+                                    <div class="media-art">
+                                        <a class="media_image" href="<?php echo $this->config('main_site', 'url') . '/photo/' . $this->KCrypt()->enc($media['media_id']) . '/' . str_replace(" ", "-", $media['title']) . '.html' ?>" data-media_id="<?php echo $media['media_id'] ?>">
+                                            <img mediaid="<?php echo $this->KCrypt()->enc($media['media_id']) ?>" class="mediaThumb" src="<?php echo $this->mediaImage($media, 'icons', '150'); ?>" title="<?php echo $media['title'] ?>" alt="<?php echo $media['title'] ?>" />
+                                        </a> 
+                                        <div class="artist-name" style="font-size: 13px;">Artist Name: <?php echo $media['f_name'] ?></div>
+                                        <div class="user-name" style="font-size: 13px;">User Name: <a href="<?php echo $this->config('main_site', 'url') ?>/<?php echo $media['username'] ?>"><?php echo $media['username'] ?></a></div>
+                                        <div class="rank"><strong style="font-size: 25px;color: #646567;"><?php echo $this->ordinal((($page - 1) * $size) + $i); ?></strong></div>
+                                    </div>
+                                </div>
+                                <?php if ($i != 1 && $i % 5 == 0): ?>
+                                </div>
+                                <div class="clearfix ranking-page"></div>
+                                <div class="row">
+                                <?php endif; ?>
+                            
+                            <?php endforeach; ?>
+                        </div>
+                        <div class="clearfix ranking-page"></div>
+                    </div>
+                    <div class="row gold social-icons-holder">
+                        <div class="col-md-8"></div>                                                
+                            <?php
+                            switch ($contest['contest_type']) {
+                                case 'Photo Contest':
+                                    $contestType = 'photo-contest';
+                                    break;
+                                case 'Fan Favorite':
+                                    $contestType = 'fan-favorite';
+                                    break;
+                                case 'Brackets':
+                                    $contestType = 'brackets';
+                                case 'default':
+                                    $contestType = 'brackets';
+                            }
+                            ?>
+                        <div class="col-md-5 pull-right">
+                            <div class="col-md-6" style="padding-left: 0;padding-right: 0px;margin-top: 3px;margin-left: 0;left: 52px;">                                
+                                    <?php                                     
+                                        if ($isParticipant) {
+                                            echo '<span class="wysiwyg-font-size-fs16" style="padding-left: 26px;">Share how I did</span>';
+                                        } else {
+                                            echo '<span class="wysiwyg-font-size-fs16" style="padding-left: 7px;">Share the Winners</span>';
+                                        }
+                                    ?>                                
+                            </div>
+                            <div class="col-md-6 social-icons-1" style="margin: 0px;">
+                                <?php
+                                echo $this->partial('social_sharing.phtml', array(
+                                    'contest' => $contest,
+                                    'type' => $type,
+                                    'contestType' => $contestType,
+                                ));
+                                ?>                      
+                            </div>
+                        </div>                        
+                    </div>
+                </div>                
+                <?php
+            endforeach;
+        }
+        ?>
+
+    </div>
+    <?php
+    echo $this->paginationControl($this->paginator, 'Sliding', 'paginator-slide', array(
+        'route' => 'home',
+        'routeParams' => array(
+            'action' => $this->getHelperPluginManager()->getServiceLocator()->get('Application')->getMvcEvent()->getRouteMatch()->getParam('action')
+        ),
+        'queryParams' => array(
+        )
+    ));
+    ?>
+</div>
+<script>
+$('.btnPinIt').click(function() {
+    var url = $(this).attr('href');
+    var media = encodeURIComponent($(this).attr('data-image'));
+    var desc = $(this).attr('data-desc');
+    window.open("//www.pinterest.com/pin/create/button/"+
+    "?url="+url+
+    "&media="+media+
+    "&description="+desc,"pinIt","toolbar=no, scrollbars=no, resizable=no, top=0, right=0, width=750, height=320");
+    return false;
+});
+</script>

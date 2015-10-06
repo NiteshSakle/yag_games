@@ -204,6 +204,26 @@ class ContestTable extends BaseTable {
 
         return $select;
     }
+    
+    private function getPastWinnersSelect($select, $user) {       
+         // if user log's in, check whether his media rank
+        if ($user) {
+            $userMediaQry = $this->getSql()->select()
+                    ->from(array('cm_new' => 'contest_media'))
+                    ->join(array('m_new' => 'ps4_media'), 'cm_new.media_id = m_new.media_id', array('media_id', 'folder_id'))
+                    ->join(array('cw' => 'contest_winner'), 'cm_new.id = cw.contest_media_id', array('rank'), 'left')
+                    ->where(array('m_new.owner' => $user))
+                    ->columns(array(
+                'contest_id'
+            ));
+
+            $select->join(array('uc' => $userMediaQry), new Expression('c.id = uc.contest_id'), array('rank', 'entered' => new Expression('IF(uc.contest_id, 1, 0 )'), 'media_id', 'folder_id'), 'left');
+        }
+        
+        $select->where('winners_announce_date <= CURDATE() AND c.is_exclusive <> 1 AND total_entries >= 1 AND voting_started = 1');
+
+        return $select;
+    }
 
     private function getMyContestSelect($select, $user) {
         // show only user medias
@@ -261,12 +281,16 @@ class ContestTable extends BaseTable {
                 $select = $this->getMyContestSelect($select, $user);
             } elseif ($type == 'exclusive') {
                 $select = $this->getExclusiveContestSelect($select, $user);
+            } elseif ($type == 'past-winners') {
+                $select = $this->getPastWinnersSelect($select, $user);
             }
 
             $select->quantifier(new Expression('SQL_CALC_FOUND_ROWS'));
-            
+           
             if ($type == 'new') {
                 $select->order(array('new_sort' => 'ASC', 'c.entry_end_date' => 'ASC'));
+            } elseif ($type == 'past-winners') {                     
+                $select->order(array('c.winners_announce_date' => 'DESC')); 
             } else {
                 $select->order('c.entry_end_date');
             }

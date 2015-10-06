@@ -45,7 +45,12 @@ class ContestController extends BaseController
 
   public function pastContestAction()
   {
-    return $this->getContestList('past');
+      
+    return $this->redirect()->toRoute(null, array(
+        'controller' => 'contest',
+        'action' => 'past-winners'
+    ));
+    //return $this->getContestList('past');
   }
 
   public function myContestAction()
@@ -112,6 +117,39 @@ class ContestController extends BaseController
       }
   }
 
+  public function pastWinnersAction()
+  {
+    $type = 'past-winners';
+
+    $contestTable = $this->getServiceLocator()->get('YagGames\Model\ContestTable');
+    $data = $contestTable->fetchAllByType($type, $this->userId, $this->page, $this->size);
+
+    $paginator = new Paginator(new NullFill($data['total']));
+    $paginator->setCurrentPageNumber($this->page);
+    $paginator->setItemCountPerPage($this->size);
+
+    $photoContestIds = array();
+    foreach ($data['contests'] as $key => $contest) {
+        //$data['contests'][$key]['entry_end_date'] = date("jS F, Y", strtotime($contest['entry_end_date']));
+        $data['contests'][$key]['winners_announce_date'] = date("jS F, Y", strtotime($contest['winners_announce_date']));
+
+        if ($contest['type_id'] == 1) {
+
+             $photoContestService = $this->getServiceLocator()->get('photoContestService');
+             $data['contests'][$key]['winners'] = $photoContestService->getContestMedia($contest['id'], $this->userId, null, 1, 10, 'rank');
+            
+        }
+    }
+
+    return new ViewModel(array(
+        'paginator' => $paginator,
+        'data' => $data['contests'],
+        'type' => $type,
+        'page' => $this->page,
+        'size' => $this->size
+    ));
+  }
+  
   private function getContestList($type)
   {
     $contestTable = $this->getServiceLocator()->get('YagGames\Model\ContestTable');
