@@ -31,7 +31,7 @@
         <i class="fa fa-backward"></i> Go to main site
     </a>
     <?php if ($add_contest) { ?>
-        <a class="btn btn-primary pull-right open-modal" data-toggle="modal" href="#create-contest-modal">
+        <a class="btn btn-primary pull-right open-modal" data-toggle="modal" href="#create-contest-modal" onclick="resetForm();">
             Create Contest
         </a>
         <?php
@@ -173,7 +173,10 @@
     <div class="modal fade" id="create-contest-modal" role="basic" aria-hidden="true" style="display: none;">
         <div class="modal-dialog" style="width: 750px !important">
             <div class="modal-content">
-                <div class="modal-body">
+                <div id="sumbit-loader" style=" display: none; position: absolute; z-index: 10; ">
+                    <img src="<?php echo $this->basePath() ?>/img/loading.gif" style="width:100%; z-index: 10;"  />
+                </div>
+                <div class="modal-body">                    
                     <div class="row">
                         <div class="col-md-12 ">
                             <!-- BEGIN CREATE CONTEST FORM-->
@@ -184,7 +187,7 @@
 
                                     </div>                
                                     <div class="tools">
-                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="resetForm();"></button>
                                     </div>
                                 </div>
                                 <div class="portlet-body form">
@@ -322,7 +325,7 @@
                                                     <label class="control-label" for="br_round1">
                                                         Round One 64
                                                         <span class="required">
-                                                            *
+                                                            * <span style=" font-size: 10px; font-style: italic; color: grey">(voting start date)</span>
                                                         </span>
                                                     </label>
                                                     <div class="input-group input-medium date date-picker" data-date-format="dd-mm-yyyy" data-date-start-date="+0d">
@@ -404,7 +407,7 @@
                                                 </div>                                                
                                             </div>
                                             <div class="form-actions col-md-12">
-                                                <button type="submit" class="btn blue">Submit</button>
+                                                <button type="submit" class="btn blue" id="form-submit" >Submit</button>
                                                 <button type="button" class="btn default" data-dismiss="modal" aria-hidden="true">Cancel</button>
                                             </div>
                                     </form>
@@ -449,10 +452,24 @@
                 $('#entryLimit').val("64");
                 $('#entryLimit').attr('readonly',true);
                 $('div#bracket_rounds_dates').css('display', 'block');
+                $('#br_round1').val($('#votingStartDate').val());
             } else {
-                $('#entryLimit').val("0");
-                $('#entryLimit').attr('readonly',false);
-                $('div#bracket_rounds_dates').css('display', 'none');
+                resetForm();
+            }
+        });
+        
+        
+        $('#votingStartDate').change(function(){
+            var type = $('select[name=type]').val()
+            if(type == 3 ){
+                $('#br_round1').val($('#votingStartDate').val());
+            }
+        });
+        
+        $('#br_round1').change(function(){
+            var type = $('select[name=type]').val()
+            if(type == 3 ){
+                $('#votingStartDate').val($('#br_round1').val());
             }
         });
 
@@ -541,7 +558,7 @@
         });
 
     });
-
+    
     $("form#create-contest-form").submit(function () {
         contestType = $('select[name=type]').val();
         entryStartDate = $('#entryStartDate').val();
@@ -565,6 +582,8 @@
                 $('#create-contest-modal').modal('show');
             });
         } else {
+            $('#form-submit').attr('disabled',true);
+            $('#sumbit-loader').css('display', 'block');
             var formData = new FormData($(this)[0]);
 
             $.ajax({
@@ -574,22 +593,32 @@
                 async: true,
                 success: function (response) {
                     $('#create-contest-modal').modal('hide');
+                    $('#sumbit-loader').css('display', 'none');
                     bootbox.alert(response.message, function () {
                         if (response.success) {
                             location.reload();
                         } else {
                             $('#create-contest-modal').modal('show');
+                            $('#form-submit').attr('disabled',false);
                         }
                     });
                 },
                 cache: false,
                 contentType: false,
                 processData: false
-            });
+            });               
         }
         return false;
     });
-
+    
+    function resetForm() {
+        $('#entryLimit').val("");
+        $('#entryLimit').attr('readonly',false);
+        $('#sumbit-loader').css('display', 'none');
+        $('div#bracket_rounds_dates').css('display', 'none');
+        $('#form-submit').attr('disabled',false);        
+    }
+    
     function checkBracketRoundDates() {
         winnersAnnounceDate = $('#winnersAnnounceDate').val();
         votingStartDate = $('#votingStartDate').val();
@@ -611,7 +640,7 @@
         brRound5 = convertDateToTime(brRound5);
         brRound6 = convertDateToTime(brRound6);
         
-        if((brRound1 < brRound2) && (brRound2 < brRound3) && (brRound3 < brRound4) && (brRound4 < brRound5) && (brRound5 < brRound6) && (brRound6 < winnersAnnounceDateTime) &&(votingStartDateTime < brRound1)) {
+        if((brRound1 < brRound2) && (brRound2 < brRound3) && (brRound3 < brRound4) && (brRound4 < brRound5) && (brRound5 < brRound6) && (brRound6 < winnersAnnounceDateTime) &&(votingStartDateTime == brRound1)) {
             return true;
         } else {
             return false;
