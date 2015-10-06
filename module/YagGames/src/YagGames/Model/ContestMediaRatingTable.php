@@ -154,8 +154,7 @@ class ContestMediaRatingTable extends BaseTable
                     ->from(array('cmr' => 'contest_media_rating'))
                     ->join(array('cm' => 'contest_media'), 'cm.id = cmr.contest_media_id')
                     ->where(array('cm.contest_id' => $contestId, 'cm.media_id' => $mediaId, 'cmr.ip_address' => $ipAddress))
-                    ->where(new Expression('HOUR(TIMEDIFF(NOW() , cmr.created_at)) <= 24'));
-                    
+                    ->where(new Expression('DATE(cmr3.created_at) = CURDATE()'));
 
             $rows = $sql->prepareStatementForSqlObject($query)->execute();
             

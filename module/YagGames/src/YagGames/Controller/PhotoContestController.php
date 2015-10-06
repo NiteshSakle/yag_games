@@ -410,7 +410,7 @@ class PhotoContestController extends BaseController
       }
       $rmArray[$contestId][] = $mediaId;
 
-      $expireTime = (mktime(0, 0, 0, date("n"), date("j")+1, date("Y")) - mktime(date("H"), date("i"), date("s"), date("n"), date("j"), date("Y")));
+      $expireTime = strtotime("tomorrow");
       $cookie = new \Zend\Http\Header\SetCookie('rm', \json_encode($rmArray), $expireTime, '/');
       $this->getResponse()->getHeaders()->addHeader($cookie);
     } catch (\Exception $e) {
