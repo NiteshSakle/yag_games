@@ -284,9 +284,11 @@ class ContestTable extends BaseTable {
             }
 
             $select->quantifier(new Expression('SQL_CALC_FOUND_ROWS'));
-            
+           
             if ($type == 'new') {
                 $select->order(array('new_sort' => 'ASC', 'c.entry_end_date' => 'ASC'));
+            } elseif ($type == 'past-winners') {                     
+                $select->order(array('c.winners_announce_date' => 'DESC')); 
             } else {
                 $select->order('c.entry_end_date');
             }

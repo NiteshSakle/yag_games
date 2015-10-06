@@ -164,7 +164,7 @@
                                 <div class="col-md-2 col-xs-2">
                                     <div class="media-art">
                                         <a class="media_image" href="<?php echo $this->config('main_site', 'url') . '/photo/' . $this->KCrypt()->enc($media['media_id']) . '/' . str_replace(" ", "-", $media['title']) . '.html' ?>" data-media_id="<?php echo $media['media_id'] ?>">
-                                            <img mediaid="<?php echo $this->KCrypt()->enc($media['media_id']) ?>" class="mediaThumb showHoverWindow" src="<?php echo $this->mediaImage($media, 'icons', '150'); ?>" title="<?php echo $media['title'] ?>" alt="<?php echo $media['title'] ?>" />
+                                            <img mediaid="<?php echo $this->KCrypt()->enc($media['media_id']) ?>" class="mediaThumb" src="<?php echo $this->mediaImage($media, 'icons', '150'); ?>" title="<?php echo $media['title'] ?>" alt="<?php echo $media['title'] ?>" />
                                         </a> 
                                         <div class="artist-name" style="font-size: 13px;">Artist Name: <?php echo $media['f_name'] ?></div>
                                         <div class="user-name" style="font-size: 13px;">User Name: <a href="<?php echo $this->config('main_site', 'url') ?>/<?php echo $media['username'] ?>"><?php echo $media['username'] ?></a></div>
