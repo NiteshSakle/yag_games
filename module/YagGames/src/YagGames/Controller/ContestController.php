@@ -123,27 +123,19 @@ class ContestController extends BaseController
 
     $contestTable = $this->getServiceLocator()->get('YagGames\Model\ContestTable');
     $data = $contestTable->fetchAllByType($type, $this->userId, $this->page, $this->size);
-
+    
     $paginator = new Paginator(new NullFill($data['total']));
     $paginator->setCurrentPageNumber($this->page);
     $paginator->setItemCountPerPage($this->size);
 
-    $photoContestIds = array();
-    foreach ($data['contests'] as $key => $contest) {
-        //$data['contests'][$key]['entry_end_date'] = date("jS F, Y", strtotime($contest['entry_end_date']));
-        $data['contests'][$key]['winners_announce_date'] = date("jS F, Y", strtotime($contest['winners_announce_date']));
-
-        if ($contest['type_id'] == 1) {
-
-             $photoContestService = $this->getServiceLocator()->get('photoContestService');
-             $data['contests'][$key]['winners'] = $photoContestService->getContestMedia($contest['id'], $this->userId, null, 1, 10, 'rank');
-            
-        }
+    foreach ($data['contests'] as $contest) {
+        $contestIds[] = $contest['id'];
     }
-
+    $data['winners'] = $contestTable->getContestWinners($contestIds);
+    
     return new ViewModel(array(
         'paginator' => $paginator,
-        'data' => $data['contests'],
+        'data' => $data,
         'type' => $type,
         'page' => $this->page,
         'size' => $this->size
@@ -200,20 +192,4 @@ class ContestController extends BaseController
     return $contestType;
   }
   
-  private function getBracketWinnerBadge($rank)
-  {
-    if($rank == 1) {
-        return "CHAMPION";
-    } elseif ($rank == 2 ) {
-        return "SEMI-FINAL";
-    } elseif ($rank > 2 && $rank <=4) {
-        return "FINAL 4";
-    } elseif ($rank > 4 && $rank <=8) {
-        return "ELITE 8";
-    } elseif ($rank > 8 && $rank <=16) {
-        return "SWEET 16";
-    } else {
-        return "";
-    }
-  }
 }

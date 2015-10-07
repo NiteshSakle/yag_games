@@ -1,47 +1,5 @@
 <script type="text/javascript" src="//s7.addthis.com/js/250/addthis_widget.js"></script>
-<style>
-    #thanksPopUpDiv {
-        position: fixed;
-        background-color: transparent;
-        width: 500px;
-        height: 330px;
-        z-index: 9002;
-        padding: 20px;
-        margin: 0 0 0 265px;
-    }
-    #upgradePopUp {
-        position: fixed;
-        background-color: transparent;
-        width: 650px;
-        height: 290px;
-        z-index: 9002;
-        padding: 20px;
-        margin: 0 0 0 265px;
-    }
-    .btn-upload-another-img {
-        float: none;
-    }
-    .down-image {
-        position: absolute;
-        margin: 2%;
-        margin-left: -15%;
-        border: 4px solid rgb(223, 220, 125);
-    }
-    .upper-image {
-        position: relative;
-    }
-    .progress-percentage {
-        color: #646567;
-        font-size: 24px;
-        position: absolute;
-        display: block;
-        width: 100%;
-    }
-
-/*    ul li {
-        list-style: disc;
-    }*/
-
+<style>    
     .footer_box ul li {
         list-style: none;
     }
@@ -136,14 +94,14 @@
     </div>
     <div class="contest-list clearfix">
         <div class=" clearfix"></div>
-        <?php if (empty($data)) { ?>
+        <?php if (empty($data['contests'])) { ?>
             <br><div class="alert alert-info" role="alert"><?php echo $type == 'my' ? "You have not participated in any contest yet" : "More contests coming soon!"; ?></div>    
             <?php
         } else {
-            foreach ($data as $contest):
-                
-                $isParticipant = FALSE;            
-            
+            foreach ($data['contests'] as $contest):
+//                
+//                $isParticipant = FALSE;            
+//            
                 ?>
                 <div class="contest row black-border">                    
                     <div class="contest-title">
@@ -152,13 +110,10 @@
                     </div>  
                     <div class="media-list contest-list clearfix">
                         <div class="row">
-                            <?php foreach ($contest['winners']['medias'] as $key => $media): 
-                                
-                                if (isset($session->mem_id) && $isParticipant === FALSE && $media['owner'] == $session->mem_id) {
-                                    
-                                    $isParticipant = TRUE;
-                                }
-                                
+                            <?php foreach ($data['winners'][$contest['id']] as $key => $media):                                
+//                                if (isset($session->mem_id) && $isParticipant === FALSE && $media['owner'] == $session->mem_id) {                                    
+//                                    $isParticipant = TRUE;
+//                                }                                
                                 $i = $key + 1; 
                             ?>
                                 <div class="col-md-2 col-xs-2">
@@ -168,7 +123,13 @@
                                         </a> 
                                         <div class="artist-name" style="font-size: 13px;">Artist Name: <?php echo $media['f_name'] ?></div>
                                         <div class="user-name" style="font-size: 13px;">User Name: <a href="<?php echo $this->config('main_site', 'url') ?>/<?php echo $media['username'] ?>"><?php echo $media['username'] ?></a></div>
-                                        <div class="rank"><strong style="font-size: 25px;color: #646567;"><?php echo $this->ordinal((($page - 1) * $size) + $i); ?></strong></div>
+                                        <div class="rank">                                            
+                                                <?php if($contest['type_id'] != 3 ) { ?>
+                                            <strong style="font-size: 25px;color: #646567;"><?php echo $this->ordinal($i);?></strong>
+                                                <?php } else { ?>
+                                            <strong style="font-size: 18px;color: #646567;"><?php echo $data['winners'][$contest['id']][$key]['badge']; ?></strong>
+                                                <?php } ?>                                            
+                                        </div>
                                     </div>
                                 </div>
                                 <?php if ($i % 5 == 0 && $i != 10): ?>
@@ -198,14 +159,16 @@
                             }
                             ?>
                         <div class="col-md-5 pull-right">
-                            <div class="col-md-6" style="padding-left: 0;padding-right: 0px;margin-top: 3px;margin-left: 0;left: 52px;">                                
+                            <div class="col-md-6" style="padding:0px;margin-top: 4px;text-align: right;">
+                                <span class="wysiwyg-font-size-fs16">
                                     <?php                                     
-                                        if ($isParticipant) {
-                                            echo '<span class="wysiwyg-font-size-fs16" style="padding-left: 26px;">Share how I did</span>';
+                                        if (isset($contest['entered']) && $contest['entered']) {
+                                            echo 'Share how I did';
                                         } else {
-                                            echo '<span class="wysiwyg-font-size-fs16" style="padding-left: 7px;">Share the Winners</span>';
+                                            echo 'Share the Winners';
                                         }
-                                    ?>                                
+                                    ?>
+                                </span>
                             </div>
                             <div class="col-md-6 social-icons-1" style="margin: 0px;">
                                 <?php

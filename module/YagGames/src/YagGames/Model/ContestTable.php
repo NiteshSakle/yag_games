@@ -205,7 +205,7 @@ class ContestTable extends BaseTable {
         return $select;
     }
     
-    private function getPastWinnersSelect($select, $user) {       
+    private function getPastWinnersSelect($select, $user) {        
          // if user log's in, check whether his media rank
         if ($user) {
             $userMediaQry = $this->getSql()->select()
@@ -319,34 +319,7 @@ class ContestTable extends BaseTable {
             );
         }
     }
-
-    public function getContestArtistEmails($contestId) {
-        try {
-            $sql = $this->getSql();
-            $query = $sql->select()
-                    ->from(array('c' => 'contest'))
-                    ->join(array('cm' => 'contest_media'), 'cm.contest_id = c.id', array())
-                    ->join(array('m' => 'ps4_media'), 'm.media_id = cm.media_id', array())
-                    ->join(array('u' => 'ps4_members'), 'm.owner = u.mem_id', array('username', 'f_name', 'email'))
-                    ->where(array(
-                        'c.id' => $contestId,
-                    ))
-                    ->group('u.mem_id');
-
-            $rows = $sql->prepareStatementForSqlObject($query)->execute();
-
-            $contest = array();
-            foreach ($rows as $row) {
-                $contest[] = $row['email'];
-            }
-
-            return $contest;
-        } catch (\Exception $e) {
-            $this->logException($e);
-            return false;
-        }
-    }
-
+    
     public function getContestArtistData($contestId) {
         try {
             $sql = $this->getSql();
@@ -517,5 +490,57 @@ class ContestTable extends BaseTable {
             return false;
         }
     }
+    
+    public function getContestWinners($contestIds) {
+        try {
+            $select = new \Zend\Db\Sql\Select;
+            $select->from(array('c' => 'contest'))
+                    ->columns(array('contest_id' => 'id', 'contest_type' => 'type_id'))
+                    ->join(array('cm' => 'contest_media'), 'cm.contest_id = c.id', array())
+                    ->join(array('m' => 'ps4_media'), 'm.media_id = cm.media_id', array('media_id', 'folder_id', 'owner','title'))
+                    ->join(array('u' => 'ps4_members'), 'm.owner = u.mem_id', array('username', 'f_name', 'email'))
+                    ->join(array('cw' => 'contest_winner'), 'cm.id=cw.contest_media_id', array('rank'));
+            
+            if(is_array($contestIds)){
+                $select->where->in('c.id', $contestIds);                
+            }  else {
+                $select->where(array('c.id',$contestIds));
+            }
+            $select->order(array('c.id','cw.rank'));
 
+            $statement = $this->getSql()->prepareStatementForSqlObject($select);
+            $resultSet = $statement->execute();
+            $winners = array();
+            foreach ($resultSet as $row) {                
+                if($row['contest_type'] == 3) {
+                    $row['badge'] = $this->getBracketWinnerBadge($row['rank']);
+                    $winners[$row['contest_id']][] = $row;                     
+                } else {
+                    $winners[$row['contest_id']][] = $row;
+                }
+            }
+
+            return $winners;
+        } catch (\Exception $e) {
+            $this->logException($e);
+            return false;
+        }
+    }
+    
+    private function getBracketWinnerBadge($rank)
+    {
+      if($rank == 1) {
+          return "CHAMPION";
+      } elseif ($rank == 2 ) {
+          return "SEMI-FINAL";
+      } elseif ($rank > 2 && $rank <=4) {
+          return "FINAL 4";
+      } elseif ($rank > 4 && $rank <=8) {
+          return "ELITE 8";
+      } elseif ($rank > 8 && $rank <=16) {
+          return "SWEET 16";
+      } else {
+          return "";
+      }
+    }
 }

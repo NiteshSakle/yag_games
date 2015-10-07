@@ -252,6 +252,7 @@
                 Don’t forget to share with your friends!
             </div>
         </div>
+        <?php if($media) { ?>
         <div class="join-popup-img">
             <img class="icon_man" src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/thankyou1.png" /></div> 
         <div class="social-links-upload-another-img">
@@ -265,6 +266,7 @@
             <span class="or">or</span>
             <div class="btn-upload-another-img"><input type="button" onClick="javascript:window.location.href = '<?php echo $this->basePath() ?>/new-contest'"  value="Enter Another Contest" name="" class="back"></div>
         </div>
+        <?php } ?>
     </div>
 </div>
 <div style="display: none;" id="uploadPopUpDiv">
@@ -276,6 +278,7 @@
                 We will reach out to you once it is time to start voting! <br>
             </div>
         </div>
+        <?php if($media) { ?>
         <div class="join-popup-img">
             <img class="down-image" style="width: 110px;height: 90px;margin-left: 10px;" mediaid="<?php echo $this->KCrypt()->enc($media['media_id']) ?>" class="icon_man" src="<?php echo $this->mediaImage($media, 'icons'); ?>" title="<?php echo $media['title'] ?>" alt="<?php echo $media['title'] ?>">
             <img class="upper-image" style="width: 150px;height: 160px;" src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/man-icon-yag.png">            
@@ -291,6 +294,7 @@
             <span class="or">or</span>
             <div class="btn-upload-another-img"><input type="button" onClick="javascript:window.location.href = '<?php echo $this->basePath() ?>/new-contest'"  value="Enter Another Contest" name="" class="back"></div>
         </div>
+        <?php } ?>
     </div>
 </div>
 
