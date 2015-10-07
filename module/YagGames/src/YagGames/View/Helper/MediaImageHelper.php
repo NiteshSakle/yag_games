@@ -18,6 +18,7 @@ class MediaImageHelper extends AbstractHelper
   {
     $gameConfig = $this->getView()->plugin('config');
     $sizes = ($size === "null") ? "" : "&size=" . $size ;
+    $version = ($gameConfig('main_site', 'image_version') === "null") ? "" : "&v=" . $gameConfig('main_site', 'image_version') ;
     $mediaUrl = $gameConfig('main_site', 'url');
     if ($gameConfig('main_site', 'cloudfront_url')) {
       $mediaUrl = $gameConfig('main_site', 'cloudfront_url');
@@ -26,7 +27,7 @@ class MediaImageHelper extends AbstractHelper
     $imglink = $mediaUrl .'/'. 
                $type .'/'.
                $this->kcryptService->enc($media['media_id']) .'/'.
-               $this->kcryptService->enc($media['folder_id']) .'/photo.jpg' . $sizes;
+               $this->kcryptService->enc($media['folder_id']) .'/photo.jpg' . $sizes . $version;
 
     return $imglink;
   }
