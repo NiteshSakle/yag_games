@@ -171,7 +171,7 @@
                                         <div class="rank"><strong style="font-size: 25px;color: #646567;"><?php echo $this->ordinal((($page - 1) * $size) + $i); ?></strong></div>
                                     </div>
                                 </div>
-                                <?php if ($i != 1 && $i % 5 == 0): ?>
+                                <?php if ($i % 5 == 0 && $i != 10): ?>
                                 </div>
                                 <div class="clearfix ranking-page"></div>
                                 <div class="row">
