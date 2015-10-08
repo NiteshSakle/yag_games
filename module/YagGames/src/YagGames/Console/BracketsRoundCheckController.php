@@ -16,7 +16,6 @@ class BracketsRoundCheckController extends BaseConsoleController {
         }
 
         $this->logger = $this->getServiceLocator()->get('YagGames\Logger');
-
         $this->process();
 
         echo "Brackets Game Round Check";
@@ -24,6 +23,7 @@ class BracketsRoundCheckController extends BaseConsoleController {
     
     private function process() {
         $contestBracketRoundTable = $this->getServiceLocator()->get('YagGames\Model\ContestBracketRoundTable');
+        $contestBracketMediaComboTable = $this->getServiceLocator()->get('YagGames\Model\ContestBracketMediaComboTable');
         $records = $contestBracketRoundTable->fetchAllActiveContests();
 
         $today = new \DateTime(date("Y-m-d"));
@@ -40,10 +40,8 @@ class BracketsRoundCheckController extends BaseConsoleController {
                     throw new \RuntimeException('No Contestants found for the Contest'. $record['name']);
                 }
                 
-                $contestBracketMediaComboTable = $this->getServiceLocator()->get('YagGames\Model\ContestBracketMediaComboTable');
-
                 shuffle($contestMedia); // Shuffle the array for more randomization                
-                $comboCount = (int) ($mediaCount/2); // Should be 32;
+                $comboCount = (int) ($mediaCount/2); // Should be 32;                
                 $orphanMediaKey = 0;
 
                 if (!($mediaCount % 2 == 0)) {
@@ -51,34 +49,28 @@ class BracketsRoundCheckController extends BaseConsoleController {
                     $orphanMedia = $contestMedia[$orphanMediaKey];
 
                     unset($contestMedia[$orphanMediaKey]);
-                    $comboCount = $comboCount - 1;
                 }
-
-                $i = 1;
-
-                for ($i; $i <= $comboCount; $i++) {
-                    $bracketMediaCombo = new \YagGames\Model\ContestBracketMediaCombo();
-                    $randomMedia = array_rand($contestMedia, 2);
-
+                
+                $bracketMediaCombo = new \YagGames\Model\ContestBracketMediaCombo();                
+                $bracketMediaCombo->contest_id = $record['contest_id'];
+                $bracketMediaCombo->round = 1;
+                
+                for ($i = 1; $i <= $comboCount; $i++) {
                     $bracketMediaCombo->combo_id = $i;
-                    $bracketMediaCombo->contest_id = $record['contest_id'];
+                    $randomMedia = array_rand($contestMedia, 2);
                     $bracketMediaCombo->contest_media_id1 = $contestMedia[$randomMedia[0]]['id'];
                     $bracketMediaCombo->contest_media_id2 = $contestMedia[$randomMedia[1]]['id'];
-                    $bracketMediaCombo->round = 1;
-
+                    
                     $contestBracketMediaComboTable->insert($bracketMediaCombo);
                     // To avoid duplicates unset inserted media
                     unset($contestMedia[$randomMedia[0]], $contestMedia[$randomMedia[1]]);
                 }
 
                 //Insert orphan media
-                if (isset($orphanMedia)) {
-                    $bracketMediaCombo = new \YagGames\Model\ContestBracketMediaCombo();                    
+                if (isset($orphanMedia)) {                   
                     $bracketMediaCombo->combo_id = $i;
-                    $bracketMediaCombo->contest_id = $record['contest_id'];
                     $bracketMediaCombo->contest_media_id1 = $orphanMedia['id'];
                     $bracketMediaCombo->contest_media_id2 = 0;
-                    $bracketMediaCombo->round = 1;
 
                     $contestBracketMediaComboTable->insert($bracketMediaCombo);                    
                     $i++;
@@ -86,64 +78,52 @@ class BracketsRoundCheckController extends BaseConsoleController {
 
                 if (!($i == 33)) {
                     $zeroMediaCount = (33 - $i);
-                    for ($j = 1; $j <= $zeroMediaCount; $j++) {
-                        $bracketMediaCombo = new \YagGames\Model\ContestBracketMediaCombo();
+                    for ($j = 1; $j <= $zeroMediaCount; $j++, $i++) {
                         $bracketMediaCombo->combo_id = $i;
-                        $bracketMediaCombo->contest_id = $record['contest_id'];
                         $bracketMediaCombo->contest_media_id1 = 0;
                         $bracketMediaCombo->contest_media_id2 = 0;
-                        $bracketMediaCombo->round = 1;
 
-                        $contestBracketMediaComboTable->insert($bracketMediaCombo);                        
-                        $i++;
+                        $contestBracketMediaComboTable->insert($bracketMediaCombo);
                     }
                 }
                 
                // Update Current Round
-               $contestBracketRound = new \YagGames\Model\ContestBracketRound();               
-               $contestBracketRound->id = $record['id'];               
-               $contestBracketRound->current_round = 1;
-               
-               $contestBracketRoundTable->update($contestBracketRound);               
+               $this->updateContestround($record['contest_id'], 1);
                $record['current_round'] = 1;
             }
             
             // From round 2 - need to consider number of votes recieved
-            for($round = 2; $round <= 6; $round++) {                
-                $roundDate = new \DateTime($record["round".$round]);                
-                if (($round-1) == $record['current_round'] && $roundDate <= $today) {                   
-                   $contestBracketMediaComboTable = $this->getServiceLocator()->get('YagGames\Model\ContestBracketMediaComboTable');                   
-                   $roundWinners = $contestBracketMediaComboTable->getTopRatedMediaForNextRound($record['contest_id'], $round - 1);                   
-                   $i = 1;
-                   
-                   for ($j = 0; $j < count($roundWinners) - 1; $j = $j+2) {
-                        $bracketMediaCombo = new \YagGames\Model\ContestBracketMediaCombo();                       
+            for($round = 2; $round <= 6; $round++) {
+                $roundDate = new \DateTime($record["round".$round]);
+                
+                if (($round-1) == $record['current_round'] && $roundDate <= $today)
+                {
+                    $roundWinners = $contestBracketMediaComboTable->getTopRatedMediaForNextRound($record['contest_id'], $round - 1);
+                    $bracketMediaCombo = new \YagGames\Model\ContestBracketMediaCombo();
+                    $bracketMediaCombo->contest_id = $record['contest_id'];
+                    $bracketMediaCombo->round = $round;
+                    
+                    for ($j = 0, $i = 1 ; $j < count($roundWinners) - 1; $j = $j+2,$i++) {
                         $bracketMediaCombo->combo_id = $i;
-                        $bracketMediaCombo->contest_id = $record['contest_id'];
                         $bracketMediaCombo->contest_media_id1 = $roundWinners[$j]['next_round_media_id'];
-
-                        if (isset($roundWinners[$j+1])) {
-                            $bracketMediaCombo->contest_media_id2 = $roundWinners[$j+1]['next_round_media_id'];
-                        } else {
-                            $bracketMediaCombo->contest_media_id2 = 0;
-                        }
-
-                        $bracketMediaCombo->round = $round;
-                        $contestBracketMediaComboTable->insert($bracketMediaCombo);                        
-                        $i++;
-                        
-                        // Update Current Round
-                       $contestBracketRound = new \YagGames\Model\ContestBracketRound();
-                       $contestBracketRound->id = $record['id'];               
-                       $contestBracketRound->current_round = $round;
-                       $contestBracketRoundTable->update($contestBracketRound);
-                       
-                       // Pending Rounds Get Fired
-                       $record['current_round'] = $round;
+                        $bracketMediaCombo->contest_media_id2 = isset($roundWinners[$j+1]) ? $roundWinners[$j+1]['next_round_media_id'] : 0;
+                        $contestBracketMediaComboTable->insert($bracketMediaCombo);
                     }
+                    
+                    $this->updateContestround($record['contest_id'], $round);
+                    // Pending Rounds Get Fired
+                    $record['current_round'] = $round;
                 }
             }
-        }               
+        }
     }
+        
+    private function updateContestround($contestId, $round) {
+        $contestBracketRoundTable = $this->getServiceLocator()->get('YagGames\Model\ContestBracketRoundTable');        
+        $contestRound = array();
+        $contestRound['contest_id'] = $contestId;
+        $contestRound['current_round'] = $round;
 
+        return $contestBracketRoundTable->updateByContestId($contestRound, $contestId);
+    }
 }

@@ -413,7 +413,7 @@ class IndexController extends BaseController {
         $contestBracketRound->round6 = date('Y-m-d', strtotime($params['br_round6']));
         
         $contestBracketRoundTable = $this->getServiceLocator()->get('YagGames\Model\ContestBracketRoundTable');
-        $contestBracketRoundDetails = $contestBracketRoundTable->fetchRecordOnContestId($params['contest_id']);
+        $contestBracketRoundDetails = (array) $contestBracketRoundTable->fetchRecordOnContestId($params['contest_id']);
         if(!$contestBracketRoundDetails) {
             $contestBracketRoundResult = $contestBracketRoundTable->insert($contestBracketRound);
         } else {
