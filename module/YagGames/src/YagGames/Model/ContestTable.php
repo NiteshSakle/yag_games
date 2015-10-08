@@ -509,38 +509,12 @@ class ContestTable extends BaseTable {
             $select->order(array('c.id','cw.rank'));
 
             $statement = $this->getSql()->prepareStatementForSqlObject($select);
-            $resultSet = $statement->execute();
-            $winners = array();
-            foreach ($resultSet as $row) {                
-                if($row['contest_type'] == 3 && $row['rank'] <=8) {
-                    $row['badge'] = $this->getBracketWinnerBadge($row['rank']);
-                    $winners[$row['contest_id']][] = $row;                     
-                } elseif($row['contest_type'] != 3) {
-                    $winners[$row['contest_id']][] = $row;
-                }
-            }
+            $resultSet = $statement->execute();            
 
-            return $winners;
+            return $resultSet;
         } catch (\Exception $e) {
             $this->logException($e);
             return false;
         }
-    }
-    
-    private function getBracketWinnerBadge($rank)
-    {
-      if($rank == 1) {
-          return "CHAMPION";
-      } elseif ($rank == 2 ) {
-          return "RUNNER UP";
-      } elseif ($rank > 2 && $rank <=4) {
-          return "FINAL 4";
-      } elseif ($rank > 4 && $rank <=8) {
-          return "ELITE 8";
-      } elseif ($rank > 8 && $rank <=16) {
-          return "SWEET 16";
-      } else {
-          return "";
-      }
     }
 }

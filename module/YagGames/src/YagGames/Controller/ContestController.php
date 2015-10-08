@@ -131,7 +131,17 @@ class ContestController extends BaseController
     foreach ($data['contests'] as $contest) {
         $contestIds[] = $contest['id'];
     }
-    $data['winners'] = $contestTable->getContestWinners($contestIds);
+    $resultSet = $contestTable->getContestWinners($contestIds);
+    $winners = array();
+    foreach ($resultSet as $row) {                
+        if($row['contest_type'] == 3 && $row['rank'] <=8) {
+            $row['badge'] = $this->getBracketWinnerBadge($row['rank']);
+            $winners[$row['contest_id']][] = $row;                     
+        } elseif($row['contest_type'] != 3) {
+            $winners[$row['contest_id']][] = $row;
+        }
+    }
+    $data['winners'] = $winners;
     
     return new ViewModel(array(
         'paginator' => $paginator,
