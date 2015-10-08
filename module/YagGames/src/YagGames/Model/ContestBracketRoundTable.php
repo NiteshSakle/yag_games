@@ -129,7 +129,6 @@ class ContestBracketRoundTable extends BaseTable
                 ->where($where);
          
         $statement = $this->getSql()->prepareStatementForSqlObject($select); 
-        echo $statement->getSql();exit;
         $resultSet = $statement->execute(); 
         
         return $resultSet;
