@@ -53,35 +53,40 @@
         $(targetStar).find('.voteStar').trigger(e.type);        
     });    
    
-    function submitVote(contestId, mediaId, round, comboId) {        
-        var request = $.ajax({
-            url: gameBasePath + '/brackets/vote',
-            type: "POST",
-            data: {'contestId': contestId, 'mediaId': mediaId, 'round': round, 'comboId' : comboId },
-            dataType: 'json',
-            beforeSend: function () {
-                $("#ajaxBusy").removeClass('hide');
-            },
-            complete: function () {
-                $("#ajaxBusy").addClass('hide');
-            }
-        });
+    function submitVote(contestId, mediaId, round, comboId) {
+        if (mediaId) {
+            var request = $.ajax({
+                url: gameBasePath + '/brackets/vote',
+                type: "POST",
+                data: {'contestId': contestId, 'mediaId': mediaId, 'round': round, 'comboId' : comboId },
+                dataType: 'json',
+                beforeSend: function () {
+                    $("#ajaxBusy").removeClass('hide');
+                },
+                complete: function () {
+                    $("#ajaxBusy").addClass('hide');
+                }
+            });
 
-        request.done(function (msg) {
-            if (msg.success) {
-                $('p#msg').show().delay(5000).fadeOut('slow', function () {
-                    closeWorkbox();
-                });
+            request.done(function (msg) {
+                if (msg.success) {
+                    $('p#msg').show().delay(5000).fadeOut('slow', function () {
+                        closeWorkbox();
+                    });
 
-                showNextImagePopup();
-            } else {
-                alert(msg.message)
-            }
-        });
+                    showNextImagePopup();
+                } else {
+                    alert(msg.message)
+                }
+            });
 
-        request.fail(function (jqXHR, textStatus) {
-            alert("Request failed: " + textStatus);
-        });
+            request.fail(function (jqXHR, textStatus) {
+                alert("Request failed: " + textStatus);
+            });
+        } else {
+            alert("Request failed: BAD REQUEST");            
+        }
+        location.reload();
     }
 
     function showNextImagePopup() {
@@ -111,7 +116,7 @@
                     <img class="brk-image" src="<?php echo $this->mediaImage($media1, 'samples', 300); ?>" />
                 </div>               
                 <div class="brk-vote-it-img-rt pull-right text-center" data-target-star=".brk-vote-rt">
-                    <img class="brk-image" src="<?php echo $this->mediaImage($media2, 'samples', 300); ?>" />                    
+                    <img class="brk-image" src="<?php if($media2) { echo $this->mediaImage($media2, 'samples', 300); }?>" />                    
                     <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/close.button.png" id="closeWorkbox" class="brk-closeWorkbox">
                 </div>
             </div>                     
