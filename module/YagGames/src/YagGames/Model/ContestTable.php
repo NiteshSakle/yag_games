@@ -512,10 +512,10 @@ class ContestTable extends BaseTable {
             $resultSet = $statement->execute();
             $winners = array();
             foreach ($resultSet as $row) {                
-                if($row['contest_type'] == 3) {
+                if($row['contest_type'] == 3 && $row['rank'] <=8) {
                     $row['badge'] = $this->getBracketWinnerBadge($row['rank']);
                     $winners[$row['contest_id']][] = $row;                     
-                } else {
+                } elseif($row['contest_type'] != 3) {
                     $winners[$row['contest_id']][] = $row;
                 }
             }
@@ -532,7 +532,7 @@ class ContestTable extends BaseTable {
       if($rank == 1) {
           return "CHAMPION";
       } elseif ($rank == 2 ) {
-          return "SEMI-FINAL";
+          return "RUNNER UP";
       } elseif ($rank > 2 && $rank <=4) {
           return "FINAL 4";
       } elseif ($rank > 4 && $rank <=8) {

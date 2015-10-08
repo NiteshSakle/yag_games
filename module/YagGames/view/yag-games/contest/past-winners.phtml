@@ -99,9 +99,7 @@
             <?php
         } else {
             foreach ($data['contests'] as $contest):
-//                
-//                $isParticipant = FALSE;            
-//            
+                if(isset($data['winners'][$contest['id']])) {
                 ?>
                 <div class="contest row black-border">                    
                     <div class="contest-title">
@@ -110,10 +108,7 @@
                     </div>  
                     <div class="media-list contest-list clearfix">
                         <div class="row">
-                            <?php foreach ($data['winners'][$contest['id']] as $key => $media):                                
-//                                if (isset($session->mem_id) && $isParticipant === FALSE && $media['owner'] == $session->mem_id) {                                    
-//                                    $isParticipant = TRUE;
-//                                }                                
+                            <?php foreach ($data['winners'][$contest['id']] as $key => $media):
                                 $i = $key + 1; 
                             ?>
                                 <div class="col-md-2 col-xs-2">
@@ -183,6 +178,7 @@
                     </div>
                 </div>                
                 <?php
+                }
             endforeach;
         }
         ?>

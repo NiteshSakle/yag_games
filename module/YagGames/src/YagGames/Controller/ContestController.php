@@ -192,4 +192,20 @@ class ContestController extends BaseController
     return $contestType;
   }
   
+  private function getBracketWinnerBadge($rank)
+  {
+    if($rank == 1) {
+        return "CHAMPION";
+    } elseif ($rank == 2 ) {
+        return "RUNNER UP";
+    } elseif ($rank > 2 && $rank <=4) {
+        return "FINAL 4";
+    } elseif ($rank > 4 && $rank <=8) {
+        return "ELITE 8";
+    } elseif ($rank > 8 && $rank <=16) {
+        return "SWEET 16";
+    } else {
+        return "";
+    }
+  }
 }

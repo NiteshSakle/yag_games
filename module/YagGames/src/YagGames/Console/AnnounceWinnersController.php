@@ -53,14 +53,8 @@ class AnnounceWinnersController extends BaseConsoleController {
 
             $winner = $contestBracketMediaComboTable->getTopRatedMediaForNextRound($contestData['id'], 6);           
            
-            if ($this->updateBracketGameWinners($winner)) {
-                $this->updateContestround($contestData['id'], 7);
-
-                $contestMediaTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaTable');
-                $contestMedia = $contestMediaTable->getContestMediaDetails($winner[0]['next_round_media_id']);
-
-                $this->awardTropyToWinner(array('media_id' => $contestMedia['media_id'], 'owner' => $contestMedia['owner']), $contestData);
-
+            if ($this->updateBracketGameWinners($winner, $contestData)) {
+                $this->updateContestround($contestData['id'], 7);                
                 return TRUE;
             }
             
@@ -114,7 +108,7 @@ class AnnounceWinnersController extends BaseConsoleController {
         return $contestBracketRoundTable->updateByContestId($contestBracketRound, $contestId);
     }
     
-    private function updateBracketGameWinners($winner) {        
+    private function updateBracketGameWinners($winner , $contestData) {        
         $contestWinnerTable = $this->getServiceLocator()->get('YagGames\Model\ContestWinnerTable');
         $contestBracketMediaComboTable = $this->getServiceLocator()->get('YagGames\Model\ContestBracketMediaComboTable');        
         $combo_details = $contestBracketMediaComboTable->fetchContestComboDetails($winner[0]['contest_id']);
@@ -131,30 +125,33 @@ class AnnounceWinnersController extends BaseConsoleController {
                     }
                 }
             }
-        
-        
-            $contestWinner = new \YagGames\Model\ContestWinner();
-            $contestWinner->contest_media_id = $winner[0]['next_round_media_id'];
-            $contestWinner->rank = 1;
-            $contestWinner->no_of_votes = ($winner[0]['next_round_media_id'] == $winner[0]['contest_media_id1']) ? $winner[0]['cmediaid1_votes'] : $winner[0]['cmediaid2_votes'];
-            $contestWinnerTable->insert($contestWinner);
 
-            foreach ($winners as $key => $winner) {
-                if($key != 0 ) {
-                    $rank = $key + 1;
-                    $contestWinner = new \YagGames\Model\ContestWinner();
-                    $contestWinner->contest_media_id = $winners[$key];
-                    $contestWinner->rank = $rank;
+            foreach ($winners as $key => $brtwinner) {
+                $rank = $key + 1;
+                $contestWinner = new \YagGames\Model\ContestWinner();
+                $contestWinner->contest_media_id = $winners[$key];
+                $contestWinner->rank = $rank;
+                if($rank == 1 ) {
+                    $contestWinner->no_of_votes = ($winner[0]['next_round_media_id'] == $winner[0]['contest_media_id1']) ? $winner[0]['cmediaid1_votes'] : $winner[0]['cmediaid2_votes'];
+                } else {
                     $contestWinner->no_of_votes = 0;
-
-                    $contestWinnerTable->insert($contestWinner);            
+                }
+                
+                if($contestWinnerTable->insert($contestWinner) && $rank<=4 ){
+                    $this->awardTrophiesForBracket($winners[$key],$contestData);
                 }
             }
-
             return true;        
         }
     }
     
+    private function awardTrophiesForBracket($contestMediaId, $contestData) {
+        $contestMediaTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaTable');
+        $contestMedia = $contestMediaTable->getContestMediaDetails($contestMediaId);
+
+        $this->awardTropyToWinner(array('media_id' => $contestMedia['media_id'], 'owner' => $contestMedia['owner']), $contestData);
+    }
+
     private function getRouteName($contestTypeId) {
         switch ($contestTypeId) {
             case 1:
