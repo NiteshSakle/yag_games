@@ -128,12 +128,10 @@ class ContestController extends BaseController
     $paginator->setCurrentPageNumber($this->page);
     $paginator->setItemCountPerPage($this->size);
 
-    foreach ($data['contests'] as $contest) {
-        $contestIds[] = $contest['id'];
-    }
+    $contestIds = array_column($data['contests'], 'id');
     $resultSet = $contestTable->getContestWinners($contestIds);
     $winners = array();
-    foreach ($resultSet as $row) {                
+    foreach ($resultSet as $row) {
         if($row['contest_type'] == 3 && $row['rank'] <=8) {
             $row['badge'] = $this->getBracketWinnerBadge($row['rank']);
             $winners[$row['contest_id']][] = $row;                     
