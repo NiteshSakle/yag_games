@@ -188,8 +188,7 @@
                         <div class="clearfix ranking-page"></div>
                     </div>
                     <div class="row gold social-icons-holder">
-                        <div class="col-md-8"></div>                                                
-                            <?php
+                        <?php
                             switch ($contest['contest_type']) {
                                 case 'Photo Contest':
                                     $contestType = 'photo-contest';
@@ -203,6 +202,11 @@
                                     $contestType = 'brackets';
                             }
                             ?>
+                        <div class="col-md-5 navigation" style=" width: 41%; padding-left: 45px;">
+                            <ul>
+                                <li><a href="<?php echo $this->config('main_site', 'url') ?>/contests/<?php echo $contestType?>">Exclusive Contests</a></li>
+                            </ul>
+                        </div>
                         <div class="col-md-5 pull-right">
                             <div class="col-md-6" style="padding-left: 0;padding-right: 0px;margin-top: 3px;margin-left: 0;left: 52px;">                                
                                     <?php                                     
@@ -222,7 +226,7 @@
                                 ));
                                 ?>                      
                             </div>
-                        </div>                        
+                        </div>
                     </div>
                 </div>                
                 <?php
