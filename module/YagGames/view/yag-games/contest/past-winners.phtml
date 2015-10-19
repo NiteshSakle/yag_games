@@ -60,7 +60,7 @@
         text-overflow: ellipsis
     }
     .ranking-page {
-        height: 70px;
+        height: 46px;
     }
     div.social-icons-holder {
         margin-bottom: 42px;
@@ -71,7 +71,10 @@
         margin-top: -34px;
     }
     .artist-name, .user-name {
-        line-height: 20px;
+        line-height: 18px;
+    }
+    .artist-name{
+        margin-top: 3px;
     }
 </style>
 <div  class="home_content clearfix">
@@ -141,8 +144,7 @@
                         <div class="clearfix ranking-page"></div>
                     </div>
                     <div class="row gold social-icons-holder">
-                        <div class="col-md-8"></div>                                                
-                            <?php
+                        <?php
                             switch ($contest['contest_type']) {
                                 case 'Photo Contest':
                                     $contestType = 'photo-contest';
@@ -156,6 +158,11 @@
                                     $contestType = 'brackets';
                             }
                             ?>
+                        <div class="col-md-5 navigation" style=" width: 41%; padding-left: 45px;">
+                            <ul>
+                                <li><a href="<?php echo $this->config('main_site', 'url') ?>/contests/<?php echo $contestType?>/learn-more">Learn More</a></li>
+                            </ul>
+                        </div>
                         <div class="col-md-5 pull-right">
                             <div class="col-md-6" style="padding:0px;margin-top: 4px;text-align: right;">
                                 <span class="wysiwyg-font-size-fs16">
@@ -177,7 +184,7 @@
                                 ));
                                 ?>                      
                             </div>
-                        </div>                        
+                        </div>
                     </div>
                 </div>                
                 <?php
