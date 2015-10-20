@@ -36,10 +36,6 @@ class BracketsRoundCheckController extends BaseConsoleController {
                 $contestMedia = $contestMediaTable->fetchAllByContest($record['contest_id']);
                 $mediaCount = count($contestMedia);
 
-                if ($mediaCount == 0) {
-                    throw new \RuntimeException('No Contestants found for the Contest' . $record['name']);
-                }
-
                 shuffle($contestMedia); // Shuffle the array for more randomization                
                 $comboCount = (int) ($mediaCount / 2); // Should be 32;                
                 $orphanMediaKey = 0;
