@@ -4,9 +4,11 @@ namespace YagGames\Console;
 
 use Zend\Console\Request as ConsoleRequest;
 
-class BracketsRoundCheckController extends BaseConsoleController {
+class BracketsRoundCheckController extends BaseConsoleController
+{
 
-    public function indexAction() {
+    public function indexAction()
+    {
         $request = $this->getRequest();
 
         // Make sure that we are running in a console and the user has not tricked our
@@ -21,7 +23,8 @@ class BracketsRoundCheckController extends BaseConsoleController {
         echo "Brackets Game Round Check";
     }
 
-    private function process() {
+    private function process()
+    {
         $contestBracketRoundTable = $this->getServiceLocator()->get('YagGames\Model\ContestBracketRoundTable');
         $contestBracketMediaComboTable = $this->getServiceLocator()->get('YagGames\Model\ContestBracketMediaComboTable');
         $records = $contestBracketRoundTable->fetchAllActiveContests();
@@ -60,7 +63,7 @@ class BracketsRoundCheckController extends BaseConsoleController {
                     // To avoid duplicates unset inserted media
                     unset($contestMedia[$randomMedia[0]], $contestMedia[$randomMedia[1]]);
                 }
-                
+
                 //Insert orphan media
                 if (isset($orphanMedia)) {
                     $bracketMediaCombo->combo_id = $i;
@@ -111,7 +114,8 @@ class BracketsRoundCheckController extends BaseConsoleController {
         }
     }
 
-    private function updateContestround($contestId, $round) {
+    private function updateContestround($contestId, $round)
+    {
         $contestBracketRoundTable = $this->getServiceLocator()->get('YagGames\Model\ContestBracketRoundTable');
         $contestRound = array();
         $contestRound['contest_id'] = $contestId;
