@@ -32,7 +32,7 @@ class StartVotingController extends BaseConsoleController {
             if ($this->startVoting($contest)) {                
                 //Sending Email To Admin
                 $contest['main_site_url'] = $config['main_site']['url'];
-//                $this->sendEmail('Voting Started for - ' . $contest['name'], $config['to_address_email'], 'voting_started_admin', $contest);                 
+                $this->sendEmail('Voting Started for - ' . $contest['name'], $config['to_address_email'], 'voting_started_admin', $contest);                 
             }
         }
     }
