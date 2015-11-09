@@ -314,6 +314,7 @@ body {
 }
 .white-border{
     border-color: white !important;
+    border-width: 0px !important;
     cursor: pointer;
 }
 .left-round1-up {

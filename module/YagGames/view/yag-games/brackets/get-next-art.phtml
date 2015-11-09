@@ -182,9 +182,9 @@
             </div>            
             <div class="col-md-12 text-center" style="margin-top: 10px;">
                 <?php if($contest['current_round'] != 6) { ?>
-                    <p class="brk-popup-label-3">Next round start: <?php $round_number = $contest['current_round']+1; $round = "round" . $round_number; echo date("d/m/Y", strtotime($contest[$round])); ?></p>
+                    <p class="brk-popup-label-3">Next round start: <?php $round_number = $contest['current_round']+1; $round = "round" . $round_number; echo date("m/d/Y", strtotime($contest[$round])); ?></p>
                 <?php } else { ?>
-                    <p class="brk-popup-label-3">Winner announce Date: <?php echo date("d/m/Y", strtotime($contest['winners_announce_date'])); ?></p>
+                    <p class="brk-popup-label-3">Winner announce Date: <?php echo date("m/d/Y", strtotime($contest['winners_announce_date'])); ?></p>
                 <?php } ?>
             </div>           
         </div>
