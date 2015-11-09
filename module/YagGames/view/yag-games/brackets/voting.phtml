@@ -21,6 +21,11 @@
         $this->headMeta()->setProperty('twitter:image', $this->config('aws', 'path') . $contest['thumbnail']);    
         $this->headMeta()->setProperty('twitter:description', $contest['name'] . ' is available on YOURARTGALLERY.COM. CHECKOUT NOW! ' . $this->config('main_site' ,'url') . '/contests');    
     }
+        
+    function artistName($artist){
+        $firtName = str_split($artist['f_name']);
+        return strtoupper($firtName[0]).".".$artist['l_name'];
+    }
 ?>
 <style>    
     .contest {
@@ -44,11 +49,6 @@
         width: 450px;
         font-size: 22px;
         color: #646567;
-    }
-    .bracket-champion{
-        padding: 0px;
-        margin-top: 80px;
-        margin-bottom: 1px;
     }
 </style>
 <div  class="home_content clearfix">
@@ -99,16 +99,16 @@
                     <div class="left col-md-12 col-xs-12 no-margin-padding left-round1-up">
                         <?php if(isset($medias[$media1])){ ?>
                         <div class="round1 white-border" data-round="1" data-comboId="<?php echo $comboId ?>" data-mediaId="<?php echo $medias[$media1]['media_id']; ?>">
-                            <img mediaid="<?php echo $this->KCrypt()->enc($medias[$media1]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media1], 'icons', '40'); ?>" title="<?php echo $medias[$media1]['title'] ?>" alt="<?php echo $medias[$media1]['title'] ?>" />
+                            <img class="mediaThumb showHoverWindow" mediaid="<?php echo $this->KCrypt()->enc($medias[$media1]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media1], 'icons', '40'); ?>" title="<?php echo $medias[$media1]['title'] ?>" alt="<?php echo $medias[$media1]['title'] ?>" />
                         </div> 
                         <?php } else { ?>
                         <div class="round1"></div>
                         <?php } ?>
                     </div>
-                    <div class="left col-md-12 col-xs-12 no-margin-padding left-round1-down">
+                    <div class="left col-md-12 col-xs-12 no-margin-padding left-round1-down <?php if($i==7) { ?> margin-bottom-30 <?php } ?>">
                         <?php if(isset($medias[$media2])){ ?>
                         <div class="round1 white-border" data-round="1" data-comboId="<?php echo $comboId ?>" data-mediaId="<?php echo $medias[$media2]['media_id']; ?>">
-                            <img mediaid="<?php echo $this->KCrypt()->enc($medias[$media2]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media2], 'icons', '40'); ?>" title="<?php echo $medias[$media2]['title'] ?>" alt="<?php echo $medias[$media2]['title'] ?>" />
+                            <img class="mediaThumb showHoverWindow" mediaid="<?php echo $this->KCrypt()->enc($medias[$media2]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media2], 'icons', '40'); ?>" title="<?php echo $medias[$media2]['title'] ?>" alt="<?php echo $medias[$media2]['title'] ?>" />
                         </div> 
                         <?php } else { ?>
                         <div class="round1"></div>
@@ -131,7 +131,7 @@
                     <div class="left col-md-12 col-xs-12 no-margin-padding left-round2-up round2-up-first">
                         <?php if(isset($medias[$media1])){ ?>
                         <div class="round2 round2-first white-border" data-round="2" data-comboId="<?php echo $comboId ?>" data-mediaId="<?php echo $medias[$media1]['media_id']; ?>">
-                            <img mediaid="<?php echo $this->KCrypt()->enc($medias[$media2]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media1], 'icons', '45'); ?>" title="<?php echo $medias[$media1]['title'] ?>" alt="<?php echo $medias[$media1]['title'] ?>" />
+                            <img class="mediaThumb showHoverWindow" mediaid="<?php echo $this->KCrypt()->enc($medias[$media2]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media1], 'icons', '45'); ?>" title="<?php echo $medias[$media1]['title'] ?>" alt="<?php echo $medias[$media1]['title'] ?>" />
                         </div>
                         <?php } else { ?>
                         <div class="round2 round2-first "></div>
@@ -140,7 +140,7 @@
                     <div class="left col-md-12 col-xs-12 no-margin-padding left-round2-down">
                         <?php if(isset($medias[$media2])){ ?>
                         <div class="round2 white-border" data-round="2" data-comboId="<?php echo $comboId ?>" data-mediaId="<?php echo $medias[$media2]['media_id']; ?>">
-                            <img mediaid="<?php echo $this->KCrypt()->enc($medias[$media2]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media2], 'icons', '45'); ?>" title="<?php echo $medias[$media2]['title'] ?>" alt="<?php echo $medias[$media2]['title'] ?>" />
+                            <img class="mediaThumb showHoverWindow" mediaid="<?php echo $this->KCrypt()->enc($medias[$media2]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media2], 'icons', '45'); ?>" title="<?php echo $medias[$media2]['title'] ?>" alt="<?php echo $medias[$media2]['title'] ?>" />
                         </div>
                         <?php } else { ?>
                         <div class="round2"></div>
@@ -159,16 +159,16 @@
                     <div class="left col-md-12 col-xs-12 no-margin-padding left-round2-up">
                         <?php if(isset($medias[$media1])){ ?>
                         <div class="round2 white-border" data-round="2" data-comboId="<?php echo $comboId ?>" data-mediaId="<?php echo $medias[$media1]['media_id']; ?>">
-                            <img mediaid="<?php echo $this->KCrypt()->enc($medias[$media1]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media1], 'icons', '45'); ?>" title="<?php echo $medias[$media1]['title'] ?>" alt="<?php echo $medias[$media1]['title'] ?>" />
+                            <img class="mediaThumb showHoverWindow" mediaid="<?php echo $this->KCrypt()->enc($medias[$media1]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media1], 'icons', '45'); ?>" title="<?php echo $medias[$media1]['title'] ?>" alt="<?php echo $medias[$media1]['title'] ?>" />
                         </div>
                         <?php } else { ?>
                         <div class="round2"></div>
                         <?php } ?>                           
                     </div>
-                    <div class="left col-md-12 col-xs-12 no-margin-padding left-round2-down">
+                    <div class="left col-md-12 col-xs-12 no-margin-padding left-round2-down <?php if($i==2) { ?> margin-bottom-30 <?php } ?>">
                         <?php if(isset($medias[$media2])){ ?>
                         <div class="round2 white-border" data-round="2" data-comboId="<?php echo $comboId ?>" data-mediaId="<?php echo $medias[$media2]['media_id']; ?>">
-                            <img mediaid="<?php echo $this->KCrypt()->enc($medias[$media2]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media2], 'icons', '45'); ?>" title="<?php echo $medias[$media2]['title'] ?>" alt="<?php echo $medias[$media2]['title'] ?>" />
+                            <img class="mediaThumb showHoverWindow" mediaid="<?php echo $this->KCrypt()->enc($medias[$media2]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media2], 'icons', '45'); ?>" title="<?php echo $medias[$media2]['title'] ?>" alt="<?php echo $medias[$media2]['title'] ?>" />
                         </div>
                         <?php } else { ?>
                         <div class="round2"></div>
@@ -191,7 +191,7 @@
                     <div class="left col-md-12 col-xs-12 no-margin-padding left-round3-up round3-up-first">
                         <?php if(isset($medias[$media1])){ ?>
                         <div class="round3 round3-first white-border" data-round="3" data-comboId="<?php echo $comboId ?>" data-mediaId="<?php echo $medias[$media1]['media_id']; ?>">
-                            <img mediaid="<?php echo $this->KCrypt()->enc($medias[$media1]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media1], 'icons', '50'); ?>" title="<?php echo $medias[$media1]['title'] ?>" alt="<?php echo $medias[$media1]['title'] ?>" />
+                            <img class="mediaThumb showHoverWindow" mediaid="<?php echo $this->KCrypt()->enc($medias[$media1]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media1], 'icons', '50'); ?>" title="<?php echo $medias[$media1]['title'] ?>" alt="<?php echo $medias[$media1]['title'] ?>" />
                         </div>
                         <?php } else { ?>
                         <div class="round3 round3-first"></div>
@@ -200,7 +200,7 @@
                     <div class="left col-md-12 col-xs-12 no-margin-padding left-round3-down">
                         <?php if(isset($medias[$media2])){ ?>
                         <div class="round3 white-border" data-round="3" data-comboId="<?php echo $comboId ?>" data-mediaId="<?php echo $medias[$media2]['media_id']; ?>">
-                            <img mediaid="<?php echo $this->KCrypt()->enc($medias[$media2]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media2], 'icons', '50'); ?>" title="<?php echo $medias[$media2]['title'] ?>" alt="<?php echo $medias[$media2]['title'] ?>" />
+                            <img class="mediaThumb showHoverWindow" mediaid="<?php echo $this->KCrypt()->enc($medias[$media2]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media2], 'icons', '50'); ?>" title="<?php echo $medias[$media2]['title'] ?>" alt="<?php echo $medias[$media2]['title'] ?>" />
                         </div>
                         <?php } else { ?>
                         <div class="round3"></div>
@@ -219,16 +219,16 @@
                     <div class="left col-md-12 col-xs-12 no-margin-padding left-round3-up">
                         <?php if(isset($medias[$media1])){ ?>
                         <div class="round3 white-border" data-round="3" data-comboId="<?php echo $comboId ?>" data-mediaId="<?php echo $medias[$media1]['media_id']; ?>">
-                            <img mediaid="<?php echo $this->KCrypt()->enc($medias[$media1]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media1], 'icons', '50'); ?>" title="<?php echo $medias[$media1]['title'] ?>" alt="<?php echo $medias[$media1]['title'] ?>" />
+                            <img class="mediaThumb showHoverWindow" mediaid="<?php echo $this->KCrypt()->enc($medias[$media1]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media1], 'icons', '50'); ?>" title="<?php echo $medias[$media1]['title'] ?>" alt="<?php echo $medias[$media1]['title'] ?>" />
                         </div>
                         <?php } else { ?>
                         <div class="round3"></div>
                         <?php } ?>
                     </div>
-                    <div class="left col-md-12 col-xs-12 no-margin-padding left-round3-down">
+                    <div class="left col-md-12 col-xs-12 no-margin-padding left-round3-down <?php if($i==0) { ?> margin-bottom-30 <?php } ?>">
                         <?php if(isset($medias[$media2])){ ?>
                         <div class="round3 white-border" data-round="3" data-comboId="<?php echo $comboId ?>" data-mediaId="<?php echo $medias[$media2]['media_id']; ?>">
-                            <img mediaid="<?php echo $this->KCrypt()->enc($medias[$media2]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media2], 'icons', '50'); ?>" title="<?php echo $medias[$media2]['title'] ?>" alt="<?php echo $medias[$media2]['title'] ?>" />
+                            <img class="mediaThumb showHoverWindow" mediaid="<?php echo $this->KCrypt()->enc($medias[$media2]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media2], 'icons', '50'); ?>" title="<?php echo $medias[$media2]['title'] ?>" alt="<?php echo $medias[$media2]['title'] ?>" />
                         </div>
                         <?php } else { ?>
                         <div class="round3"></div>
@@ -251,16 +251,16 @@
                     <div class="left col-md-12 col-xs-12 no-margin-padding left-round4-up round4-up-first">
                         <?php if(isset($medias[$media1])){ ?>
                         <div class="round4 round4-first white-border" data-round="4" data-comboId="<?php echo $comboId ?>" data-mediaId="<?php echo $medias[$media1]['media_id']; ?>">
-                            <img mediaid="<?php echo $this->KCrypt()->enc($medias[$media1]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media1], 'icons', '50'); ?>" title="<?php echo $medias[$media1]['title'] ?>" alt="<?php echo $medias[$media1]['title'] ?>" />
+                            <img class="mediaThumb showHoverWindow" mediaid="<?php echo $this->KCrypt()->enc($medias[$media1]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media1], 'icons', '50'); ?>" title="<?php echo $medias[$media1]['title'] ?>" alt="<?php echo $medias[$media1]['title'] ?>" />
                         </div>
                         <?php } else { ?>
                         <div class="round4 round4-first"></div>
                         <?php } ?>
                     </div>
-                    <div class="left col-md-12 col-xs-12 no-margin-padding left-round4-down">
+                    <div class="left col-md-12 col-xs-12 no-margin-padding left-round4-down margin-bottom-30 ">
                         <?php if(isset($medias[$media2])){ ?>
                         <div class="round4 white-border" data-round="4" data-comboId="<?php echo $comboId ?>" data-mediaId="<?php echo $medias[$media2]['media_id']; ?>">
-                            <img mediaid="<?php echo $this->KCrypt()->enc($medias[$media2]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media2], 'icons', '50'); ?>" title="<?php echo $medias[$media2]['title'] ?>" alt="<?php echo $medias[$media2]['title'] ?>" />
+                            <img class="mediaThumb showHoverWindow" mediaid="<?php echo $this->KCrypt()->enc($medias[$media2]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media2], 'icons', '50'); ?>" title="<?php echo $medias[$media2]['title'] ?>" alt="<?php echo $medias[$media2]['title'] ?>" />
                         </div>
                          <?php } else { ?>
                         <div class="round4"></div>
@@ -279,7 +279,7 @@
                     <div class="left col-md-12 col-xs-12 no-margin-padding left-round4-up">
                         <?php if(isset($medias[$media1])){ ?>
                         <div class="round4 white-border" data-round="4" data-comboId="<?php echo $comboId ?>" data-mediaId="<?php echo $medias[$media1]['media_id']; ?>">
-                            <img mediaid="<?php echo $this->KCrypt()->enc($medias[$media1]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media1], 'icons', '50'); ?>" title="<?php echo $medias[$media1]['title'] ?>" alt="<?php echo $medias[$media1]['title'] ?>" />
+                            <img class="mediaThumb showHoverWindow" mediaid="<?php echo $this->KCrypt()->enc($medias[$media1]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media1], 'icons', '50'); ?>" title="<?php echo $medias[$media1]['title'] ?>" alt="<?php echo $medias[$media1]['title'] ?>" />
                         </div>
                          <?php } else { ?>
                         <div class="round4"></div>
@@ -288,7 +288,7 @@
                     <div class="left col-md-12 col-xs-12 no-margin-padding left-round4-down">
                         <?php if(isset($medias[$media2])){ ?>
                         <div class="round4 white-border" data-round="4" data-comboId="<?php echo $comboId ?>" data-mediaId="<?php echo $medias[$media2]['media_id']; ?>">
-                            <img mediaid="<?php echo $this->KCrypt()->enc($medias[$media2]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media2], 'icons', '50'); ?>" title="<?php echo $medias[$media2]['title'] ?>" alt="<?php echo $medias[$media2]['title'] ?>" />
+                            <img class="mediaThumb showHoverWindow" mediaid="<?php echo $this->KCrypt()->enc($medias[$media2]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media2], 'icons', '50'); ?>" title="<?php echo $medias[$media2]['title'] ?>" alt="<?php echo $medias[$media2]['title'] ?>" />
                         </div>
                          <?php } else { ?>
                         <div class="round4"></div>
@@ -309,9 +309,9 @@
                         ?>
                     <div class="left col-md-12 col-xs-12 no-margin-padding left-round5-up round5-up-first">
                         <?php if(isset($medias[$media1])){ ?>
-                        <div class="artist-name round5-first-text violet-text" style="font-size: 12px;"><a href="<?php echo $this->config('main_site', 'url') ?>/<?php echo $medias[$media1]['username'] ?>" class="violet-text"><?php echo $medias[$media1]['f_name'] ?></a></div>
+                        <div class="artist-name round5-first-text violet-text" style="font-size: 12px; padding: 0px 5px;"><a href="<?php echo $this->config('main_site', 'url') ?>/<?php echo $medias[$media1]['username'] ?>" class="violet-text"><?php echo artistName($medias[$media1]); ?></a></div>
                         <div class="round5 round5-first-zero white-border" data-round="5" data-comboId="<?php echo $comboId ?>" data-mediaId="<?php echo $medias[$media1]['media_id']; ?>">
-                            <img mediaid="<?php echo $this->KCrypt()->enc($medias[$media1]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media1], 'icons', '50'); ?>" title="<?php echo $medias[$media1]['title'] ?>" alt="<?php echo $medias[$media1]['title'] ?>" />
+                            <img class="mediaThumb showHoverWindow" mediaid="<?php echo $this->KCrypt()->enc($medias[$media1]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media1], 'icons', '50'); ?>" title="<?php echo $medias[$media1]['title'] ?>" alt="<?php echo $medias[$media1]['title'] ?>" />
                         </div>
                         <?php } else { ?> 
                         <div class="round5 round5-first"></div>
@@ -320,9 +320,9 @@
                     <div class="left col-md-12 col-xs-12 no-margin-padding left-round5-down">
                         <?php if(isset($medias[$media2])){ ?>
                         <div class="round5 white-border" data-round="5" data-comboId="<?php echo $comboId ?>" data-mediaId="<?php echo $medias[$media2]['media_id']; ?>">
-                            <img mediaid="<?php echo $this->KCrypt()->enc($medias[$media2]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media2], 'icons', '50'); ?>" title="<?php echo $medias[$media2]['title'] ?>" alt="<?php echo $medias[$media2]['title'] ?>" />
+                            <img class="mediaThumb showHoverWindow" mediaid="<?php echo $this->KCrypt()->enc($medias[$media2]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media2], 'icons', '50'); ?>" title="<?php echo $medias[$media2]['title'] ?>" alt="<?php echo $medias[$media2]['title'] ?>" />
                         </div>
-                        <div class="artist-name violet-text" style="font-size: 12px;"><a href="<?php echo $this->config('main_site', 'url') ?>/<?php echo $medias[$media2]['username'] ?>" class="violet-text"><?php echo $medias[$media2]['f_name'] ?></a></div>
+                        <div class="artist-name violet-text" style="font-size: 12px; padding: 0px 5px;"><a href="<?php echo $this->config('main_site', 'url') ?>/<?php echo $medias[$media2]['username'] ?>" class="violet-text"><?php echo artistName($medias[$media2]); ?></a></div>
                         <?php } else { ?>
                         <div class="round5"></div>
                         <?php } ?>
@@ -342,9 +342,9 @@
                     <div class="col-md-12 col-xs-12 no-margin-padding" >
                         <div class="left col-md-6 col-xs-6 no-margin-padding left-round6-up">
                             <?php if(isset($medias[$media1])){ ?>
-                            <div class="artist-name round6-first-text violet-text" style="font-size: 12px;"><a href="<?php echo $this->config('main_site', 'url') ?>/<?php echo $medias[$media1]['username'] ?>" class="violet-text"><?php echo $medias[$media1]['f_name'] ?></a></div>
+                            <div class="artist-name round6-first-text violet-text" style="font-size: 12px; padding: 0px 5px;"><a href="<?php echo $this->config('main_site', 'url') ?>/<?php echo $medias[$media1]['username'] ?>" class="violet-text"><?php echo artistName($medias[$media1]) ?></a></div>
                             <div class=" round6 round6-first-zero white-border" data-round="6" data-comboId="<?php echo $comboId ?>" data-mediaId="<?php echo $medias[$media1]['media_id']; ?>">
-                                <img mediaid="<?php echo $this->KCrypt()->enc($medias[$media1]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media1], 'icons', '50'); ?>" title="<?php echo $medias[$media1]['title'] ?>" alt="<?php echo $medias[$media1]['title'] ?>" />
+                                <img class="mediaThumb showHoverWindow" mediaid="<?php echo $this->KCrypt()->enc($medias[$media1]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media1], 'icons', '50'); ?>" title="<?php echo $medias[$media1]['title'] ?>" alt="<?php echo $medias[$media1]['title'] ?>" />
                             </div>
                             <?php } else { ?> 
                             <div class=" round6 round6-first "></div>
@@ -357,15 +357,26 @@
                                 Champion
                             </div>
                             <div class="col-md-12 col-xs-12 round6-center">
-
+                                <?php if(isset($contestWinners[0])){ ?>
+                                <div class="col-md-12 col-xs-12 round7 no-margin-padding white-border" data-round="7" data-mediaId="<?php echo $contestWinners[0]['media_id']; ?>">
+                                    <img class="mediaThumb showHoverWindow" mediaid="<?php echo $this->KCrypt()->enc($contestWinners[0]['media_id']) ?>" src="<?php echo $this->mediaImage($contestWinners[0], 'icons', '100'); ?>" title="<?php echo $contestWinners[0]['title'] ?>" alt="<?php echo $contestWinners[0]['title'] ?>" />
                                 </div>
+                                <?php } else { ?> 
+                                <div class="col-md-12 col-xs-12 round7 no-margin-padding"></div>
+                                <?php } ?>
                             </div>
+                        </div>
                         <div class="col-md-12 col-xs-12 no-margin-padding round6-center-text">
+                            <?php if(isset($contestWinners[0])){ ?>
+                            <b>Total Votes: <?php echo $contestWinners[0]['no_of_votes']; ?></b>
+                            <div class="artist-name violet-text" style="font-size: 12px; padding: 0px 5px;">Artist Name: <?php echo artistName($contestWinners[0]); ?></div>
+                            <div class="artist-name violet-text" style="font-size: 12px; padding: 0px 5px;">User Name:<a href="<?php echo $this->config('main_site', 'url') ?>/<?php echo $contestWinners[0]['username'] ?>" class="violet-text"><?php echo $contestWinners[0]['username']; ?></a></div>
 <!--                            Total Votes: 158<br>
                             <span class="violet-text">
                             Artist Name: Matthews Thomas<br>
                             User Name: ThomasPhoto
                             </span>-->
+                            <?php } ?>
                         </div>
                     </div>
                     <div class="col-md-12 col-xs-12 no-margin-padding" >
@@ -373,9 +384,9 @@
                         <div class="left col-md-6 col-xs-6 no-margin-padding right-round6-up">
                             <?php if(isset($medias[$media2])){ ?>
                             <div class="round6 round6-second white-border" data-round="6" data-comboId="<?php echo $comboId ?>" data-mediaId="<?php echo $medias[$media2]['media_id']; ?>">
-                                <img mediaid="<?php echo $this->KCrypt()->enc($medias[$media2]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media2], 'icons', '50'); ?>" title="<?php echo $medias[$media2]['title'] ?>" alt="<?php echo $medias[$media2]['title'] ?>" />
+                                <img class="mediaThumb showHoverWindow" mediaid="<?php echo $this->KCrypt()->enc($medias[$media2]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media2], 'icons', '50'); ?>" title="<?php echo $medias[$media2]['title'] ?>" alt="<?php echo $medias[$media2]['title'] ?>" />
                             </div>
-                            <div class="artist-name violet-text" style="font-size: 12px;"><a href="<?php echo $this->config('main_site', 'url') ?>/<?php echo $medias[$media2]['username'] ?>" class="violet-text"><?php echo $medias[$media2]['f_name'] ?></a></div>
+                            <div class="artist-name violet-text" style="font-size: 12px; padding: 0px 5px;"><a href="<?php echo $this->config('main_site', 'url') ?>/<?php echo $medias[$media2]['username'] ?>" class="violet-text"><?php echo artistName($medias[$media2]) ?></a></div>
                             <?php } else { ?>
                             <div class="round6 round6-second "></div>
                             <?php } ?>
@@ -395,9 +406,9 @@
                         ?>
                     <div class="left col-md-12 col-xs-12 no-margin-padding right-round5-up round5-up-first">
                         <?php if(isset($medias[$media1])){ ?>
-                        <div class="artist-name round5-first-text violet-text" style="font-size: 12px;"><a href="<?php echo $this->config('main_site', 'url') ?>/<?php echo $medias[$media1]['username'] ?>" class="violet-text"><?php echo $medias[$media1]['f_name'] ?></a></div>
+                        <div class="artist-name round5-first-text violet-text" style="font-size: 12px; padding: 0px 5px;"><a href="<?php echo $this->config('main_site', 'url') ?>/<?php echo $medias[$media1]['username'] ?>" class="violet-text"><?php echo artistName($medias[$media1]) ?></a></div>
                         <div class="round5 round5-first-zero white-border" data-round="5" data-comboId="<?php echo $comboId ?>" data-mediaId="<?php echo $medias[$media1]['media_id']; ?>">
-                            <img mediaid="<?php echo $this->KCrypt()->enc($medias[$media1]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media1], 'icons', '50'); ?>" title="<?php echo $medias[$media1]['title'] ?>" alt="<?php echo $medias[$media1]['title'] ?>" />
+                            <img class="mediaThumb showHoverWindow" mediaid="<?php echo $this->KCrypt()->enc($medias[$media1]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media1], 'icons', '50'); ?>" title="<?php echo $medias[$media1]['title'] ?>" alt="<?php echo $medias[$media1]['title'] ?>" />
                         </div>
                         <?php } else { ?> 
                         <div class="round5 round5-first"></div>
@@ -406,9 +417,9 @@
                     <div class="left col-md-12 col-xs-12 no-margin-padding right-round5-down">
                         <?php if(isset($medias[$media2])){ ?>
                         <div class="round5 white-border" data-round="5" data-comboId="<?php echo $comboId ?>" data-mediaId="<?php echo $medias[$media2]['media_id']; ?>">
-                            <img mediaid="<?php echo $this->KCrypt()->enc($medias[$media2]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media2], 'icons', '50'); ?>" title="<?php echo $medias[$media2]['title'] ?>" alt="<?php echo $medias[$media2]['title'] ?>" />
+                            <img class="mediaThumb showHoverWindow" mediaid="<?php echo $this->KCrypt()->enc($medias[$media2]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media2], 'icons', '50'); ?>" title="<?php echo $medias[$media2]['title'] ?>" alt="<?php echo $medias[$media2]['title'] ?>" />
                         </div>
-                        <div class="artist-name violet-text" style="font-size: 12px;"><a href="<?php echo $this->config('main_site', 'url') ?>/<?php echo $medias[$media2]['username'] ?>" class="violet-text"><?php echo $medias[$media2]['f_name'] ?></a></div>
+                        <div class="artist-name violet-text" style="font-size: 12px; padding: 0px 5px;"><a href="<?php echo $this->config('main_site', 'url') ?>/<?php echo $medias[$media2]['username'] ?>" class="violet-text"><?php echo artistName($medias[$media2]); ?></a></div>
                         <?php } else { ?>
                         <div class="round5"></div>
                         <?php } ?>
@@ -429,16 +440,16 @@
                     <div class="left col-md-12 col-xs-12 no-margin-padding right-round4-up round4-up-first">
                         <?php if(isset($medias[$media1])){ ?>
                         <div class="round4 round4-first white-border" data-round="4" data-comboId="<?php echo $comboId ?>" data-mediaId="<?php echo $medias[$media1]['media_id']; ?>">
-                            <img mediaid="<?php echo $this->KCrypt()->enc($medias[$media1]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media1], 'icons', '50'); ?>" title="<?php echo $medias[$media1]['title'] ?>" alt="<?php echo $medias[$media1]['title'] ?>" />
+                            <img class="mediaThumb showHoverWindow" mediaid="<?php echo $this->KCrypt()->enc($medias[$media1]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media1], 'icons', '50'); ?>" title="<?php echo $medias[$media1]['title'] ?>" alt="<?php echo $medias[$media1]['title'] ?>" />
                         </div>
                         <?php } else { ?>
                         <div class="round4 round4-first"></div>
                         <?php } ?>
                     </div>
-                    <div class="left col-md-12 col-xs-12 no-margin-padding right-round4-down">
+                    <div class="left col-md-12 col-xs-12 no-margin-padding right-round4-down margin-bottom-30">
                         <?php if(isset($medias[$media2])){ ?>
                         <div class="round4 white-border" data-round="4" data-comboId="<?php echo $comboId ?>" data-mediaId="<?php echo $medias[$media2]['media_id']; ?>">
-                            <img mediaid="<?php echo $this->KCrypt()->enc($medias[$media2]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media2], 'icons', '50'); ?>" title="<?php echo $medias[$media2]['title'] ?>" alt="<?php echo $medias[$media2]['title'] ?>" />
+                            <img class="mediaThumb showHoverWindow" mediaid="<?php echo $this->KCrypt()->enc($medias[$media2]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media2], 'icons', '50'); ?>" title="<?php echo $medias[$media2]['title'] ?>" alt="<?php echo $medias[$media2]['title'] ?>" />
                         </div>
                          <?php } else { ?>
                         <div class="round4"></div>
@@ -457,7 +468,7 @@
                     <div class="left col-md-12 col-xs-12 no-margin-padding right-round4-up">
                         <?php if(isset($medias[$media1])){ ?>
                         <div class="round4 white-border" data-round="4" data-comboId="<?php echo $comboId ?>" data-mediaId="<?php echo $medias[$media1]['media_id']; ?>">
-                            <img mediaid="<?php echo $this->KCrypt()->enc($medias[$media1]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media1], 'icons', '50'); ?>" title="<?php echo $medias[$media1]['title'] ?>" alt="<?php echo $medias[$media1]['title'] ?>" />
+                            <img class="mediaThumb showHoverWindow" mediaid="<?php echo $this->KCrypt()->enc($medias[$media1]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media1], 'icons', '50'); ?>" title="<?php echo $medias[$media1]['title'] ?>" alt="<?php echo $medias[$media1]['title'] ?>" />
                         </div>
                          <?php } else { ?>
                         <div class="round4"></div>
@@ -466,7 +477,7 @@
                     <div class="left col-md-12 col-xs-12 no-margin-padding right-round4-down">
                         <?php if(isset($medias[$media2])){ ?>
                         <div class="round4 white-border" data-round="4" data-comboId="<?php echo $comboId ?>" data-mediaId="<?php echo $medias[$media2]['media_id']; ?>">
-                            <img mediaid="<?php echo $this->KCrypt()->enc($medias[$media2]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media2], 'icons', '50'); ?>" title="<?php echo $medias[$media2]['title'] ?>" alt="<?php echo $medias[$media2]['title'] ?>" />
+                            <img class="mediaThumb showHoverWindow" mediaid="<?php echo $this->KCrypt()->enc($medias[$media2]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media2], 'icons', '50'); ?>" title="<?php echo $medias[$media2]['title'] ?>" alt="<?php echo $medias[$media2]['title'] ?>" />
                         </div>
                          <?php } else { ?>
                         <div class="round4"></div>
@@ -489,7 +500,7 @@
                     <div class="left col-md-12 col-xs-12 no-margin-padding right-round3-up round3-up-first">
                         <?php if(isset($medias[$media1])){ ?>
                         <div class="round3 round3-first white-border" data-round="3" data-comboId="<?php echo $comboId ?>" data-mediaId="<?php echo $medias[$media1]['media_id']; ?>">
-                            <img mediaid="<?php echo $this->KCrypt()->enc($medias[$media1]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media1], 'icons', '50'); ?>" title="<?php echo $medias[$media1]['title'] ?>" alt="<?php echo $medias[$media1]['title'] ?>" />
+                            <img class="mediaThumb showHoverWindow" mediaid="<?php echo $this->KCrypt()->enc($medias[$media1]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media1], 'icons', '50'); ?>" title="<?php echo $medias[$media1]['title'] ?>" alt="<?php echo $medias[$media1]['title'] ?>" />
                         </div>
                         <?php } else { ?>
                         <div class="round3 round3-first"></div>
@@ -498,7 +509,7 @@
                     <div class="left col-md-12 col-xs-12 no-margin-padding right-round3-down">
                         <?php if(isset($medias[$media2])){ ?>
                         <div class="round3 white-border" data-round="3" data-comboId="<?php echo $comboId ?>" data-mediaId="<?php echo $medias[$media2]['media_id']; ?>">
-                            <img mediaid="<?php echo $this->KCrypt()->enc($medias[$media2]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media2], 'icons', '50'); ?>" title="<?php echo $medias[$media2]['title'] ?>" alt="<?php echo $medias[$media2]['title'] ?>" />
+                            <img class="mediaThumb showHoverWindow" mediaid="<?php echo $this->KCrypt()->enc($medias[$media2]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media2], 'icons', '50'); ?>" title="<?php echo $medias[$media2]['title'] ?>" alt="<?php echo $medias[$media2]['title'] ?>" />
                         </div>
                         <?php } else { ?>
                         <div class="round3"></div>
@@ -517,16 +528,16 @@
                     <div class="left col-md-12 col-xs-12 no-margin-padding right-round3-up">
                         <?php if(isset($medias[$media1])){ ?>
                         <div class="round3 white-border" data-round="3" data-comboId="<?php echo $comboId ?>" data-mediaId="<?php echo $medias[$media1]['media_id']; ?>">
-                            <img mediaid="<?php echo $this->KCrypt()->enc($medias[$media1]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media1], 'icons', '50'); ?>" title="<?php echo $medias[$media1]['title'] ?>" alt="<?php echo $medias[$media1]['title'] ?>" />
+                            <img class="mediaThumb showHoverWindow" mediaid="<?php echo $this->KCrypt()->enc($medias[$media1]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media1], 'icons', '50'); ?>" title="<?php echo $medias[$media1]['title'] ?>" alt="<?php echo $medias[$media1]['title'] ?>" />
                         </div>
                         <?php } else { ?>
                         <div class="round3"></div>
                         <?php } ?>
                     </div>
-                    <div class="left col-md-12 col-xs-12 no-margin-padding right-round3-down">
+                    <div class="left col-md-12 col-xs-12 no-margin-padding right-round3-down <?php if($i==0) { ?> margin-bottom-30 <?php } ?>">
                         <?php if(isset($medias[$media2])){ ?>
                         <div class="round3 white-border" data-round="3" data-comboId="<?php echo $comboId ?>" data-mediaId="<?php echo $medias[$media2]['media_id']; ?>">
-                            <img mediaid="<?php echo $this->KCrypt()->enc($medias[$media2]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media2], 'icons', '50'); ?>" title="<?php echo $medias[$media2]['title'] ?>" alt="<?php echo $medias[$media2]['title'] ?>" />
+                            <img class="mediaThumb showHoverWindow" mediaid="<?php echo $this->KCrypt()->enc($medias[$media2]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media2], 'icons', '50'); ?>" title="<?php echo $medias[$media2]['title'] ?>" alt="<?php echo $medias[$media2]['title'] ?>" />
                         </div>
                         <?php } else { ?>
                         <div class="round3"></div>
@@ -549,7 +560,7 @@
                     <div class="left col-md-12 col-xs-12 no-margin-padding right-round2-up round2-up-first">
                         <?php if(isset($medias[$media1])){ ?>
                         <div class="round2 round2-first white-border" data-round="2" data-comboId="<?php echo $comboId ?>" data-mediaId="<?php echo $medias[$media1]['media_id']; ?>">
-                            <img mediaid="<?php echo $this->KCrypt()->enc($medias[$media1]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media1], 'icons', '45'); ?>" title="<?php echo $medias[$media1]['title'] ?>" alt="<?php echo $medias[$media1]['title'] ?>" />
+                            <img class="mediaThumb showHoverWindow" mediaid="<?php echo $this->KCrypt()->enc($medias[$media1]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media1], 'icons', '45'); ?>" title="<?php echo $medias[$media1]['title'] ?>" alt="<?php echo $medias[$media1]['title'] ?>" />
                         </div>
                         <?php } else { ?>
                         <div class="round2 round2-first "></div>
@@ -559,7 +570,7 @@
                     <div class="left col-md-12 col-xs-12 no-margin-padding right-round2-down">
                         <?php if(isset($medias[$media2])){ ?>
                         <div class="round2 white-border" data-round="2" data-comboId="<?php echo $comboId ?>" data-mediaId="<?php echo $medias[$media2]['media_id']; ?>">
-                            <img mediaid="<?php echo $this->KCrypt()->enc($medias[$media2]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media2], 'icons', '45'); ?>" title="<?php echo $medias[$media2]['title'] ?>" alt="<?php echo $medias[$media2]['title'] ?>" />
+                            <img class="mediaThumb showHoverWindow" mediaid="<?php echo $this->KCrypt()->enc($medias[$media2]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media2], 'icons', '45'); ?>" title="<?php echo $medias[$media2]['title'] ?>" alt="<?php echo $medias[$media2]['title'] ?>" />
                         </div>
                         <?php } else { ?>
                         <div class="round2"></div>
@@ -578,16 +589,16 @@
                     <div class="left col-md-12 col-xs-12 no-margin-padding right-round2-up">
                         <?php if(isset($medias[$media1])){ ?>
                         <div class="round2 white-border" data-round="2" data-comboId="<?php echo $comboId ?>" data-mediaId="<?php echo $medias[$media1]['media_id']; ?>">
-                            <img mediaid="<?php echo $this->KCrypt()->enc($medias[$media1]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media1], 'icons', '45'); ?>" title="<?php echo $medias[$media1]['title'] ?>" alt="<?php echo $medias[$media1]['title'] ?>" />
+                            <img class="mediaThumb showHoverWindow" mediaid="<?php echo $this->KCrypt()->enc($medias[$media1]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media1], 'icons', '45'); ?>" title="<?php echo $medias[$media1]['title'] ?>" alt="<?php echo $medias[$media1]['title'] ?>" />
                         </div>
                         <?php } else { ?>
                         <div class="round2"></div>
                         <?php } ?>                           
                     </div>
-                    <div class="left col-md-12 col-xs-12 no-margin-padding right-round2-down">
+                    <div class="left col-md-12 col-xs-12 no-margin-padding right-round2-down <?php if($i==2) { ?> margin-bottom-30 <?php } ?>">
                         <?php if(isset($medias[$media2])){ ?>
                         <div class="round2 white-border" data-round="2" data-comboId="<?php echo $comboId ?>" data-mediaId="<?php echo $medias[$media2]['media_id']; ?>">
-                            <img mediaid="<?php echo $this->KCrypt()->enc($medias[$media2]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media2], 'icons', '45'); ?>" title="<?php echo $medias[$media2]['title'] ?>" alt="<?php echo $medias[$media2]['title'] ?>" />
+                            <img class="mediaThumb showHoverWindow" mediaid="<?php echo $this->KCrypt()->enc($medias[$media2]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media2], 'icons', '45'); ?>" title="<?php echo $medias[$media2]['title'] ?>" alt="<?php echo $medias[$media2]['title'] ?>" />
                         </div>
                         <?php } else { ?>
                         <div class="round2"></div>
@@ -610,16 +621,16 @@
                     <div class="left col-md-12 col-xs-12 no-margin-padding right-round1-up">
                         <?php if(isset($medias[$media1])){ ?>
                         <div class="round1 white-border" data-round="1" data-comboId="<?php echo $comboId ?>" data-mediaId="<?php echo $medias[$media1]['media_id']; ?>">
-                            <img mediaid="<?php echo $this->KCrypt()->enc($medias[$media1]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media1], 'icons', '40'); ?>" title="<?php echo $medias[$media1]['title'] ?>" alt="<?php echo $medias[$media1]['title'] ?>" />
+                            <img class="mediaThumb showHoverWindow" mediaid="<?php echo $this->KCrypt()->enc($medias[$media1]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media1], 'icons', '40'); ?>" title="<?php echo $medias[$media1]['title'] ?>" alt="<?php echo $medias[$media1]['title'] ?>" />
                         </div> 
                         <?php } else { ?>
                         <div class="round1"></div>
                         <?php } ?>
                     </div>
-                    <div class="left col-md-12 col-xs-12 no-margin-padding right-round1-down">
+                    <div class="left col-md-12 col-xs-12 no-margin-padding right-round1-down <?php if($i==7) { ?> margin-bottom-30 <?php } ?>">
                         <?php if(isset($medias[$media2])){ ?>
                         <div class="round1 white-border" data-round="1" data-comboId="<?php echo $comboId ?>" data-mediaId="<?php echo $medias[$media2]['media_id']; ?>">
-                            <img mediaid="<?php echo $this->KCrypt()->enc($medias[$media2]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media2], 'icons', '40'); ?>" title="<?php echo $medias[$media2]['title'] ?>" alt="<?php echo $medias[$media2]['title'] ?>" />
+                            <img class="mediaThumb showHoverWindow" mediaid="<?php echo $this->KCrypt()->enc($medias[$media2]['media_id']) ?>" src="<?php echo $this->mediaImage($medias[$media2], 'icons', '40'); ?>" title="<?php echo $medias[$media2]['title'] ?>" alt="<?php echo $medias[$media2]['title'] ?>" />
                         </div> 
                         <?php } else { ?>
                         <div class="round1"></div>
@@ -631,6 +642,8 @@
             <div class="clearfix"></div>
         </div>
     </div>
+</div>
+
     <script type="text/javascript">
         var round = <?php echo $contest['current_round']?>;
         $(window).ready(function () {

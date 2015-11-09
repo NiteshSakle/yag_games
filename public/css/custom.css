@@ -296,6 +296,14 @@ body {
     font-weight: bold;
 }
 /* Round - 1 (Staring 64) */
+.bracket-champion{
+    padding: 0px;
+    margin-top: 95px;
+    margin-bottom: 1px;
+}
+.margin-bottom-30 {
+    margin-bottom: 30px !important;
+}
 .round1 {
     border: 1px black solid;
     height: 40px;
@@ -432,7 +440,7 @@ body {
     width: 60px;
     margin: auto;
     margin-bottom: 3px;
-    margin-top: 735px;
+    margin-top: 765px;
 }
 .round5-first{ margin-top: 360px;}
 .round5-first-text{ margin-top: 334px;}
@@ -446,7 +454,7 @@ body {
 .left-round5-down {
     border-bottom: 1px #68398C solid;
     border-right: 1px #68398C solid;
-    height: 800px;
+    height: 830px;
 }
 .right-round5-up {
     border-bottom: 1px #68398C solid;
@@ -456,7 +464,7 @@ body {
 .right-round5-down {
     border-bottom: 1px #68398C solid;
     border-left: 1px #68398C solid;
-    height: 800px;
+    height: 830px;
 }
 /* Round - 6 (Semi-Final) */
 .round6 {

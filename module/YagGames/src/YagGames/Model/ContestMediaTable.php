@@ -122,7 +122,7 @@ class ContestMediaTable extends BaseTable {
             $query = $sql->select()
                     ->from(array('cm' => 'contest_media'))
                     ->join(array('m' => 'ps4_media'), 'm.media_id = cm.media_id')
-                    ->join(array('u' => 'ps4_members'), 'm.owner = u.mem_id', array('username', 'f_name', 'email'))
+                    ->join(array('u' => 'ps4_members'), 'm.owner = u.mem_id', array('username', 'f_name','l_name', 'email'))
                     ->join(array('cmr' => 'contest_media_rating'), 'cm.id = cmr.contest_media_id', array(), 'left')
                     ->quantifier(new Expression('SQL_CALC_FOUND_ROWS'))
                     ->columns($columns)
