@@ -294,6 +294,7 @@ body {
 .bracket-current-round{
     color: #68398C !important;
     font-weight: bold;
+    font-size: 16px;
 }
 /* Round - 1 (Staring 64) */
 .bracket-champion{

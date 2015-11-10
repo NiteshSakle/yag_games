@@ -645,7 +645,7 @@
 </div>
 
     <script type="text/javascript">
-        var round = <?php echo $contest['current_round']?>;
+        var round = <?php echo isset($contest['current_round'])?$contest['current_round']:0; ?>;
         $(window).ready(function () {
         <?php if (!$shareMedia) { ?>
             workbox({
