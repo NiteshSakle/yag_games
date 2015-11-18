@@ -36,7 +36,7 @@ if [ $APPLICATION_ENV == "prod" ]; then
 
   chown -R www-data:www-data bin config data module vendor public
   chmod -R 755 bin config data module vendor public
-  chmod -R 775 data/cache data/logs data/log
+  chmod -R 777 data/cache data/logs data/log
   echo "Deploy finished"  
   
 elif [ $APPLICATION_ENV == "staging" ]; then   
