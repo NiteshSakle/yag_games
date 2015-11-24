@@ -55,4 +55,27 @@ class ContestWinnerTable extends BaseTable
         
         return $resultSet;
     }
+    
+    public function fetchContestTopWinners($contestId, $topWinners = 10)
+    {
+        $select = new \Zend\Db\Sql\Select ;
+        $select->from(array('cw' => 'contest_winner'))
+                ->columns(array('*'))
+                ->join(array('cm' => 'contest_media'), 'cm.id = cw.contest_media_id')
+                ->join(array('m' => 'ps4_media'), 'm.media_id = cm.media_id', array('*'))
+                ->join(array('u' => 'ps4_members'), 'm.owner = u.mem_id', array('username', 'f_name', 'l_name', 'email'))
+                ->where(array('cm.contest_id' => $contestId))
+                ->order('cw.rank')
+                ->limit($topWinners);
+         
+        $statement = $this->getSql()->prepareStatementForSqlObject($select);                 
+        $resultSet = $statement->execute();
+        
+        $result = array();
+        foreach($resultSet as $row) {
+            $result[] = $row;
+        }
+        
+        return $result;
+    }
 }

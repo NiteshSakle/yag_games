@@ -1,0 +1,90 @@
+<?php
+
+namespace YagGames\Model;
+
+class Members extends BaseModel
+{
+
+    public $mem_id;
+    public $co_ordinates;
+    public $membership;
+    public $umem_id;
+    public $f_name;
+    public $l_name;
+    public $username;
+    public $email;
+    public $status;
+    public $website;
+    public $notes;
+    public $comp_name;
+    public $phone;
+    public $password;
+    public $signup_date;
+    public $last_login;
+    public $last_activity;
+    public $credits;
+    public $avatar;
+    public $avatar_status;
+    public $avatar_updated;
+    public $ip_signup;
+    public $ip_login;
+    public $referrer;
+    public $compay;
+    public $paypal_email;
+    public $bill_me_later;
+    public $com_source;
+    public $com_level;
+    public $ms_end_date;
+    public $bio_content;
+    public $bio_updated;
+    public $bio_status;
+    public $language;
+    public $currency;
+    public $featured;
+    public $customized_date;
+    public $time_zone;
+    public $daylight_savings;
+    public $date_format;
+    public $date_display;
+    public $clock_format;
+    public $number_date_sep;
+    public $trialed_memberships;
+    public $used_memberships;
+    public $fee_memberships;
+    public $display_name;
+    public $showcase;
+    public $profile_views;
+    public $taxid;
+    public $uploader;
+    public $featured_artist;
+    public $portfolio_email;
+    public $portfolio_subject;
+    public $portfolio_country;
+    public $portfolio_city;
+    public $portfolio_state;
+    public $portfolio_status;
+    public $portfolio_postal_code;
+    public $dob;
+    public $account_number;
+    public $routing_number;
+    public $sub_merchant_id;
+    public $sub_merchant_status;
+    public $reason;
+    public $customer_profile_id;
+    public $customer_billing_id;
+    public $is_membership_downgrade_id;
+    public $membership_downgrade_date;
+    public $membership_downgrade_coupon_duration;
+    public $login_as_buyer;
+    public $recurring_payment_failed;
+    public $processing_date;
+    public $promotion_center;
+    public $twitterhandle;
+    public $facebookprofilename;
+    public $pinteresthandle;
+    public $instagramhandle;
+    public $BrainTreeCustomerProfileId;
+    public $BrainTreePaymentToken;
+    public $payment_method;
+
+}

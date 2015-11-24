@@ -19,9 +19,18 @@ return array(
             'YagGames\Console\SendContestResultsEmail' => 'YagGames\Console\SendContestResultsEmailController',
             'YagGames\Console\SendSuccessSubmissionEmail' => 'YagGames\Console\SendSuccessSubmissionEmailController',
             'YagGames\Console\SendVotingStartEmail' => 'YagGames\Console\SendVotingStartEmailController',
-            'YagGames\Console\StartVoting' => 'YagGames\Console\StartVotingController',
-            'YagGames\Console\AnnounceWinners' => 'YagGames\Console\AnnounceWinnersController',
+            'YagGames\Console\StartVoting' => 'YagGames\Console\StartVotingController'            
         ),
+        'factories' => array(
+            'YagGames\Console\AnnounceWinners' => function(Zend\Mvc\Controller\ControllerManager $cm) {
+                $membershipService = $cm->getserviceLocator()->get('membershipService');
+                $couponService = $cm->getserviceLocator()->get('couponService');                
+                $mediaImage = $cm->getServiceLocator()->get('mediaImage');
+                $ordinal = $cm->getServiceLocator()->get('ordinal');
+                $announceWinners = new YagGames\Console\AnnounceWinnersController($membershipService, $couponService, $mediaImage, $ordinal);
+                return $announceWinners;
+            }
+        )
     ),
     
     'controller_plugins' => array(
