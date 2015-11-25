@@ -9,7 +9,7 @@
         $this->headMeta()->setProperty('twitter:description', 'Thanks for your votes in the YOURARTGALLERY.COM ' . $contest['name'] . '. Checkout how I did');    
     } else {
         $this->headMeta()->setProperty('twitter:image', $this->config('aws', 'path') . $contest['thumbnail']);    
-        $this->headMeta()->setProperty('twitter:description', 'Check out the winners of the '.$contest['name'].' '.$this->config('main_site' ,'url') . '/contests/photo-contest/rankings/id/' . $contest['id']);           
+        $this->headMeta()->setProperty('twitter:description', 'Check out the winners of the '.$contest['name'].' '.$this->config('main_site' ,'url') . '/contests/past-winners');
     }
     
     $this->headMeta()->setProperty('og:title', $contest['name']);
@@ -19,7 +19,7 @@
         $this->headMeta()->setProperty('og:description', 'Thanks for your votes in the YOURARTGALLERY.COM ' . $contest['name'] . '. Checkout how I did');
     } else {
         $this->headMeta()->setProperty('og:image', $this->config('aws', 'path') . $contest['thumbnail']);
-        $this->headMeta()->setProperty('og:description', 'Check out the winners of the '.$contest['name'].' '.$this->config('main_site' ,'url') . '/contests/photo-contest/rankings/id/' . $contest['id']);
+        $this->headMeta()->setProperty('og:description', 'Check out the winners of the '.$contest['name'].' '.$this->config('main_site' ,'url') . '/contests/past-winners');
     }
 ?>
 <style>

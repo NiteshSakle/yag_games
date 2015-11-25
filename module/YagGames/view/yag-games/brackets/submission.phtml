@@ -1,0 +1,414 @@
+<style>
+    .contest {
+        padding:0px;
+    }
+    .contest-title-blue {
+        font-size: 28px;
+        font-weight: bold;
+        margin: 0% 0% 2% 0%;
+        text-align: left;
+        color: #68398c;
+    }
+    .contest-image{
+        border: 4px solid #C8B64C;
+        height: 200px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+    .contest-image img {
+        position: absolute;
+        margin: auto;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        height: auto;
+    }
+    .row-no-padding-margin{
+        padding: 0px;
+        margin:0px;
+    }
+    .no-padding-right{
+        padding-right:0px;
+    }
+
+    #my-media-list {
+        border: 2px solid #ccc;
+        margin:0px;
+    }
+    .media-list-title {
+        background-color: #C8B64C;
+        padding: 2px;
+        margin:15px 40px;
+        width:200px;
+        font-size: 22px;
+    }
+    .social_link, .pagination {
+        padding: 5px;
+    }
+
+    .title {
+        font-size: 16px;
+    }
+    .congrts {
+        text-align: left;
+    }
+
+    #uploadPopUpDiv{
+        position: fixed;
+        background-color: transparent;
+        width: 850px;
+        z-index: 9002;
+        padding: 20px;
+        margin: 0 0 0 265px;
+    }
+
+    #popUpDiv, #uploadPopUpDiv {
+        margin: 0 0 0 10%;
+    }
+    .join-popup-img {
+        border: none !important;
+        margin: 0 !important;
+    }
+    .icon_man {    
+        margin: 0 !important;
+    }
+    .rules {
+        text-align: left;        
+    }
+    .rules-heading {
+        border: 1px solid grey;
+        width: 70%;
+        padding: 10px;
+        padding-bottom: 5px;
+        padding-right: 5px;
+        border-left: 2px solid grey;
+        border-top: 2px solid grey;
+        color: #68398C;
+        font-size: 18px;
+        font-weight: 900;
+    }
+    .rules > ul li {
+        list-style: disc;
+    }
+    .rules > p > a {
+        color: #428bca;
+        text-decoration: none;
+    }    
+    .down-image {
+        position: absolute;
+        margin: 2%;
+        margin-left: -15%;
+        border: 4px solid rgb(223, 220, 125);
+    }
+    .upper-image {
+        position: relative;
+    }
+
+</style>
+
+<div  class="home_content clearfix">
+    <div class="inner_main clearfix">
+        <div class="inner_txt clearfix">
+            <h1 class="page-titleHead">Artist Challenge & Contests</h1>
+        </div>
+    </div>
+
+    <div class="contest-list clearfix">
+        <div class="contest row" style="border:none">
+            <div class="contest-title-blue"><?php echo $contest['name']; ?></div>
+            <div>Choose from one of your uploaded images and submit it for this
+                contest or upload a new image!</div>
+            <br>
+            <div class="col-md-6">                
+                <br>
+                <div class="row row-no-padding-margin">
+                    <div class="col-md-5 contest-image">
+                        Please select an image from Your Uploaded Art
+                    </div>
+                    <div class="col-md-7" style="text-align: center; font-size: 13px; color: #68398c;">
+                        <div>
+                            <button id="submitImage" value="Submit this Image">Submit this Image</button><br>
+                            *Full image will be shown for voting.
+                        </div>
+                        <div>or</div>
+                        <div>
+                            <button id="submitNewImage" value="Upload New Image">Upload New Image</button><br>
+                            *YAG Artist must have room in their portfolio if this option is selected.
+                        </div>
+                    </div>  
+                </div>
+                <br>
+                <div class="contest-description">
+                    <div class="contest-dates">
+                        Open Entries End: <?php echo date("F jS, Y", strtotime($contest['entry_end_date'])); ?>
+                        <br>
+                        Voting Begins: <?php echo date("F jS, Y", strtotime($contest['voting_start_date'])); ?>
+                        <br>
+                        <?php if($contest['type_id'] == 3) { ?>                            
+                            <div class="bracket-round-dates">
+                                <span <?php echo $contest['current_round'] == '1' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("m/d/Y", strtotime($contest['round1'])); ?> - Round One 64</span><br>
+                                <span <?php echo $contest['current_round'] == '2' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("m/d/Y", strtotime($contest['round2'])); ?> - Round Two 32</span><br>
+                                <span <?php echo $contest['current_round'] == '3' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("m/d/Y", strtotime($contest['round3'])); ?> - Sweet 16</span><br>
+                                <span <?php echo $contest['current_round'] == '4' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("m/d/Y", strtotime($contest['round4'])); ?> - Elite 8</span><br>
+                                <span <?php echo $contest['current_round'] == '5' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("m/d/Y", strtotime($contest['round5'])); ?> - Final 4</span><br>
+                                <span <?php echo $contest['current_round'] == '6' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("m/d/Y", strtotime($contest['round6'])); ?> - Championship Round!</span><br>
+                            </div>
+                        <?php } ?>
+                        Winners Announced: <?php echo date("F jS, Y", strtotime($contest['winners_announce_date'])); ?>
+                    </div>                
+                </div>
+            </div> 
+            <div class="col-md-6 no-padding-right">
+                <div id="my-media-list" class="clearfix">
+                    <div class="media-list-title">Your Uploaded Art</div>
+                    <div class="media-list clearfix"></div>
+                </div>
+                <!--                <div class="social_link">
+                                    <a href="https://www.facebook.com/YourArtGallery"><img src="<?php echo $this->basePath() ?>/img/facebook_share.png"  alt="Share to Facebook" /></a>
+                                    <a href="https://twitter.com/YourArtGallery"><img src="<?php echo $this->basePath() ?>/img/twitter_share.png"  alt="Share to Twitter" /></a>
+                                    <a href="https://instagram.com/Your.Art.Gallery/"><img src="<?php echo $this->basePath() ?>/img/instagram_share.png"  alt="Instagram" /></a>
+                                    <a href="https://www.pinterest.com/yourartgallery/"><img src="<?php echo $this->basePath() ?>/img/pinterest_share.png"  alt="Share to Pinterest" /></a>
+                                    <a href="https://plus.google.com/+Yourartgallery/posts"><img src="<?php echo $this->basePath() ?>/img/google_share.png"  alt="Share to Google" /></a>
+                                    <a href="https://www.linkedin.com/company/your-art-gallery-llc"><img src="<?php echo $this->basePath() ?>/img/linkedin_share.png"  alt="Stumble It" /></a>
+                                    <a href="https://www.youtube.com/YourArtGallery"><img src="<?php echo $this->basePath() ?>/img/youtube_share.png"  alt="Share to Youtube" /></a>            
+                                </div>-->
+            </div> 
+        </div>
+        <br>
+        <div class="rules">
+            <div class="rules-heading">RULES:</div>
+            <h1 class="learn-more-sub-head">About the contest:</h1>
+            <div>
+                <?php echo $contest['description']; ?>
+            </div>
+            <h1 class="learn-more-sub-head">How to Enter:</h1>
+            <ul>
+                <li>All submissions are online via each  contest listing.</li>
+                <li>Upload a new image or select an image from your existing portfolio. <i>Please note:</i> You will not be able to upload a new image if you have already used all available space in your portfolio, based on your subscription level.  In this case, consider upgrading your membership or replacing an image from your portfolio.</li>
+                <li>Once your submission has been completed, you will be directed to a confirmation page.</li>
+                <li>Only one submission per artist.</li>
+            </ul> 
+
+            <h1 class="learn-more-sub-head">Who May Enter:</h1>
+            <p>Any professional, amateur, enthusiast or student photographic artist subscribed and a member of YOUR ART GALLERY.</p>
+
+            <h1 class="learn-more-sub-head">Prizes:</h1>
+            <h1 class="learn-more-sub-head">First Place Winner</h1>
+            <ul>
+                <li>$250 Credit to a YourArtGallery.com purchase</li>
+                <li>Gallery Plexi Mounted High Definition Photographic Print up to a 16" x 20" print <br>
+                    <span class="learn-more-sub-text">(If you are not purchasing your own images Artist Royalty will still be applicable) </span>
+                </li>
+                <li>Free 6 Month Platinum Membership <br>
+                    <span class="learn-more-sub-text">(If already a Platinum member your next 6 months are free)</span>
+                </li>
+            </ul>
+
+            <h1 class="learn-more-sub-head">Runners Up</h1>    
+            <span>(2nd, 3rd, 4th, and 5th)</span>
+            <ul style=" margin-top: 5px;">        
+                <li>High Definition Photographic Print up to 12" x 18” <br>
+                    <span class="learn-more-sub-text">(If you are not purchasing your own images Artist Royalty will still be applicable)</span>
+                </li>        
+            </ul>    
+
+            <h1 class="learn-more-sub-head">Entry Fee:</h1>
+            <p>There is not cost to enter!</p>
+
+            <h1 class="learn-more-sub-head">Judging:</h1>
+            <p>Entries will be judged based on the Your Art Gallery rating system, in which the rating and voting authority your peers and thousands of YAG visitors identify the winning images.</p>
+
+            <h1 class="learn-more-sub-head">Consent Agreement:</h1>
+            <p>Submission of an entry to each contest automatically constitutes the contestant’s acceptance of all contest rules and conditions, and affirms the contestant acceptance of being in accordance with the Your Art Gallery LLC, Terms of Service.  All applicants and contestants retain full copyright of any image submitted.  The use of submitted images comply with the <a href="<?php echo $this->config('main_site', 'url') ?>/terms-of-service"><i>Terms of Service agreement</i></a> of Your Art Gallery LLC., and <a href="<?php echo $this->config('main_site', 'url') ?>/artist.welcome.php"><i>Your Promotion Center</i></a> social media opt-in settings at, <a href="<?php echo $this->config('main_site', 'url') ?>/portfolio.php"><i>Edit Your Portfolio</i></a>.
+                <br>
+                <br>
+                <i>Entries not complying with contest rules set forth will be disqualified.</i>
+                <br>
+                <br>                
+                If you have questions about the above information or would like to know if your image is eligible, please contact us at <span class="blue-text">info@yourartgallery.com</span>.
+            </p>
+<!--            <p>
+                <span style="color: #68398C;font-weight:bold;">PLEASE NOTE:</span> You will retain full copyright of any image submitted. However, upon entering, you acknowledge and
+                accept Duggal’s right to use your image for external purposes with adequate crediting to your full name as submitted by
+                you to Duggal. This includes but is not limited to digital and print content, contest promotions, seasonal promotions and
+                resizing for these purposes. Duggal will not exploit your image for any form of direct compensation.
+            </p>-->
+        </div>
+    </div>
+</div>
+
+<div style="display: none;" id="blanket"></div>
+<div style="display: none;" id="popUpDiv">
+    <div class="popup-another-img" style="height: 80% !important;">
+        <a style="float:right;" onclick="hideSuccessPopup('popUpDiv');" href="#."><img alt="" src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/close.button.png" /></a>
+        <div class="leftcol">
+            <h1 class="title" style="  text-align: left;">CONGRATULATIONS!<br><br>You have entered the  <strong><?php echo $contest['name']; ?> </strong> </h1>
+            <div class="congrts">Voting Begins: <?php echo date("F jS, Y", strtotime($contest['voting_start_date'])); ?>. Follow your ranking daily.
+                <br>
+                Don’t forget to share with your friends!
+            </div>
+        </div>
+        <?php if($media) { ?>
+        <div class="join-popup-img">
+            <img class="icon_man" src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/thankyou1.png" /></div> 
+        <div class="social-links-upload-another-img">
+            <ul class="social_links">
+                <li><a class="addthis_button_facebook" addthis:url="<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/<?php echo $contest['id']; ?>/mid/<?php echo $mediaId;?>"/><img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/facebook.png"  alt="Share to Facebook" /></a></li>
+                <li><a class="addthis_button_twitter" addthis:url="<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/<?php echo $contest['id']; ?>/mid/<?php echo $mediaId;?>"><img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/twitter.png"  alt="Share to Twitter" /></a></li>
+                <!--<li><a class="addthis_button_linkedin" addthis:url="<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/<?php echo $contest['id']; ?>/mid/<?php echo $mediaId;?>"><img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/linkedin.png"  alt="Linkedin" /></a></li>-->
+                <li><a class="addthis_button_pinterest_share" pi:pinit:url="<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/<?php echo $contest['id']; ?>/mid/<?php echo $mediaId;?>" pi:pinit:media="<?php echo $this->mediaImage($media, 'samples'); ?>"><img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/pinterest.png"  alt="Share to Pinterest" /></a></li>
+                <li><a href="https://plusone.google.com/share?url=<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/<?php echo $contest['id']; ?>/mid/<?php echo $mediaId;?>" target="_blank" ><img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/google.png"  alt="Share to Google" /></a></li>
+            </ul>
+            <span class="or">or</span>
+            <div class="btn-upload-another-img"><input type="button" onClick="javascript:window.location.href = '<?php echo $this->basePath() ?>/new-contest'"  value="Enter Another Contest" name="" class="back"></div>
+        </div>
+        <?php } ?>
+    </div>
+</div>
+<div style="display: none;" id="uploadPopUpDiv">
+    <div class="popup-another-img" style="height: 80% !important;">
+        <a style="float:right; margin: -4%;" onclick="hideSuccessPopup('uploadPopUpDiv');" href="#."><img alt="" src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/close.button.png" style="margin: 10px" /></a>
+        <div class="leftcol">
+            <h1 class="title" style="  text-align: left;">Congratulations you have successfully entered the bracket contest!</h1>
+            <div class="congrts">Your image has been uploaded to your profile and the bracket contest. <br>
+                We will reach out to you once it is time to start voting! <br>
+            </div>
+        </div>
+        <?php if($media) { ?>
+        <div class="join-popup-img">
+            <img class="down-image" style="width: 110px;height: 90px;margin-left: 10px;" mediaid="<?php echo $this->KCrypt()->enc($media['media_id']) ?>" class="icon_man" src="<?php echo $this->mediaImage($media, 'icons'); ?>" title="<?php echo $media['title'] ?>" alt="<?php echo $media['title'] ?>">
+            <img class="upper-image" style="width: 150px;height: 160px;" src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/man-icon-yag.png">            
+        </div> 
+        <div class="social-links-upload-another-img">
+            <ul class="social_links">
+                <li><a class="addthis_button_facebook" addthis:url="<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/<?php echo $contest['id']; ?>/mid/<?php echo $media['media_id']; ?>"/><img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/facebook.png"  alt="Share to Facebook" /></a></li>
+                <li><a class="addthis_button_twitter" addthis:url="<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/<?php echo $contest['id']; ?>/mid/<?php echo $media['media_id']; ?>"><img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/twitter.png"  alt="Share to Twitter" /></a></li>
+                <!--<li><a class="addthis_button_linkedin" addthis:url="<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/<?php echo $contest['id']; ?>/mid/<?php echo $media['media_id']; ?>"><img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/linkedin.png"  alt="Linkedin" /></a></li>-->
+                <li><a class="addthis_button_pinterest_share" pi:pinit:url="<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/<?php echo $contest['id']; ?>/mid/<?php echo $media['media_id']; ?>" pi:pinit:media="<?php echo $this->mediaImage($media, 'samples'); ?>"><img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/pinterest.png"  alt="Share to Pinterest" /></a></li>
+                <li><a href="https://plusone.google.com/share?url=<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/<?php echo $contest['id']; ?>/mid/<?php echo $media['media_id'];?>" target="_blank" ><img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/google.png"  alt="Share to Google" /></a></li>
+            </ul>
+            <span class="or">or</span>
+            <div class="btn-upload-another-img"><input type="button" onClick="javascript:window.location.href = '<?php echo $this->basePath() ?>/new-contest'"  value="Enter Another Contest" name="" class="back"></div>
+        </div>
+        <?php } ?>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var addthis_share = addthis_share || {}
+    addthis_share = {
+        passthrough: {
+            twitter: {
+                text: 'I entered the <?php echo $contest['name'];?>  on YOURARTGALLERY.COM.'
+            }
+        }
+    }
+</script>
+<script type="text/javascript" src="<?php echo $this->basePath() ?>/js/helpers.js"></script>
+<script type="text/javascript" src="<?php echo $this->config('main_site', 'url') ?>/assets/javascript/popup.js"></script>
+<script type="text/javascript">
+<?php if ($showPopupDiv): ?>
+        showSuccessPopup('uploadPopUpDiv');
+<?php elseif ($showSubmitPopupDiv) : ?>
+        showSuccessPopup('popUpDiv'); 
+<?php endif; ?>
+    //disable submit button
+    $('#submitImage').prop('disabled', true);
+
+    loadHtml(gameBasePath + '/media/get-my-media/mid/<?php echo $mediaId;?>', '.media-list', '', function () {
+        registerHoverFunction();
+        registerFollowCursor();
+    });
+
+    var contestId = "<?php echo $contest['id']; ?>";
+    $('#submitImage').click(function () {
+        if ($('div.checked')) {
+            loadAddThis();
+            submitArt(contestId, $('div.checked').children('input').val());
+        } else {
+            alert('Please select your art');
+        }
+    });
+    function loadAddThis() {
+        addthis.init();
+    }
+//    $('#submitImage').click(function () {
+//        if ($("input:radio[name=my_media]").is(":checked")) {
+//            submitArt(contestId, $("input:radio[name=my_media]").val());
+//        } else {
+//            alert('Please select your art');
+//        }
+//    });
+
+    $('#submitNewImage').click(function () {
+        uploadArt(contestId);
+    });
+    function showSuccessPopup(type) {
+        $('#' + type).css('top', ($(window).height() / 2 - 180) + 'px');
+        $('#' + type).show();
+        $('div#overlay').css('display', 'block');
+        $('div#overlay').css('opacity', '0.47');
+        $('div#blanket').css('height', '0');
+    }
+
+    function hideSuccessPopup(type) {
+        $('#' + type).hide();
+        $('div#overlay').css('display', 'none');
+    }
+
+    function submitArt(contestId, mediaId) {
+        var request = $.ajax({
+            url: gameBasePath + '/brackets/art-submission',
+            type: "POST",
+            data: {'media_id': mediaId, 'contestId': contestId},
+            dataType: 'json',
+            beforeSend: function () {
+                $("#ajaxBusy").removeClass('hide');
+            },
+            complete: function () {
+                $("#ajaxBusy").addClass('hide');
+            }
+        });
+
+        request.done(function (msg) {
+            if (msg.success) {
+                 location.reload(); 
+            } else {
+                alert(msg.message)
+            }
+        });
+
+        request.fail(function (jqXHR, textStatus) {
+            alert("Request failed: " + textStatus);
+        });
+    }
+
+    function uploadArt(contestId) {
+        var request = $.ajax({
+            url: gameBasePath + '/brackets/upload-art',
+            type: "POST",
+            data: {'contestId': contestId},
+            dataType: 'json',
+            beforeSend: function () {
+                $("#ajaxBusy").removeClass('hide');
+            },
+            complete: function () {
+                $("#ajaxBusy").addClass('hide');
+            }
+        });
+        request.done(function (msg) {
+            if (msg.success) {
+                window.location = baseURL + '/addnew_media.php';
+            } else {
+                alert(msg.message)
+            }
+        });
+        request.fail(function (jqXHR, textStatus) {
+            alert("Request failed: " + textStatus);
+        });
+    }
+</script>

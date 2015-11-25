@@ -122,7 +122,7 @@ class ContestMediaTable extends BaseTable {
             $query = $sql->select()
                     ->from(array('cm' => 'contest_media'))
                     ->join(array('m' => 'ps4_media'), 'm.media_id = cm.media_id')
-                    ->join(array('u' => 'ps4_members'), 'm.owner = u.mem_id', array('username', 'f_name', 'email'))
+                    ->join(array('u' => 'ps4_members'), 'm.owner = u.mem_id', array('username', 'f_name','l_name', 'email'))
                     ->join(array('cmr' => 'contest_media_rating'), 'cm.id = cmr.contest_media_id', array(), 'left')
                     ->quantifier(new Expression('SQL_CALC_FOUND_ROWS'))
                     ->columns($columns)
@@ -213,11 +213,7 @@ class ContestMediaTable extends BaseTable {
             if (!empty($mediaId)) {
                 $query->where(array('cm.media_id' => $mediaId));
             }
-
-//            //IP Address Check
-//            $clientIPService = $serviceManager->get('clientIPService');            
-//            $clientIP = $clientIPService->getClientIPAddress();        
-           
+            
             if (is_array($config) && !in_array($clientIP, $config['white_listed_ips'])) {           
                
                $subQry1 = $sql->select()
@@ -316,5 +312,129 @@ class ContestMediaTable extends BaseTable {
         }
 
         return $photos;
+    }
+    
+    public function fetchBracketContestMedia($contestId, $userId = null) {
+        
+        $resultSet = $this->getContestMedia($contestId, $userId, NULL, 1, 64);
+
+        $photos = array();
+        foreach ($resultSet['medias'] as $row) {
+            $photos[$row['id']] = $row;
+        }
+
+        return array(
+                "total" => $this->getFoundRows(),
+                "medias" => $photos
+            );
+    }
+    
+    public function getNextBracketCombo($contestId, $userId = null, $contestComboId, $ratedComboMedia = array(), $round, $whiteListedIP, $clientIP) {
+        try {
+            $limit = 1;
+            $sql = $this->getSql();
+            $columns = array('contest_name' => 'name', 'votes' => new Expression('COUNT(cbmc.combo_id)'));
+            $query = $sql->select()
+                    ->from(array('c' => 'contest'))
+                    ->columns($columns)
+                    ->join(array('cbr' => 'contest_bracket_round'), 'cbr.contest_id = c.id', array('*'))
+                    ->join(array('cbmc' => 'contest_bracket_media_combo'), new Expression(' c.id = cbmc.contest_id AND cbr.current_round = cbmc.round') , array('*'))
+                    ->join(array('cmr' => 'contest_media_rating'), new Expression('cbmc.combo_id = cmr.bracket_combo_id AND cbmc.round = cmr.round'), array(), 'left')
+                    ->where(array('c.id' => $contestId))
+                    ->limit($limit)
+                    ->group('cbmc.combo_id')
+                    ->order('cbmc.combo_id');
+            
+            if (!empty($contestComboId)) {
+                $query->where(array('cbmc.combo_id' => $contestComboId)); 
+            }
+            
+            if (is_array($whiteListedIP) && !in_array($clientIP, $whiteListedIP)) {
+               $subQry1 = $sql->select()
+                          ->from(array('cmr3' => 'contest_media_rating'))
+                          ->columns(array('bracket_combo_id'))
+                          ->join(array('cm3' => 'contest_media'), new Expression('cm3.id = cmr3.contest_media_id'), array())
+                          ->where(array(
+                                 'cmr3.ip_address' => $clientIP,
+                                 'cmr3.round' => $round,
+                                 'cm3.contest_id' => $contestId,
+                             ));
+               
+               $query->where(new \Zend\Db\Sql\Predicate\PredicateSet(
+                       array(new \Zend\Db\Sql\Predicate\NotIn('cbmc.combo_id', $subQry1))
+                        ));
+            }
+            
+            if (!empty($userId)) {
+                //exclude already rated media of this round
+                $subQry = $sql->select()
+                        ->from(array('cmr2' => 'contest_media_rating'))
+                        ->columns(array('bracket_combo_id'))
+                        ->join(array('cm2' => 'contest_media'), new Expression('cm2.id = cmr2.contest_media_id'), array())
+                        ->where(array(
+                    'cmr2.member_id' => $userId,
+                    'cmr2.round' => $round,
+                    'cm2.contest_id' => $contestId,
+                ));
+
+                $query->where(
+                        new \Zend\Db\Sql\Predicate\PredicateSet(
+                        array(
+                    new \Zend\Db\Sql\Predicate\NotIn('cbmc.combo_id', $subQry)
+                        )
+                        )
+                );
+            } else if (count($ratedComboMedia)) {
+                //add not in condition to eliminate rated media
+                $query->where(new \Zend\Db\Sql\Predicate\NotIn('cbmc.combo_id', $ratedComboMedia));
+            }
+            
+            $rows = $sql->prepareStatementForSqlObject($query)->execute();
+            
+            return $rows->current();
+        } catch (Exception $e) {
+            $this->logException($e);
+            return false;
+        }
+    }
+    
+    public function getNextBracketMedia($contestId, $userId = null, $contestComboId, $ratedMedia = array(), $round, $whiteListedIP = array(), $clientIP)
+    {
+        try {
+            $comboDetails = $this->getNextBracketCombo($contestId, $userId, $contestComboId, $ratedMedia, $round, $whiteListedIP, $clientIP);
+            $media = array();
+            if($comboDetails) {
+                $limit = 2;
+                $sql = $this->getSql();            
+                $query = $sql->select()                    
+                        ->from(array('cm' => 'contest_media'))
+                        ->columns(array('*'))
+                        ->join(array('m' => 'ps4_media'), 'm.media_id = cm.media_id', array('*'))
+                        ->join(array('u' => 'ps4_members'), 'm.owner = u.mem_id', array('username', 'f_name'))
+                        ->where(array('cm.contest_id' => $contestId))
+                        ->limit($limit)
+                        ->group('cm.media_id');
+                
+                $query->where
+                        ->NEST
+                        ->equalTo('cm.id', $comboDetails['contest_media_id1'])
+                        ->OR
+                        ->equalTo('cm.id', $comboDetails['contest_media_id2'])
+                        ->UNNEST;  
+                 
+                $rows = $sql->prepareStatementForSqlObject($query)->execute();
+                
+                foreach ($rows as $row) {
+                    $media[$row['id']] = $row;
+                }
+            } 
+            return array(
+                "contestDetails" => $comboDetails,
+                "medias" => $media
+            );         
+        } catch (Exception $e) {
+            $this->logException($e);
+            return false;
+        }
     }
 }

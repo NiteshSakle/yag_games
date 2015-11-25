@@ -11,6 +11,8 @@ class ContestBracketRound extends BaseModel
     public $round3;
     public $round4;
     public $round5;
+    public $round6;
+    public $current_round;
     public $created_at;
     public $updated_at;
 

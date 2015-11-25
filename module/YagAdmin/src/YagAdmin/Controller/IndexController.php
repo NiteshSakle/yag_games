@@ -131,6 +131,14 @@ class IndexController extends BaseController {
                 $params['type'] = $this->getRequest()->getPost('type');
                 $params['exclusive'] = $this->getRequest()->getPost('exclusive');
                 $thumbnail = $this->getRequest()->getFiles('thumbnail');
+                if($params['type'] == '3') {
+                    $params['br_round1'] = $this->getRequest()->getPost('br_round1');
+                    $params['br_round2'] = $this->getRequest()->getPost('br_round2');
+                    $params['br_round3'] = $this->getRequest()->getPost('br_round3');
+                    $params['br_round4'] = $this->getRequest()->getPost('br_round4');
+                    $params['br_round5'] = $this->getRequest()->getPost('br_round5');
+                    $params['br_round6'] = $this->getRequest()->getPost('br_round6');                    
+                }
 
                 //checking for all the empty fields here except thumbnail to avoid multiple uploading of thumbnails
                 if (empty($params['name']) || empty($params['description']) || empty($params['entryStartDate']) || empty($params['entryEndDate']) || empty($params['winnersAnnounceDate']) || empty($params['votingStartDate']) || empty($params['entryLimit']) || empty($params['type']) || !isset($params['exclusive'])) {
@@ -238,7 +246,11 @@ class IndexController extends BaseController {
 
                         $contestTable = $this->getServiceLocator()->get('YagGames\Model\ContestTable');
                         $data = $contestTable->update($contest);
-
+                        if($params['type'] == '3' && $data) {
+                            $params['contest_id'] = $params['id'];
+                            $this->insertOrUpdateBracketRounds($params);
+                        }
+                        
                         $response['success'] = true;
                         $response['message'] = 'Contest updated successfully';
                         
@@ -246,9 +258,14 @@ class IndexController extends BaseController {
                     } else {
                         $contest->thumbnail = $params['thumbnail'];
                         $contest->voting_started = 0;
+                        $contest->winners_announced = 0;
 
                         $contestTable = $this->getServiceLocator()->get('YagGames\Model\ContestTable');
                         $data = $contestTable->insert($contest);
+                        if($params['type'] == '3' && $data) {
+                            $params['contest_id'] = $data;
+                            $this->insertOrUpdateBracketRounds($params);
+                        }
 
                         $response['success'] = true;
                         $response['message'] = 'Contest created successfully';
@@ -384,5 +401,28 @@ class IndexController extends BaseController {
         $data = $contestMediaTable->fetchAllUserMediaDetailsByContest($id);
         return $data;
     }
-
+    
+    private function insertOrUpdateBracketRounds($params){
+        $contestBracketRound = new \YagGames\Model\ContestBracketRound();
+        
+        $contestBracketRound->contest_id = $params['contest_id'];
+        $contestBracketRound->round1 = date('Y-m-d', strtotime($params['br_round1']));
+        $contestBracketRound->round2 = date('Y-m-d', strtotime($params['br_round2']));
+        $contestBracketRound->round3 = date('Y-m-d', strtotime($params['br_round3']));
+        $contestBracketRound->round4 = date('Y-m-d', strtotime($params['br_round4']));
+        $contestBracketRound->round5 = date('Y-m-d', strtotime($params['br_round5']));
+        $contestBracketRound->round6 = date('Y-m-d', strtotime($params['br_round6']));
+        
+        $contestBracketRoundTable = $this->getServiceLocator()->get('YagGames\Model\ContestBracketRoundTable');
+        $contestBracketRoundDetails = (array) $contestBracketRoundTable->fetchRecordOnContestId($params['contest_id']);
+        if(!isset($contestBracketRoundDetails['id'])) {
+            $contestBracketRoundResult = $contestBracketRoundTable->insert($contestBracketRound);
+        } else {
+            $contestBracketRound->id = $contestBracketRoundDetails['id'];
+            $contestBracketRound->created_at = $contestBracketRoundDetails['created_at'];
+            $contestBracketRoundResult = $contestBracketRoundTable->update($contestBracketRound);
+        }
+        
+        return $contestBracketRoundResult;
+    }
 }

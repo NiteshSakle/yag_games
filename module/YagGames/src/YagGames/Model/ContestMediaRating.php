@@ -10,6 +10,7 @@ class ContestMediaRating extends BaseModel
     public $round;
     public $rating;
     public $ip_address;
+    public $bracket_combo_id;
     public $created_at;
     public $updated_at;
 

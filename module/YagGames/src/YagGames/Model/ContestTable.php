@@ -59,6 +59,9 @@ class ContestTable extends BaseTable {
             if ($contest->voting_started) {
                 $updated_data['voting_started'] = $contest->voting_started;
             }
+            if ($contest->winners_announced) {
+                $updated_data['winners_announced'] = $contest->winners_announced;
+            }
             if ($contest->is_exclusive) {
                 $updated_data['is_exclusive'] = $contest->is_exclusive;
             }
@@ -91,7 +94,8 @@ class ContestTable extends BaseTable {
         $select = new \Zend\Db\Sql\Select;
         $select->from(array('c' => 'contest'))
                 ->columns(array('*'))
-                ->where(array('id' => $contestId));
+                ->join(array('cbr' => 'contest_bracket_round'), new Expression('c.id = cbr.contest_id'), array('bracket_round_id' => 'id', 'round1', 'round2', 'round3', 'round4', 'round5', 'round6', 'current_round'), 'left')
+                ->where(array('c.id' => $contestId));
 
         $statement = $this->getSql()->prepareStatementForSqlObject($select);
         $resultSet = $statement->execute();
@@ -135,6 +139,7 @@ class ContestTable extends BaseTable {
                 ->columns(array('*', 'my_type' => new Expression('IF(entry_start_date <= CURDATE() AND entry_end_date >= CURDATE(), "new", IF(winners_announce_date > CURDATE(), "active", "past"))')))
                 ->join(array('ct' => 'contest_type'), 'ct.id = c.type_id', array('contest_type' => 'type'))
                 ->join(array('cm' => $contestMediaCountQry), 'c.id = cm.contest_id', array('total_entries'), 'left')
+                ->join(array('cbr' => 'contest_bracket_round'), new Expression('c.id = cbr.contest_id'), array('bracket_round_id' => 'id', 'round1', 'round2', 'round3', 'round4', 'round5', 'round6', 'current_round'), 'left')
         ;
 
         return $select;
@@ -203,7 +208,7 @@ class ContestTable extends BaseTable {
         return $select;
     }
     
-    private function getPastWinnersSelect($select, $user) {       
+    private function getPastWinnersSelect($select, $user) {        
          // if user log's in, check whether his media rank
         if ($user) {
             $userMediaQry = $this->getSql()->select()
@@ -227,7 +232,7 @@ class ContestTable extends BaseTable {
         // show only user medias
         $select->join(array('cm1' => 'contest_media'), 'c.id = cm1.contest_id', 'media_id')
                 ->join(array('m' => 'ps4_media'), 'cm1.media_id = m.media_id', 'media_id')
-                ->join(array('cw' => 'contest_winner'), 'cm1.id = cw.contest_media_id', array('rank'), 'left')
+                ->join(array('cw' => 'contest_winner'), 'cm1.id = cw.contest_media_id', array('rank','no_of_votes'), 'left')
                 ->where(array('m.owner' => $user));
 
         // if user log's in, check whether he entered the contest or not
@@ -317,34 +322,7 @@ class ContestTable extends BaseTable {
             );
         }
     }
-
-    public function getContestArtistEmails($contestId) {
-        try {
-            $sql = $this->getSql();
-            $query = $sql->select()
-                    ->from(array('c' => 'contest'))
-                    ->join(array('cm' => 'contest_media'), 'cm.contest_id = c.id', array())
-                    ->join(array('m' => 'ps4_media'), 'm.media_id = cm.media_id', array())
-                    ->join(array('u' => 'ps4_members'), 'm.owner = u.mem_id', array('username', 'f_name', 'email'))
-                    ->where(array(
-                        'c.id' => $contestId,
-                    ))
-                    ->group('u.mem_id');
-
-            $rows = $sql->prepareStatementForSqlObject($query)->execute();
-
-            $contest = array();
-            foreach ($rows as $row) {
-                $contest[] = $row['email'];
-            }
-
-            return $contest;
-        } catch (\Exception $e) {
-            $this->logException($e);
-            return false;
-        }
-    }
-
+    
     public function getContestArtistData($contestId) {
         try {
             $sql = $this->getSql();
@@ -515,5 +493,42 @@ class ContestTable extends BaseTable {
             return false;
         }
     }
+    
+    public function getContestWinners($contestIds) {
+        try {
+            $select = new \Zend\Db\Sql\Select;
+            $select->from(array('c' => 'contest'))
+                    ->columns(array('contest_id' => 'id', 'contest_type' => 'type_id'))
+                    ->join(array('cm' => 'contest_media'), 'cm.contest_id = c.id', array())
+                    ->join(array('m' => 'ps4_media'), 'm.media_id = cm.media_id', array('media_id', 'folder_id', 'owner','title'))
+                    ->join(array('u' => 'ps4_members'), 'm.owner = u.mem_id', array('username', 'f_name', 'email'))
+                    ->join(array('cw' => 'contest_winner'), 'cm.id=cw.contest_media_id', array('rank'));
+            
+            if(is_array($contestIds)){
+                $select->where->in('c.id', $contestIds);                
+            }  else {
+                $select->where(array('c.id',$contestIds));
+            }
+            $select->order(array('c.id','cw.rank'));
 
+            $statement = $this->getSql()->prepareStatementForSqlObject($select);
+            $resultSet = $statement->execute();            
+
+            return $resultSet;
+        } catch (\Exception $e) {
+            $this->logException($e);
+            return false;
+        }
+    }
+    
+    public function updateSpecificFields($contestId, $updateData)
+    {
+        try {
+            $this->tableGateway->update($updateData, array('id' => $contestId));
+            return true;
+        } catch (Exception $ex) {
+            $this->logger->err($e->getMessage());
+            return false;
+        }
+    }
 }

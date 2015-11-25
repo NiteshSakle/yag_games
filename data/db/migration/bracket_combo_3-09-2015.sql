@@ -1,0 +1,1 @@
+ALTER TABLE  `contest_bracket_media_combo` ADD  `combo_id` INT( 11 ) NOT NULL AFTER  `id` ;

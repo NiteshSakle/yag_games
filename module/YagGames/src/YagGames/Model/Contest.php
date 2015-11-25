@@ -14,6 +14,7 @@ class Contest extends BaseModel
     public $voting_start_date;
     public $max_no_of_photos;
     public $voting_started;
+    public $winners_announced;
     public $is_exclusive;
     public $type_id;
     public $created_at;

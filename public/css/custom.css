@@ -265,3 +265,329 @@ body {
         font-size: 13px !important;
     }
 }
+
+.no-padding {
+    padding: 0px;
+}
+.no-margin-padding{
+    padding: 0px !important;
+    margin: 0px !important;
+}
+.bracket-round{
+    text-align: center;
+    color: black;
+    font-size: 14px;
+}
+.violet-text{
+    color: #68398C !important;
+}
+/* Brackets Game CSS  Start */
+.height-25{
+    height:25px;
+}
+.bracket-round-dates{
+    color: grey;
+    font-size: 14px;
+    margin-top: 10px;
+    line-height: 22px;
+}
+.bracket-current-round{
+    color: #68398C !important;
+    font-weight: bold;
+    font-size: 16px;
+}
+/* Round - 1 (Staring 64) */
+.bracket-champion{
+    padding: 0px;
+    margin-top: 95px;
+    margin-bottom: 1px;
+}
+.margin-bottom-30 {
+    margin-bottom: 30px !important;
+}
+.round1 {
+    border: 1px black solid;
+    height: 40px;
+    width: 40px;
+    margin: auto;
+    margin-bottom: 3px;
+    margin-top: 5px;
+}
+.white-border{
+    border-color: white !important;
+    border-width: 0px !important;
+    cursor: pointer;
+}
+.left-round1-up {
+    border-bottom: 1px #68398C solid;
+    border-right: 1px white solid;
+    height: 50px;
+}
+.left-round1-down {
+    border-bottom: 1px #68398C solid;
+    border-right: 1px #68398C solid;
+    height: 50px;
+}
+.right-round1-up {
+    border-bottom: 1px #68398C solid;
+    border-left: 1px white solid;
+    height: 50px;
+}
+.right-round1-down {
+    border-bottom: 1px #68398C solid;
+    border-left: 1px #68398C solid;
+    height: 50px;
+}
+
+/* Round - 2 (Top 32) */
+.round2 {
+    border: 1px black solid;
+    height: 45px;
+    width: 45px;
+    margin: auto;
+    margin-bottom: 3px;
+    margin-top: 50px;
+}
+.round2-first{ margin-top: 25px;}
+.round2-up-first {height: 75px !important;}
+.left-round2-up {
+    border-bottom: 1px #68398C solid;
+    border-right: 1px white solid;
+    height: 100px;
+}
+.left-round2-down {
+    border-bottom: 1px #68398C solid;
+    border-right: 1px #68398C solid;
+    height: 100px;
+}
+.right-round2-up {
+    border-bottom: 1px #68398C solid;
+    border-left: 1px white solid;
+    height: 100px;
+}
+.right-round2-down {
+    border-bottom: 1px #68398C solid;
+    border-left: 1px #68398C solid;
+    height: 100px;
+}
+
+/* Round - 3 (Sweet 16) */
+.round3 {
+    border: 1px black solid;
+    height: 50px;
+    width: 50px;
+    margin: auto;
+    margin-bottom: 3px;
+    margin-top: 145px;
+}
+.round3-first{ margin-top: 70px;}
+.round3-up-first { height: 125px !important;}
+.left-round3-up {
+    border-bottom: 1px #68398C solid;
+    border-right: 1px white solid;
+    height: 200px;
+}
+.left-round3-down {
+    border-bottom: 1px #68398C solid;
+    border-right: 1px #68398C solid;
+    height: 200px;
+}
+.right-round3-up {
+    border-bottom: 1px #68398C solid;
+    border-left: 1px white solid;
+    height: 200px;
+}
+.right-round3-down {
+    border-bottom: 1px #68398C solid;
+    border-left: 1px #68398C solid;
+    height: 200px;
+}
+
+/* Round - 4 (Elite 8) */
+.round4 {
+    border: 1px black solid;
+    height: 55px;
+    width: 55px;
+    margin: auto;
+    margin-bottom: 3px;
+    margin-top: 340px;
+}
+.round4-first{ margin-top: 165px;}
+.round4-up-first {height: 225px !important;}
+.left-round4-up {
+    border-bottom: 1px #68398C solid;
+    border-right: 1px white solid;
+    height: 400px;
+}
+.left-round4-down {
+    border-bottom: 1px #68398C solid;
+    border-right: 1px #68398C solid;
+    height: 400px;
+}
+.right-round4-up {
+    border-bottom: 1px #68398C solid;
+    border-left: 1px white solid;
+    height: 400px;
+}
+.right-round4-down {
+    border-bottom: 1px #68398C solid;
+    border-left: 1px #68398C solid;
+    height: 400px;
+}
+
+/* Round - 5 (Final 4) */
+.round5 {
+    border: 1px black solid;
+    height: 60px;
+    width: 60px;
+    margin: auto;
+    margin-bottom: 3px;
+    margin-top: 765px;
+}
+.round5-first{ margin-top: 360px;}
+.round5-first-text{ margin-top: 334px;}
+.round5-first-zero { margin-top: 0px;}
+.round5-up-first { height: 425px !important;}
+.left-round5-up {
+    border-bottom: 1px #68398C solid;
+    border-right: 1px white solid;
+    height: 800px;
+}
+.left-round5-down {
+    border-bottom: 1px #68398C solid;
+    border-right: 1px #68398C solid;
+    height: 830px;
+}
+.right-round5-up {
+    border-bottom: 1px #68398C solid;
+    border-left: 1px white solid;
+    height: 800px;
+}
+.right-round5-down {
+    border-bottom: 1px #68398C solid;
+    border-left: 1px #68398C solid;
+    height: 830px;
+}
+/* Round - 6 (Semi-Final) */
+.round6 {
+    border: 1px black solid;
+    height: 65px;
+    width: 65px;
+    margin: auto;
+    margin-bottom: 3px;
+}
+.round6-first{ margin-top: 555px;}
+.round6-first-text{ margin-top: 530px;}
+.round6-first-zero{ margin-top: 0px;}
+.round6-second{ margin-top: 5px;}
+.left-round6-up {
+    border-bottom: 1px #68398C solid;
+    border-right: 1px white solid;
+    height: 625px;
+}
+.right-round6-up {
+    border-bottom: 1px #68398C solid;
+    border-left: 1px white solid;
+    height: 75px;
+}
+.round6-center-outer{
+    height: 325px;
+}
+.round6-center{
+    height: 110px;
+    width: 110px;
+    border: 1px #68398C solid;
+    padding: 4px;
+    margin-left: 23px;
+    margin-right: 23px;
+    margin-top: 0px;
+}
+.round6-center-text{
+    color: black;
+    font-size: 10px;
+    text-align: center;
+    line-height: 15px;
+    margin-top: 10px !important;
+    font-weight: 100;
+}
+/* Brackets Game CSS  End */
+/* Voting Popup Start */
+.brk-vote-it-popup{
+    width: 730px;
+    margin: 0 auto;
+    padding: 0;
+    background-color: #d3d2d2;
+    border-top: 12px solid #d8c977;
+    border-bottom: 12px solid #d8c977;
+    border-left: 10px solid #d8c977;
+    border-right: 10px solid #d8c977;
+    height: auto;
+    display: table;
+    padding-bottom: 15px;
+    position: relative;
+    right: 115px;
+    top: 0px;
+}
+.brk-vote-it-wrapper{
+    margin: 29px 30px;
+}
+.brk-vote-it-img-lt, .brk-vote-it-img-rt{
+    border: 1px solid #c1c1c1;
+    width: 310px;
+    height: 280px;
+    padding: 4px;
+    justify-content: center;
+    position: relative;
+}
+.brk-vote-it-img-hover{
+   background-color: #A9A5A5;
+   cursor: pointer;
+}
+.brk-bottom-wrapper{    
+    margin: 0 auto;
+    padding: 0;
+    color: #663f8e;
+    font-family: 'franklin_gothic_bookregular';
+    font-size: 13px;
+    position: relative;
+    display: table;
+    margin-top: 17px;
+}
+.brk-heading-1, .brk-heading-2{    
+    font-weight: bold;
+}
+.brk-heading-1{
+    font-size: 26px;
+}
+.brk-heading-2{
+    font-size: 15px;    
+}
+.brk-heading-3, .brk-heading-4 {
+    color: #646567;
+}
+.brk-heading-4{
+    margin-top: -6px;
+}
+.brk-closeWorkbox{
+    right: -25px !important;
+    top: -25px !important;
+    height: 18px !important;
+    width: 18px !important;
+}
+.brk-image{
+    margin: auto;
+    max-height: 98%;
+    max-width: 98%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+.brk-popup-label-3 {
+    color: #663f8e;
+    font-size: 20px;
+    font-weight: bold;
+    margin: 0;
+}
+/* Voting Popup End */

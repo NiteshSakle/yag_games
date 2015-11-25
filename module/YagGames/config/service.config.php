@@ -26,6 +26,7 @@ use YagGames\Model\SettingsTable;
 use YagGames\Service\FanFavoriteService;
 use YagGames\Service\KCryptService;
 use YagGames\Service\PhotoContestService;
+use YagGames\Service\BracketService;
 use YagGames\Service\SessionService;
 use YagGames\Utils\Process;
 use Zend\Db\ResultSet\ResultSet;
@@ -39,6 +40,7 @@ use YagGames\Service\ClientIPService;
 use YagGames\Service\CouponService;
 use YagGames\Service\MediaImageService;
 use YagGames\Service\MembershipService;
+use YagGames\View\Helper\OrdinalHelper;
 
 return array(
     
@@ -60,6 +62,11 @@ return array(
         'photoContestService' => function(ServiceLocatorInterface $serviceLocator) {
             $photoContestService = new PhotoContestService($serviceLocator);
             return $photoContestService;
+        },
+        
+        'bracketService' => function(ServiceLocatorInterface $serviceLocator) {
+            $bracketService = new BracketService($serviceLocator);
+            return $bracketService;
         },
                 
         'fanFavoriteService' => function(ServiceLocatorInterface $serviceLocator) {
@@ -97,7 +104,7 @@ return array(
         'mediaImage' => function (ServiceLocatorInterface $serviceLocator) {
             $config = $serviceLocator->get('config');
             $kcryptService = $serviceLocator->get('kcryptService');                    
-            $mediaImageService = new YagGames\Service\MediaImageService();            
+            $mediaImageService = new MediaImageService();            
             $mediaImageService->setKCryptService($kcryptService, $config);
             return $mediaImageService;
         },
@@ -106,7 +113,7 @@ return array(
             return $membershipService;
         },
         'ordinal' => function(ServiceLocatorInterface $serviceLocator) {
-            $ordinalService = new YagGames\View\Helper\OrdinalHelper();
+            $ordinalService = new OrdinalHelper();
             return $ordinalService;
         },          
         'YagGames\Model\ContestTable' => function ($sm) {

@@ -5,6 +5,7 @@ namespace YagGames\Model;
 class ContestBracketMediaCombo extends BaseModel
 {
     public $id;
+    public $combo_id;
     public $contest_media_id1;
     public $contest_media_id2;
     public $contest_id;

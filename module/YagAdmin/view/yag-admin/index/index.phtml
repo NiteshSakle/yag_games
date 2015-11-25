@@ -31,7 +31,7 @@
         <i class="fa fa-backward"></i> Go to main site
     </a>
     <?php if ($add_contest) { ?>
-        <a class="btn btn-primary pull-right open-modal" data-toggle="modal" href="#create-contest-modal">
+        <a class="btn btn-primary pull-right open-modal" data-toggle="modal" href="#create-contest-modal" onclick="resetForm();">
             Create Contest
         </a>
         <?php
@@ -173,7 +173,10 @@
     <div class="modal fade" id="create-contest-modal" role="basic" aria-hidden="true" style="display: none;">
         <div class="modal-dialog" style="width: 750px !important">
             <div class="modal-content">
-                <div class="modal-body">
+                <div id="sumbit-loader" style=" display: none; position: absolute; z-index: 10; ">
+                    <img src="<?php echo $this->basePath() ?>/img/loading.gif" style="width:100%; z-index: 10;"  />
+                </div>
+                <div class="modal-body">                    
                     <div class="row">
                         <div class="col-md-12 ">
                             <!-- BEGIN CREATE CONTEST FORM-->
@@ -184,7 +187,7 @@
 
                                     </div>                
                                     <div class="tools">
-                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" onclick="resetForm();"></button>
                                     </div>
                                 </div>
                                 <div class="portlet-body form">
@@ -229,6 +232,28 @@
                                                 <input type="file" id="thumbnail" name="thumbnail">
                                                 <input type="text" class="form-control" disabled hidden id="thumbnail_name">
                                                 <p class="help-block">Upload a square resolution image(For best appearance-Minimum Resolution: 300px X 300px)</p>
+                                            </div>                                                   
+                                            <div class="form-group col-md-6">
+                                                <label class="control-label" for="type">
+                                                    Contest Type
+                                                    <span class="required">
+                                                        *
+                                                    </span>
+                                                </label>
+                                                <select class="form-control" id="type" name="type">
+                                                    <?php foreach ($types as $type) { ?>
+                                                        <option value="<?php echo $type['id']; ?>"><?php echo $type['type'] ?></option>
+                                                    <?php } ?>
+                                                </select>
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label class="control-label" for="entryLimit">
+                                                    Entries Limit
+                                                    <span class="required">
+                                                        *
+                                                    </span>
+                                                </label>
+                                                <input type="number" data-required="1" class="form-control" id="entryLimit" name="entryLimit" placeholder="Enter Contest's Entries Limit">
                                             </div>
                                             <div class="form-group col-md-6">
                                                 <label class="control-label" for="entryStartDate">
@@ -257,7 +282,93 @@
                                                         <button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
                                                     </span>
                                                 </div>
-                                            </div>                                     
+                                            </div>
+                                            <div class="form-group col-md-12" id="bracket_rounds_dates" style="display: none;border: 0.5px solid rgb(227, 227, 227); padding: 0px 20px; background-color: rgb(241, 241, 241);">
+                                                <div class="form-group col-md-6">
+                                                    <label class="control-label" for="br_round1">
+                                                        Round One 64
+                                                        <span class="required">
+                                                            * <span style=" font-size: 10px; font-style: italic; color: grey">(voting start date)</span>
+                                                        </span>
+                                                    </label>
+                                                    <div class="input-group input-medium date date-picker" data-date-format="dd-mm-yyyy" data-date-start-date="+0d">
+                                                        <input id="br_round1" name="br_round1" type="text" class="form-control" readonly>
+                                                        <span class="input-group-btn">
+                                                            <button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label class="control-label" for="br_round2">
+                                                        Round Two 32
+                                                        <span class="required">
+                                                            *
+                                                        </span>
+                                                    </label>
+                                                    <div class="input-group input-medium date date-picker" data-date-format="dd-mm-yyyy" data-date-start-date="+0d">
+                                                        <input id="br_round2" name="br_round2" type="text" class="form-control" readonly>
+                                                        <span class="input-group-btn">
+                                                            <button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label class="control-label" for="br_round3">
+                                                        Sweet 16
+                                                        <span class="required">
+                                                            *
+                                                        </span>
+                                                    </label>
+                                                    <div class="input-group input-medium date date-picker" data-date-format="dd-mm-yyyy" data-date-start-date="+0d">
+                                                        <input id="br_round3" name="br_round3" type="text" class="form-control" readonly>
+                                                        <span class="input-group-btn">
+                                                            <button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label class="control-label" for="br_round4">
+                                                        Elite 8
+                                                        <span class="required">
+                                                            *
+                                                        </span>
+                                                    </label>
+                                                    <div class="input-group input-medium date date-picker" data-date-format="dd-mm-yyyy" data-date-start-date="+0d">
+                                                        <input id="br_round4" name="br_round4" type="text" class="form-control" readonly>
+                                                        <span class="input-group-btn">
+                                                            <button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label class="control-label" for="br_round5">
+                                                        Final 4
+                                                        <span class="required">
+                                                            *
+                                                        </span>
+                                                    </label>
+                                                    <div class="input-group input-medium date date-picker" data-date-format="dd-mm-yyyy" data-date-start-date="+0d">
+                                                        <input id="br_round5" name="br_round5" type="text" class="form-control" readonly>
+                                                        <span class="input-group-btn">
+                                                            <button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label class="control-label" for="br_round6">
+                                                        Championship Round
+                                                        <span class="required">
+                                                            *
+                                                        </span>
+                                                    </label>
+                                                    <div class="input-group input-medium date date-picker" data-date-format="dd-mm-yyyy" data-date-start-date="+0d">
+                                                        <input id="br_round6" name="br_round6" type="text" class="form-control" readonly>
+                                                        <span class="input-group-btn">
+                                                            <button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
+                                                        </span>
+                                                    </div>
+                                                </div>                                                
+                                            </div>
                                             <div class="form-group col-md-6">
                                                 <label class="control-label" for="votingStartDate">
                                                     Voting Start Date
@@ -285,28 +396,6 @@
                                                         <button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
                                                     </span>
                                                 </div>
-                                            </div>       
-                                            <div class="form-group col-md-6">
-                                                <label class="control-label" for="entryLimit">
-                                                    Entries Limit
-                                                    <span class="required">
-                                                        *
-                                                    </span>
-                                                </label>
-                                                <input type="number" data-required="1" class="form-control" id="entryLimit" name="entryLimit" placeholder="Enter Contest's Entries Limit">
-                                            </div>
-                                            <div class="form-group col-md-6">
-                                                <label class="control-label" for="type">
-                                                    Contest Type
-                                                    <span class="required">
-                                                        *
-                                                    </span>
-                                                </label>
-                                                <select class="form-control" id="type" name="type">
-                                                    <?php foreach ($types as $type) { ?>
-                                                        <option value="<?php echo $type['id']; ?>"><?php echo $type['type'] ?></option>
-                                                    <?php } ?>
-                                                </select>
                                             </div>
                                             <div class="form-group col-md-6">
                                                 <label>Is Exclusive Contest?</label>
@@ -317,8 +406,9 @@
                                                         <div class="radio"><span><input type="radio" name="exclusive" id="exclusive-no" value="0" checked=""></span></div> No </label>
                                                 </div>
                                             </div>
+                                            
                                             <div class="form-actions col-md-12">
-                                                <button type="submit" class="btn blue">Submit</button>
+                                                <button type="submit" class="btn blue" id="form-submit" >Submit</button>
                                                 <button type="button" class="btn default" data-dismiss="modal" aria-hidden="true">Cancel</button>
                                             </div>
                                     </form>
@@ -355,6 +445,33 @@
             $("input[name='exclusive'][value=0]").parent().addClass('checked');
             $('form#create-contest-form').trigger('reset');
             $('#thumbnail_name').hide();
+        });
+        
+        $('#type').on('change',function () {
+            var type = $('select[name=type]').val()
+            if(type == 3 ){
+                $('#entryLimit').val("64");
+                $('#entryLimit').attr('readonly',true);
+                $('div#bracket_rounds_dates').css('display', 'block');
+                $('#br_round1').val($('#votingStartDate').val());
+            } else {
+                resetForm();
+            }
+        });
+        
+        
+        $('#votingStartDate').change(function(){
+            var type = $('select[name=type]').val()
+            if(type == 3 ){
+                $('#br_round1').val($('#votingStartDate').val());
+            }
+        });
+        
+        $('#br_round1').change(function(){
+            var type = $('select[name=type]').val()
+            if(type == 3 ){
+                $('#votingStartDate').val($('#br_round1').val());
+            }
         });
 
         $('.name').click(function (e) {
@@ -400,6 +517,7 @@
                 type: 'POST',
                 data: 'id=' + $(this).attr('contest_id'),
                 success: function (response) {
+                    console.log(response);
                     $('#id').val(response.data.id);
                     $('#name').val(response.data.name);
                     $('#description').data("wysihtml5").editor.setValue(response.data.description);
@@ -419,6 +537,16 @@
                     }
                     $('#type').val(response.data.type_id);
                     $('#create-contest-modal').modal('show');
+                    if(response.data.type_id == "3"){
+                        $('#entryLimit').attr('readonly',true);
+                        $('div#bracket_rounds_dates').css('display', 'block');
+                        $('#br_round1').val(reformatDate(response.data.round1));
+                        $('#br_round2').val(reformatDate(response.data.round2));
+                        $('#br_round3').val(reformatDate(response.data.round3));
+                        $('#br_round4').val(reformatDate(response.data.round4));
+                        $('#br_round5').val(reformatDate(response.data.round5));
+                        $('#br_round6').val(reformatDate(response.data.round6));                        
+                    }
                 }
             });
         });
@@ -431,9 +559,9 @@
         });
 
     });
-
+    
     $("form#create-contest-form").submit(function () {
-
+        contestType = $('select[name=type]').val();
         entryStartDate = $('#entryStartDate').val();
         entryEndDate = $('#entryEndDate').val();
         winnersAnnounceDate = $('#winnersAnnounceDate').val();
@@ -448,8 +576,15 @@
             $('#create-contest-modal').modal('hide');
             bootbox.alert('Please check the dates', function () {
                 $('#create-contest-modal').modal('show');
-            })
+            });
+        } else if (contestType == '3' && !checkBracketRoundDates()) {              
+            $('#create-contest-modal').modal('hide');
+            bootbox.alert('Please check the dates', function () {
+                $('#create-contest-modal').modal('show');
+            });
         } else {
+            $('#form-submit').attr('disabled',true);
+            $('#sumbit-loader').css('display', 'block');
             var formData = new FormData($(this)[0]);
 
             $.ajax({
@@ -459,22 +594,60 @@
                 async: true,
                 success: function (response) {
                     $('#create-contest-modal').modal('hide');
+                    $('#sumbit-loader').css('display', 'none');
                     bootbox.alert(response.message, function () {
                         if (response.success) {
                             location.reload();
                         } else {
                             $('#create-contest-modal').modal('show');
+                            $('#form-submit').attr('disabled',false);
                         }
                     });
                 },
                 cache: false,
                 contentType: false,
                 processData: false
-            });
+            });               
         }
         return false;
     });
+    
+    function resetForm() {
+        $('#entryLimit').val("");
+        $('#entryLimit').attr('readonly',false);
+        $('#sumbit-loader').css('display', 'none');
+        $('div#bracket_rounds_dates').css('display', 'none');
+        $('#form-submit').attr('disabled',false);        
+    }
+    
+    function checkBracketRoundDates() {
+        winnersAnnounceDate = $('#winnersAnnounceDate').val();
+        votingStartDate = $('#votingStartDate').val();
+        
+        winnersAnnounceDateTime = convertDateToTime(winnersAnnounceDate);
+        votingStartDateTime = convertDateToTime(votingStartDate);
+        
+        brRound1 = $('#br_round1').val();
+        brRound2 = $('#br_round2').val();
+        brRound3 = $('#br_round3').val();
+        brRound4 = $('#br_round4').val();
+        brRound5 = $('#br_round5').val();
+        brRound6 = $('#br_round6').val();
 
+        brRound1 = convertDateToTime(brRound1);
+        brRound2 = convertDateToTime(brRound2);
+        brRound3 = convertDateToTime(brRound3);
+        brRound4 = convertDateToTime(brRound4);
+        brRound5 = convertDateToTime(brRound5);
+        brRound6 = convertDateToTime(brRound6);
+        
+        if((brRound1 < brRound2) && (brRound2 < brRound3) && (brRound3 < brRound4) && (brRound4 < brRound5) && (brRound5 < brRound6) && (brRound6 < winnersAnnounceDateTime) &&(votingStartDateTime == brRound1)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
     function convertDateToTime(myDate) {
         myDate = myDate.split("-");
         var newDate = myDate[1] + "/" + myDate[0] + "/" + myDate[2];

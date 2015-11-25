@@ -13,13 +13,15 @@ return array(
             'YagGames\Controller\Contest' => 'YagGames\Controller\ContestController',
             'YagGames\Controller\FanFavorite' => 'YagGames\Controller\FanFavoriteController',
             'YagGames\Controller\PhotoContest' => 'YagGames\Controller\PhotoContestController',
+            'YagGames\Controller\Brackets' => 'YagGames\Controller\BracketsController',
             'YagGames\Controller\Media' => 'YagGames\Controller\MediaController',
             
             // Console
             'YagGames\Console\SendContestResultsEmail' => 'YagGames\Console\SendContestResultsEmailController',
             'YagGames\Console\SendSuccessSubmissionEmail' => 'YagGames\Console\SendSuccessSubmissionEmailController',
             'YagGames\Console\SendVotingStartEmail' => 'YagGames\Console\SendVotingStartEmailController',
-            'YagGames\Console\StartVoting' => 'YagGames\Console\StartVotingController'            
+            'YagGames\Console\StartVoting' => 'YagGames\Console\StartVotingController',            
+            'YagGames\Console\BracketsRoundCheck' => 'YagGames\Console\BracketsRoundCheckController'
         ),
         'factories' => array(
             'YagGames\Console\AnnounceWinners' => function(Zend\Mvc\Controller\ControllerManager $cm) {
@@ -94,6 +96,24 @@ return array(
                     'defaults' => array(
                         '__NAMESPACE__' => 'YagGames\Controller',
                         'controller'    => 'PhotoContest',
+                        'action'        => 'rankings',
+                    ),
+                ),
+            ),
+            'brackets' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/brackets[/:action][/:id][/page/:page][/size/:size][/mid/:mid]',
+                    'constraints' => array(
+                        'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]+',
+                        'page'     => '[0-9]+',
+                        'size'     => '[0-9]+',
+                        'mid'     => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'YagGames\Controller',
+                        'controller'    => 'Brackets',
                         'action'        => 'rankings',
                     ),
                 ),
@@ -190,6 +210,15 @@ return array(
                       'route'    => 'SendVotingStartEmail [<contestId>]',
                       'defaults' => array(
                           'controller' => 'YagGames\Console\SendVotingStartEmail',
+                          'action'     => 'index'
+                      )
+                  )
+                ),
+                'BracketsRoundCheck' => array(
+                  'options' => array(
+                      'route'    => 'BracketsRoundCheck',
+                      'defaults' => array(
+                          'controller' => 'YagGames\Console\BracketsRoundCheck',
                           'action'     => 'index'
                       )
                   )
