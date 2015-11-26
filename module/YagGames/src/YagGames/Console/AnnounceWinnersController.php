@@ -11,13 +11,15 @@ class AnnounceWinnersController extends BaseConsoleController
     protected $mediaImage;
     protected $ordinal; 
     protected $config;
+    protected $kCrypt;
             
-    function __construct($membershipService, $couponService, $mediaImage, $ordinal)
+    function __construct($membershipService, $couponService, $mediaImage, $ordinal, $kCrypt)
     {        
         $this->membershipService = $membershipService;
         $this->couponService = $couponService;
         $this->mediaImage = $mediaImage;
-        $this->ordinal = $ordinal;                
+        $this->ordinal = $ordinal;
+        $this->kCrypt = $kCrypt;
     }
     
     public function indexAction()
@@ -204,12 +206,11 @@ class AnnounceWinnersController extends BaseConsoleController
             $data['awsPath'] = $this->config['aws']['path'];
             $data['mediaImage'] = $this->mediaImage;
             $data['ordinal'] = $this->ordinal;
-            foreach ($contestTopWinners as $key => $winner) {
-                $otherWinners = $contestTopWinners;
-                unset($otherWinners[$key]);
+            $data['kCrypt'] = $this->kCrypt;
+            $data['contestTopWinners'] = $contestTopWinners;
+            foreach ($contestTopWinners as $key => $winner) {                
                 $data['contest'] = $contest;
-                $data['winner'] = $winner;
-                $data['otherWinners'] = $otherWinners;
+                $data['winner'] = $winner;                
                 // Prepare Promotions/Coupon Code/Promo Code Data And Insert Into Promotions Table
                 $promotionsModel = $this->couponService->generateWinnersCoupon($contest, $winner['owner'], $winner['rank']);
                 if ($promotionsModel) {
@@ -221,7 +222,7 @@ class AnnounceWinnersController extends BaseConsoleController
                             $upgradeMebership = $this->membershipService->upgradeToPlatinumMembership($winner['owner'], $newMsExpDate);
                             $this->sendEmail('Congratulations! You are the FIRST PLACE winner of our ' . $contest['name'], $winner['email'], 'contest_winner', $data);
                         } else {
-                            $this->sendEmail('Congratulations! You are the RUNNER UP winner of our ' . $contest['name'], $winner['email'], 'contest_runnerup', $data);
+                            $this->sendEmail('Congratulations! You are the RUNNER UP of our ' . $contest['name'], $winner['email'], 'contest_runnerup', $data);
                         }
                     } else {
                         echo 'Error Occured While Inserting Contest Coupon Data Into Promotions Table Of The User:' . $winner['owner'] . "\n";

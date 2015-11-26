@@ -29,7 +29,8 @@ return array(
                 $couponService = $cm->getserviceLocator()->get('couponService');                
                 $mediaImage = $cm->getServiceLocator()->get('mediaImage');
                 $ordinal = $cm->getServiceLocator()->get('ordinal');
-                $announceWinners = new YagGames\Console\AnnounceWinnersController($membershipService, $couponService, $mediaImage, $ordinal);
+                $kCrypt = $cm->getServiceLocator()->get('kcryptService');
+                $announceWinners = new YagGames\Console\AnnounceWinnersController($membershipService, $couponService, $mediaImage, $ordinal, $kCrypt);
                 return $announceWinners;
             }
         )
