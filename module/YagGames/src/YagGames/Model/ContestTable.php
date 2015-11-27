@@ -41,6 +41,9 @@ class ContestTable extends BaseTable {
             if ($contest->thumbnail) {
                 $updated_data['thumbnail'] = $contest->thumbnail;
             }
+            if (isset($contest->publish_contest)) {
+                $updated_data['publish_contest'] = $contest->publish_contest;
+            }
             if ($contest->entry_start_date) {
                 $updated_data['entry_start_date'] = $contest->entry_start_date;
             }
@@ -59,7 +62,7 @@ class ContestTable extends BaseTable {
             if ($contest->voting_started) {
                 $updated_data['voting_started'] = $contest->voting_started;
             }
-            if ($contest->is_exclusive) {
+            if (isset($contest->is_exclusive)) {
                 $updated_data['is_exclusive'] = $contest->is_exclusive;
             }
             if ($contest->type_id) {
@@ -133,7 +136,7 @@ class ContestTable extends BaseTable {
 
         $select = new Select;
         $select->from(array('c' => 'contest'))
-                ->columns(array('*', 'my_type' => new Expression('IF(entry_start_date <= CURDATE() AND entry_end_date >= CURDATE(), "new", IF(winners_announce_date > CURDATE(), "active", "past"))')))
+                ->columns(array('coming_soon' => new Expression('IF(entry_start_date > CURDATE() AND publish_contest = 1 , 1, 0)'),'*', 'my_type' => new Expression('IF(entry_start_date <= CURDATE() AND entry_end_date >= CURDATE(), "new", IF(winners_announce_date > CURDATE(), "active", "past"))')))
                 ->join(array('ct' => 'contest_type'), 'ct.id = c.type_id', array('contest_type' => 'type'))
                 ->join(array('cm' => $contestMediaCountQry), 'c.id = cm.contest_id', array('total_entries'), 'left')
                 ->join(array('cbr' => 'contest_bracket_round'), new Expression('c.id = cbr.contest_id'), array('bracket_round_id' => 'id', 'round1', 'round2', 'round3', 'round4', 'round5', 'round6', 'current_round'), 'left')
@@ -145,8 +148,9 @@ class ContestTable extends BaseTable {
     private function getNewContestSelect($select, $user) {
         $select->columns(array('*',                          
                          'my_type' => new Expression('IF(entry_start_date <= CURDATE() AND entry_end_date >= CURDATE(), "new", IF(winners_announce_date > CURDATE(), "active", "past"))'),
+                         'coming_soon' => new Expression('IF(entry_start_date > CURDATE() AND publish_contest = 1 , 1, 0)'),
                          'new_sort' => new Expression('IF(voting_started = 1, 2, IF(total_entries > 0 && (FLOOR(total_entries/max_no_of_photos) = 1 || entry_end_date < CURDATE()), 3, 1))')));
-        $select->where('entry_start_date <= CURDATE() AND winners_announce_date > CURDATE()');
+        $select->where('((entry_start_date <= CURDATE()) OR (entry_start_date > CURDATE() AND publish_contest = 1)) AND winners_announce_date > CURDATE()');
         $select->where->and->notEqualTo('c.is_exclusive', '1');
         //$select->where('(total_entries < c.max_no_of_photos OR total_entries IS NULL)');
 
@@ -250,6 +254,7 @@ class ContestTable extends BaseTable {
 
     private function getExclusiveContestSelect($select, $user) {
         $select->where(array('c.is_exclusive' => 1));
+        $select->where('((c.entry_start_date <= CURDATE()) OR (c.entry_start_date > CURDATE() AND c.publish_contest = 1))');
         // if user log's in, check whether he entered the contest or not
         if ($user) {
             $userMediaQry = $this->getSql()->select()
@@ -301,7 +306,7 @@ class ContestTable extends BaseTable {
 
             $statement = $this->getSql()->prepareStatementForSqlObject($select);
             $resultSet = $statement->execute();
-
+            
             $contests = array();
             foreach ($resultSet as $row) {
                 $contests[] = $row;
@@ -408,8 +413,8 @@ class ContestTable extends BaseTable {
 
             $select = new \Zend\Db\Sql\Select;
             $select->from(array('c' => 'contest'))
-                    ->join(array('ct' => 'contest_type'), 'ct.id = c.type_id', array('type'))
-                    ->columns(array('*'))
+                    ->join(array('ct' => 'contest_type'), 'ct.id = c.type_id', array('type'))                    
+                    ->columns(array('coming_soon' => new  Expression('IF(entry_start_date > CURDATE(), 1, 0)'), '*'))
                     ->group('c.id')
                     ->order('entry_end_date desc')
                     ->limit($limit)

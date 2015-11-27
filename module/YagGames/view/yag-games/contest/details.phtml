@@ -111,6 +111,9 @@ if ($this->getHelperPluginManager()->getServiceLocator()->get('Application')->ge
         <?php echo $contest['description']; ?>
         <br>
         <div class="contest-dates">
+            <?php if($contest['coming_soon'] == 1) { ?>
+                <span class="bracket-current-round">Contest Start Date: <?php echo date("F jS, Y", strtotime($contest['entry_start_date'])); ?></span><br>
+            <?php } ?>
             <?php 
                 if($contest['max_no_of_photos'] == $contest['total_entries']) {
                     $date_details = 'active';

@@ -1,0 +1,1 @@
+ALTER TABLE  `contest` ADD  `publish_contest` TINYINT( 1 ) NULL DEFAULT NULL AFTER  `thumbnail` ;
