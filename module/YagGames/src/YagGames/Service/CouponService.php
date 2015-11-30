@@ -51,7 +51,7 @@ class CouponService
             $promotionsModel->description_spanish = '';
             $promotionsModel->description_english = '';                    
             $promotionsModel->max_discount_amount = 0;
-            $promotionsModel->coupon_validity_period_start = '0000-00-00';
+            $promotionsModel->coupon_validity_period_start = date('Y-m-d');
             $promotionsModel->coupon_validity_period_end = '0000-00-00';
             $promotionsModel->shipping = '1'; // String Enum in Table Schema
             $promotionsModel->shipping_type = 'FEDEX_GROUND,FEDEX_2_DAY,PRIORITY_OVERNIGHT,INTERNATIONAL_ECONOMY';
