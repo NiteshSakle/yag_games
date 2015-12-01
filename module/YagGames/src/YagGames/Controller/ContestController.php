@@ -102,7 +102,14 @@ class ContestController extends BaseController
           } else {
               $type = "past";
           }
-        }      
+        }
+        if(strtotime($data['entry_start_date']) > strtotime(date("Y-m-d")) && $data['publish_contest'] == 1) {
+            $data['coming_soon'] = 1;
+        } else {
+            $data['coming_soon'] = 0;
+        }
+        if ($data['is_exclusive'] == 1)
+            $type = 'exclusive';
         $view = new ViewModel(array(
             'shareMedia' => $media,
             'contest' => $data,

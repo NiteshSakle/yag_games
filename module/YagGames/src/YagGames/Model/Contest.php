@@ -8,6 +8,7 @@ class Contest extends BaseModel
     public $name;
     public $description;
     public $thumbnail;
+    public $publish_contest;
     public $entry_start_date;
     public $entry_end_date;
     public $winners_announce_date;

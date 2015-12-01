@@ -104,8 +104,7 @@
                 $entryEndDate = strtotime($contest['entry_end_date']);        
                 $percentage = ($contest['total_entries']) ? floor(($contest['total_entries'] / $contest['max_no_of_photos']) * 100) : 0;
                 
-                if($type !== 'exclusive') {
-                    
+                if($type !== 'exclusive' && $contest['is_exclusive'] != 1) {                    
                     if ($contest['voting_started'] || $percentage == 100 || ($entryEndDate < $today))
                        $cssClass = 'black-border';
                     else
@@ -127,6 +126,9 @@
                             <?php echo $contest['description']; ?>
                             <br>
                             <div class="contest-dates">
+                                <?php if($contest['coming_soon'] == 1) { ?>
+                                <span class="bracket-current-round">Contest Start Date: <?php echo date("F jS, Y", strtotime($contest['entry_start_date'])); ?></span><br>
+                                <?php } ?>
                                 <?php 
                                     if($contest['max_no_of_photos'] == $contest['total_entries']) {
                                         $date_details = 'active';
@@ -134,7 +136,7 @@
                                         $date_details = $contest['my_type'];
                                     }   
                                     
-                                if($date_details == 'new') { ?>
+                                if($date_details == 'new') { ?>                                    
                                     <?php if($contest['type_id'] == 3) { ?>
                                         Open Entries End: <?php echo date("F jS, Y", strtotime($contest['entry_end_date'])); ?><br>
                                         Voting Begins: <?php echo date("F jS, Y", strtotime($contest['voting_start_date'])); ?>
@@ -312,7 +314,7 @@
         window.location.href = "<?php echo $this->config('main_site', 'url') ?>/contests";
     }
 
-    <?php if ($type == 'exclusive' && $session->mem_id && $session->membership != 4 && empty($data)): ?>
+    <?php if ($type == 'exclusive' && $session->mem_id && $session->membership != 4 ): ?>
         showUpgradePopUp();           
     <?php endif; ?>
 </script>

@@ -76,8 +76,13 @@
                             </th>
                             <th>
                                 <i class="fa"></i> Type
-                            </th>                           
-                            <th></th>                               
+                            </th>
+                            <th>
+                                <i class="fa"></i> Publish
+                            </th>
+                            <th>
+                                <i class="fa"></i> Actions
+                            </th>                               
                         </tr>
                     </thead>
                     <tbody>
@@ -115,6 +120,13 @@
                                 </td>
                                 <td>
                                     <?php echo $contest['type']; ?>
+                                </td>
+                                <td>
+                                    <?php if($contest['coming_soon'] == 1) {?>
+                                        <input type="checkbox" class="publish" contest_id="<?php echo $contest['id']; ?>" <?php if($contest['publish_contest'] == 1){ ?> checked="checked" <?php } ?> > 
+                                    <?php } else {?>
+                                        Contest has already started.
+                                    <?php }?>
                                 </td>
                                 <td style="width: 150px;">                                   
                                         <?php if ($add_contest) { ?>
@@ -399,14 +411,22 @@
                                             </div>
                                             <div class="form-group col-md-6">
                                                 <label>Is Exclusive Contest?</label>
-                                                <div class="radio-list">
+                                                <div class="radio-list" id="exclusive">
                                                     <label class="radio-inline">
                                                         <div class="radio"><span><input type="radio" name="exclusive" id="exclusive-yes" value="1"></span></div> Yes </label>
                                                     <label class="radio-inline">
-                                                        <div class="radio"><span><input type="radio" name="exclusive" id="exclusive-no" value="0" checked=""></span></div> No </label>
+                                                        <div class="radio"><span><input type="radio" name="exclusive" id="exclusive-no" value="0" ></span></div> No </label>
                                                 </div>
                                             </div>
-                                            
+                                            <div class="form-group col-md-6">
+                                                <label>Would you like to publish the contest?</label>
+                                                <div class="radio-list" id="publishContest">
+                                                    <label class="radio-inline">
+                                                        <input type="radio" name="publishContest" value="1"> Yes </label>
+                                                    <label class="radio-inline">
+                                                        <input type="radio" name="publishContest" value="0"> No </label>
+                                                </div>
+                                            </div>                                            
                                             <div class="form-actions col-md-12">
                                                 <button type="submit" class="btn blue" id="form-submit" >Submit</button>
                                                 <button type="button" class="btn default" data-dismiss="modal" aria-hidden="true">Cancel</button>
@@ -442,7 +462,9 @@
         //handleValidation();
         $('.open-modal').click(function () {
             $("input[name='exclusive'][value=1]").parent().removeClass('checked');
-            $("input[name='exclusive'][value=0]").parent().addClass('checked');
+            $("input[name='exclusive'][value=0]").parent().removeClass('checked');
+            $("input[name='publishContest'][value=1]").parent().removeClass('checked');
+            $("input[name='publishContest'][value=0]").parent().removeClass('checked');
             $('form#create-contest-form').trigger('reset');
             $('#thumbnail_name').hide();
         });
@@ -510,6 +532,32 @@
             }
             return false;
         });
+        
+        $('.publish').click(function () {
+        var msg;
+        var publish_contest;
+            if (this.checked) {
+               msg = "Do you want to publish the contest?";
+               publish_contest = 1;
+            } else{
+                msg = "Do you want to hide the contest?";
+                publish_contest = 0;
+            }
+            if (confirm(msg)) {
+                $.ajax({
+                    url: '<?php echo $this->basePath('/manager/publish-contest'); ?>',
+                    type: 'POST',
+                    data: 'id=' + $(this).attr('contest_id') + '&publish_contest=' + publish_contest,
+                    success: function (response) {
+                        $('#create-contest-modal').modal('hide');
+                        bootbox.alert(response.message, function () {                            
+                            location.reload();                            
+                        });
+                    }
+                });
+            }
+            return false;
+        });
 
         $('.edit').click(function () {
             $.ajax({
@@ -534,6 +582,13 @@
                     } else {
                         $("input[name='exclusive'][value=1]").parent().removeClass('checked');
                         $("input[name='exclusive'][value=0]").parent().addClass('checked');
+                    }
+                    if (response.data.publish_contest == 1) {
+                        $("input[name='publishContest'][value=0]").parent().removeClass('checked');
+                        $("input[name='publishContest'][value=1]").parent().addClass('checked');
+                    } else {
+                        $("input[name='publishContest'][value=1]").parent().removeClass('checked');
+                        $("input[name='publishContest'][value=0]").parent().addClass('checked');
                     }
                     $('#type').val(response.data.type_id);
                     $('#create-contest-modal').modal('show');

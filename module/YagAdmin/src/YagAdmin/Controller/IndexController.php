@@ -130,6 +130,7 @@ class IndexController extends BaseController {
                 $params['entryLimit'] = $this->getRequest()->getPost('entryLimit');
                 $params['type'] = $this->getRequest()->getPost('type');
                 $params['exclusive'] = $this->getRequest()->getPost('exclusive');
+                $params['publishContest'] = $this->getRequest()->getPost('publishContest');
                 $thumbnail = $this->getRequest()->getFiles('thumbnail');
                 if($params['type'] == '3') {
                     $params['br_round1'] = $this->getRequest()->getPost('br_round1');
@@ -141,13 +142,18 @@ class IndexController extends BaseController {
                 }
 
                 //checking for all the empty fields here except thumbnail to avoid multiple uploading of thumbnails
-                if (empty($params['name']) || empty($params['description']) || empty($params['entryStartDate']) || empty($params['entryEndDate']) || empty($params['winnersAnnounceDate']) || empty($params['votingStartDate']) || empty($params['entryLimit']) || empty($params['type']) || !isset($params['exclusive'])) {
+                if (empty($params['name']) || empty($params['description']) || empty($params['entryStartDate']) || empty($params['entryEndDate']) || empty($params['winnersAnnounceDate']) || empty($params['votingStartDate']) || empty($params['entryLimit']) || empty($params['type'])) {
 
                     $response['success'] = false;
                     $response['message'] = 'Please fill in all fields';
                     return new JsonModel($response);
                 }
-
+                
+                if (!$params['id'] && (!isset($params['exclusive']) || !isset($params['publishContest']))) {
+                    $response['success'] = false;
+                    $response['message'] = 'Please fill in all fields';
+                    return new JsonModel($response);
+                }
                 //checking for whether a thumbnail is uploaded or not
                 if (($thumbnail['error'] == 4 || $thumbnail['size'] == 0) && isset($params['id'])) {
                     $params['thumbnail'] = 'NOT_UPDATED'; //set to NOT_UPDATED while editing a contest, will be used further
@@ -235,6 +241,7 @@ class IndexController extends BaseController {
                     $contest->max_no_of_photos = $params['entryLimit'];
                     $contest->is_exclusive = $params['exclusive'];
                     $contest->type_id = $params['type'];
+                    $contest->publish_contest = $params['publishContest'];
 
                     $fbscrap = $this->getServiceLocator()->get('fbScrapService');
                     //checking for editing(updating) or creating(insert) the contest
@@ -424,5 +431,65 @@ class IndexController extends BaseController {
         }
         
         return $contestBracketRoundResult;
+    }
+    
+    public function publishContestAction() {
+        $add_contest = 0;
+        $delete_contest = 0;
+        $review_contest = 0;
+        $publish_contest = 0;
+
+        if ($permissions = $_SESSION['admin_user']['permissions']) {
+
+            foreach ($permissions as $permission) {
+                if ($permission == 'add-contest') {
+                    $add_contest = 1;
+                }
+                if ($permission == 'delete-contest') {
+                    $delete_contest = 1;
+                }
+                if ($permission == 'review-contest') {
+                    $review_contest = 1;
+                }
+                if ($permission == 'publish-contest') {
+                    $publish_contest = 1;
+                }
+            }
+        }
+
+        $response = array();
+
+        //checking for correct permissions
+        if ($publish_contest) {
+
+            $request = $this->getRequest();
+            if ($request->isPost()) {
+                $id = trim($this->getRequest()->getPost('id'));
+                $contestTable = $this->getServiceLocator()->get('YagGames\Model\ContestTable');
+                $contest = new \YagGames\Model\Contest();
+                $contest->id = $id;
+                $contest->publish_contest = (int)trim($this->getRequest()->getPost('publish_contest'));                
+                if ($contestTable->update($contest)) {
+                    $response['success'] = true;
+                    if($contest->publish_contest == 1) {
+                        $response['message'] = 'Published contest successfully';
+                    } else if($contest->publish_contest == 0) {
+                        $response['message'] = 'Hidden the contest successfully';
+                    }
+                } else {
+                    $response['success'] = false;
+                    $response['message'] = 'Some error occured while deleting';
+                }
+            } else {
+
+                $response['success'] = false;
+                $response['message'] = 'BAD REQUEST';
+            }
+        } else {
+            $response['success'] = false;
+            $response['message'] = "You don't have enough permissions";
+            return new JsonModel($response);
+        }
+        return new JsonModel($response);
     }
 }
