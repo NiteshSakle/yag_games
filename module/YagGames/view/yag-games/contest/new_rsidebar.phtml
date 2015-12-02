@@ -27,7 +27,7 @@
             <a class="loginPopArtist" href="<?php echo $this->config('main_site', 'url') ?>/workbox.php?mode=loginPopup&login_type=artist&login_redirect=contests/<?php echo $contestType; ?>/submission/<?php echo $contest['id']; ?>"><button class="btn btn-default" >Enter Contest</button></a>
     <?php endif; 
     } elseif($contest['coming_soon'] == 1) { ?>
-        <button class="btn btn-default" disabled="disabled">Coming Soon</button>   
+        <button class="btn btn-default" style="background-color: #d1d3d4 !important;border: 5px solid #e5da7c;" disabled="disabled">Coming Soon</button>   
     <?php } ?>
     <br>
     <button class="btn btn-default"  onclick="window.location = '<?php echo $this->basePath() ?>/<?php echo $contestType; ?>/learn-more'">Learn More</button>
