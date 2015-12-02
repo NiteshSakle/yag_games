@@ -18,6 +18,10 @@ use YagGames\Model\MediaTable;
 use YagGames\Model\MediaViewTable;
 use YagGames\Model\MonthlyAward;
 use YagGames\Model\MonthlyAwardTable;
+use YagGames\Model\Members;
+use YagGames\Model\MembersTable;
+use YagGames\Model\Promotions;
+use YagGames\Model\PromotionsTable;
 use YagGames\Model\SettingsTable;
 use YagGames\Service\FanFavoriteService;
 use YagGames\Service\KCryptService;
@@ -33,6 +37,10 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Session\Container;
 use YagGames\Service\FbScrapService;
 use YagGames\Service\ClientIPService;
+use YagGames\Service\CouponService;
+use YagGames\Service\MediaImageService;
+use YagGames\Service\MembershipService;
+use YagGames\View\Helper\OrdinalHelper;
 
 return array(
     
@@ -88,8 +96,26 @@ return array(
         'clientIPService' => function(ServiceLocatorInterface $serviceLocator) {
             $clientIPService = new ClientIPService($serviceLocator);
             return $clientIPService;
+        },        
+        'couponService' => function(ServiceLocatorInterface $serviceLocator) {
+            $couponService = new CouponService($serviceLocator);
+            return $couponService;
+        },        
+        'mediaImage' => function (ServiceLocatorInterface $serviceLocator) {
+            $config = $serviceLocator->get('config');
+            $kcryptService = $serviceLocator->get('kcryptService');                    
+            $mediaImageService = new MediaImageService();            
+            $mediaImageService->setKCryptService($kcryptService, $config);
+            return $mediaImageService;
         },
-                
+        'membershipService' => function (ServiceLocatorInterface $serviceLocator) {
+            $membershipService = new MembershipService($serviceLocator);
+            return $membershipService;
+        },
+        'ordinal' => function(ServiceLocatorInterface $serviceLocator) {
+            $ordinalService = new OrdinalHelper();
+            return $ordinalService;
+        },          
         'YagGames\Model\ContestTable' => function ($sm) {
             $tableGateway = $sm->get('ContestTableGateway');
             $table = new ContestTable($tableGateway, $sm->get('YagGames\Logger'));
@@ -202,5 +228,27 @@ return array(
             $resultSetPrototype->setArrayObjectPrototype(new MonthlyAward());
             return new TableGateway('ps4_monthly_award', $dbAdapter, null, $resultSetPrototype);
         },
+        'YagGames\Model\MembersTable' => function ($sm) {
+            $tableGateway = $sm->get('MembersTableGateway');
+            $table = new MembersTable($tableGateway, $sm->get('YagGames\Logger'));
+            return $table;
+        },
+        'MembersTableGateway' => function ($sm) {
+            $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+            $resultSetPrototype = new ResultSet();
+            $resultSetPrototype->setArrayObjectPrototype(new Members());
+            return new TableGateway('ps4_members', $dbAdapter, null, $resultSetPrototype);
+        },        
+        'YagGames\Model\PromotionsTable' => function ($sm) {
+            $tableGateway = $sm->get('PromotionsTableGateway');
+            $table = new PromotionsTable($tableGateway, $sm->get('YagGames\Logger'));
+            return $table;
+        },
+        'PromotionsTableGateway' => function ($sm) {
+            $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+            $resultSetPrototype = new ResultSet();
+            $resultSetPrototype->setArrayObjectPrototype(new Promotions());
+            return new TableGateway('ps4_promotions', $dbAdapter, null, $resultSetPrototype);
+        }    
     ),
 );

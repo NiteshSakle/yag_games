@@ -1,0 +1,1 @@
+ALTER TABLE  `contest` ADD  `winners_announced` TINYINT( 1 ) NULL DEFAULT  '0' AFTER  `voting_started` ;

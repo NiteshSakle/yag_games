@@ -62,6 +62,9 @@ class ContestTable extends BaseTable {
             if ($contest->voting_started) {
                 $updated_data['voting_started'] = $contest->voting_started;
             }
+            if ($contest->winners_announced) {
+                $updated_data['winners_announced'] = $contest->winners_announced;
+            }
             if (isset($contest->is_exclusive)) {
                 $updated_data['is_exclusive'] = $contest->is_exclusive;
             }
@@ -519,6 +522,17 @@ class ContestTable extends BaseTable {
             return $resultSet;
         } catch (\Exception $e) {
             $this->logException($e);
+            return false;
+        }
+    }
+    
+    public function updateSpecificFields($contestId, $updateData)
+    {
+        try {
+            $this->tableGateway->update($updateData, array('id' => $contestId));
+            return true;
+        } catch (Exception $ex) {
+            $this->logger->err($e->getMessage());
             return false;
         }
     }

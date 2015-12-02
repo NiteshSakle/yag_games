@@ -20,10 +20,20 @@ return array(
             'YagGames\Console\SendContestResultsEmail' => 'YagGames\Console\SendContestResultsEmailController',
             'YagGames\Console\SendSuccessSubmissionEmail' => 'YagGames\Console\SendSuccessSubmissionEmailController',
             'YagGames\Console\SendVotingStartEmail' => 'YagGames\Console\SendVotingStartEmailController',
-            'YagGames\Console\StartVoting' => 'YagGames\Console\StartVotingController',
-            'YagGames\Console\AnnounceWinners' => 'YagGames\Console\AnnounceWinnersController',
+            'YagGames\Console\StartVoting' => 'YagGames\Console\StartVotingController',            
             'YagGames\Console\BracketsRoundCheck' => 'YagGames\Console\BracketsRoundCheckController'
         ),
+        'factories' => array(
+            'YagGames\Console\AnnounceWinners' => function(Zend\Mvc\Controller\ControllerManager $cm) {
+                $membershipService = $cm->getserviceLocator()->get('membershipService');
+                $couponService = $cm->getserviceLocator()->get('couponService');                
+                $mediaImage = $cm->getServiceLocator()->get('mediaImage');
+                $ordinal = $cm->getServiceLocator()->get('ordinal');
+                $kCrypt = $cm->getServiceLocator()->get('kcryptService');
+                $announceWinners = new YagGames\Console\AnnounceWinnersController($membershipService, $couponService, $mediaImage, $ordinal, $kCrypt);
+                return $announceWinners;
+            }
+        )
     ),
     
     'controller_plugins' => array(
