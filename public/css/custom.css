@@ -119,6 +119,11 @@ body {
     font-size: 20px;
     color: #C8B64C;
 }
+
+.grey {
+    font-size: 20px;
+    color: #8C8C8C;
+}
 /*contest boxes end*/
 
 /*contest navbar start*/
@@ -130,12 +135,11 @@ body {
 
 .contest button {
     opacity: 1 !important;
-    color: #68398c;
+    color: white;
     font-family: 'FranklinGothicMediumRegular';
-    background-color: #e5da7c !important;
-    border: 5px solid #d1d3d4;
-    box-shadow: 3px 3px 0px 0px #8e8d8d !important;
+    background-color: #8C8C8C !important;    
     width: 225px;
+    padding: 4px 0px;
 }
 
 #ajaxBusy {

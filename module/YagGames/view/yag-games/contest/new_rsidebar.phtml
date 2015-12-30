@@ -50,7 +50,7 @@
             <!--<img src="<?php echo $this->basePath() ?>/img/congratulation.png"  alt="contest closed" style="width:40%" />-->
          <?php } ?>
         <br>
-        <div class="gold">            
+        <div class="grey">            
             <?php if (isset($contest['entered']) && $contest['entered']): ?>
                 Share Your Submission for Votes
             <?php else: ?>
@@ -67,7 +67,7 @@
     <div style="display: none;" id="blanket"></div>
     <div style="display: none; text-align: center" id="thanksPopUpDiv">
         <div class="popup-another-img">
-            <a style="float:right; margin-top: -5%; margin-right: -4%;" onclick="hideThankYouPopUp();" href="#."><img style="height: 16px; width: 16px;" alt="" src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/close.button.png" /></a>
+            <a style="float:right; margin-top: -5%; margin-right: -4%;" onclick="hideThankYouPopUp();" href="#."><span style="height: 16px; width: 16px;" >X</span></a>
             <div style="border:1px solid rgba(128,128,128,0.4); text-align: center; margin: 5%">
                 <p style="font-size: 40px; font-weight: bold; text-align: center; color: #663f8e; font-family: 'franklin_gothic_bookregular'; line-height: 1em;">Thank You
                     <br>

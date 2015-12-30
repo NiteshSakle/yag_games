@@ -116,7 +116,7 @@
                     <?php
                     $titleClass = 'contest-title';
                     if ($this->getHelperPluginManager()->getServiceLocator()->get('Application')->getMvcEvent()->getRouteMatch()->getParam('action') == 'exclusive-contest') {
-                        $titleClass = 'contest-title gold';
+                        $titleClass = 'contest-title grey';
                     }
                     ?>
                     <div class="<?php echo $titleClass; ?>"><?php echo $contest['name']; ?></div>
