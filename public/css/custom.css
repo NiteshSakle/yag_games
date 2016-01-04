@@ -141,6 +141,7 @@ body {
     background-color: #8C8C8C;    
     width: 225px;
     padding: 4px 0px;
+    border-radius: 0px;
 }
 
 #ajaxBusy {
@@ -602,3 +603,4 @@ body {
     color: white !important;
     cursor: default;
 }
+.disable-btn:hover{color: white;}

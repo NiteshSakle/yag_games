@@ -9,14 +9,14 @@
     if ($contest['voting_started']) : ?>
         <button class="btn btn-default active-btn" onclick="window.location = '<?php echo $this->basePath() ?>/<?php echo $contestType; ?>/voting/<?php echo $contest['id']; ?>'">Vote Now</button>
     <?php elseif ($percentage == 100 || ($entryEndDate < $today)) : ?>    
-        <button class="btn btn-default vote-soon disable-btn" style="background-color: #d1d3d4 !important;border: 5px solid #e5da7c;">Vote Soon</button>
+        <button class="btn btn-default vote-soon disable-btn" >Vote Soon</button>
     <?php elseif (isset($contest['entered']) && $contest['entered']): ?>
         <?php
         $media = array();
         $media['media_id'] = $contest['media_id'];
         $media['folder_id'] = $contest['folder_id'];
         ?>
-        <button class="btn btn-default" style="background-color: #d1d3d4 !important;border: 5px solid #e5da7c;" onclick="showThankYouPopUp('<?php echo $this->mediaImage($media, 'icons'); ?>', '<?php echo $contest['name']; ?>')">You're In</button>
+        <button class="btn btn-default" onclick="showThankYouPopUp('<?php echo $this->mediaImage($media, 'icons'); ?>', '<?php echo $contest['name']; ?>')">You're In</button>
     <?php elseif ($session->mem_id): ?>
         <?php if ($session->login_as_buyer == 1): ?>
             <button id="loginPopup4" class="btn btn-default active-btn" href="<?php echo $this->config('main_site', 'url') ?>/workbox.php?mode=loginPopup&login_type=artist">Enter Contest</button>
@@ -27,7 +27,7 @@
             <a class="loginPopArtist" href="<?php echo $this->config('main_site', 'url') ?>/workbox.php?mode=loginPopup&login_type=artist&login_redirect=contests/<?php echo $contestType; ?>/submission/<?php echo $contest['id']; ?>"><button class="btn btn-default active-btn" >Enter Contest</button></a>
     <?php endif; 
     } elseif($contest['coming_soon'] == 1) { ?>
-        <button class="btn btn-default disable-btn" style="background-color: #d1d3d4 !important;border: 5px solid #e5da7c;" disabled="disabled">Coming Soon</button>   
+        <button class="btn btn-default disable-btn"  disabled="disabled">Coming Soon</button>   
     <?php } ?>
     <br>
     <button class="btn btn-default active-btn"  onclick="window.location = '<?php echo $this->basePath() ?>/<?php echo $contestType; ?>/learn-more'">Learn More</button>
@@ -67,7 +67,7 @@
     <div style="display: none;" id="blanket"></div>
     <div style="display: none; text-align: center" id="thanksPopUpDiv">
         <div class="popup-another-img">
-            <a style="float:right; margin-top: -5%; margin-right: -4%;" onclick="hideThankYouPopUp();" href="#."><span style="height: 16px; width: 16px;" >X</span></a>
+            <a style="float:right; margin-top: -5%; margin-right: -4%;" onclick="hideThankYouPopUp();" href="#."><span id="closeWorkbox" style="top: 58px; right: 60px;" >X</span></a>
             <div style="border:1px solid rgba(128,128,128,0.4); text-align: center; margin: 5%">
                 <p style="font-size: 40px; font-weight: bold; text-align: center; color: #663f8e; font-family: 'franklin_gothic_bookregular'; line-height: 1em;">Thank You
                     <br>
