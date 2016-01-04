@@ -44,16 +44,17 @@ body {
     color: #68398c;
     font-family: 'FranklinGothicMediumRegular';
     background-color: #e5da7c;
-    border: 5px solid #d1d3d4;
-    box-shadow: 3px 3px 0px 0px #8e8d8d;
     //padding: 6px 70px;
     min-width: 150px;
     margin: 20px 0 0px 0;
+    border-radius: 0px;
 }
+
 .contest-buttons button:hover {
     background-color: #818285;
     //    color: #d1d3d4;
 }
+
 .vote-soon:hover{
     color: #68398c;
     cursor: auto;
@@ -137,7 +138,7 @@ body {
     opacity: 1 !important;
     color: white;
     font-family: 'FranklinGothicMediumRegular';
-    background-color: #8C8C8C !important;    
+    background-color: #8C8C8C;    
     width: 225px;
     padding: 4px 0px;
 }
@@ -520,11 +521,8 @@ body {
     width: 730px;
     margin: 0 auto;
     padding: 0;
-    background-color: #d3d2d2;
-    border-top: 12px solid #d8c977;
-    border-bottom: 12px solid #d8c977;
-    border-left: 10px solid #d8c977;
-    border-right: 10px solid #d8c977;
+    background-color: white;
+    border: 10px solid #333333;
     height: auto;
     display: table;
     padding-bottom: 15px;
@@ -595,3 +593,12 @@ body {
     margin: 0;
 }
 /* Voting Popup End */
+
+.active-btn {
+    background-color: #997CAF !important;
+}
+.disable-btn {
+    background-color: #8C8C8C !important;
+    color: white !important;
+    cursor: default;
+}

@@ -245,7 +245,7 @@
 <div style="display: none;" id="blanket"></div>
 <div style="display: none;" id="popUpDiv">
     <div class="popup-another-img" style="height: 80% !important;">
-        <a style="float:right;" onclick="hideSuccessPopup('popUpDiv');" href="#."><img alt="" src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/close.button.png" /></a>
+        <a style="float:right;" onclick="hideSuccessPopup('popUpDiv');" href="#."><span>X</span></a>
         <div class="leftcol">
             <h1 class="title" style="  text-align: left;">CONGRATULATIONS!<br><br>You have entered the  <strong><?php echo $contest['name']; ?> </strong> </h1>
             <div class="congrts">Voting Begins: <?php echo date("F jS, Y", strtotime($contest['voting_start_date'])); ?>. Follow your ranking daily.
@@ -272,7 +272,7 @@
 </div>
 <div style="display: none;" id="uploadPopUpDiv">
     <div class="popup-another-img" style="height: 80% !important;">
-        <a style="float:right; margin: -4%;" onclick="hideSuccessPopup('uploadPopUpDiv');" href="#."><img alt="" src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/close.button.png" style="margin: 10px" /></a>
+        <a style="float:right; margin: -4%;" onclick="hideSuccessPopup('uploadPopUpDiv');" href="#."><span style="margin: 10px" >X</span></a>
         <div class="leftcol">
             <h1 class="title" style="  text-align: left;">Congratulations you have successfully entered the bracket contest!</h1>
             <div class="congrts">Your image has been uploaded to your profile and the bracket contest. <br>
