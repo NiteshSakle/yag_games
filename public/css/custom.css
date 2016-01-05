@@ -604,3 +604,5 @@ body {
     cursor: default;
 }
 .disable-btn:hover{color: white;}
+.btn-default:hover{color: #333333;background-color: #8C8C8C;}
+.active-btn:hover {color: #333333;}
