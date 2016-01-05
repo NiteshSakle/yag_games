@@ -1,11 +1,22 @@
-<nav>
+<nav class="nav-new" style=" border: none !important;">
   <ul>
-    <li><a href="<?php echo $this->config('main_site', 'url') ?>/about-us">About YAG</a></li>
-    <li><a href="<?php echo $this->config('main_site', 'url') ?>/image-search">Shop for Art</a></li>
-    <li><a href="<?php echo $this->config('main_site', 'url') ?>/sell-your-art">Sell Your Art</a></li>
-    <li><a href="<?php echo $this->config('main_site', 'url') ?>/contests">Artist Challenge/Contests</a></li>
+    <!--<li><a href="<?php echo $this->config('main_site', 'url') ?>/about-us">About YAG</a></li>-->
     <li class="myaccount-dropmenu">
-      <a href="<?php echo $this->config('main_site', 'url') ?>/artist.welcome.php">My Account</a>
+        <a href="<?php echo $this->config('main_site', 'url') ?>/about-us">About&nbsp;<span class="dropdown_header">&#8744;</span></a>
+        <ul>
+            <li><a href="<?php echo $this->config('main_site', 'url') ?>/about-us">About Us</a></li>
+            <li><a href="<?php echo $this->config('main_site', 'url') ?>/about-our-prints">About Our Prints</a></li>
+            <li><a href="<?php echo $this->config('main_site', 'url') ?>/our-policies">Our Policies</a></li>
+            <li><a href="<?php echo $this->config('main_site', 'url') ?>/shipping-and-returns">Shipping &amp; Returns</a></li>
+            <li><a href="<?php echo $this->config('main_site', 'url') ?>/terms-of-service">Terms of Service</a></li>                            
+            <li><a target="_blank" href="http://yaguniversity.tumblr.com/">YAG University</a></li>
+        </ul>
+    </li>
+    <li><a href="<?php echo $this->config('main_site', 'url') ?>/image-search">Shop</a></li>
+    <li><a href="<?php echo $this->config('main_site', 'url') ?>/sell-your-art">Sell Your Art</a></li>
+    <li><a href="<?php echo $this->config('main_site', 'url') ?>/contests">Contests</a></li>
+    <li class="myaccount-dropmenu">
+      <a href="<?php echo $this->config('main_site', 'url') ?>/artist.welcome.php">My Account&nbsp;<span class="dropdown_header">&#8744;</span></a>
       <ul>
         <?php $session = $this->session();  ?>
         
@@ -34,9 +45,9 @@
     <?php if ($session->mem_id): ?>
         <li style="margin: 0px 0px 0px 0px;"><div style="display: flex;">
           <?php if ($session->login_as_buyer == 1 && $session->membership == 1): ?>
-              <a href="<?php echo $this->config('main_site', 'url') ?>/buyer.welcome.php">
+              <a href="<?php echo $this->config('main_site', 'url') ?>/buyer.welcome.php" style=" min-width: 75px;color: #997CAF !important;">
           <?php else: ?>
-              <a href="<?php echo $this->config('main_site', 'url') ?>/artist.welcome.php">
+              <a href="<?php echo $this->config('main_site', 'url') ?>/artist.welcome.php" style=" min-width: 75px;color: #997CAF !important;">
           <?php endif; ?>
           <?php 
             if ($session->username != "") { 
@@ -46,9 +57,9 @@
             }
           ?>
         ,</a>
-        <a href="<?php echo $this->config('main_site', 'url') ?>/login.php?cmd=logout">Logout</a></div></li>
+        <a href="<?php echo $this->config('main_site', 'url') ?>/login.php?cmd=logout" style=" min-width: 50px;color: #997CAF !important;">Logout</a></div></li>
     <?php else: ?>
-        <li><a id="loginPopup" href="<?php echo $this->config('main_site', 'url') ?>/workbox.php?mode=loginPopup&login_type=both">Login or Join for FREE</a></li>
+        <li><a id="loginPopup" href="<?php echo $this->config('main_site', 'url') ?>/workbox.php?mode=loginPopup&login_type=both"  style="color: #997CAF !important;">Login or Join for FREE</a></li>
     <?php endif; ?>
   </ul>
 </nav>

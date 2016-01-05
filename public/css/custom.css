@@ -606,3 +606,7 @@ body {
 .disable-btn:hover{color: white;}
 .btn-default:hover{color: #333333;background-color: #8C8C8C;}
 .active-btn:hover {color: #333333;}
+.nav-new a { min-width: 136px;}
+.nav-new { width: 960px;margin-top: 0px; }
+.footer-social img{width: 24px;height: 24px;}
+.footer_box h1{line-height: 26px;}

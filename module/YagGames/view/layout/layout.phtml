@@ -47,15 +47,31 @@
         <div id="hoverWindow"><div id="hoverWindowInner"></div></div>
         <div class="header-container">    
             <header class="wrapper clearfix">
-                <h1 class="title"><a href="<?php echo $this->config('main_site', 'url') ?>"><img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/logo.png" alt=""></a></h1>
-                <div class="inner_righttop">
-                    <div class="search_box">
-                        <form id="searchFormTest" action="<?php echo $this->config('main_site', 'url') ?>/search.php" method="get">
-                            <label>Search</label><input type="text" id="searchPhrase" name="searchPhrase">
-                            <input type="hidden" name="clearSearch" value="true">
-                        </form>
+                <div class="home_head_new" >
+                    <div style=" width: 87%; float: left;">
+                        <div class="home_header_msg ">
+                            <?php echo $this->layout()->settings['home_header_text_msg'];?>
+                        </div>
+                        <div class="home_form_new">
+                            <form id="searchFormTest1" action="<?php echo $this->config('main_site', 'url') ?>/search.php" method="get">
+                                <input type="text" id="searchPhraseHead" placeholder="SEARCH ART" name="searchPhrase" autofocus="autofocus">
+                                <input type="hidden" name="clearSearch" value="true">
+                            </form>
+                        </div>
                     </div>
-                    <?php echo $this->partial('navigation.phtml'); ?>
+                    <div class="home_cart">
+                        <a href="<?php echo $this->config('main_site', 'url') ?>/cart.php">Cart: <?php if(isset($_SESSION['cartTotalsSession']['itemsInCart'])){ echo $_SESSION['cartTotalsSession']['itemsInCart']; } else { echo '0';} ?> item(s)</a>
+                    </div>
+                </div>
+                <div class="header-container header-container-new">
+                    <div class="home-logo-1">
+                        <a href="<?php echo $this->config('main_site', 'url') ?>"><img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/logo.png" alt="" height="73" width="116"></a>
+                    </div>
+                    <header class="wrapper clearfix">                
+                        <div style="text-align: center; ">
+                            <?php echo $this->partial('navigation.phtml'); ?>
+                        </div>
+                    </header>
                 </div>
             </header>
         </div>

@@ -21,6 +21,10 @@ class Module
             }
         }
         
+        // get site settings
+        $viewModel = $e->getViewModel();
+        $viewModel->settings = $this->getSettings($e);
+        
         //log errors
         $eventManager->attach(MvcEvent::EVENT_DISPATCH_ERROR, array($this, 'onDispatchError'), 0);
         $eventManager->attach(MvcEvent::EVENT_RENDER_ERROR, array($this, 'onRenderError'), 0);
@@ -144,5 +148,13 @@ class Module
               break;
           }
         }
+    }
+    
+    public function getSettings($e)
+    {        
+        $settingsTable = $e->getApplication()->getServiceManager()->get('YagGames\Model\SettingsTable');
+        $siteSettings = $settingsTable->fetchAll();
+
+        return $siteSettings;
     }
 }

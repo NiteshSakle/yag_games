@@ -19,6 +19,7 @@ class SettingsTable
   { 
     $select = new Select;
     $select->from(array('m' => 'ps4_settings'))
+            ->join(array('m2' => 'ps4_settings2'), 'm2.settings_id = m.settings_id', array('*'))
             ->columns(array('*'))
             ->where('m.settings_id = 1');
 
