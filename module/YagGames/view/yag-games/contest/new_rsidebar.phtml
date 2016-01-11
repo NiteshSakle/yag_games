@@ -9,7 +9,7 @@
     if ($contest['voting_started']) : ?>
         <button class="btn btn-default active-btn" onclick="window.location = '<?php echo $this->basePath() ?>/<?php echo $contestType; ?>/voting/<?php echo $contest['id']; ?>'">Vote Now</button>
     <?php elseif ($percentage == 100 || ($entryEndDate < $today)) : ?>    
-        <button class="btn btn-default vote-soon disable-btn" >Vote Soon</button>
+        <button class="btn btn-default vote-soon grey-white-btn" >Vote Soon</button>
     <?php elseif (isset($contest['entered']) && $contest['entered']): ?>
         <?php
         $media = array();
@@ -27,13 +27,13 @@
             <a class="loginPopArtist" href="<?php echo $this->config('main_site', 'url') ?>/workbox.php?mode=loginPopup&login_type=artist&login_redirect=contests/<?php echo $contestType; ?>/submission/<?php echo $contest['id']; ?>"><button class="btn btn-default active-btn" >Enter Contest</button></a>
     <?php endif; 
     } elseif($contest['coming_soon'] == 1) { ?>
-        <button class="btn btn-default disable-btn"  disabled="disabled">Coming Soon</button>   
+        <button class="btn btn-default grey-white-btn"  disabled="disabled">Coming Soon</button>   
     <?php } ?>
     <br>
-    <button class="btn btn-default active-btn"  onclick="window.location = '<?php echo $this->basePath() ?>/<?php echo $contestType; ?>/learn-more'">Learn More</button>
+    <button class="btn btn-default disable-btn1 pointer"  onclick="window.location = '<?php echo $this->basePath() ?>/<?php echo $contestType; ?>/learn-more'">Learn More</button>
     <br>
     <?php if ($contest['voting_started']): ?>
-        <button class="btn btn-default active-btn" onclick="window.location = '<?php echo $this->basePath() ?>/<?php echo $contestType; ?>/rankings/<?php echo $contest['id']; ?>'">Rankings</button>
+        <button class="btn btn-default disable-btn1 pointer" onclick="window.location = '<?php echo $this->basePath() ?>/<?php echo $contestType; ?>/rankings/<?php echo $contest['id']; ?>'">Rankings</button>
     <?php endif; ?>       
     <br>
     <div class="contest-winner">   
