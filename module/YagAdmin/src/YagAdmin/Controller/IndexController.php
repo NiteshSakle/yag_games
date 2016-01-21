@@ -234,10 +234,10 @@ class IndexController extends BaseController {
 
                     $contest->name = $params['name'];
                     $contest->description = $params['description'];
-                    $contest->entry_start_date = date('Y-m-d', strtotime($params['entryStartDate']));
-                    $contest->entry_end_date = date('Y-m-d', strtotime($params['entryEndDate']));
-                    $contest->winners_announce_date = date('Y-m-d', strtotime($params['winnersAnnounceDate']));
-                    $contest->voting_start_date = date('Y-m-d', strtotime($params['votingStartDate']));
+                    $contest->entry_start_date = $this->reformatDate($params['entryStartDate']);
+                    $contest->entry_end_date = $this->reformatDate($params['entryEndDate']);
+                    $contest->winners_announce_date = $this->reformatDate($params['winnersAnnounceDate']);
+                    $contest->voting_start_date = $this->reformatDate($params['votingStartDate']);
                     $contest->max_no_of_photos = $params['entryLimit'];
                     $contest->is_exclusive = $params['exclusive'];
                     $contest->type_id = $params['type'];
@@ -413,12 +413,12 @@ class IndexController extends BaseController {
         $contestBracketRound = new \YagGames\Model\ContestBracketRound();
         
         $contestBracketRound->contest_id = $params['contest_id'];
-        $contestBracketRound->round1 = date('Y-m-d', strtotime($params['br_round1']));
-        $contestBracketRound->round2 = date('Y-m-d', strtotime($params['br_round2']));
-        $contestBracketRound->round3 = date('Y-m-d', strtotime($params['br_round3']));
-        $contestBracketRound->round4 = date('Y-m-d', strtotime($params['br_round4']));
-        $contestBracketRound->round5 = date('Y-m-d', strtotime($params['br_round5']));
-        $contestBracketRound->round6 = date('Y-m-d', strtotime($params['br_round6']));
+        $contestBracketRound->round1 = $this->reformatDate($params['br_round1']);
+        $contestBracketRound->round2 = $this->reformatDate($params['br_round2']);
+        $contestBracketRound->round3 = $this->reformatDate($params['br_round3']);
+        $contestBracketRound->round4 = $this->reformatDate($params['br_round4']);
+        $contestBracketRound->round5 = $this->reformatDate($params['br_round5']);
+        $contestBracketRound->round6 = $this->reformatDate($params['br_round6']);
         
         $contestBracketRoundTable = $this->getServiceLocator()->get('YagGames\Model\ContestBracketRoundTable');
         $contestBracketRoundDetails = (array) $contestBracketRoundTable->fetchRecordOnContestId($params['contest_id']);
@@ -492,4 +492,17 @@ class IndexController extends BaseController {
         }
         return new JsonModel($response);
     }
+    
+    /**
+     * 
+     * @param String $date - Input Date format MM-DD-YYYY
+     * @return String - Date format YYYY-MM-DD
+     */
+    private function reformatDate($date)
+    {
+        $d = \DateTime::createFromFormat("m-d-Y", $date);
+        
+        return $d->format("Y-m-d");
+    }
+
 }

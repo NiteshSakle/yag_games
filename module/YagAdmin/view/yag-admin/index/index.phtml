@@ -267,6 +267,9 @@
                                                 </label>
                                                 <input type="number" data-required="1" class="form-control" id="entryLimit" name="entryLimit" placeholder="Enter Contest's Entries Limit">
                                             </div>
+                                            <div class="form-group col-md-12">
+                                                <label class="help-block">Note: <i> Start dates are 12:00am and end dates are 11:59pm</i></label>
+                                            </div>
                                             <div class="form-group col-md-6">
                                                 <label class="control-label" for="entryStartDate">
                                                     Entry Start Date
@@ -274,7 +277,7 @@
                                                         *
                                                     </span>
                                                 </label>
-                                                <div class="input-group input-medium date date-picker" data-date-format="dd-mm-yyyy" data-date-start-date="+0d">
+                                                <div class="input-group input-medium date date-picker" data-date-format="mm-dd-yyyy" data-date-start-date="+0d">
                                                     <input id="entryStartDate" name="entryStartDate" type="text" class="form-control" readonly>
                                                     <span class="input-group-btn">
                                                         <button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
@@ -288,7 +291,7 @@
                                                         *
                                                     </span>
                                                 </label>
-                                                <div class="input-group input-medium date date-picker" data-date-format="dd-mm-yyyy" data-date-start-date="+0d">
+                                                <div class="input-group input-medium date date-picker" data-date-format="mm-dd-yyyy" data-date-start-date="+0d">
                                                     <input id="entryEndDate" name="entryEndDate" type="text" class="form-control" readonly>
                                                     <span class="input-group-btn">
                                                         <button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
@@ -303,7 +306,7 @@
                                                             * <span style=" font-size: 10px; font-style: italic; color: grey">(voting start date)</span>
                                                         </span>
                                                     </label>
-                                                    <div class="input-group input-medium date date-picker" data-date-format="dd-mm-yyyy" data-date-start-date="+0d">
+                                                    <div class="input-group input-medium date date-picker" data-date-format="mm-dd-yyyy" data-date-start-date="+0d">
                                                         <input id="br_round1" name="br_round1" type="text" class="form-control" readonly>
                                                         <span class="input-group-btn">
                                                             <button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
@@ -317,7 +320,7 @@
                                                             *
                                                         </span>
                                                     </label>
-                                                    <div class="input-group input-medium date date-picker" data-date-format="dd-mm-yyyy" data-date-start-date="+0d">
+                                                    <div class="input-group input-medium date date-picker" data-date-format="mm-dd-yyyy" data-date-start-date="+0d">
                                                         <input id="br_round2" name="br_round2" type="text" class="form-control" readonly>
                                                         <span class="input-group-btn">
                                                             <button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
@@ -331,7 +334,7 @@
                                                             *
                                                         </span>
                                                     </label>
-                                                    <div class="input-group input-medium date date-picker" data-date-format="dd-mm-yyyy" data-date-start-date="+0d">
+                                                    <div class="input-group input-medium date date-picker" data-date-format="mm-dd-yyyy" data-date-start-date="+0d">
                                                         <input id="br_round3" name="br_round3" type="text" class="form-control" readonly>
                                                         <span class="input-group-btn">
                                                             <button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
@@ -345,7 +348,7 @@
                                                             *
                                                         </span>
                                                     </label>
-                                                    <div class="input-group input-medium date date-picker" data-date-format="dd-mm-yyyy" data-date-start-date="+0d">
+                                                    <div class="input-group input-medium date date-picker" data-date-format="mm-dd-yyyy" data-date-start-date="+0d">
                                                         <input id="br_round4" name="br_round4" type="text" class="form-control" readonly>
                                                         <span class="input-group-btn">
                                                             <button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
@@ -359,7 +362,7 @@
                                                             *
                                                         </span>
                                                     </label>
-                                                    <div class="input-group input-medium date date-picker" data-date-format="dd-mm-yyyy" data-date-start-date="+0d">
+                                                    <div class="input-group input-medium date date-picker" data-date-format="mm-dd-yyyy" data-date-start-date="+0d">
                                                         <input id="br_round5" name="br_round5" type="text" class="form-control" readonly>
                                                         <span class="input-group-btn">
                                                             <button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
@@ -373,7 +376,7 @@
                                                             *
                                                         </span>
                                                     </label>
-                                                    <div class="input-group input-medium date date-picker" data-date-format="dd-mm-yyyy" data-date-start-date="+0d">
+                                                    <div class="input-group input-medium date date-picker" data-date-format="mm-dd-yyyy" data-date-start-date="+0d">
                                                         <input id="br_round6" name="br_round6" type="text" class="form-control" readonly>
                                                         <span class="input-group-btn">
                                                             <button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
@@ -388,7 +391,7 @@
                                                         *
                                                     </span>
                                                 </label>
-                                                <div class="input-group input-medium date date-picker" data-date-format="dd-mm-yyyy" data-date-start-date="+0d">
+                                                <div class="input-group input-medium date date-picker" data-date-format="mm-dd-yyyy" data-date-start-date="+0d">
                                                     <input id="votingStartDate" name="votingStartDate" type="text" class="form-control" readonly>
                                                     <span class="input-group-btn">
                                                         <button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
@@ -402,7 +405,7 @@
                                                         *
                                                     </span>
                                                 </label>
-                                                <div class="input-group input-medium date date-picker" data-date-format="dd-mm-yyyy" data-date-start-date="+0d">
+                                                <div class="input-group input-medium date date-picker" data-date-format="mm-dd-yyyy" data-date-start-date="+0d">
                                                     <input id="winnersAnnounceDate" name="winnersAnnounceDate" type="text" class="form-control" readonly>
                                                     <span class="input-group-btn">
                                                         <button class="btn default" type="button"><i class="fa fa-calendar"></i></button>
@@ -704,15 +707,15 @@
     }
     
     function convertDateToTime(myDate) {
-        myDate = myDate.split("-");
-        var newDate = myDate[1] + "/" + myDate[0] + "/" + myDate[2];
+        myDate = myDate.split("-");        
+        var newDate = myDate[0] + "/" + myDate[1] + "/" + myDate[2];
         return new Date(newDate).getTime();
     }
 
     function reformatDate(dateStr)
     {
         dArr = dateStr.split("-");  // ex input "2010-01-18"
-        return dArr[2] + "-" + dArr[1] + "-" + dArr[0]; //ex out: "18/01/10"
+        return dArr[1] + "-" + dArr[2] + "-" + dArr[0]; //ex out: "01-18-2010"
     }
 
 </script>
