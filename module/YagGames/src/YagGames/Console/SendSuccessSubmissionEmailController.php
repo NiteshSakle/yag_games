@@ -31,12 +31,14 @@ class SendSuccessSubmissionEmailController extends BaseConsoleController
 
   public function process($contestMediaId)
   {
+    $this->config = $this->getConfig();
     $contestMediaTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaTable');
     $contestMediaData = $contestMediaTable->getContestMediaDetails($contestMediaId);
     if (!$contestMediaData) {
       return $this->printAndLog("No contest media found");
     }
     
+    $contestMediaData['main_site_url'] = $this->config['main_site']['url'];
     $this->sendEmail('Thank You For Entering', $contestMediaData['email'], 'submission', $contestMediaData);
   }
 

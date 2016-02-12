@@ -16,11 +16,13 @@ class CouponService
     {
         try {
             $couponOptions = array();
+            
             // Upto 16x20 Photographic Print,Gallery Plexi Mounted Photo
             $couponOptions[1] = array(
                 'product_type' => 'Photographic Print,Gallery Plexi Mounted Photo',
                 'dimensions' => '8 x 10,8 x 24,9 x 12,10 x 8,12 x 9,12 x 12,12 x 18,16 x 16,16 x 20,18 x 12,20 x 16,24 x 8'
             );
+            
             // Upto 12x18 Photographic Print
             $couponOptions[2] = array(
                 'product_type' => 'Photographic Print',
@@ -69,6 +71,7 @@ class CouponService
             $promotionsModel->shipping_type = 'FEDEX_GROUND,FEDEX_2_DAY,PRIORITY_OVERNIGHT,INTERNATIONAL_ECONOMY';
             $promotionsModel->membership_type = 0;
             $promotionsModel->membership_period = '';
+            
             if ($winnerPosition == 1) {
                 //Winner
                 $promotionsModel->name = $contestInfo['name'] . ' ' . date('Y') . ' Winner';
@@ -78,6 +81,7 @@ class CouponService
                 $promotionsModel->name = $contestInfo['name'] . ' ' . date('Y') . ' Runner Up';
                 $promotionsModel->description = $contestInfo['name'] . ' ' . date('Y') . ' Runner Up';                
             }
+            
             $promotionsModel->product_type = $couponOptions[$couponType]['product_type'];
             $promotionsModel->dimensions = $couponOptions[$couponType]['dimensions'];
             

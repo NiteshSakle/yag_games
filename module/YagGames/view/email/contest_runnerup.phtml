@@ -1,105 +1,111 @@
 <div style="width:52em;font-family: Verdana, Geneva, sans-serif;font-size: 15px;">    
-  <table style="width:100%;">
-      <tr>
-          <td style="padding: 2px;text-align: center">
-              <a href="<?php echo $contest['main_site_url']; ?>" style="text-decoration: none;color:inherit;"><img src="<?php echo $contest['main_site_url']; ?>/contest/img/email_new_logo.png"/></a>
-              <hr style="margin-top: 10px;border-top: 2px solid #E1E5E6 !important;">
-          </td>
-      </tr>
-  </table>
-  <table style="width:38%;float: left;">
-      <tr>
-          <td>
-              <img src="<?php echo $awsPath.$contest['thumbnail']; ?>" width="287px" height="288px;">
-          </td>
-      </tr>
-  </table>
-  <table style="font-size: 15px;font-family: Verdana, Geneva, sans-serif;width:62%;float: left;padding-left: 8px;line-height: 26px;">
-    <tr>
-        <td>                      
-            Hi <?php echo $winner['f_name'];?>,<br>
-            <div style="margin-top: 2px;">
-            Congratulations! You are the RUNNER UP of
-            our "<?php echo $contest['name']; ?>"! Your image was
-            rated top 5 out of <?php echo $totalEntries; ?> entries! Great job!
-        </td>
-    </tr>                                
-    <tr><td style="padding-top: 27px;">As a reminder, you have won:</td><tr>
-    <tr><td>- An HD Photographic Print</td></tr>    
-    <tr><td style="padding-left: 35px;">(up to 12" x 18")</td></tr>
-    <tr><td style="padding-top: 2px;">- A mention in our YAG University Newsletter</td></tr>
-  </table>
-  <table style="width:38%;clear: both;float: left;padding-top: 20px;">
-      <tr>
-          <td>
-              <img src="<?php echo $mediaImage($winner, 'samples', '287'); ?>" alt="<?php echo $winner['title'] ?>" width="287px" height="218px;">
-          </td>              
-      </tr>
-  </table>
-  <table style="font-size: 15px;font-family: Verdana, Geneva, sans-serif;width:62%;float: left;padding-left: 8px;line-height: 26px;">    
-  <tr>
-      <td>
-            Your coupon code for the HD Photographic print is:
-            <b><?php echo $promoCode; ?></b>. Enter this promo code at check out.                                
-       </td>
-  </tr>
-  <tr>      
-      <td style="padding-top: 23px;">
-            * All prizes must be redeemed within 30 days of the contest's end date.
-       </td>
-  </tr>
-  <tr> <td style="padding-top: 23px;">
-            Congratulations again and thanks for participating!
-        </td>
-  <tr>
-  <tr><td style="padding-top: 18px;text-align: center;font-size: 21px;">The Your Art Gallery Team</td></tr>
-  </table>
-  <table style="border-spacing: 0; border-width: 0; font-size: 15px;padding-top: 50px;font-family: Verdana, Geneva, sans-serif;width: 100%;">
-    <tr style="background-color: #EDEFEA;">
-        <?php foreach($contestTopWinners as $row) { ?>
-            <td style="width: 20%;padding: 10px 5px;">
-                <table>
-                    <tr>
-                        <td style="color: #5A5A5A;font-weight: bold;font-size: 14px;">
-                            <?php echo $ordinal($row['rank']); ?>&nbsp;Place
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <a href="<?php echo $contest['main_site_url'].'/photo/' . $kCrypt->enc($row['media_id']) . '/' . str_replace(" ", "-", $row['title']) . '.html' ?>" style="text-decoration: none;">
-                                <img src="<?php echo $mediaImage($row, 'icons', '145', '145'); ?>" width="145px" height="145px">
-                            </a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="text-align: center;">
-                            <a href="<?php echo $contest['main_site_url'].'/'.$row['username']; ?>" style="text-decoration: none;color:inherit;font-size: 14px;">
-                                <?php 
-                                    $displayName = $row['f_name'].' '.$row['l_name']; 
+    <table style="width:100%;">
+        <tr>
+            <td style="padding: 2px;text-align: center;">
+                <a href="<?php echo $contest['main_site_url']; ?>" style="text-decoration: none;color:inherit;">
+                    <img src="<?php echo $contest['main_site_url']; ?>/contests/img/mail_head.png"/>
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <hr style="border-top: 2px solid #E1E5E6 !important;">
+            </td>
+        </tr>
+    </table>
+    <table style="width:38%;float: left;">
+        <tr>
+            <td>
+                <img src="<?php echo $awsPath . $contest['thumbnail']; ?>" width="287px" height="288px;">
+            </td>
+        </tr>
+    </table>
+    <table style="font-size: 15px;font-family: Verdana, Geneva, sans-serif;width:62%;float: left;padding-left: 8px;line-height: 26px;">
+        <tr>
+            <td>                      
+                Hi <?php echo $winner['f_name']; ?>,<br>
+                <div style="margin-top: 2px;">
+                    Congratulations! You are the RUNNER UP of
+                    our "<?php echo $contest['name']; ?>"! Your image was
+                    rated top 5 out of <?php echo $totalEntries; ?> entries! Great job!
+            </td>
+        </tr>                                
+        <tr><td style="padding-top: 27px;">As a reminder, you have won:</td><tr>
+        <tr><td>- An HD Photographic Print</td></tr>    
+        <tr><td style="padding-left: 35px;">(up to 12" x 18")</td></tr>
+        <tr><td style="padding-top: 2px;">- A mention in our YAG University Newsletter</td></tr>
+    </table>
+    <table style="width:38%;clear: both;float: left;padding-top: 20px;">
+        <tr>
+            <td>
+                <img src="<?php echo $mediaImage($winner, 'samples', '287'); ?>" alt="<?php echo $winner['title'] ?>" width="287px" height="218px;">
+            </td>              
+        </tr>
+    </table>
+    <table style="font-size: 15px;font-family: Verdana, Geneva, sans-serif;width:62%;float: left;padding-left: 8px;line-height: 26px;">    
+        <tr>
+            <td>
+                Your coupon code for the HD Photographic print is:
+                <b><?php echo $promoCode; ?></b>. Enter this promo code at check out.                                
+            </td>
+        </tr>
+        <tr>      
+            <td style="padding-top: 23px;">
+                * All prizes must be redeemed within 30 days of the contest's end date.
+            </td>
+        </tr>
+        <tr> <td style="padding-top: 23px;">
+                Congratulations again and thanks for participating!
+            </td>
+        <tr>
+        <tr><td style="padding-top: 18px;text-align: center;font-size: 21px;">The Your Art Gallery Team</td></tr>
+    </table>
+    <table style="border-spacing: 0; border-width: 0; font-size: 15px;padding-top: 50px;font-family: Verdana, Geneva, sans-serif;width: 100%;">
+        <tr style="background-color: #EDEFEA;">
+            <?php foreach ($contestTopWinners as $row) { ?>
+                <td style="width: 20%;padding: 10px 5px;">
+                    <table>
+                        <tr>
+                            <td style="color: #5A5A5A;font-weight: bold;font-size: 14px;">
+                                <?php echo $ordinal($row['rank']); ?>&nbsp;Place
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <a href="<?php echo $contest['main_site_url'] . '/photo/' . $kCrypt->enc($row['media_id']) . '/' . str_replace(" ", "-", $row['title']) . '.html' ?>" style="text-decoration: none;">
+                                    <img src="<?php echo $mediaImage($row, 'icons', '145', '145'); ?>" width="145px" height="145px">
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: center;">
+                                <a href="<?php echo $contest['main_site_url'] . '/' . $row['username']; ?>" style="text-decoration: none;color:inherit;font-size: 14px;">
+                                    <?php
+                                    $displayName = $row['f_name'] . ' ' . $row['l_name'];
                                     if (strlen($displayName) > 14) {
-                                        echo substr($displayName, 0, 13).'..';
+                                        echo substr($displayName, 0, 13) . '..';
                                     } else {
                                         echo $displayName;
                                     }
-                                ?>
-                            </a>
-                        </td>
-                    </tr>
-                </table>       
-            </td>   
-       <?php } ?>    
-    </tr>    
+                                    ?>
+                                </a>
+                            </td>
+                        </tr>
+                    </table>       
+                </td>   
+            <?php } ?>    
+        </tr>    
     </table>
     <table style="text-align: center;padding-top:55px;font-size: 13px;width: 100%;">
         <tr><td>The community continues at...</td></tr>                
         <tr><td>
-            <a href="https://www.facebook.com/YourArtGallery" ><img src="<?php echo $contest['main_site_url'].'/assets/files/content_files/facebook.png'; ?>" alt="" /></a>
-            <a href="https://instagram.com/Your.Art.Gallery/" ><img src="<?php echo $contest['main_site_url'].'/assets/files/content_files/instagram.png'; ?>" alt="" /></a>
-            <a href="https://twitter.com/YourArtGallery" ><img src="<?php echo $contest['main_site_url'].'/assets/files/content_files/twitter_new.png'; ?>" alt="" /></a>
-            <a href="https://www.linkedin.com/company/your-art-gallery-llc" ><img src="<?php echo $contest['main_site_url'].'/assets/files/content_files/linkedin.png'; ?>" alt="" /></a>
-            <a href="https://www.pinterest.com/yourartgallery" ><img src="<?php echo $contest['main_site_url'].'/assets/files/content_files/pinterest.png'; ?>" alt="" /></a>
-            <a href="https://www.youtube.com/YourArtGallery"><img src="<?php echo $contest['main_site_url'].'/assets/files/content_files/youtube_new.png'; ?>" alt="" /></a>
-            <a href="http://yaguniversity.tumblr.com" ><img src="<?php echo $contest['main_site_url'].'/assets/files/content_files/yag_university.png'; ?>" alt="" /></a>
+                <a href="https://www.facebook.com/YourArtGallery" ><img src="<?php echo $contest['main_site_url'] . '/assets/files/content_files/facebook.png'; ?>" alt="" /></a>
+                <a href="https://instagram.com/Your.Art.Gallery/" ><img src="<?php echo $contest['main_site_url'] . '/assets/files/content_files/instagram.png'; ?>" alt="" /></a>
+                <a href="https://twitter.com/YourArtGallery" ><img src="<?php echo $contest['main_site_url'] . '/assets/files/content_files/twitter_new.png'; ?>" alt="" /></a>
+                <a href="https://www.linkedin.com/company/your-art-gallery-llc" ><img src="<?php echo $contest['main_site_url'] . '/assets/files/content_files/linkedin.png'; ?>" alt="" /></a>
+                <a href="https://www.pinterest.com/yourartgallery" ><img src="<?php echo $contest['main_site_url'] . '/assets/files/content_files/pinterest.png'; ?>" alt="" /></a>
+                <a href="https://www.youtube.com/YourArtGallery"><img src="<?php echo $contest['main_site_url'] . '/assets/files/content_files/youtube_new.png'; ?>" alt="" /></a>
+                <a href="http://yaguniversity.tumblr.com" ><img src="<?php echo $contest['main_site_url'] . '/assets/files/content_files/yag_university.png'; ?>" alt="" /></a>
             </td>
         </tr>                
     </table>
@@ -110,9 +116,9 @@
             </td>
         </tr>
     </table>           
-     <table style="text-align: center;font-size: 13px;width: 100%;">
+    <table style="text-align: center;font-size: 13px;width: 100%;">
         <tr>
-            <td> <a href="<?php echo $contest['main_site_url']; ?>" style="margin:5px;"><img src="<?php echo $contest['main_site_url'].'/assets/themes/yag/images/main_logo.png'; ?>" alt="" width="100px" height="68px"/></a></td>                      
+            <td> <a href="<?php echo $contest['main_site_url']; ?>" style="margin:5px;"><img src="<?php echo $contest['main_site_url'] . '/assets/themes/yag/images/main_logo.png'; ?>" alt="" width="100px" height="68px"/></a></td>                      
         </tr>
         <tr style="font-size: 10px;"><td><a href="<?php echo $contest['main_site_url']; ?>" style="color: #653F8A;font-weight: bold;font-size: 10px;">YourArtGallery.com</a></td></tr>
         <tr><td>43W.24th St. 2nd FL</td></tr>
@@ -120,7 +126,7 @@
         <tr><td>646.638.7171</td></tr>
         <tr><td><a href="mailto:info@yourartgallery.com" style="text-decoration: none;color:inherit;">info@yourartgallery.com</a></td></tr>        
     </table>
-     <table style="width: 100%;padding: 0px 60px;">
+    <table style="width: 100%;padding: 0px 60px;">
         <tr>
             <td>
                 <hr style="border-top: 2px solid #E1E5E6 !important;">
