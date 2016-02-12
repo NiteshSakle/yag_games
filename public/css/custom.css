@@ -598,10 +598,18 @@ body {
 .active-btn {
     background-color: #997CAF !important;
 }
-.disable-btn {
+.disable-btn, .disable-btn1 {
     background-color: #8C8C8C !important;
     color: white !important;
     cursor: default;
+}
+.grey-white-btn, .grey-white-btn:active, .grey-white-btn:focus {
+    background-color: #FFF !important;
+    border: 2px solid #C3C3C3 !important;
+    color: #68398c !important;
+}
+.pointer{
+    cursor: pointer;
 }
 .disable-btn:hover{color: white;}
 .btn-default:hover{color: #333333;background-color: #8C8C8C;}

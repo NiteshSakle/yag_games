@@ -152,7 +152,7 @@ class ContestTable extends BaseTable {
         $select->columns(array('*',                          
                          'my_type' => new Expression('IF(entry_start_date <= CURDATE() AND entry_end_date >= CURDATE(), "new", IF(winners_announce_date > CURDATE(), "active", "past"))'),
                          'coming_soon' => new Expression('IF(entry_start_date > CURDATE() AND publish_contest = 1 , 1, 0)'),
-                         'new_sort' => new Expression('IF(voting_started = 1, 2, IF(total_entries > 0 && (FLOOR(total_entries/max_no_of_photos) = 1 || entry_end_date < CURDATE()), 3, 1))')));
+                         'new_sort' => new Expression('IF(voting_started <> 1 && entry_start_date <= CURDATE() && entry_end_date >= CURDATE(), 1, IF(voting_started = 1 && winners_announce_date > CURDATE(), 2, 3))')));
         $select->where('((entry_start_date <= CURDATE()) OR (entry_start_date > CURDATE() AND publish_contest = 1)) AND winners_announce_date > CURDATE()');
         $select->where->and->notEqualTo('c.is_exclusive', '1');
         //$select->where('(total_entries < c.max_no_of_photos OR total_entries IS NULL)');
