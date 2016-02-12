@@ -1,8 +1,9 @@
 <div style="width:52em;font-family: Verdana, Geneva, sans-serif;font-size: 15px;">    
-  <table style="font-family: Verdana, Geneva, sans-serif;width:100%;">
+  <table style="width:100%;">
       <tr>
-          <td style="background-color: #E1E5E6;padding: 2px;text-align: center;font-size: 50px;">
-              <a href="<?php echo $contest['main_site_url']; ?>" style="text-decoration: none;color:inherit;"><span style="color:#D2AD1E; ">YOUR</span> <span style="color:#D4CA85; ">ART</span> <span style="color:#B4A8CD;">GALLERY</span></a>
+          <td style="padding: 2px;text-align: center">
+              <a href="<?php echo $contest['main_site_url']; ?>" style="text-decoration: none;color:inherit;"><img src="<?php echo $contest['main_site_url']; ?>/contest/img/email_new_logo.png"/></a>
+              <hr style="margin-top: 10px;border-top: 2px solid #E1E5E6 !important;">
           </td>
       </tr>
   </table>
@@ -64,7 +65,7 @@
   <table style="border-spacing: 0; border-width: 0; font-size: 15px;padding-top: 50px;font-family: Verdana, Geneva, sans-serif;width: 100%;">
     <tr style="background-color: #EDEFEA;">
         <?php foreach($contestTopWinners as $row) { ?>
-            <td style="width: 20%;">
+            <td style="width: 20%;padding: 10px 5px;">
                 <table>
                     <tr>
                         <td style="color: #5A5A5A;font-weight: bold;font-size: 14px;">
@@ -74,7 +75,7 @@
                     <tr>
                         <td>
                             <a href="<?php echo $contest['main_site_url'].'/photo/' . $kCrypt->enc($row['media_id']) . '/' . str_replace(" ", "-", $row['title']) . '.html' ?>" style="text-decoration: none;">
-                                <img src="<?php echo $mediaImage($row, 'samples', '145'); ?>" width="145px" height="105px">
+                                <img src="<?php echo $mediaImage($row, 'icons', '145', '145'); ?>" width="145px" height="145px">
                             </a>
                         </td>
                     </tr>
