@@ -199,8 +199,15 @@ class AnnounceWinnersController extends BaseConsoleController
     private function processTopWinnersBenefits($contest, $contestArtists, $contestWinnerTable, $promotionsTable)
     {
         if ($contest['winners_announced'] != 1) {
-            $contestTopWinners = $contestWinnerTable->fetchAllWinnersOfContest($contest['id'], 5);
-            $i = 1;
+
+            if ($contest['type_id'] == 1) {
+                //Photo Contest
+                $contestTopWinners = $contestWinnerTable->fetchAllWinnersOfContest($contest['id'], 5);
+            } else {
+                // Brackets
+                $contestTopWinners = $contestWinnerTable->fetchAllWinnersOfContest($contest['id'], 4);
+            }
+
             $data = array();
             $data['totalEntries'] = count($contestArtists);
             $data['awsPath'] = $this->config['aws']['path'];
@@ -208,28 +215,79 @@ class AnnounceWinnersController extends BaseConsoleController
             $data['ordinal'] = $this->ordinal;
             $data['kCrypt'] = $this->kCrypt;
             $data['contestTopWinners'] = $contestTopWinners;
-            foreach ($contestTopWinners as $key => $winner) {                
+            foreach ($contestTopWinners as $key => $winner) {
                 $data['contest'] = $contest;
-                $data['winner'] = $winner;                
-                // Prepare Promotions/Coupon Code/Promo Code Data And Insert Into Promotions Table
-                $promotionsModel = $this->couponService->generateWinnersCoupon($contest, $winner['owner'], $winner['rank']);
-                if ($promotionsModel) {
-                    $insertPromotionsData = $promotionsTable->insert($promotionsModel);
-                    if ($insertPromotionsData) {
-                        $data['promoCode'] = $promotionsModel->promo_code;
-                        if ($i == 1) {
-                            $newMsExpDate = new \DateTime('+6 months', new \DateTimeZone('GMT'));
-                            $upgradeMebership = $this->membershipService->upgradeToPlatinumMembership($winner['owner'], $newMsExpDate);
-                            $this->sendEmail('Congratulations! You are the FIRST PLACE winner of our ' . $contest['name'], $winner['email'], 'contest_winner', $data);
-                        } else {
-                            $this->sendEmail('Congratulations! You are the RUNNER UP of our ' . $contest['name'], $winner['email'], 'contest_runnerup', $data);
-                        }
+                $data['winner'] = $winner;
+
+                if ($contest['type_id'] == 1) { // Photo Contest
+                    // Generate Coupon Code And Insert Into Promotions Table
+                    if ($winner['rank'] == 1) {
+                        //Winner
+                        $promotionsModel = $this->couponService->generateWinnersCoupon($contest, $winner['owner'], $winner['rank'], 1);
                     } else {
-                        echo 'Error Occured While Inserting Contest Coupon Data Into Promotions Table Of The User:' . $winner['owner'] . "\n";
+                        //Runner Up
+                        $promotionsModel = $this->couponService->generateWinnersCoupon($contest, $winner['owner'], $winner['rank'], 2);
+                    }
+
+                    if ($promotionsModel) {
+                        $insertPromotionsData = $promotionsTable->insert($promotionsModel);
+                        if ($insertPromotionsData) {
+                            $data['promoCode'] = $promotionsModel->promo_code;
+                            if ($winner['rank'] == 1) {
+                                //Upgrade Membership to Platinum for next 6 months
+                                $newMsExpDate = new \DateTime('+6 months', new \DateTimeZone('GMT'));
+                                $upgradeMebership = $this->membershipService->upgradeToPlatinumMembership($winner['owner'], $newMsExpDate);
+                                //Send Coupon Details
+                                $this->sendEmail('Congratulations! You are the FIRST PLACE winner of our ' . $contest['name'], $winner['email'], 'contest_winner', $data);
+                            } else {
+                                //Send Coupon Details
+                                $this->sendEmail('Congratulations! You are the RUNNER UP of our ' . $contest['name'], $winner['email'], 'contest_runnerup', $data);
+                            }
+                        } else {
+                            echo 'Error Occured While Inserting Contest Coupon Data Into Promotions Table Of The User:' . $winner['owner'] . "\n";
+                        }
+                    }
+                } else if ($contest['type_id'] == 3) {  // Brackets
+                    if ($winner['rank'] == 1 || $winner['rank'] == 2) {
+                        // Champion or 2nd Position
+                        $promotionsModel1 = $this->couponService->generateWinnersCoupon($contest, $winner['owner'], $winner['rank'], 1);
+                        $promotionsModel2 = $this->couponService->generateWinnersCoupon($contest, $winner['owner'], $winner['rank'], 2);
+                        if ($promotionsModel1 && $promotionsModel2) {
+                            $insertPromotionsData1 = $promotionsTable->insert($promotionsModel1);
+                            $insertPromotionsData2 = $promotionsTable->insert($promotionsModel2);
+
+                            if ($insertPromotionsData1 && $insertPromotionsData2) {
+                                $data['promoCode1'] = $promotionsModel1->promo_code;
+                                $data['promoCode2'] = $promotionsModel2->promo_code;
+                                if ($winner['rank'] == 1) {
+                                    // Only for Champion - Upgrade Membership to Platinum for next 6 months
+                                    $newMsExpDate = new \DateTime('+6 months', new \DateTimeZone('GMT'));
+                                    $upgradeMebership = $this->membershipService->upgradeToPlatinumMembership($winner['owner'], $newMsExpDate);
+                                    //Send Coupon Details
+                                    $this->sendEmail('Congratulations! You are the CHAMPION of our ' . $contest['name'], $winner['email'], 'bracket_game_winner', $data);
+                                } else {
+                                    //Send Coupon Details
+                                    $this->sendEmail('Congratulations! You are the SECOND PLACE winner of our ' . $contest['name'], $winner['email'], 'bracket_game_2nd_winner', $data);
+                                }
+                            } else {
+                                echo 'Error Occured While Inserting Contest Coupon Data Into Promotions Table Of The User:' . $winner['owner'] . "\n";
+                            }
+                        }
+                    } else if ($winner['rank'] == 3 || $winner['rank'] == 4) {
+                        // 3rd or 4th Position   
+                        $promotionsModel = $this->couponService->generateWinnersCoupon($contest, $winner['owner'], $winner['rank'], 2);
+                        if ($promotionsModel) {
+                            $insertPromotionsData = $promotionsTable->insert($promotionsModel);
+                            if ($insertPromotionsData) {
+                                $data['promoCode'] = $promotionsModel->promo_code;
+                                //Send Coupon Details
+                                $this->sendEmail('Congratulations! You are one of the FINAL FOUR winners of our ' . $contest['name'], $winner['email'], 'bracket_game_runnerup', $data);
+                            } else {
+                                echo 'Error Occured While Inserting Contest Coupon Data Into Promotions Table Of The User:' . $winner['owner'] . "\n";
+                            }
+                        }
                     }
                 }
-
-                $i++;
             }
         }
     }

@@ -14,20 +14,21 @@
           </td>
       </tr>
   </table>
-  <table style="font-size: 15px;font-family: Verdana, Geneva, sans-serif;width:62%;float: left;padding-left: 8px;line-height: 26px;">
+  <table style="font-size: 15px;font-family: Verdana, Geneva, sans-serif;width:62%;float: left;padding-left: 8px;line-height: 21px;">
     <tr>
-        <td>                      
+        <td style="line-height: 26px;">                      
             Hi <?php echo $winner['f_name'];?>,<br>
-            <div style="margin-top: 2px;">
-            Congratulations! You are the RUNNER UP of
-            our "<?php echo $contest['name']; ?>"! Your image was
-            rated top 5 out of <?php echo $totalEntries; ?> entries! Great job!
+            Congratulations! You are the CHAMPION of
+            our "<?php echo $contest['name']; ?>"! Your photo "<?php echo $winner['title']; ?>"
+            made it through the Top 32, the Sweet 16, the Elite 8, the Final Four and the Championship! Great job!
         </td>
     </tr>                                
-    <tr><td style="padding-top: 27px;">As a reminder, you have won:</td><tr>
-    <tr><td>- An HD Photographic Print</td></tr>    
-    <tr><td style="padding-left: 35px;">(up to 12" x 18")</td></tr>
-    <tr><td style="padding-top: 2px;">- A mention in our YAG University Newsletter</td></tr>
+    <tr><td style="padding-top: 20px;">As a reminder, here are all the prizes you have won:</td><tr>    
+    <tr><td style="padding-top: 2px;">- A print of your image up to 12" x 18 " </td></tr> 
+    <tr><td style="padding-top: 2px;">- A mounted print of your image up to 16" x 20"</td></tr>
+    <tr><td>- $250 YourArtGallery.com credit</td></tr>
+    <tr><td style="padding-top: 2px;">- Free 6 months Platinum Membership</td></tr> 
+    <tr><td style="padding-left: 35px;">(automatically upgraded)</td></tr>    
   </table>
   <table style="width:38%;clear: both;float: left;padding-top: 20px;">
       <tr>
@@ -36,19 +37,31 @@
           </td>              
       </tr>
   </table>
-  <table style="font-size: 15px;font-family: Verdana, Geneva, sans-serif;width:62%;float: left;padding-left: 8px;line-height: 26px;">    
+  <table style="font-size: 15px;font-family: Verdana, Geneva, sans-serif;width:62%;float: left;padding-left: 8px;line-height: 26px;padding-top: 20px;">
+    <tr>
+        <td>
+            To claim your $250 credit, please call our customer
+            service line at 646.638.7171.
+        </td>
+  </tr>
   <tr>
-      <td>
+      <td style="padding-top: 15px;">
+            Your coupon code for the Gallery Plexi HD Photographic print is:
+            <b><?php echo $promoCode1; ?></b>. Enter this promo code at check out.                                
+       </td>
+  </tr>
+  <tr>
+      <td style="padding-top: 15px;">
             Your coupon code for the HD Photographic print is:
-            <b><?php echo $promoCode; ?></b>. Enter this promo code at check out.                                
+            <b><?php echo $promoCode2; ?></b>. Enter this promo code at check out.                                
        </td>
   </tr>
   <tr>      
-      <td style="padding-top: 23px;">
+      <td style="padding-top: 15px;">
             * All prizes must be redeemed within 30 days of the contest's end date.
        </td>
   </tr>
-  <tr> <td style="padding-top: 23px;">
+  <tr> <td style="padding-top: 15px;">
             Congratulations again and thanks for participating!
         </td>
   <tr>
@@ -57,7 +70,7 @@
   <table style="border-spacing: 0; border-width: 0; font-size: 15px;padding-top: 50px;font-family: Verdana, Geneva, sans-serif;width: 100%;">
     <tr style="background-color: #EDEFEA;">
         <?php foreach($contestTopWinners as $row) { ?>
-            <td style="width: 20%;padding: 10px 5px;">
+            <td style="width: 25%;padding: 10px;">
                 <table>
                     <tr>
                         <td style="color: #5A5A5A;font-weight: bold;font-size: 14px;">
@@ -67,7 +80,7 @@
                     <tr>
                         <td>
                             <a href="<?php echo $contest['main_site_url'].'/photo/' . $kCrypt->enc($row['media_id']) . '/' . str_replace(" ", "-", $row['title']) . '.html' ?>" style="text-decoration: none;">
-                                <img src="<?php echo $mediaImage($row, 'icons', '145', '145'); ?>" width="145px" height="145px">
+                                <img src="<?php echo $mediaImage($row, 'icons', '175', '175'); ?>" width="175px" height="175px">
                             </a>
                         </td>
                     </tr>
@@ -110,7 +123,7 @@
             </td>
         </tr>
     </table>           
-     <table style="text-align: center;font-size: 13px;width: 100%;">
+    <table style="text-align: center;font-size: 13px;width: 100%;">
         <tr>
             <td> <a href="<?php echo $contest['main_site_url']; ?>" style="margin:5px;"><img src="<?php echo $contest['main_site_url'].'/assets/themes/yag/images/main_logo.png'; ?>" alt="" width="100px" height="68px"/></a></td>                      
         </tr>
