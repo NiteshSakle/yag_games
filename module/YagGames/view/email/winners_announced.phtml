@@ -1,9 +1,71 @@
-<div>
-    Hi <?php echo $user_data['f_name'].' '.$user_data['l_name'];?>,<br><br>
-
-    <p>The results are in! Voting for the <b>"<?php echo $name; ?>"</b> that you entered has concluded. Come find out the winners by clicking <a href="<?php echo $main_site_url.'/contests/' . $contest_type . '/rankings/'.$id; ?>">here</a>.</p><br>
-
-
-    Sincerely,<br>
-    The Your Art Gallery Team
+<div style="width:52em;font-family: Verdana, Geneva, sans-serif;font-size: 15px;">    
+    <table style="font-family: Verdana, Geneva, sans-serif;width:100%;">
+        
+        <tr>
+            <td style="padding: 2px;text-align: center;font-size: 50px;">
+                <a href="<?php echo $main_site_url; ?>" style="text-decoration: none;color:inherit;">
+                    <img src="<?php echo $main_site_url; ?>/contests/img/mail_head.png"/>
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <hr style="border-top: 2px solid #E1E5E6 !important;">
+            </td>
+        </tr>
+        <tr>
+            <td style="padding: 10px 15px 20px 15px;">
+                Hi <?php echo $user_data['f_name'].' '.$user_data['l_name'];?>,
+            </td>
+        </tr>
+        <tr>
+            <td style="padding: 10px 15px 20px 15px;">
+                The results are in! Voting for the <b>"<?php echo $name; ?>"</b> that you entered has concluded. Come find out the winners by clicking <a href="<?php echo $main_site_url.'/contests/' . $contest_type . '/rankings/'.$id; ?>">here</a>.
+            </td>
+        </tr>
+        <tr>
+            <td style="padding: 10px 15px 20px 15px;">
+                Sincerely,<br>
+                The Your Art Gallery Team
+            </td>
+        </tr>
+    </table>
+    <table style="text-align: center;padding-top:55px;font-size: 13px;width: 100%;">
+        <tr><td>The community continues at...</td></tr>                
+        <tr>
+            <td>
+                <a href="https://www.facebook.com/YourArtGallery" ><img src="<?php echo $main_site_url . '/assets/files/content_files/facebook.png'; ?>" alt="" /></a>
+                <a href="https://instagram.com/Your.Art.Gallery/" ><img src="<?php echo $main_site_url . '/assets/files/content_files/instagram.png'; ?>" alt="" /></a>
+                <a href="https://twitter.com/YourArtGallery" ><img src="<?php echo $main_site_url . '/assets/files/content_files/twitter_new.png'; ?>" alt="" /></a>
+                <a href="https://www.linkedin.com/company/your-art-gallery-llc" ><img src="<?php echo $main_site_url . '/assets/files/content_files/linkedin.png'; ?>" alt="" /></a>
+                <a href="https://www.pinterest.com/yourartgallery" ><img src="<?php echo $main_site_url . '/assets/files/content_files/pinterest.png'; ?>" alt="" /></a>
+                <a href="https://www.youtube.com/YourArtGallery"><img src="<?php echo $main_site_url . '/assets/files/content_files/youtube_new.png'; ?>" alt="" /></a>
+                <a href="http://yaguniversity.tumblr.com" ><img src="<?php echo $main_site_url . '/assets/files/content_files/yag_university.png'; ?>" alt="" /></a>
+            </td>
+        </tr>                
+    </table>
+    <table style="width: 100%;padding: 0px 60px;">
+        <tr>
+            <td>
+                <hr style="margin-top: 40px;margin-bottom: 30px;border-top: 2px solid #E1E5E6 !important;">
+            </td>
+        </tr>
+    </table>           
+    <table style="text-align: center;font-size: 13px;width: 100%;">
+        <tr>
+            <td> <a href="<?php echo $main_site_url; ?>" style="margin:5px;"><img src="<?php echo $main_site_url . '/assets/themes/yag/images/main_logo.png'; ?>" alt="" width="100px" height="68px"/></a></td>                      
+        </tr>
+        <tr style="font-size: 10px;"><td><a href="<?php echo $main_site_url; ?>" style="color: #653F8A;font-weight: bold;font-size: 10px;">YourArtGallery.com</a></td></tr>
+        <tr><td>43W.24th St. 2nd FL</td></tr>
+        <tr><td>New York, NY 10010</td></tr>
+        <tr><td>646.638.7171</td></tr>
+        <tr><td><a href="mailto:info@yourartgallery.com" style="text-decoration: none;color:inherit;">info@yourartgallery.com</a></td></tr>        
+    </table>
+    <table style="width: 100%;padding: 0px 60px;">
+        <tr>
+            <td>
+                <hr style="border-top: 2px solid #E1E5E6 !important;">
+            </td>
+        </tr>
+    </table>       
 </div>
