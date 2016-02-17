@@ -66,6 +66,26 @@
         font-size: 20px;
     }
 </style>
+
+<?php $session = $this->session(); ?>
+<script type="text/javascript" src="<?php echo $this->config('main_site', 'url') ?>/assets/javascript/workbox.js"></script>
+<script type="text/javascript">
+    var loggedIn = <?php echo isset($session->mem_id) ? $session->mem_id : 0;?>;
+    var login_redirect = '<?php echo isset($login_redirect) ? $login_redirect : 0;?>';
+    
+    $(document).ready(function() {
+        if(!loggedIn && login_redirect){
+            loginRedirect(login_redirect);
+        }
+    });
+    
+    function loginRedirect(login_redirect) {
+        workbox({
+            page: baseURL + '/workbox.php?mode=loginPopup&login_type=artist&login_redirect=' + login_redirect,            
+        });
+        scroll(0, 0);       
+    }
+</script>
 <div  class="home_content clearfix">
     <div class="inner_main clearfix">
         <div class="inner_txt clearfix">
@@ -73,7 +93,6 @@
         </div>
     </div>
 
-    <?php $session = $this->session(); ?>
     <div class="navigation clearfix">
         <ul>
             <li><a <?php echo $type == 'new' ? 'class="nav_active"' : ""; ?> href="<?php echo $this->basePath() ?>/new-contest">New Contests</a></li>
