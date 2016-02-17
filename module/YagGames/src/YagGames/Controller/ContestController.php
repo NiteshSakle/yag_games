@@ -159,6 +159,7 @@ class ContestController extends BaseController
   
   private function getContestList($type)
   {
+    $login_redirect = $this->params()->fromQuery('login_redirect') ? $this->params()->fromQuery('login_redirect') : '';
     $contestTable = $this->getServiceLocator()->get('YagGames\Model\ContestTable');
     $data = $contestTable->fetchAllByType($type, $this->userId, $this->page, $this->size);
     
@@ -179,7 +180,8 @@ class ContestController extends BaseController
         'data' => $data['contests'], 
         'type' => $type, 
         'page' => $this->page,
-        'size' => $this->size
+        'size' => $this->size,
+        'login_redirect' => $login_redirect
     ));
   }
 
