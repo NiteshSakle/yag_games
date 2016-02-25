@@ -16,7 +16,7 @@ class Process
     public function start($command)
     {
         $process = new SymfonyProcess('php ' . $this->scriptName . ' ' . $command);
-        $process->start();
+        $process->run();
     }
     
 }
