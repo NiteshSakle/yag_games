@@ -18,5 +18,11 @@ class Process
         $process = new SymfonyProcess('php ' . $this->scriptName . ' ' . $command);
         $process->start();
     }
+    
+    public function startFullCommand($command)
+    {
+        $process = new SymfonyProcess('php ' . $command);
+        $process->start();
+    }
 
 }

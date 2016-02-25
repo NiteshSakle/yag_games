@@ -130,7 +130,7 @@ class BracketsController extends BaseController
     public function artSubmissionAction()
     {
         $this->checkLogin();
-
+        
         $request = $this->getRequest();
         if ($request->isPost()) {
             $mediaId = $request->getPost('media_id');
@@ -151,9 +151,10 @@ class BracketsController extends BaseController
                     $contestMedia = $contestMediaTable->fetchContestMedia($contestId, $mediaId);
                     $contestMediaId = $contestMedia['id'];
                 }
-                
+                $this->getConfig();
+                $gamebasepath = $this->config['main_site']['path'] . '/../yag_games/public/index.php ';
                 $process = new \YagGames\Utils\Process($request);
-                $process->start('SendSuccessSubmissionEmail ' . $contestMediaId);
+                $process->startFullCommand($gamebasepath . ' ' . 'SendSuccessSubmissionEmail ' . $contestMediaId);
             } catch (BracketException $e) {
                 return new JsonModel(array(
                     'success' => false,
