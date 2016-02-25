@@ -151,8 +151,10 @@ class BracketsController extends BaseController
                     $contestMedia = $contestMediaTable->fetchContestMedia($contestId, $mediaId);
                     $contestMediaId = $contestMedia['id'];
                 }
+                
                 $this->getConfig();
                 $gamebasepath = $this->config['main_site']['path'] . '/../yag_games/public/index.php ';
+                
                 $process = new \YagGames\Utils\Process($request);
                 $process->startFullCommand($gamebasepath . ' ' . 'SendSuccessSubmissionEmail ' . $contestMediaId);
             } catch (BracketException $e) {

@@ -22,7 +22,7 @@ class Process
     public function startFullCommand($command)
     {
         $process = new SymfonyProcess('php ' . $command);
-        $process->start();
+        $process->run();
     }
 
 }
