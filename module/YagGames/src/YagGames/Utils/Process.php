@@ -19,10 +19,4 @@ class Process
         $process->start();
     }
     
-    public function startFullCommand($command)
-    {
-        $process = new SymfonyProcess('php ' . $command);
-        $process->run();
-    }
-
 }

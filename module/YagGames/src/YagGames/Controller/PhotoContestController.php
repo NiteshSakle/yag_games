@@ -153,11 +153,8 @@ class PhotoContestController extends BaseController
             $contestMediaId = $contestMedia['id'];
         }
         
-        $this->getConfig();
-        $gamebasepath = $this->config['main_site']['path'] . '/../yag_games/public/index.php ';
-        
         $process = new \YagGames\Utils\Process($request);
-        $process->startFullCommand($gamebasepath . ' ' . 'SendSuccessSubmissionEmail ' . $contestMediaId);
+        $process->start('SendSuccessSubmissionEmail ' . $contestMediaId);
       } catch (PhotoContestException $e) {
         return new JsonModel(array(
             'success' => false,
