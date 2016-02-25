@@ -146,6 +146,12 @@ class BracketsController extends BaseController
             try {
                 $contestMediaId = $bracketService->addArtToContest($contestId, $mediaId, $this->session);
                 
+                if(!$contestMediaId) {
+                    $contestMediaTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaTable');
+                    $contestMedia = $contestMediaTable->fetchContestMedia($contestId, $mediaId);
+                    $contestMediaId = $contestMedia['id'];
+                }
+                
                 $process = new \YagGames\Utils\Process($request);
                 $process->start('SendSuccessSubmissionEmail ' . $contestMediaId);
             } catch (BracketException $e) {
