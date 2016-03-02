@@ -1,0 +1,82 @@
+<?php
+$today = strtotime(date('Y-m-d'));
+$entryEndDate = strtotime($contest['entry_end_date']);
+$session = $this->session();
+$percentage = ($contest['total_entries']) ? floor(($contest['total_entries'] / $contest['max_no_of_photos']) * 100) : 0;
+?>
+<div class="p0 col-md-8 col-lg-8">
+    <?php
+    if ($contest['coming_soon'] == 0) {
+        if ($contest['voting_started']) { ?>
+             <button class="btn btn-primary active-btn" onclick="window.location = '<?php echo $this->basePath() ?>/<?php echo $contestType; ?>/voting/<?php echo $contest['id']; ?>'">Vote Now</button>
+        <?php } elseif ($percentage == 100 || ($entryEndDate < $today)) { ?>
+            <button class="btn btn-primary vote-soon grey-white-btn" >Vote Soon</button>
+        <?php } elseif (isset($contest['entered']) && $contest['entered']) {
+            $media = array();
+            $media['media_id'] = $contest['media_id'];
+            $media['folder_id'] = $contest['folder_id'];
+            ?>
+            <button class="btn btn-primary" data-toggle="modal" data-target="#yourIntoContestModal" data-contest-name="<?php echo $contest['name']; ?>" data-img-src="<?php echo $this->mediaImage($media, 'icons'); ?>">You're In</button>
+        <?php } elseif ($session->mem_id) {
+            if ($session->login_as_buyer == 1) { ?>
+                <button class="btn btn-primary active-btn showModal" data-href="<?php echo $this->config('main_site', 'url') ?>/workbox.php?mobileView=true&mode=loginPopup&login_type=artist">Enter Contest</button>
+            <?php } else { ?>
+                <button class="btn btn-primary active-btn" onclick="window.location = '<?php echo $this->basePath() ?>/<?php echo $contestType; ?>/submission/<?php echo $contest['id']; ?>'">Enter Contest</button>
+            <?php }
+        } else { ?>
+            <button class="btn btn-primary active-btn showModal" data-href="<?php echo $this->config('main_site', 'url') ?>/workbox.php?mobileView=true&mode=loginPopup&login_type=artist&login_redirect=contests/<?php echo $contestType; ?>/submission/<?php echo $contest['id']; ?>">Enter Contest</button>
+        <?php }
+    } elseif ($contest['coming_soon'] == 1) {
+        ?>
+        <button class="btn btn-primary grey-white-btn"  disabled="disabled">Coming Soon</button>
+    <?php } ?>
+</div>
+<br/>
+<div class="p0 col-md-8 col-lg-12">
+    <button class="btn btn-primary" onclick="window.location = '<?php echo $this->basePath() ?>/<?php echo $contestType; ?>/learn-more'">LEARN MORE</button>
+</div>
+<?php if ($contest['voting_started']) { ?>
+    <br/>
+    <div class="p0 col-md-8 col-lg-12">
+        <button class="btn btn-primary" onclick="window.location = '<?php echo $this->basePath() ?>/<?php echo $contestType; ?>/rankings/<?php echo $contest['id']; ?>'">RANKINGS</button>
+    </div>
+<?php } ?>
+<br>    
+<div class="text-center">
+    <?php if (isset($contest['entered']) && $contest['entered']): ?>
+        Share Your Submission for Votes
+    <?php else: ?>
+        Share this contest
+    <?php endif; ?>
+</div>
+<?php
+echo $this->partial('social_sharing.phtml', array(
+    'contest' => $contest,
+    'type' => $type,
+    'contestType' => $contestType,
+));
+?>   
+<div class="modal fade" id="yourIntoContestModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">                        
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header flagInappModal">
+                <button type="button" class="close btnxtop" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>        
+            </div>
+            <div class="modal-body purple-txt text-center">
+                <span class="font20">Thank You for entering the</span><br>
+                <span class="contest-name font17"></span>
+                <br><br>
+                <div class="text-center">
+                    <b >Your Entry</b>
+                    <br>
+                    <div class="img-hld">
+                        <img class="down-image" height="122" width="124" src="" style="margin-left: 10px;">
+                        <img class="upper-image" width="177" height="189" src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/man-icon-yag.png">            
+                    </div>
+                    <br>
+                    <a class="btn btn-primary" href="<?php echo $this->basePath() ?>/new-contest">More Contests</a>
+                </div>
+            </div>
+        </div>
+    </div>          
+</div>

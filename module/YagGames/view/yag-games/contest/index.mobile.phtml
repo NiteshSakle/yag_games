@@ -1,0 +1,98 @@
+<div id="content">
+    <div class="top-description">
+        <h2 class="wowload fadeInUp purple_title vmin3">CHALLENGES & CONTESTS</h2>
+        <?php
+        echo $this->partial('contest_menu.mobile.phtml', array('type' => $type, 'session' => $this->session()));
+        ?>
+        <br>  
+    </div>
+    <?php if (empty($data)) { ?>
+        <br><div class="alert alert-info" role="alert"><?php echo $type == 'my' ? "You have not participated in any contest yet" : "More contests coming soon!"; ?></div>    
+        <?php
+    } else {
+        foreach ($data as $contest) {
+            $today = strtotime(date('Y-m-d'));
+            $entryEndDate = strtotime($contest['entry_end_date']);
+            $percentage = ($contest['total_entries']) ? floor(($contest['total_entries'] / $contest['max_no_of_photos']) * 100) : 0;
+            ?>
+            <div class="spacer">
+                <h2 class="bebas"><?php echo $contest['name']; ?></h2>
+                <p class="wowload  text-colored" > <?php echo $contest['description']; ?>
+                </p>
+                <p>Voting Begins: <b><?php echo date("F jS, Y", strtotime($contest['voting_start_date'])); ?></b></br>
+                    Winner Announced: <b><?php echo date("F jS, Y", strtotime($contest['winners_announce_date'])); ?></b></br>
+                </p>
+                <div   class=" clearfix grid ">
+                    <figure class="effect-oscar  wowload fadeInUp   " style="width:100%">                    
+                        <img src="<?php echo $this->config('aws', 'path') . $contest['thumbnail']; ?>" >
+                    </figure>
+                </div>
+                <br/>
+                <?php
+                switch ($type) {
+                    case 'new':
+                        $partial = 'new_bottombar.mobile.phtml';
+                        break;
+                    case 'exclusive':
+                        $partial = 'exclusive_rsidebar.mobile.phtml';
+                        break;
+                }
+
+                switch ($contest['contest_type']) {
+                    case 'Photo Contest':
+                        $contestType = 'photo-contest';
+                        break;
+                    case 'Fan Favorite':
+                        $contestType = 'fan-favorite';
+                        break;
+                    case 'Brackets':
+                        $contestType = 'brackets';
+                    case 'default':
+                        $contestType = 'brackets';
+                }
+
+                echo $this->partial($partial, array(
+                    'contest' => $contest,
+                    'type' => $type,
+                    'contestType' => $contestType,
+                ));
+                ?>
+            </div>
+            <?php
+        }
+    }
+    ?>
+</div>
+<?php
+echo $this->paginationControl($this->paginator, 'Sliding', 'paginator-slide', array(
+    'route' => 'home',
+    'routeParams' => array(
+        'action' => $this->getHelperPluginManager()->getServiceLocator()->get('Application')->getMvcEvent()->getRouteMatch()->getParam('action')
+    ),
+    'queryParams' => array(
+    )
+));
+?>
+<div class="modal fade" id="upgradeMemShipModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">                        
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header flagInappModal">
+                <button type="button" class="close btnxtop" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>        
+            </div>
+            <div class="modal-body text-center">
+                <p>This contest is available for Platinum members only. Simply upgrade your membership level to enter or take advantage of all membership level contests <a href="<?php echo $this->config('main_site', 'url') ?>/contests" style="color: #6E6E70;">here.</a></p>                
+                <a class="btn btn-primary" href="<?php echo $this->config('main_site', 'url') ?>/upgrade.account.php">Upgrade Membership</a>
+            </div>
+        </div>
+    </div>          
+</div>
+<script>
+    <?php if ($type == 'exclusive' && $session->mem_id && $session->membership != 4 ) { ?>
+        $('#upgradeMemShipModal').modal({
+            keyboard: false,
+            show:true
+        }).on('hidden.bs.modal', function (e) {
+           window.location.href = "<?php echo $this->config('main_site', 'url') ?>/contests";
+        });
+    <?php } ?>
+</script>

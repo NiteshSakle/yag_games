@@ -1,0 +1,21 @@
+.btn-primary.active {
+    color: #997CAF;
+    background-color: #FFF;
+    border: 1px #C3C3C3 solid;
+    box-shadow: none;
+}
+.btn-primary.active:hover{
+    color: #FFF;
+}
+.grey-white-btn, .grey-white-btn:active, .grey-white-btn:focus {
+    background-color: #FFF !important;
+    border: 2px solid #C3C3C3 !important;
+    color: #68398c !important; 
+}
+.active-btn {
+    background-color: #8675b5 !important;
+}
+.active-btn:hover {color: #333333;}
+#yourIntoContestModal div.img-hld{ margin-left: 10%; }
+#yourIntoContestModal img.down-image { position: absolute; margin: 5% 0%; border: 4px solid rgb(223, 220, 125); }
+#yourIntoContestModal img.upper-image { position: relative;margin: 5% 0%; }
