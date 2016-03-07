@@ -518,13 +518,13 @@ class BracketsController extends BaseController
                 $roundDetails['round_name'] = 'TOP 32';
                 break;
             case 3: $roundDetails['count'] = 8;
-                $roundDetails['round_name'] = 'SWEET 16';
+                $roundDetails['round_name'] = 'SUPER 16';
                 break;
             case 4: $roundDetails['count'] = 4;
-                $roundDetails['round_name'] = 'Elite 8';
+                $roundDetails['round_name'] = 'GREAT 8';
                 break;
             case 5: $roundDetails['count'] = 2;
-                $roundDetails['round_name'] = 'Final 4';
+                $roundDetails['round_name'] = 'CORE 4';
                 break;
             case 6: $roundDetails['count'] = 1;
                 $roundDetails['round_name'] = 'SEMI-FINAL';

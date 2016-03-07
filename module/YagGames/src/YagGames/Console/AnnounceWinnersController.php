@@ -282,7 +282,7 @@ class AnnounceWinnersController extends BaseConsoleController
                             if ($insertPromotionsData) {
                                 $data['promoCode'] = $promotionsModel->promo_code;
                                 //Send Coupon Details
-                                $this->sendEmail('Congratulations! You are one of the FINAL FOUR winners of our ' . $contest['name'], $winner['email'], 'bracket_game_runnerup', $data);
+                                $this->sendEmail('Congratulations! You are one of the CORE FOUR winners of our ' . $contest['name'], $winner['email'], 'bracket_game_runnerup', $data);
                             } else {
                                 echo 'Error Occured While Inserting Contest Coupon Data Into Promotions Table Of The User:' . $winner['owner'] . "\n";
                             }

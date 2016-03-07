@@ -146,11 +146,11 @@ class BracketsRoundCheckController extends BaseConsoleController
         if ($round == 6) {
             return "CHAMPION";
         } elseif ($round == 5) {
-            return "FINAL 4";
+            return "CORE 4";
         } elseif ($round == 4) {
-            return "ELITE 8";
+            return "GREAT 8";
         } elseif ($round == 3) {
-            return "SWEET 16";
+            return "SUPER 16";
         } elseif ($round == 2) {
             return "TOP 32";
         } else {

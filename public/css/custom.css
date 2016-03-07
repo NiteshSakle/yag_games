@@ -377,7 +377,7 @@ body {
     height: 100px;
 }
 
-/* Round - 3 (Sweet 16) */
+/* Round - 3 (Super 16) */
 .round3 {
     border: 1px black solid;
     height: 50px;
@@ -409,7 +409,7 @@ body {
     height: 200px;
 }
 
-/* Round - 4 (Elite 8) */
+/* Round - 4 (Great 8) */
 .round4 {
     border: 1px black solid;
     height: 55px;
@@ -441,7 +441,7 @@ body {
     height: 400px;
 }
 
-/* Round - 5 (Final 4) */
+/* Round - 5 (Core 4) */
 .round5 {
     border: 1px black solid;
     height: 60px;

@@ -129,9 +129,9 @@ if ($this->getHelperPluginManager()->getServiceLocator()->get('Application')->ge
                     <div class="bracket-round-dates">
                         <span <?php echo $contest['current_round'] == '1' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("m/d/Y", strtotime($contest['round1'])); ?> - Round One 64</span><br>
                         <span <?php echo $contest['current_round'] == '2' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("m/d/Y", strtotime($contest['round2'])); ?> - Round Two 32</span><br>
-                        <span <?php echo $contest['current_round'] == '3' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("m/d/Y", strtotime($contest['round3'])); ?> - Sweet 16</span><br>
-                        <span <?php echo $contest['current_round'] == '4' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("m/d/Y", strtotime($contest['round4'])); ?> - Elite 8</span><br>
-                        <span <?php echo $contest['current_round'] == '5' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("m/d/Y", strtotime($contest['round5'])); ?> - Final 4</span><br>
+                        <span <?php echo $contest['current_round'] == '3' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("m/d/Y", strtotime($contest['round3'])); ?> - Super 16</span><br>
+                        <span <?php echo $contest['current_round'] == '4' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("m/d/Y", strtotime($contest['round4'])); ?> - Great 8</span><br>
+                        <span <?php echo $contest['current_round'] == '5' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("m/d/Y", strtotime($contest['round5'])); ?> - Core 4</span><br>
                         <span <?php echo $contest['current_round'] == '6' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("m/d/Y", strtotime($contest['round6'])); ?> - Championship Round!</span><br>
                     </div>
                 <?php } else { ?>
@@ -140,16 +140,18 @@ if ($this->getHelperPluginManager()->getServiceLocator()->get('Application')->ge
 
             <?php } elseif($date_details == 'active') { ?>
                 <?php if($contest['type_id'] == 3) { ?>
-                   CURRENTLY IN ROUND:
+                   <?php if($contest['voting_started'] == 1 ) { ?> CURRENTLY IN ROUND:<?php } else { ?> Voting Begins: <?php echo date("F jS, Y", strtotime($contest['voting_start_date'])); } ?>
+                   <?php if($contest['coming_soon'] != 1) { ?>
                    <br>
                    <div class="bracket-round-dates">
                        <span <?php echo $contest['current_round'] == '1' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("m/d/Y", strtotime($contest['round1'])); ?> - Round One 64</span><br>
                        <span <?php echo $contest['current_round'] == '2' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("m/d/Y", strtotime($contest['round2'])); ?> - Round Two 32</span><br>
-                       <span <?php echo $contest['current_round'] == '3' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("m/d/Y", strtotime($contest['round3'])); ?> - Sweet 16</span><br>
-                       <span <?php echo $contest['current_round'] == '4' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("m/d/Y", strtotime($contest['round4'])); ?> - Elite 8</span><br>
-                       <span <?php echo $contest['current_round'] == '5' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("m/d/Y", strtotime($contest['round5'])); ?> - Final 4</span><br>
+                       <span <?php echo $contest['current_round'] == '3' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("m/d/Y", strtotime($contest['round3'])); ?> - Super 16</span><br>
+                       <span <?php echo $contest['current_round'] == '4' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("m/d/Y", strtotime($contest['round4'])); ?> - Great 8</span><br>
+                       <span <?php echo $contest['current_round'] == '5' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("m/d/Y", strtotime($contest['round5'])); ?> - Core 4</span><br>
                        <span <?php echo $contest['current_round'] == '6' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("m/d/Y", strtotime($contest['round6'])); ?> - Championship Round!</span><br>
                    </div>
+                   <?php } ?>
                <?php } else { ?>
                 Voting Begins: <?php echo date("F jS, Y", strtotime($contest['voting_start_date'])); ?>
                <?php } ?>
@@ -160,9 +162,9 @@ if ($this->getHelperPluginManager()->getServiceLocator()->get('Application')->ge
                    <div class="bracket-round-dates">
                        <span <?php echo $contest['current_round'] == '1' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("m/d/Y", strtotime($contest['round1'])); ?> - Round One 64</span><br>
                        <span <?php echo $contest['current_round'] == '2' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("m/d/Y", strtotime($contest['round2'])); ?> - Round Two 32</span><br>
-                       <span <?php echo $contest['current_round'] == '3' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("m/d/Y", strtotime($contest['round3'])); ?> - Sweet 16</span><br>
-                       <span <?php echo $contest['current_round'] == '4' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("m/d/Y", strtotime($contest['round4'])); ?> - Elite 8</span><br>
-                       <span <?php echo $contest['current_round'] == '5' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("m/d/Y", strtotime($contest['round5'])); ?> - Final 4</span><br>
+                       <span <?php echo $contest['current_round'] == '3' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("m/d/Y", strtotime($contest['round3'])); ?> - Super 16</span><br>
+                       <span <?php echo $contest['current_round'] == '4' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("m/d/Y", strtotime($contest['round4'])); ?> - Great 8</span><br>
+                       <span <?php echo $contest['current_round'] == '5' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("m/d/Y", strtotime($contest['round5'])); ?> - Core 4</span><br>
                        <span <?php echo $contest['current_round'] == '6' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("m/d/Y", strtotime($contest['round6'])); ?> - Championship Round!</span><br>
                    </div>
                    <b>Winner Announced: <?php echo date("F jS, Y", strtotime($contest['winners_announce_date'])); ?></b>
