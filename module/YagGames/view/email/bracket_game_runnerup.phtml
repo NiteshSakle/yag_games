@@ -1,4 +1,4 @@
-<div style="width:48em;font-family: Verdana, Geneva, sans-serif;font-size: 16px;color: #333;">    
+<div style="width:48em;font-family: Trebuchet MS;font-size: 16px;color: #333;">    
     <table style="width:100%;">
         <tr>
             <td style="padding: 2px;text-align: center;">
@@ -13,7 +13,7 @@
             </td>
         </tr>
     </table>
-    <table style="font-size: 15px;font-family: Verdana, Geneva, sans-serif;width:55%;float: left;padding-left: 8px;line-height: 21px;text-align: left; margin: 5px 25px 5px 20px;">
+    <table style="font-size: 15px;font-family: Trebuchet MS;width:55%;float: left;padding-left: 8px;line-height: 21px;text-align: left; margin: 5px 25px 5px 20px;">
         <tr>
             <td style="line-height: 26px;">                      
                 Hi <?php echo $winner['f_name']; ?>,<br>
@@ -21,7 +21,7 @@
             </td>
         </tr>                                
         <tr><td style="padding-top: 30px;">You have won a print of your image up to 20" X 18"</td></tr>
-        <tr><td style="font-weight: bold">USE COUPON CODE <?php echo $promoCode; ?> AT CHECKOUT.*</td></tr>
+        <tr><td style="font-weight: bold">USE COUPON CODE <i>"<?php echo $promoCode; ?>"</i> AT CHECKOUT.*</td></tr>
         
         <tr><td style="padding-top: 50px;font-weight: bold">*IMPORTANT INFORMATION</td></tr>
         <tr><td>All prizes must be redeemed within 30 days of the contest's end date.</td></tr>
@@ -37,7 +37,7 @@
         <tr>
             <td colspan="2">
                 <a href="<?php echo $contest['main_site_url'] . '/photo/' . $kCrypt->enc($contestTopWinners[0]['media_id']) . '/' . str_replace(" ", "-", $contestTopWinners[0]['title']) . '.html' ?>" style="text-decoration: none;">
-                    <img src="<?php echo $mediaImage($contestTopWinners[0], 'icons', '190', '190'); ?>"  width="240px" height="240px;">
+                    <img src="<?php echo $mediaImage($contestTopWinners[0], 'icons', '240', '240'); ?>"  width="240px" height="240px;">
                 </a>
             </td>
         </tr>
@@ -116,15 +116,15 @@
             </td>
         </tr>
     </table>
-    <table style="border-spacing: 0; border-width: 0; font-size: 15px;padding-top: 50px;font-family: Verdana, Geneva, sans-serif;width: 100%;text-align: center;">
+    <table style="border-spacing: 0; border-width: 0; font-size: 15px;padding-top: 45px;font-family: Trebuchet MS;width: 100%;text-align: center;">
         <tr>
-            <td style="padding: 20px 10px 50px 10px; font-size: 18px; font-weight: bold;">  
+            <td style="padding: 5px; font-size: 18px; font-weight: bold;">  
                 The Your Art Gallery Team
             </td>   
         </tr>    
     </table>
-    <table style="text-align: center;padding-top:55px;font-size: 13px;width: 100%;">
-        <tr><td>The community continues at...</td></tr>                
+    <table style="text-align: center;padding-top:50px;font-size: 13px;width: 100%;">
+        <tr><td style="padding: 5px;">The community continues at...</td></tr>
         <tr>
             <td>
                 <a href="https://www.facebook.com/YourArtGallery" ><img src="<?php echo $contest['main_site_url'] . '/assets/files/content_files/facebook_share_new.png'; ?>" alt="" /></a>
