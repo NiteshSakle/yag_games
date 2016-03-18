@@ -263,7 +263,7 @@ class AnnounceWinnersController extends BaseConsoleController
                                 if ($winner['rank'] == 1) {
                                     //$250 off coupon generation
                                     $promotionsModel3 = $this->couponService->generateWinnersCoupon($contest, $winner['owner'], $winner['rank'], 3);
-                                    if ($promotionsTable->insert($promotionsModel2)) {
+                                    if ($promotionsTable->insert($promotionsModel3)) {
                                         $data['promoCode3'] = $promotionsModel3->promo_code;
                                     }
 

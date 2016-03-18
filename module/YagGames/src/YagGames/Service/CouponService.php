@@ -77,7 +77,7 @@ class CouponService
             $promotionsModel->shipping_type = 'FEDEX_GROUND,FEDEX_2_DAY,PRIORITY_OVERNIGHT,INTERNATIONAL_ECONOMY';
             $promotionsModel->membership_type = 0;
             $promotionsModel->membership_period = '';
-            $promotionsModel->user_type = NULL;
+            $promotionsModel->user_type = '';
 
             if ($winnerPosition == 1) {
                 //Winner
