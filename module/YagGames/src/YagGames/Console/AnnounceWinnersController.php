@@ -261,9 +261,16 @@ class AnnounceWinnersController extends BaseConsoleController
                                 $data['promoCode1'] = $promotionsModel1->promo_code;
                                 $data['promoCode2'] = $promotionsModel2->promo_code;
                                 if ($winner['rank'] == 1) {
+                                    //$250 off coupon generation
+                                    $promotionsModel3 = $this->couponService->generateWinnersCoupon($contest, $winner['owner'], $winner['rank'], 3);
+                                    if ($promotionsTable->insert($promotionsModel2)) {
+                                        $data['promoCode3'] = $promotionsModel3->promo_code;
+                                    }
+
                                     // Only for Champion - Upgrade Membership to Platinum for next 6 months
                                     $newMsExpDate = new \DateTime('+6 months', new \DateTimeZone('GMT'));
                                     $upgradeMebership = $this->membershipService->upgradeToPlatinumMembership($winner['owner'], $newMsExpDate);
+
                                     //Send Coupon Details
                                     $this->sendEmail('Congratulations! You are the CHAMPION of our ' . $contest['name'], $winner['email'], 'bracket_game_winner', $data);
                                 } else {
