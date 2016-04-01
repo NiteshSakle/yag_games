@@ -21,7 +21,8 @@
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
         <script type="text/javascript" language="javascript">
             var baseURL = '<?php echo $this->config('main_site', 'url') ?>';
-            var gameBasePath = '<?php echo $this->basePath() ?>';            
+            var gameBasePath = '<?php echo $this->basePath() ?>';
+            var disableRgtClk = false;
         </script>
         <link type="text/css" rel="stylesheet" href="<?php echo $this->config('main_site', 'theme_assets_path') ?>_mobile/bootstrap/css/bootstrap.min.css">
         <link type="text/css" rel="stylesheet" href="<?php echo $this->config('main_site', 'theme_assets_path') ?>_mobile/animate/set.css">
@@ -36,6 +37,7 @@
         <script type="text/javascript" src="<?php echo $this->config('main_site', 'url') ?>/assets/javascript/custom.js"></script>
         <script type="text/javascript" src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/js/jquery.validationEngine.js"></script>
         <script type="text/javascript" src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/js/error-messages.js"></script>
+        <script type="text/javascript" src="<?php echo $this->config('main_site', 'theme_assets_path') ?>_mobile/js/script.js"></script>
         <script type="text/javascript" src="<?php echo $this->basePath() ?>/mobile/js/script.js"></script>
     </head>
     <body>

@@ -31,31 +31,33 @@ $percentage = ($contest['total_entries']) ? floor(($contest['total_entries'] / $
         <button class="btn btn-primary grey-white-btn"  disabled="disabled">Coming Soon</button>
     <?php } ?>
 </div>
-<br/>
+<br>
 <div class="p0 col-md-8 col-lg-12">
     <button class="btn btn-primary" onclick="window.location = '<?php echo $this->basePath() ?>/<?php echo $contestType; ?>/learn-more'">LEARN MORE</button>
 </div>
 <?php if ($contest['voting_started']) { ?>
-    <br/>
+    <br>
     <div class="p0 col-md-8 col-lg-12">
         <button class="btn btn-primary" onclick="window.location = '<?php echo $this->basePath() ?>/<?php echo $contestType; ?>/rankings/<?php echo $contest['id']; ?>'">RANKINGS</button>
     </div>
 <?php } ?>
 <br>    
-<div class="text-center">
-    <?php if (isset($contest['entered']) && $contest['entered']): ?>
-        Share Your Submission for Votes
-    <?php else: ?>
-        Share this contest
-    <?php endif; ?>
+<div class="mb-10">
+    <div class="text-center">
+        <?php if (isset($contest['entered']) && $contest['entered']): ?>
+            Share Your Submission for Votes
+        <?php else: ?>
+            Share this contest
+        <?php endif; ?>
+    </div>
+    <?php
+    echo $this->partial('social_sharing.phtml', array(
+        'contest' => $contest,
+        'type' => $type,
+        'contestType' => $contestType,
+    ));
+    ?> 
 </div>
-<?php
-echo $this->partial('social_sharing.phtml', array(
-    'contest' => $contest,
-    'type' => $type,
-    'contestType' => $contestType,
-));
-?>   
 <div class="modal fade" id="yourIntoContestModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">                        
     <div class="modal-dialog" role="document">
         <div class="modal-content">

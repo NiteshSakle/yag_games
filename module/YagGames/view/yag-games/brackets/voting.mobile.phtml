@@ -1,0 +1,29 @@
+<?php
+    $this->headMeta()->setProperty('og:title', $contest['name']);
+    $this->headMeta()->setProperty('og:type', 'website');
+    
+    if($shareMedia) {
+        $this->headMeta()->setProperty('og:image', $this->mediaImage($shareMedia, 'samples'));
+        $this->headMeta()->setProperty('og:description', 'I entered the ' . $contest['name'] . ' on YOURARTGALLERY.COM. Check out now');
+    } else {
+        $this->headMeta()->setProperty('og:image', $this->config('aws', 'path') . $contest['thumbnail']);
+        $this->headMeta()->setProperty('og:description', $contest['name'] . ' is available on YOURARTGALLERY.COM. CHECKOUT NOW! ' . $this->config('main_site' ,'url') . '/contests');
+    }
+    
+    $this->headMeta()->setProperty('twitter:card', 'summary');
+    $this->headMeta()->setProperty('twitter:site', '@YourArtGallery');
+    $this->headMeta()->setProperty('twitter:title', $contest['name']);
+    
+    if($shareMedia) {
+        $this->headMeta()->setProperty('twitter:image', $this->mediaImage($shareMedia, 'samples'));
+        $this->headMeta()->setProperty('twitter:description', 'I entered the ' . $contest['name'] . ' on YOURARTGALLERY.COM. Check out now ');    
+    } else {
+        $this->headMeta()->setProperty('twitter:image', $this->config('aws', 'path') . $contest['thumbnail']);    
+        $this->headMeta()->setProperty('twitter:description', $contest['name'] . ' is available on YOURARTGALLERY.COM. CHECKOUT NOW! ' . $this->config('main_site' ,'url') . '/contests');    
+    }
+        
+    function artistName($artist){
+        $firtName = str_split($artist['f_name']);
+        return strtoupper($firtName[0]).".".$artist['l_name'];
+    }
+?>

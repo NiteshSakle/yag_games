@@ -1,0 +1,262 @@
+<link type="text/css" rel="stylesheet" href="<?php echo $this->basePath() ?>/mobile/css/swiper.min.css">
+<div id="content">
+    <div class="top-description">
+        <h2 class=" wowload fadeInUp purple_title vmin3">ENTER CONTEST NOW</h2>                
+    </div>
+    <h3 class="bebas">ENTER THIS CONTEST: <span class="purplecolor"><?php echo $contest['name']; ?></span></h3>
+    <p class="text-colored mb-10">Choose from one of your uploaded images and submit it for this contest or upload a new image!</p>
+    <div>        
+        <div class="text-center">
+            <button id="uploadArtBtn" class="btn btn-primary font10">UPLOAD NEW IMAGE</button>            
+        </div>
+        <div class="clear"><i><small>YAG Artist must have room in their portfolio if this option is selected</small></i></div>
+    </div><br>   
+    <div class="spacer">
+        <div class="clearfix grid">
+            <div class="swiper-container mb-10">
+                 <div id="subArtsList" class="swiper-wrapper">                    
+                 </div>                 
+            </div>
+            <small>Swipe arts to view more</small><br>
+            <i><small>Full image will be shown for voting</small></i><br>
+        </div>        
+        <div class="p0 col-md-8 col-lg-12 mt-10">
+            <button id="submitArtBtn" class="btn btn-primary" disabled="disable">SUBMIT THIS IMAGE</button>
+        </div>
+        <br>
+        <p>
+            <b>OPEN ENTRIES END: <?php echo date("F jS, Y", strtotime($contest['entry_end_date'])); ?><br>
+                VOTING BEGINS: <?php echo date("F jS, Y", strtotime($contest['voting_start_date'])); ?></b><br><br>
+            <b><?php echo date("m/d/Y", strtotime($contest['round1'])); ?>: </b>Round One 64<br>
+            <b><?php echo date("m/d/Y", strtotime($contest['round2'])); ?>: </b>Round Two 32<br>
+            <b><?php echo date("m/d/Y", strtotime($contest['round3'])); ?>: </b>SUPER 16<br>
+            <b><?php echo date("m/d/Y", strtotime($contest['round4'])); ?>: </b>GREAT 8<br>
+            <b><?php echo date("m/d/Y", strtotime($contest['round5'])); ?>: </b>CORE 4<br>
+            <b><?php echo date("m/d/Y", strtotime($contest['round6'])); ?>: </b>SEMI-FINAL<br><br>
+            <b><?php echo date("F jS, Y", strtotime($contest['winners_announce_date'])); ?>: </b><b class="purplecolor">WINNERS ANNOUNCED</b><br>
+        </p>				
+        <div class="bs-example">
+            <div id="accordion" class="panel-group contest-rules" data-accr-toggle-icons="true">
+                <div class="panel panel-default">
+                    <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" data-target="#collapseOne" >
+                        <h4 class="panel-title">
+                            <a class="bebas">CONTEST RULES&nbsp;&nbsp;<i id="faIconTwo" class="fa fa-plus-square-o"></i></a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse collapse" data-icon-id="#faIconTwo">
+                        <div class="panel-body">
+                            <p class="purple-txt text-bold r-head mb-5">About the contest:</p>
+                            <div>
+                                <?php echo $contest['description']; ?>
+                            </div>
+                            <p class="purple-txt text-bold r-head mt-5 mb-5">How to Enter:</p>
+                            <ul>
+                                <li>All submissions are online via each  contest listing.</li>
+                                <li>Upload a new image or select an image from your existing portfolio. <i>Please note:</i> You will not be able to upload a new image if you have already used all available space in your portfolio, based on your subscription level.  In this case, consider upgrading your membership or replacing an image from your portfolio.</li>
+                                <li>Once your submission has been completed, you will be directed to a confirmation page.</li>
+                                <li>Only one submission per artist.</li>
+                            </ul> 
+
+                            <p class="purple-txt text-bold r-head mt-5 mb-5">Who May Enter:</p>
+                            <p class="mb-5">Any professional, amateur, enthusiast or student photographic artist subscribed and a member of YOUR ART GALLERY.</p>
+
+                            <p class="purple-txt text-bold r-head mt-5 mb-5">Prizes:</p>
+                            <p class="purple-txt text-bold r-head mb-5">Champion <small>(In addition to the prizes they win along the way)</small></p>
+                            <ul>
+                                <li>$250 Credit towards a YourArtGallery.com purchase (ordered through YAG Customer Support)</li>                                
+                                <li>Free 6 Month Platinum Membership <br>
+                                    <span class="learn-more-sub-text">(If already a Platinum member your next 6 months are free)</span>
+                                </li>
+                            </ul>
+                            <p class="purple-txt text-bold r-head mb-5">Final Two</p>                                
+                            <ul class="mt-5">        
+                                <li>High Definition Photographic Print up to 12" x 18"</li>
+                                <li>High Definition Photographic Print Gallery Mounted up to 16" x 20"
+                                    <br>
+                                    <span class="learn-more-sub-text">(If you are not purchasing your own images Artist Royalty will still be applicable)</span>
+                                </li>        
+                            </ul>    
+                            <p class="purple-txt text-bold r-head mb-5">Final Four</p>        
+                            <ul class="mt-5">      
+                                <li>High Definition Photographic Print up to 12" x 18"<br>
+                                    <span class="learn-more-sub-text">(If you are not purchasing your own images Artist Royalty will still be applicable)</span>
+                                </li>        
+                            </ul>
+                            <p class="purple-txt text-bold r-head mb-5">Entry Fee:</p>
+                            <p class="mb-5">There is not cost to enter!</p>
+
+                            <p class="purple-txt text-bold r-head mb-5">Judging:</p>
+                            <p class="mb-5">Entries will be judged based on the Your Art Gallery rating system, in which the rating and voting authority your peers and thousands of YAG visitors identify the winning images.</p>
+
+                            <p class="purple-txt text-bold r-head mb-5">Consent Agreement:</p>
+                            <p class="mb-0">Submission of an entry to each contest automatically constitutes the contestant’s acceptance of all contest rules and conditions, and affirms the contestant acceptance of being in accordance with the Your Art Gallery LLC, Terms of Service.  All applicants and contestants retain full copyright of any image submitted.  The use of submitted images comply with the <a class="purple-txt onhover-ul" href="<?php echo $this->config('main_site', 'url') ?>/terms-of-service"><i>Terms of Service agreement</i></a> of Your Art Gallery LLC., and <a class="purple-txt onhover-ul" href="<?php echo $this->config('main_site', 'url') ?>/artist.welcome.php"><i>Your Promotion Center</i></a> social media opt-in settings at, <a href="<?php echo $this->config('main_site', 'url') ?>/portfolio.php"><i>Edit Your Portfolio</i></a>.
+                                <br>
+                                <br>
+                                <i>Entries not complying with contest rules set forth will be disqualified.</i>
+                                <br>
+                                <br>                
+                                If you have questions about the above information or would like to know if your image is eligible, please contact us at <span class="purple-txt">info@yourartgallery.com</span>.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="subArtModal" tabindex="-1" role="dialog" aria-labelledby="subArtModal" data-backdrop="static" data-keyboard="false">                        
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close btnxtop" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div> 
+            <div class="modal-body text-center">  
+                <h2 class="purple-txt mb-10 bebas mt-0">CONGRATULATIONS!</h2>
+                <p class="purple-txt">You have entered the  <strong><?php echo $contest['name']; ?> </strong></p>
+                <div>Voting Begins: <strong><?php echo date("F jS, Y", strtotime($contest['voting_start_date'])); ?></strong>. Follow your ranking daily.
+                    <br><br>
+                    Don’t forget to share with your friends!
+                </div>
+                <div>
+                    <?php if($media) { ?>
+                        <ul class="social_links mt-5 pl-0">
+                            <li><a class="addthis_button_facebook" addthis:url="<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/<?php echo $contest['id']; ?>/mid/<?php echo $media['media_id']; ?>"/><img src="<?php echo $this->config('main_site', 'url') ?>/assets/themes/yag_mobile/images/facebook.png"  alt="Share to Facebook" /></a></li>
+                            <li><a class="addthis_button_twitter" addthis:url="<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/<?php echo $contest['id']; ?>/mid/<?php echo $media['media_id']; ?>"><img src="<?php echo $this->config('main_site', 'url') ?>/assets/themes/yag_mobile/images/twitter.png"  alt="Share to Twitter" /></a></li>                
+                            <li><a class="addthis_button_pinterest_share" pi:pinit:url="<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/<?php echo $contest['id']; ?>/mid/<?php echo $media['media_id']; ?>" pi:pinit:media="<?php echo $this->mediaImage($media, 'samples'); ?>"><img src="<?php echo $this->config('main_site', 'url') ?>/assets/themes/yag_mobile/images/pinterest.png"  alt="Share to Pinterest" /></a></li>
+                            <li><a href="https://plusone.google.com/share?url=<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/<?php echo $contest['id']; ?>/mid/<?php echo $media['media_id'];?>" target="_blank" ><img src="<?php echo $this->config('main_site', 'url') ?>/assets/themes/yag_mobile/images/google_plus.png"  alt="Share to Google" /></a></li>
+                        </ul>
+                        <div class="purple-txt mb-5">OR</div>
+                        <div>
+                            <a href ="<?php echo $this->basePath() ?>/new-contest"  class="btn btn-primary">Enter Another Contest</a>
+                        </div>
+                    <?php } ?>
+                </div>
+            </div>
+        </div>        
+    </div>          
+</div>
+<div class="modal fade" id="uploadSubArtModal" tabindex="-1" role="dialog" aria-labelledby="uploadSubArtModal" data-backdrop="static" data-keyboard="false">                        
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close btnxtop" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div> 
+            <div class="modal-body text-center">  
+                <h2 class="purple-txt mb-10 bebas mt-0">Congratulations you have successfully entered the bracket contest!</h2>
+                <p>Your image has been uploaded to your profile and the bracket contest. <br>
+                We will reach out to you once it is time to start voting!</p>
+                <?php if($media) { ?>
+                <div class="uploaded-art">                    
+                    <img height="130" width="130" class="art-icon" src="<?php echo $this->mediaImage($media, 'icons'); ?>" >                    
+                    <img class="yag-icon" src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/man-icon-yag.png">
+                </div>
+                <div class="clear"></div>
+                <div>
+                    <ul class="social_links mt-10 pl-0">
+                        <li><a class="addthis_button_facebook" addthis:url="<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/<?php echo $contest['id']; ?>/mid/<?php echo $media['media_id']; ?>"/><img src="<?php echo $this->config('main_site', 'url') ?>/assets/themes/yag_mobile/images/facebook.png"  alt="Share to Facebook" /></a></li>
+                        <li><a class="addthis_button_twitter" addthis:url="<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/<?php echo $contest['id']; ?>/mid/<?php echo $media['media_id']; ?>"><img src="<?php echo $this->config('main_site', 'url') ?>/assets/themes/yag_mobile/images/twitter.png"  alt="Share to Twitter" /></a></li>                
+                        <li><a class="addthis_button_pinterest_share" pi:pinit:url="<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/<?php echo $contest['id']; ?>/mid/<?php echo $media['media_id']; ?>" pi:pinit:media="<?php echo $this->mediaImage($media, 'samples'); ?>"><img src="<?php echo $this->config('main_site', 'url') ?>/assets/themes/yag_mobile/images/pinterest.png"  alt="Share to Pinterest" /></a></li>
+                        <li><a href="https://plusone.google.com/share?url=<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/<?php echo $contest['id']; ?>/mid/<?php echo $media['media_id'];?>" target="_blank" ><img src="<?php echo $this->config('main_site', 'url') ?>/assets/themes/yag_mobile/images/google_plus.png"  alt="Share to Google" /></a></li>
+                    </ul>
+                    <div class="purple-txt mb-5">OR</div>
+                    <div>
+                        <a href ="<?php echo $this->basePath() ?>/new-contest"  class="btn btn-primary">Enter Another Contest</a>
+                    </div>                    
+                </div>
+                <?php } ?>
+            </div>
+        </div>        
+    </div>          
+</div>
+<script type="text/javascript">
+    var addthis_share = addthis_share || {}
+    addthis_share = {
+        passthrough: {
+            twitter: {
+                text: 'I entered the <?php echo $contest['name'];?>  on YOURARTGALLERY.COM.'
+            }
+        }
+    }
+</script>
+<script type="text/javascript" src="<?php echo $this->basePath() ?>/mobile/js/swiper.min.js"></script>
+<script>
+    $(document).ready(function(){
+        <?php if ($showPopupDiv) { ?>
+            $('div#uploadSubArtModal').modal('show');
+        <?php } elseif ($showSubmitPopupDiv) { ?>
+            $('div#subArtModal').modal('show');
+        <?php } ?>
+        $.ajax({
+            url: gameBasePath + '/media/get-my-media/size/100',
+            type: 'get',            
+            dataType: 'html',
+            success: function(data) {
+                $('#subArtsList').html(data);
+                $('#submitArtBtn').removeAttr('disabled');
+            },
+            beforeSend: function () {
+                showLoader();
+            },
+            complete: function () {
+                hideLoader();
+            }
+        }); 
+        
+        var contestId = "<?php echo $contest['id']; ?>";
+        $('#submitArtBtn').on('click', function() {
+            
+            if ($('div#subArtsList .swiper-slide-active').length == 1  && $('div#subArtsList .swiper-slide-active').data('mediaid') > 0) {
+                $.ajax({
+                    url: gameBasePath + '/brackets/art-submission',
+                    type: "POST",
+                    data: {'media_id': $('div#subArtsList .swiper-slide-active').data('mediaid'), 'contestId': contestId },
+                    dataType: 'json',
+                    success: function(data) {
+                        if (data.success) {
+                            location.reload();
+                        } else {
+                            alert(data.message);
+                        }
+                    },
+                    beforeSend: function () {
+                        showLoader();
+                    },
+                    complete: function () {
+                        hideLoader();
+                    }
+                });
+            } else {
+                alert('Art is not selected, please select the Art which you want to submit or upload new art!')
+            }
+        });
+        
+        $('#uploadArtBtn').on('click', function(){
+           uploadArt(contestId); 
+        });
+    });
+    
+    function uploadArt(contestId) {
+        var request = $.ajax({
+            url: gameBasePath + '/brackets/upload-art',
+            type: "POST",
+            data: {'contestId': contestId},
+            dataType: 'json',
+            beforeSend: function () {
+                showLoader();
+            },
+            complete: function () {
+                hideLoader();
+            }
+        });
+        request.done(function (msg) {
+            if (msg.success) {
+                window.location = baseURL + '/addnew_media.php';
+            } else {
+                alert(msg.message)
+            }
+        });
+        request.fail(function (jqXHR, textStatus) {
+            alert("Request failed: " + textStatus);
+        });
+    }
+</script>

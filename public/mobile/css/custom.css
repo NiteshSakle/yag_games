@@ -12,10 +12,67 @@
     border: 2px solid #C3C3C3 !important;
     color: #68398c !important; 
 }
-.active-btn {
+.btn-primary.active-btn {
     background-color: #8675b5 !important;
+    color: #FFF;
 }
-.active-btn:hover {color: #333333;}
+.btn-primary.active-btn:hover {color: #333333;}
 #yourIntoContestModal div.img-hld{ margin-left: 10%; }
 #yourIntoContestModal img.down-image { position: absolute; margin: 5% 0%; border: 4px solid rgb(223, 220, 125); }
 #yourIntoContestModal img.upper-image { position: relative;margin: 5% 0%; }
+div.bracket-empty-box { 
+    width: 80px;
+    height: 80px;
+    border: 2px solid #888;
+}
+div.brk-img {    
+    margin: 0 auto;
+    width: 150px;
+}
+.onhover-ul:hover {
+    text-decoration: underline !important;
+}
+div.contest-rules ul {
+    margin-left: -19px;
+}
+div.swiper-slide {    
+    width: 100% !important;
+    height: 150px;
+}
+div.swiper-slide img.sbt-img{
+    width: 150px;
+    height: 150px;
+    border: 2px solid #AAA;
+}
+button#uploadArtBtn {
+    width: 50%;
+}
+div.vt-sec{
+    margin-left: -10px;
+}
+ul.social_links li {
+    list-style: none;
+    display: inline;
+}
+ul.social_links li img {
+    width: 25px;
+    height: 25px;
+}
+div#uploadSubArtModal div.uploaded-art {
+    border: 4px solid rgb(140, 140, 140);
+    height: 138px;
+    margin: 0 auto;
+    width: 138px;
+}
+div#uploadSubArtModal div.uploaded-art img.art-icon { float: left;margin: 0; }
+div#uploadSubArtModal div.uploaded-art img.yag-icon { float: right; margin: -125px -28px 0 28px; }
+.border-b{
+    border-bottom: 2px solid #999;
+}
+.text-gold {
+    color: #C8B64C;
+}
+.default-cursor {
+    cursor: default !important;
+}
+button.view-past-winners { margin-top: 25px; }

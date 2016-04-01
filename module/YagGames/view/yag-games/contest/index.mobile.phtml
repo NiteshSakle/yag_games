@@ -15,27 +15,40 @@
             $entryEndDate = strtotime($contest['entry_end_date']);
             $percentage = ($contest['total_entries']) ? floor(($contest['total_entries'] / $contest['max_no_of_photos']) * 100) : 0;
             ?>
-            <div class="spacer">
-                <h2 class="bebas"><?php echo $contest['name']; ?></h2>
-                <p class="wowload  text-colored" > <?php echo $contest['description']; ?>
-                </p>
+            <div class="border-b spacer mb-10 mt-10">
+                <?php
+                    if ($type == 'exclusive') {
+                        ?>
+                        <span class="text-gold text-bold">Exclusive</span>
+                        <h2 class="bebas mt-5"><?php echo $contest['name']; ?></h2>
+                    <?php  } else { ?>
+                        <h2 class="bebas"><?php echo $contest['name']; ?></h2>
+                    <?php }
+                    ?>
+                
+                <p class="wowload  text-colored" > <?php echo $contest['description']; ?></p>
                 <p>Voting Begins: <b><?php echo date("F jS, Y", strtotime($contest['voting_start_date'])); ?></b></br>
                     Winner Announced: <b><?php echo date("F jS, Y", strtotime($contest['winners_announce_date'])); ?></b></br>
                 </p>
-                <div   class=" clearfix grid ">
-                    <figure class="effect-oscar  wowload fadeInUp   " style="width:100%">                    
+                <div class="clearfix grid ">
+                    <figure class="default-cursor" style="width:100%">                    
                         <img src="<?php echo $this->config('aws', 'path') . $contest['thumbnail']; ?>" >
                     </figure>
                 </div>
-                <br/>
+                <br>
                 <?php
                 switch ($type) {
                     case 'new':
-                        $partial = 'new_bottombar.mobile.phtml';
+                        $partial = 'new_bbar.mobile.phtml';
                         break;
                     case 'exclusive':
-                        $partial = 'exclusive_rsidebar.mobile.phtml';
+                        $partial = 'exclusive_bbar.mobile.phtml';
+                        break;                 
+                    case 'my':
+                        $partial = 'my_bbar.mobile.phtml';
                         break;
+                    case 'default':
+                        $partial = 'my_bbar.mobile.phtml';
                 }
 
                 switch ($contest['contest_type']) {
@@ -50,14 +63,14 @@
                     case 'default':
                         $contestType = 'brackets';
                 }
-
+                
                 echo $this->partial($partial, array(
                     'contest' => $contest,
                     'type' => $type,
                     'contestType' => $contestType,
                 ));
                 ?>
-            </div>
+            </div>            
             <?php
         }
     }
@@ -87,12 +100,12 @@ echo $this->paginationControl($this->paginator, 'Sliding', 'paginator-slide', ar
     </div>          
 </div>
 <script>
-    <?php if ($type == 'exclusive' && $session->mem_id && $session->membership != 4 ) { ?>
+<?php if ($type == 'exclusive' && $session->mem_id && $session->membership != 4) { ?>
         $('#upgradeMemShipModal').modal({
             keyboard: false,
-            show:true
+            show: true
         }).on('hidden.bs.modal', function (e) {
-           window.location.href = "<?php echo $this->config('main_site', 'url') ?>/contests";
+            window.location.href = "<?php echo $this->config('main_site', 'url') ?>/contests";
         });
-    <?php } ?>
+<?php } ?>
 </script>
