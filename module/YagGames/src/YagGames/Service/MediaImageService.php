@@ -12,9 +12,10 @@ class MediaImageService
     $this->config = $config;
   }
 
-  public function __invoke($media, $type , $size = "null")
+  public function __invoke($media, $type , $size = "null", $crop = "null")
   {   
     $sizes = ($size === "null") ? "" : "&size=" . $size ;
+    $crop = ($crop === "null") ? "" : "&crop=" . $crop ;
     $version = ($this->config['main_site']['image_version'] === "null") ? "" : "&v=" . $this->config['main_site']['image_version'] ;
     $mediaUrl = $this->config['main_site']['url'];
     if ($this->config['main_site']['cloudfront_url']) {
@@ -24,7 +25,7 @@ class MediaImageService
     $imglink = $mediaUrl .'/'. 
                $type .'/'.
                $this->kcryptService->enc($media['media_id']) .'/'.
-               $this->kcryptService->enc($media['folder_id']) .'/photo.jpg' . $sizes . $version;
+               $this->kcryptService->enc($media['folder_id']) .'/photo.jpg' . $sizes . $crop . $version;
 
     return $imglink;
   }

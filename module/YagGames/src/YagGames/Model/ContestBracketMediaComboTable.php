@@ -8,7 +8,7 @@ class ContestBracketMediaComboTable extends BaseTable
     public function insert(ContestBracketMediaCombo $contestBracketMediaCombo)
     {
         try {
-            
+
             $this->created($contestBracketMediaCombo);
             if (!$this->isValid($contestBracketMediaCombo)) {
                 return false;
@@ -42,24 +42,24 @@ class ContestBracketMediaComboTable extends BaseTable
         $rowset = $this->tableGateway->select(array('id' => $contestBracketMediaComboId));
         $contestRow = $rowset->current();
         return $contestRow;
-    }   
-    
+    }
+
     public function fetchAll()
     {
-        $select = new \Zend\Db\Sql\Select ;
+        $select = new \Zend\Db\Sql\Select;
         $select->from(array('c' => 'contest_bracket_media_combo'))
                 ->columns(array('*'));
-         
-        $statement = $this->getSql()->prepareStatementForSqlObject($select); 
-        $resultSet = $statement->execute(); 
-        
+
+        $statement = $this->getSql()->prepareStatementForSqlObject($select);
+        $resultSet = $statement->execute();
+
         return $resultSet;
     }
-    
-    public function getTopRatedMediaForNextRound($contestId, $round) 
+
+    public function getTopRatedMediaForNextRound($contestId, $round)
     {
-        try {                 
-            
+        try {
+
             $sqlStr = "SELECT x.*,
                        CASE
                          WHEN x.cmediaid1_votes > x.cmediaid2_votes THEN x.contest_media_id1
@@ -76,64 +76,65 @@ class ContestBracketMediaComboTable extends BaseTable
                                (SELECT COUNT(id) FROM contest_media_rating cmr1 WHERE  cmr1.contest_media_id = cbmc.contest_media_id1 AND round = :round) AS cmediaid1_votes,
                                (SELECT COUNT(id) FROM contest_media_rating cmr1 WHERE  cmr1.contest_media_id = cbmc.contest_media_id2 AND round = :round) AS cmediaid2_votes FROM contest_bracket_media_combo cbmc WHERE cbmc.contest_id = :contestId AND cbmc.round = :round) 
                       x ORDER  BY x.combo_id ASC";
-            
+
             $sqlStmt = $this->tableGateway->adapter->createStatement($sqlStr, array(
-                           'contestId' => $contestId,
-                           'round' => $round
-                        ));
-             
+                'contestId' => $contestId,
+                'round' => $round
+            ));
+
             $resultset = $sqlStmt->execute();
-            
+
             $records = array();
-            
+
             foreach ($resultset as $row) {
                 $records[] = $row;
             }
-            
+
             return $records;
         } catch (Exception $e) {
             $this->logException($e);
             return false;
         }
     }
-    
+
     public function fetchRecordByRoundAndMedia($round, $contestMediaId, $contestId)
     {
-        $select = new \Zend\Db\Sql\Select ;
+        $select = new \Zend\Db\Sql\Select;
         $select->from(array('c' => 'contest_bracket_media_combo'))
                 ->columns(array('*'))
                 ->where(array(
                     'c.round' => $round,
                     'c.contest_id' => $contestId));
         $select->where
-                ->NEST
-                ->equalTo('c.contest_media_id1', $contestMediaId)
-                ->OR
-                ->equalTo('c.contest_media_id2', $contestMediaId)
-                ->UNNEST;                
-         
-        $statement = $this->getSql()->prepareStatementForSqlObject($select); 
-        $resultSet = $statement->execute(); 
-        
+                        ->NEST
+                        ->equalTo('c.contest_media_id1', $contestMediaId)
+                        ->OR
+                        ->equalTo('c.contest_media_id2', $contestMediaId)
+                ->UNNEST;
+
+        $statement = $this->getSql()->prepareStatementForSqlObject($select);
+        $resultSet = $statement->execute();
+
         return $resultSet->current();
     }
-    
+
     public function fetchContestComboDetails($contestId)
     {
-        $select = new \Zend\Db\Sql\Select ;
+        $select = new \Zend\Db\Sql\Select;
         $select->from(array('c' => 'contest_bracket_media_combo'))
                 ->columns(array('*'))
                 ->where(array('c.contest_id' => $contestId))
-                ->order(array('c.round','c.combo_id'));
-         
-        $statement = $this->getSql()->prepareStatementForSqlObject($select); 
-        $resultSet = $statement->execute(); 
-        
+                ->order(array('c.round', 'c.combo_id'));
+
+        $statement = $this->getSql()->prepareStatementForSqlObject($select);
+        $resultSet = $statement->execute();
+
         $comboDetails = array();
         foreach ($resultSet as $row) {
             $comboDetails[$row['round']][] = $row;
         }
-        
+
         return $comboDetails;
     }
+
 }

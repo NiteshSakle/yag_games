@@ -153,9 +153,9 @@
                             <div class="bracket-round-dates">
                                 <span <?php echo $contest['current_round'] == '1' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("m/d/Y", strtotime($contest['round1'])); ?> - Round One 64</span><br>
                                 <span <?php echo $contest['current_round'] == '2' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("m/d/Y", strtotime($contest['round2'])); ?> - Round Two 32</span><br>
-                                <span <?php echo $contest['current_round'] == '3' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("m/d/Y", strtotime($contest['round3'])); ?> - Sweet 16</span><br>
-                                <span <?php echo $contest['current_round'] == '4' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("m/d/Y", strtotime($contest['round4'])); ?> - Elite 8</span><br>
-                                <span <?php echo $contest['current_round'] == '5' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("m/d/Y", strtotime($contest['round5'])); ?> - Final 4</span><br>
+                                <span <?php echo $contest['current_round'] == '3' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("m/d/Y", strtotime($contest['round3'])); ?> - Super 16</span><br>
+                                <span <?php echo $contest['current_round'] == '4' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("m/d/Y", strtotime($contest['round4'])); ?> - Great 8</span><br>
+                                <span <?php echo $contest['current_round'] == '5' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("m/d/Y", strtotime($contest['round5'])); ?> - Core 4</span><br>
                                 <span <?php echo $contest['current_round'] == '6' ? 'class="bracket-current-round"' : ""; ?>><?php echo date("m/d/Y", strtotime($contest['round6'])); ?> - Championship Round!</span><br>
                             </div>
                         <?php } ?>
@@ -198,24 +198,29 @@
             <p>Any professional, amateur, enthusiast or student photographic artist subscribed and a member of YOUR ART GALLERY.</p>
 
             <h1 class="learn-more-sub-head">Prizes:</h1>
-            <h1 class="learn-more-sub-head">First Place Winner</h1>
-            <ul>
-                <li>$250 Credit towards a YourArtGallery.com purchase (ordered through YAG Customer Support)</li>
-                <li>Gallery Plexi Mounted High Definition Photographic Print up to a 16" x 20" print <br>
-                    <span class="learn-more-sub-text">(If you are not purchasing your own images Artist Royalty will still be applicable) </span>
-                </li>
+            <h1 class="learn-more-sub-head">Champion (In addition to the prizes they win along the way)</h1>
+            <ul class="disc">
+                <li>$250 Credit toward a purchase at YourArtGallery.com<br>
+                    <span class="learn-more-sub-text">(ordered through YAG Customer Support)</span>
+                </li>       
                 <li>Free 6 Month Platinum Membership <br>
                     <span class="learn-more-sub-text">(If already a Platinum member your next 6 months are free)</span>
                 </li>
             </ul>
 
-            <h1 class="learn-more-sub-head">Runners Up</h1>    
-            <span>(2nd, 3rd, 4th, and 5th)</span>
-            <ul style=" margin-top: 5px;">        
-                <li>High Definition Photographic Print up to 12" x 18” <br>
+            <h1 class="learn-more-sub-head">Final Two</h1>        
+            <ul class="disc" style=" margin-top: 5px;">        
+                <li>A high definition photographic print up to 12" x 18"</li>
+                <li>A high definition photographic print gallery mounted up to 16" x 20"<br>
+                    <span class="learn-more-sub-text">(If you are not purchasing your own images Artist Royalty will still be applicable)</span>
+                </li>
+            </ul>    
+            <h1 class="learn-more-sub-head">Core Four</h1>        
+            <ul class="disc" style=" margin-top: 5px;">        
+                <li>A high definition photographic print up to 12" x 18"<br>
                     <span class="learn-more-sub-text">(If you are not purchasing your own images Artist Royalty will still be applicable)</span>
                 </li>        
-            </ul>    
+            </ul>   
 
             <h1 class="learn-more-sub-head">Entry Fee:</h1>
             <p>There is not cost to enter!</p>
@@ -258,11 +263,11 @@
             <img class="icon_man" src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/thankyou1.png" /></div> 
         <div class="social-links-upload-another-img">
             <ul class="social_links">
-                <li><a class="addthis_button_facebook" addthis:url="<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/<?php echo $contest['id']; ?>/mid/<?php echo $mediaId;?>"/><img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/facebook.png"  alt="Share to Facebook" /></a></li>
-                <li><a class="addthis_button_twitter" addthis:url="<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/<?php echo $contest['id']; ?>/mid/<?php echo $mediaId;?>"><img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/twitter.png"  alt="Share to Twitter" /></a></li>
+                <li><a class="addthis_button_facebook" addthis:url="<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/<?php echo $contest['id']; ?>/mid/<?php echo $mediaId;?>"/><img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/facebook.png"  alt="Share to Facebook"  onclick="save_share_activity('facebook',<?php echo $mediaId; ?>,'0',<?php echo $contest['id']; ?>);" /></a></li>
+                <li><a class="addthis_button_twitter" addthis:url="<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/<?php echo $contest['id']; ?>/mid/<?php echo $mediaId;?>"><img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/twitter.png"  alt="Share to Twitter"  onclick="save_share_activity('twitter',<?php echo $mediaId; ?>,'0',<?php echo $contest['id']; ?>);" /></a></li>
                 <!--<li><a class="addthis_button_linkedin" addthis:url="<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/<?php echo $contest['id']; ?>/mid/<?php echo $mediaId;?>"><img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/linkedin.png"  alt="Linkedin" /></a></li>-->
-                <li><a class="addthis_button_pinterest_share" pi:pinit:url="<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/<?php echo $contest['id']; ?>/mid/<?php echo $mediaId;?>" pi:pinit:media="<?php echo $this->mediaImage($media, 'samples'); ?>"><img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/pinterest.png"  alt="Share to Pinterest" /></a></li>
-                <li><a href="https://plusone.google.com/share?url=<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/<?php echo $contest['id']; ?>/mid/<?php echo $mediaId;?>" target="_blank" ><img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/google.png"  alt="Share to Google" /></a></li>
+                <li><a class="addthis_button_pinterest_share" pi:pinit:url="<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/<?php echo $contest['id']; ?>/mid/<?php echo $mediaId;?>" pi:pinit:media="<?php echo $this->mediaImage($media, 'samples'); ?>"><img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/pinterest.png"  alt="Share to Pinterest"  onclick="save_share_activity('pinterest',<?php echo $mediaId; ?>,'0',<?php echo $contest['id']; ?>);" /></a></li>
+                <li><a href="https://plusone.google.com/share?url=<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/<?php echo $contest['id']; ?>/mid/<?php echo $mediaId;?>" target="_blank" ><img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/google.png"  alt="Share to Google"  onclick="save_share_activity('gplus',<?php echo $mediaId; ?>,'0',<?php echo $contest['id']; ?>);" /></a></li>
             </ul>
             <span class="or">or</span>
             <div class="btn-upload-another-img"><input type="button" onClick="javascript:window.location.href = '<?php echo $this->basePath() ?>/new-contest'"  value="Enter Another Contest" name="" class="back"></div>
@@ -286,11 +291,11 @@
         </div> 
         <div class="social-links-upload-another-img">
             <ul class="social_links">
-                <li><a class="addthis_button_facebook" addthis:url="<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/<?php echo $contest['id']; ?>/mid/<?php echo $media['media_id']; ?>"/><img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/facebook.png"  alt="Share to Facebook" /></a></li>
-                <li><a class="addthis_button_twitter" addthis:url="<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/<?php echo $contest['id']; ?>/mid/<?php echo $media['media_id']; ?>"><img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/twitter.png"  alt="Share to Twitter" /></a></li>
+                <li><a class="addthis_button_facebook" addthis:url="<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/<?php echo $contest['id']; ?>/mid/<?php echo $media['media_id']; ?>"/><img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/facebook.png"  alt="Share to Facebook"  onclick="save_share_activity('facebook',<?php echo $media['media_id']; ?>,'0',<?php echo $contest['id']; ?>);" /></a></li>
+                <li><a class="addthis_button_twitter" addthis:url="<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/<?php echo $contest['id']; ?>/mid/<?php echo $media['media_id']; ?>"><img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/twitter.png"  alt="Share to Twitter"  onclick="save_share_activity('twitter',<?php echo $media['media_id']; ?>,'0',<?php echo $contest['id']; ?>);" /></a></li>
                 <!--<li><a class="addthis_button_linkedin" addthis:url="<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/<?php echo $contest['id']; ?>/mid/<?php echo $media['media_id']; ?>"><img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/linkedin.png"  alt="Linkedin" /></a></li>-->
-                <li><a class="addthis_button_pinterest_share" pi:pinit:url="<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/<?php echo $contest['id']; ?>/mid/<?php echo $media['media_id']; ?>" pi:pinit:media="<?php echo $this->mediaImage($media, 'samples'); ?>"><img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/pinterest.png"  alt="Share to Pinterest" /></a></li>
-                <li><a href="https://plusone.google.com/share?url=<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/<?php echo $contest['id']; ?>/mid/<?php echo $media['media_id'];?>" target="_blank" ><img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/google.png"  alt="Share to Google" /></a></li>
+                <li><a class="addthis_button_pinterest_share" pi:pinit:url="<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/<?php echo $contest['id']; ?>/mid/<?php echo $media['media_id']; ?>" pi:pinit:media="<?php echo $this->mediaImage($media, 'samples'); ?>"><img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/pinterest.png"  alt="Share to Pinterest"  onclick="save_share_activity('pinterest',<?php echo $media['media_id']; ?>,'0',<?php echo $contest['id']; ?>);" /></a></li>
+                <li><a href="https://plusone.google.com/share?url=<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/<?php echo $contest['id']; ?>/mid/<?php echo $media['media_id'];?>" target="_blank" ><img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/google.png"  alt="Share to Google"  onclick="save_share_activity('gplus',<?php echo $media['media_id']; ?>,'0',<?php echo $contest['id']; ?>);" /></a></li>
             </ul>
             <span class="or">or</span>
             <div class="btn-upload-another-img"><input type="button" onClick="javascript:window.location.href = '<?php echo $this->basePath() ?>/new-contest'"  value="Enter Another Contest" name="" class="back"></div>
@@ -377,7 +382,8 @@
 
         request.done(function (msg) {
             if (msg.success) {
-                 location.reload(); 
+                save_share_activity('entered_contest', mediaId, '0', contestId);
+                location.reload(); 
             } else {
                 alert(msg.message)
             }
@@ -387,7 +393,7 @@
             alert("Request failed: " + textStatus);
         });
     }
-
+    
     function uploadArt(contestId) {
         var request = $.ajax({
             url: gameBasePath + '/brackets/upload-art',

@@ -28,6 +28,7 @@ class BracketsRoundCheckController extends BaseConsoleController
         $contestBracketRoundTable = $this->getServiceLocator()->get('YagGames\Model\ContestBracketRoundTable');
         $contestBracketMediaComboTable = $this->getServiceLocator()->get('YagGames\Model\ContestBracketMediaComboTable');
         $records = $contestBracketRoundTable->fetchAllActiveContests();
+        $this->config = $this->getConfig();
 
         $today = new \DateTime(date("Y-m-d"));
         foreach ($records as $record) {
@@ -104,6 +105,9 @@ class BracketsRoundCheckController extends BaseConsoleController
                         $bracketMediaCombo->contest_media_id1 = $roundWinners[$j]['next_round_media_id'];
                         $bracketMediaCombo->contest_media_id2 = isset($roundWinners[$j + 1]) ? $roundWinners[$j + 1]['next_round_media_id'] : 0;
                         $contestBracketMediaComboTable->insert($bracketMediaCombo);
+
+                        $this->nextRoundQualifiedEmail($bracketMediaCombo->contest_media_id1, $round);
+                        $this->nextRoundQualifiedEmail($bracketMediaCombo->contest_media_id2, $round);
                     }
 
                     $this->updateContestround($record['contest_id'], $round);
@@ -122,6 +126,36 @@ class BracketsRoundCheckController extends BaseConsoleController
         $contestRound['current_round'] = $round;
 
         return $contestBracketRoundTable->updateByContestId($contestRound, $contestId);
+    }
+
+    private function nextRoundQualifiedEmail($contestMediaId, $round)
+    {
+        $contestMediaTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaTable');
+        $contestMediaData = $contestMediaTable->getContestMediaDetails($contestMediaId);
+        if (!$contestMediaData) {
+            return $this->printAndLog("No contest media found");
+        }
+        $contestMediaData['round_name'] = $this->getRoundName($round);
+        $contestMediaData['main_site_url'] = $this->config['main_site']['url'];
+        
+        $this->sendEmail('Congratulations! You are one of the ' . $contestMediaData['round_name'] . '.', $contestMediaData['email'], 'bracket_game_round' . $round . '_qualified', $contestMediaData);
+    }
+
+    private function getRoundName($round)
+    {
+        if ($round == 6) {
+            return "CHAMPION";
+        } elseif ($round == 5) {
+            return "CORE 4";
+        } elseif ($round == 4) {
+            return "GREAT 8";
+        } elseif ($round == 3) {
+            return "SUPER 16";
+        } elseif ($round == 2) {
+            return "TOP 32";
+        } else {
+            return "";
+        }
     }
 
 }

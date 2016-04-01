@@ -99,13 +99,17 @@
 <script>
 
     $('.remove').click(function () {
+        var contestId = $(this).attr('contest_id');
+        var mediaId = $(this).attr('media_id');
         if (confirm("Do you want to remove this photo from the contest ?")) {
             $.ajax({
                 url: '<?php echo $this->basePath('/manager/delete-contest-media'); ?>',
                 type: 'POST',
-                data: 'contest_id=' + $(this).attr('contest_id') + '&media_id=' + $(this).attr('media_id'),
+                data: 'contest_id=' + contestId + '&media_id=' + mediaId,
                 success: function (response) {
+                    saveArtistActivity('removed_contest', mediaId, contestId);
                     bootbox.alert(response.message, function () {
+                        
                         location.reload();
                     });                    
                     location.reload();

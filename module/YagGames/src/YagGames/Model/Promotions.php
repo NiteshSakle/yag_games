@@ -26,7 +26,7 @@ class Promotions extends BaseModel
     public $quantity;
     public $promotype;
     public $peroff;
-    public $dollaroff;
+    public $prioff;
     public $bulkbuy;
     public $bulktype;
     public $bulkfree;
@@ -51,5 +51,5 @@ class Promotions extends BaseModel
     public $shipping_type;
     public $membership_type;
     public $membership_period;
-
+    public $user_type;
 }

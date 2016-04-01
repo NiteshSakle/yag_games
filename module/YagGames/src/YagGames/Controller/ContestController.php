@@ -158,7 +158,7 @@ class ContestController extends BaseController
   }
   
   private function getContestList($type)
-  {
+  {  
     $login_redirect = $this->params()->fromQuery('login_redirect') ? $this->params()->fromQuery('login_redirect') : '';
     $contestTable = $this->getServiceLocator()->get('YagGames\Model\ContestTable');
     $data = $contestTable->fetchAllByType($type, $this->userId, $this->page, $this->size);
@@ -216,11 +216,11 @@ class ContestController extends BaseController
     } elseif ($rank == 2 ) {
         return "RUNNER UP";
     } elseif ($rank > 2 && $rank <=4) {
-        return "FINAL 4";
+        return "CORE 4";
     } elseif ($rank > 4 && $rank <=8) {
-        return "ELITE 8";
+        return "GREAT 8";
     } elseif ($rank > 8 && $rank <=16) {
-        return "SWEET 16";
+        return "SUPER 16";
     } else {
         return "";
     }

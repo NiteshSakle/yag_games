@@ -6,22 +6,23 @@ use Zend\Console\Request as ConsoleRequest;
 
 class AnnounceWinnersController extends BaseConsoleController
 {
+
     protected $membershipService;
     protected $couponService;
     protected $mediaImage;
-    protected $ordinal; 
+    protected $ordinal;
     protected $config;
     protected $kCrypt;
-            
+
     function __construct($membershipService, $couponService, $mediaImage, $ordinal, $kCrypt)
-    {        
+    {
         $this->membershipService = $membershipService;
         $this->couponService = $couponService;
         $this->mediaImage = $mediaImage;
         $this->ordinal = $ordinal;
         $this->kCrypt = $kCrypt;
     }
-    
+
     public function indexAction()
     {
         $request = $this->getRequest();
@@ -48,11 +49,11 @@ class AnnounceWinnersController extends BaseConsoleController
         $this->config = $this->getConfig();
 
         foreach ($contests as $contest) {
-            if ($this->announceWinners($contest)) {                
+            if ($this->announceWinners($contest)) {
                 $contestArtists = $contestMediaTable->getContestArtistData($contest['id']);
                 $contest['main_site_url'] = $this->config['main_site']['url'];
                 foreach ($contestArtists as $contestArtist) {
-                    $contest['user_data'] = $contestArtist;                    
+                    $contest['user_data'] = $contestArtist;
                     $contest['contest_type'] = $this->getRouteName($contest['type_id']);
                     $this->sendEmail('Winners for contest - ' . $contest['name'], $contestArtist['email'], 'winners_announced', $contest);
                     //$mailer->send($this->config['from_address_email'], $email, $subject, $body);
@@ -69,20 +70,20 @@ class AnnounceWinnersController extends BaseConsoleController
         }
     }
 
-
-    private function announceWinners($contestData) {
+    private function announceWinners($contestData)
+    {
 
         if ($contestData['type_id'] == 3) {
 
             $contestBracketMediaComboTable = $this->getServiceLocator()->get('YagGames\Model\ContestBracketMediaComboTable');
 
-            $winner = $contestBracketMediaComboTable->getTopRatedMediaForNextRound($contestData['id'], 6);           
-           
+            $winner = $contestBracketMediaComboTable->getTopRatedMediaForNextRound($contestData['id'], 6);
+
             if ($this->updateBracketGameWinners($winner, $contestData)) {
-                $this->updateContestround($contestData['id'], 7);                
+                $this->updateContestround($contestData['id'], 7);
                 return TRUE;
             }
-            
+
             return FALSE;
         } else {
 
@@ -124,29 +125,31 @@ class AnnounceWinnersController extends BaseConsoleController
 
         return $monthlyAwardTable->insert($monthlyAward);
     }
-    
-    private function updateContestround($contestId, $round) {
-        $contestBracketRoundTable = $this->getServiceLocator()->get('YagGames\Model\ContestBracketRoundTable');        
+
+    private function updateContestround($contestId, $round)
+    {
+        $contestBracketRoundTable = $this->getServiceLocator()->get('YagGames\Model\ContestBracketRoundTable');
         $contestBracketRound = array();
         $contestBracketRound['contest_id'] = $contestId;
         $contestBracketRound['current_round'] = $round;
 
         return $contestBracketRoundTable->updateByContestId($contestBracketRound, $contestId);
     }
-    
-    private function updateBracketGameWinners($winner , $contestData) {        
+
+    private function updateBracketGameWinners($winner, $contestData)
+    {
         $contestWinnerTable = $this->getServiceLocator()->get('YagGames\Model\ContestWinnerTable');
-        $contestBracketMediaComboTable = $this->getServiceLocator()->get('YagGames\Model\ContestBracketMediaComboTable');        
+        $contestBracketMediaComboTable = $this->getServiceLocator()->get('YagGames\Model\ContestBracketMediaComboTable');
         $combo_details = $contestBracketMediaComboTable->fetchContestComboDetails($winner[0]['contest_id']);
-        
+
         $winners = array();
         if (count($winner)) {
             $winners[] = $winner[0]['next_round_media_id'];
-            for ($r=6;$r>=3;$r--) {
-                for($i=0;$i<count($combo_details[$r]);$i++){
-                    if(!in_array($combo_details[$r][$i]['contest_media_id1'],$winners,TRUE)){
+            for ($r = 6; $r >= 3; $r--) {
+                for ($i = 0; $i < count($combo_details[$r]); $i++) {
+                    if (!in_array($combo_details[$r][$i]['contest_media_id1'], $winners, TRUE)) {
                         $winners[] = $combo_details[$r][$i]['contest_media_id1'];
-                    } elseif (!in_array($combo_details[$r][$i]['contest_media_id2'],$winners,TRUE)) {
+                    } elseif (!in_array($combo_details[$r][$i]['contest_media_id2'], $winners, TRUE)) {
                         $winners[] = $combo_details[$r][$i]['contest_media_id2'];
                     }
                 }
@@ -157,28 +160,30 @@ class AnnounceWinnersController extends BaseConsoleController
                 $contestWinner = new \YagGames\Model\ContestWinner();
                 $contestWinner->contest_media_id = $winners[$key];
                 $contestWinner->rank = $rank;
-                if($rank == 1 ) {
+                if ($rank == 1) {
                     $contestWinner->no_of_votes = ($winner[0]['next_round_media_id'] == $winner[0]['contest_media_id1']) ? $winner[0]['cmediaid1_votes'] : $winner[0]['cmediaid2_votes'];
                 } else {
                     $contestWinner->no_of_votes = 0;
                 }
-                
-                if($contestWinnerTable->insert($contestWinner) && $rank<=4 ){
-                    $this->awardTrophiesForBracket($winners[$key],$contestData);
+
+                if ($contestWinnerTable->insert($contestWinner) && $rank <= 4) {
+                    $this->awardTrophiesForBracket($winners[$key], $contestData);
                 }
             }
-            return true;        
+            return true;
         }
     }
-    
-    private function awardTrophiesForBracket($contestMediaId, $contestData) {
+
+    private function awardTrophiesForBracket($contestMediaId, $contestData)
+    {
         $contestMediaTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaTable');
         $contestMedia = $contestMediaTable->getContestMediaDetails($contestMediaId);
 
         $this->awardTropyToWinner(array('media_id' => $contestMedia['media_id'], 'owner' => $contestMedia['owner']), $contestData);
     }
 
-    private function getRouteName($contestTypeId) {
+    private function getRouteName($contestTypeId)
+    {
         switch ($contestTypeId) {
             case 1:
                 $contestType = 'photo-contest';
@@ -199,8 +204,13 @@ class AnnounceWinnersController extends BaseConsoleController
     private function processTopWinnersBenefits($contest, $contestArtists, $contestWinnerTable, $promotionsTable)
     {
         if ($contest['winners_announced'] != 1) {
-            $contestTopWinners = $contestWinnerTable->fetchAllWinnersOfContest($contest['id'], 5);
-            $i = 1;
+
+            if ($contest['type_id'] == 1) { //Photo Contest fetch top 5 winners
+                $contestTopWinners = $contestWinnerTable->fetchAllWinnersOfContest($contest['id'], 5);
+            } else if ($contest['type_id'] == 3) { // Brackets fetch top 4 winners
+                $contestTopWinners = $contestWinnerTable->fetchAllWinnersOfContest($contest['id'], 4);
+            }
+
             $data = array();
             $data['totalEntries'] = count($contestArtists);
             $data['awsPath'] = $this->config['aws']['path'];
@@ -208,28 +218,84 @@ class AnnounceWinnersController extends BaseConsoleController
             $data['ordinal'] = $this->ordinal;
             $data['kCrypt'] = $this->kCrypt;
             $data['contestTopWinners'] = $contestTopWinners;
-            foreach ($contestTopWinners as $key => $winner) {                
+            foreach ($contestTopWinners as $key => $winner) {
                 $data['contest'] = $contest;
-                $data['winner'] = $winner;                
-                // Prepare Promotions/Coupon Code/Promo Code Data And Insert Into Promotions Table
-                $promotionsModel = $this->couponService->generateWinnersCoupon($contest, $winner['owner'], $winner['rank']);
-                if ($promotionsModel) {
-                    $insertPromotionsData = $promotionsTable->insert($promotionsModel);
-                    if ($insertPromotionsData) {
-                        $data['promoCode'] = $promotionsModel->promo_code;
-                        if ($i == 1) {
-                            $newMsExpDate = new \DateTime('+6 months', new \DateTimeZone('GMT'));
-                            $upgradeMebership = $this->membershipService->upgradeToPlatinumMembership($winner['owner'], $newMsExpDate);
-                            $this->sendEmail('Congratulations! You are the FIRST PLACE winner of our ' . $contest['name'], $winner['email'], 'contest_winner', $data);
+                $data['winner'] = $winner;
+
+                if ($contest['type_id'] == 1) { // Photo Contest
+                    // Generate Coupon Code And Insert Into Promotions Table
+                    if ($winner['rank'] == 1) { //Winner
+                        $promotionsModel = $this->couponService->generateWinnersCoupon($contest, $winner['owner'], $winner['rank'], 1);
+                    } else { //Runner Up
+                        $promotionsModel = $this->couponService->generateWinnersCoupon($contest, $winner['owner'], $winner['rank'], 2);
+                    }
+
+                    if ($promotionsModel) {
+                        $insertPromotionsData = $promotionsTable->insert($promotionsModel);
+                        if ($insertPromotionsData) {
+                            $data['promoCode'] = $promotionsModel->promo_code;
+                            if ($winner['rank'] == 1) {
+                                //Upgrade Membership to Platinum for next 6 months
+                                $newMsExpDate = new \DateTime('+6 months', new \DateTimeZone('GMT'));
+                                $upgradeMebership = $this->membershipService->upgradeToPlatinumMembership($winner['owner'], $newMsExpDate);
+                                //Send Coupon Details
+                                $this->sendEmail('Congratulations! You are the FIRST PLACE winner of our ' . $contest['name'], $winner['email'], 'contest_winner', $data);
+                            } else {
+                                //Send Coupon Details
+                                $this->sendEmail('Congratulations! You are the RUNNER UP of our ' . $contest['name'], $winner['email'], 'contest_runnerup', $data);
+                            }
                         } else {
-                            $this->sendEmail('Congratulations! You are the RUNNER UP of our ' . $contest['name'], $winner['email'], 'contest_runnerup', $data);
+                            echo 'Error Occured While Inserting Contest Coupon Data Into Promotions Table Of The User:' . $winner['owner'] . "\n";
                         }
-                    } else {
-                        echo 'Error Occured While Inserting Contest Coupon Data Into Promotions Table Of The User:' . $winner['owner'] . "\n";
+                    }
+                } else if ($contest['type_id'] == 3) {  // Brackets
+                    if ($winner['rank'] == 1 || $winner['rank'] == 2) {
+                        // Champion or 2nd Position
+                        $promotionsModel1 = $this->couponService->generateWinnersCoupon($contest, $winner['owner'], $winner['rank'], 1);
+                        $promotionsModel2 = $this->couponService->generateWinnersCoupon($contest, $winner['owner'], $winner['rank'], 2);
+                        if ($promotionsModel1 && $promotionsModel2) {
+                            $insertPromotionsData1 = $promotionsTable->insert($promotionsModel1);
+                            $insertPromotionsData2 = $promotionsTable->insert($promotionsModel2);
+
+                            if ($insertPromotionsData1 && $insertPromotionsData2) {
+                                $data['promoCode1'] = $promotionsModel1->promo_code;
+                                $data['promoCode2'] = $promotionsModel2->promo_code;
+                                if ($winner['rank'] == 1) {
+                                    //$250 off coupon generation
+                                    $promotionsModel3 = $this->couponService->generateWinnersCoupon($contest, $winner['owner'], $winner['rank'], 3);
+                                    if ($promotionsTable->insert($promotionsModel3)) {
+                                        $data['promoCode3'] = $promotionsModel3->promo_code;
+                                    }
+
+                                    // Only for Champion - Upgrade Membership to Platinum for next 6 months
+                                    $newMsExpDate = new \DateTime('+6 months', new \DateTimeZone('GMT'));
+                                    $upgradeMebership = $this->membershipService->upgradeToPlatinumMembership($winner['owner'], $newMsExpDate);
+
+                                    //Send Coupon Details
+                                    $this->sendEmail('Congratulations! You are the CHAMPION of our ' . $contest['name'], $winner['email'], 'bracket_game_winner', $data);
+                                } else {
+                                    //Send Coupon Details
+                                    $this->sendEmail('Congratulations! You are the SECOND PLACE winner of our ' . $contest['name'], $winner['email'], 'bracket_game_2nd_winner', $data);
+                                }
+                            } else {
+                                echo 'Error Occured While Inserting Contest Coupon Data Into Promotions Table Of The User:' . $winner['owner'] . "\n";
+                            }
+                        }
+                    } else if ($winner['rank'] == 3 || $winner['rank'] == 4) {
+                        // 3rd or 4th Position   
+                        $promotionsModel = $this->couponService->generateWinnersCoupon($contest, $winner['owner'], $winner['rank'], 2);
+                        if ($promotionsModel) {
+                            $insertPromotionsData = $promotionsTable->insert($promotionsModel);
+                            if ($insertPromotionsData) {
+                                $data['promoCode'] = $promotionsModel->promo_code;
+                                //Send Coupon Details
+                                $this->sendEmail('Congratulations! You are one of the CORE FOUR winners of our ' . $contest['name'], $winner['email'], 'bracket_game_runnerup', $data);
+                            } else {
+                                echo 'Error Occured While Inserting Contest Coupon Data Into Promotions Table Of The User:' . $winner['owner'] . "\n";
+                            }
+                        }
                     }
                 }
-
-                $i++;
             }
         }
     }
