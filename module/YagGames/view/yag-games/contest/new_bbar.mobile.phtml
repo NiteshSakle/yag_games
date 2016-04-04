@@ -10,7 +10,7 @@ $percentage = ($contest['total_entries']) ? floor(($contest['total_entries'] / $
         if ($contest['voting_started']) { ?>
              <button class="btn btn-primary active-btn" onclick="window.location = '<?php echo $this->basePath() ?>/<?php echo $contestType; ?>/voting/<?php echo $contest['id']; ?>'">Vote Now</button>
         <?php } elseif ($percentage == 100 || ($entryEndDate < $today)) { ?>
-            <button class="btn btn-primary vote-soon grey-white-btn" >Vote Soon</button>
+            <button class="btn btn-primary vote-soon grey-white-btn default-cursor" >Vote Soon</button>
         <?php } elseif (isset($contest['entered']) && $contest['entered']) {
             $media = array();
             $media['media_id'] = $contest['media_id'];

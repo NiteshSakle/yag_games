@@ -1,26 +1,26 @@
 <?php
-    $this->headMeta()->setProperty('og:title', $contest['name']);
-    $this->headMeta()->setProperty('og:type', 'website');
-    
-    if($shareMedia) {
-        $this->headMeta()->setProperty('og:image', $this->mediaImage($shareMedia, 'samples'));
-        $this->headMeta()->setProperty('og:description', 'I entered the ' . $contest['name'] . ' on YOURARTGALLERY.COM. Check it out now! ');
-    } else {
-        $this->headMeta()->setProperty('og:image', $this->config('aws', 'path') . $contest['thumbnail']);
-        $this->headMeta()->setProperty('og:description', $contest['name'] . ' is available on YOURARTGALLERY.COM. Check it out! ' . $this->config('main_site' ,'url') . '/contests');
-    }
-    
-    $this->headMeta()->setProperty('twitter:card', 'summary');
-    $this->headMeta()->setProperty('twitter:site', '@YourArtGallery');
-    $this->headMeta()->setProperty('twitter:title', $contest['name']);
-    
-    if($shareMedia) {
-        $this->headMeta()->setProperty('twitter:image', $this->mediaImage($shareMedia, 'samples'));
-        $this->headMeta()->setProperty('twitter:description', 'I entered the ' . $contest['name'] . ' on YOURARTGALLERY.COM. Check it out now! ');    
-    } else {
-        $this->headMeta()->setProperty('twitter:image', $this->config('aws', 'path') . $contest['thumbnail']);    
-        $this->headMeta()->setProperty('twitter:description', $contest['name'] . ' is available on YOURARTGALLERY.COM. Check it out! ' . $this->config('main_site' ,'url') . '/contests');    
-    }
+$this->headMeta()->setProperty('og:title', $contest['name']);
+$this->headMeta()->setProperty('og:type', 'website');
+
+if ($shareMedia) {
+    $this->headMeta()->setProperty('og:image', $this->mediaImage($shareMedia, 'samples'));
+    $this->headMeta()->setProperty('og:description', 'I entered the ' . $contest['name'] . ' on YOURARTGALLERY.COM. Check it out now! ');
+} else {
+    $this->headMeta()->setProperty('og:image', $this->config('aws', 'path') . $contest['thumbnail']);
+    $this->headMeta()->setProperty('og:description', $contest['name'] . ' is available on YOURARTGALLERY.COM. Check it out! ' . $this->config('main_site', 'url') . '/contests');
+}
+
+$this->headMeta()->setProperty('twitter:card', 'summary');
+$this->headMeta()->setProperty('twitter:site', '@YourArtGallery');
+$this->headMeta()->setProperty('twitter:title', $contest['name']);
+
+if ($shareMedia) {
+    $this->headMeta()->setProperty('twitter:image', $this->mediaImage($shareMedia, 'samples'));
+    $this->headMeta()->setProperty('twitter:description', 'I entered the ' . $contest['name'] . ' on YOURARTGALLERY.COM. Check it out now! ');
+} else {
+    $this->headMeta()->setProperty('twitter:image', $this->config('aws', 'path') . $contest['thumbnail']);
+    $this->headMeta()->setProperty('twitter:description', $contest['name'] . ' is available on YOURARTGALLERY.COM. Check it out! ' . $this->config('main_site', 'url') . '/contests');
+}
 ?>
 <div id="content">
     <div class="top-description">
@@ -29,22 +29,53 @@
     <h3 class="bebas">WHAT IS ART?</span></h3>
     <p class="text-colored" ><b>It’s your turn to help choose.</b> these talented artists have been selected to show their work and need you to choose your favorite image to win!</p>
     <div class="p0 col-md-12 col-lg-12">
-        <button class="btn btn-primary">VOTE ON THIS CONTEST NOW!</button>        
+        <form id="searchFormTest" action="<?php echo $this->basePath() ?>/photo-contest/voting/<?php echo $contestId; ?>" method="post">
+            <input type="text" id="searchPhrase" name="search" value="<?php echo $this->escapeHtmlAttr($search) ?>" placeholder="By Artist's First Name" class="form-control">
+        </form>
     </div>    
     <div class="col-lg-12 grid picalign mt-10">   
         <?php foreach ($medias as $key => $media) { ?>
-        <figure class="effect-oscar  wowload   col-xs-6 col-sm-6">
-            <div>
-                <a class="media-image" href="#" data-mediaid="<?php echo $media['media_id'] ?>">
-                    <img  src="<?php echo $this->mediaImage($media, 'icons', '150'); ?>" title="<?php echo $media['title'] ?>" alt="<?php echo $media['title'] ?>" width="100px" height="100px">
-                </a>
-                <div class="text-center">                    
-                    <b class="font12 default-cursor"><?php echo $media['f_name'] ?></b></br>
-                    <a href="<?php echo $this->config('main_site', 'url') ?>/<?php echo $media['username'] ?>" class="onhover-ul"><?php echo $media['username'] ?></a>
+            <figure class="effect-oscar  wowload   col-xs-6 col-sm-6">
+                <div>
+                    <a class="media-image" href="#" data-mediaid="<?php echo $media['media_id'] ?>">
+                        <img  src="<?php echo $this->mediaImage($media, 'icons', '150'); ?>" title="<?php echo $media['title'] ?>" alt="<?php echo $media['title'] ?>" width="100px" height="100px">
+                    </a>
+                    <div class="text-center">                    
+                        <b class="font12 default-cursor"><?php echo $media['f_name'] ?></b></br>
+                        <a href="<?php echo $this->config('main_site', 'url') ?>/<?php echo $media['username'] ?>" class="onhover-ul"><?php echo $media['username'] ?></a>
+                    </div>
                 </div>
-            </div>
-        </figure>     
+            </figure>     
         <?php } ?>
     </div>
     <div class="clearfix"></div>     
 </div>
+<?php
+echo $this->paginationControl($this->paginator, 'Sliding', 'paginator-slide', array(
+    'route' => 'photo-contest',
+    'routeParams' => array(
+        'action' => 'voting',
+        'id' => $this->contestId,
+        'size' => $this->size
+    ),
+    'queryParams' => array(
+        'search' => $this->search
+    )
+));
+?>
+<script type="text/javascript">
+
+    $(window).ready(function () {
+<?php if (empty($search) && !$shareMedia) { ?>
+       showModal(gameBasePath + '/photo-contest/get-next-art?contestId=' + contestId);
+<?php } elseif (isset($shareMedia['media_id'])) {
+    ?>
+       var mediaId = <?php echo $shareMedia['media_id']; ?>;
+       showModal(gameBasePath + '/photo-contest/get-next-art?contestId=' + contestId + '&mediaId=' + mediaId);
+<?php } ?>
+    });
+    var contestId = "<?php echo $contestId; ?>";
+    $('.media-image').click(function () {
+       showModal(gameBasePath + '/photo-contest/get-next-art?contestId=' + contestId + '&mediaId=' + $(this).data('media_id'));
+    });
+</script>

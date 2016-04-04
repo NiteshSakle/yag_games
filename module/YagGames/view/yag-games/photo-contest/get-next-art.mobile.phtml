@@ -1,0 +1,163 @@
+<script type="text/javascript">
+    var starCount = $(".rate-points:first").find('.ratingStar1').size();
+    var contestId = '<?php echo $contestId ?>';
+
+    $(".rate-points").each(function (key, elem) {
+        $(elem).hover('', function () {
+            returnStarStatus(elem);
+        });
+
+        $(elem).find('.ratingStar1').each(function (key2, elem2) {
+            var starValue = key2 + 1;
+            if (starCount == 5) {
+                starValue = starValue * 2; // Double the value if there are only 5 stars instead of 10
+            }
+
+            var mediaID = $(elem).attr('mediaID'); // Get the media ID these stars are for
+
+            $(elem2).css('cursor', 'pointer') // Assign a pointer cursor to those stars that are active				
+                    .mouseover(function () {
+                        highlightStarsForPhotoContest(elem, key2);
+                    }) // Assign a mouse over on the active stars				
+                    .click(function () {
+
+                        if (starValue >= 2 || starValue <= 10) {
+                            $(elem) // Unbind stars to prevent double clicking
+                                    .find('.ratingStar1')
+                                    .unbind()
+                                    .css('cursor', 'default');
+
+                            $('span.rate-points').parent().next().hide();
+                            $(elem).unbind().fadeOut(200, function () {
+                                submitVote(elem, contestId, mediaID, starValue);
+                            });
+                        } else {
+                            alert('Something is wrong!');
+                        }
+                    }); // Do the rating when the star is clicked on
+        });
+    });
+
+    function submitVote(elem, contestId, mediaId, rating) {        
+        var request = $.ajax({
+            url: gameBasePath + '/photo-contest/vote',
+            type: "POST",
+            data: {'mediaId': mediaId, 'contestId': contestId, 'rating': rating},
+            dataType: 'json',
+            beforeSend: function () {
+                $("#ajaxBusy").removeClass('hide');
+            },
+            complete: function () {
+                $("#ajaxBusy").addClass('hide');
+            }
+        });
+
+        request.done(function (msg) {
+            if (msg.success) {
+                $('p#msg').show().delay(5000).fadeOut('slow', function () {
+                    $('#remoteModal').modal('hide');
+                });
+
+                showModal(gameBasePath + '/photo-contest/get-next-art?contestId=' + contestId);
+            } else {
+                alert(msg.message);
+            }
+        });
+
+        request.fail(function (jqXHR, textStatus) {
+            alert("Request failed: " + textStatus);
+        });
+    }
+
+    function highlightStarsForPhotoContest(elem, current) {
+        $(elem).find('.ratingStar1').each(function (key, elem2)
+        {
+            if (current >= key)
+                $(elem2).attr('src', '<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/rate-1.png');
+            else
+                $(elem2).attr('src', '<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/rate-0.png');
+        });
+    }
+</script>
+<?php if (isset($media['contest_name'])) { ?>
+    <div class="modal-header text-center">
+        <button type="button" class="close btnxtop" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h2 class="modal-title bebas" id="dynModalLabel"><?php echo $media['contest_name']; ?></h2>
+    </div>
+    <div class="modal-body rating-popup-content">
+        <div class="text-center"><img src="<?php echo $this->mediaImage($media, 'samples'); ?>" alt="<?php echo $media['title'] ?>" class="rr_art img-responsive" ></div>
+        <div class="rate-icons text-center">
+            <span class="rate-points" mediaID="<?php echo $media['media_id'] ?>">
+                <?php for ($i = 1; $i <= 5; $i++): ?>
+                    <img width="35" height="35" src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/rate-0.png" class="ratingStar1" originalStatus="0" >
+                <?php endfor; ?>
+            </span>           
+        </div>
+        <div class="row">            
+            <div>
+                <div class="text-center purple-txt">
+                    <div class="heading text-bold font17">Rate It!</div>
+                    <div class="font13 text-bold">Title: <?php echo $media['title'] ?></div>
+                    <div class="font13">Artist: <?php echo $media['f_name'] ?></div>            	
+                    <div><?php echo $media['totalRated'] + 1 ?>/<?php echo $media['count'] ?></div>
+                </div>               
+            </div>
+        </div>   
+    </div>
+<?php } elseif ($mediaId) { ?>
+    <div class="modal-header">
+        <button type="button" class="close btnxtop" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>   
+    </div>
+    <div class="modal-body text-center rating-thankup-popup purple-txt">
+        <div>
+            <div>
+                <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/thankyou1.png" width="75px" height="75px">
+            </div>
+            <div>
+                <b>Thank You </b><br>
+                    for your recent vote!
+                    Come back 
+                    tomorrow 
+                    to vote again.
+            </div>
+        </div>
+        <div>
+            <h2>Want to Rate More Arts?</h2>
+            <div>
+                <a href="<?php echo $this->config('main_site', 'url') ?>/rate-and-review"><img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/img7.png" alt="Rate and Review" class="rate-review-img"></a>
+            </div>
+            <div class="rating-label1">OR</div>
+            <div>
+                <a href="<?php echo $this->basePath() ?>/active-contest" class="btn btn-primary">More Contests</a>
+            </div>
+        </div>   
+    </div>
+<?php } else { ?>
+   <div class="modal-header">
+        <button type="button" class="close btnxtop" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>   
+    </div>
+    <div class="modal-body text-center rating-thankup-popup purple-txt pc-rating">
+        <div>
+            <div>
+                <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/thankyou1.png" width="75px" height="75px">
+            </div>
+            <div>
+                <b>Thank You </b><br>
+                    for your recent vote!
+                    Come back 
+                    tomorrow 
+                    to vote again.
+            </div>
+        </div>
+        <div>
+            <h2>Want to Rate More Arts?</h2>
+            <div>
+                <a href="<?php echo $this->config('main_site', 'url') ?>/rate-and-review"><img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/img7.png" alt="Rate and Review" class="rate-review-img"></a>
+            </div>
+            <div class="rating-label1">OR</div>
+            <div>
+                <a href="<?php echo $this->basePath() ?>/active-contest" class="btn btn-primary">More Contests</a>
+            </div>
+        </div>   
+    </div>
+<?php } ?>

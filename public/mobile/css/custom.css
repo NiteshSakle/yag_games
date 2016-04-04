@@ -76,3 +76,7 @@ div#uploadSubArtModal div.uploaded-art img.yag-icon { float: right; margin: -125
     cursor: default !important;
 }
 button.view-past-winners { margin-top: 25px; }
+.r-label1 { margin-bottom: -3px }
+.pc-rating {
+    padding-top: 8px;
+}
