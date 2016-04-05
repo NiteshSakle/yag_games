@@ -48,6 +48,20 @@
             <div class="background-load"></div>
         </div>        
         <?php echo $this->partial('navigation.mobile.phtml'); ?>
+        <div class="wrapper flashMessages">
+            <?php
+            $flash = $this->flashMessenger();
+            $flash->setMessageOpenFormat('<div%s>
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+              &times;
+          </button>
+          <ul class="no-disc"><li>')
+                    ->setMessageSeparatorString('</li><li>')
+                    ->setMessageCloseString('</li></ul></div>');
+
+            echo $flash->render('error', array('alert', 'alert-dismissible', 'alert-danger', 'mt-10'));
+            ?>
+        </div>
         <?php echo $this->content; ?>
         <?php echo $this->partial('footer.mobile.phtml'); ?>
     </body>

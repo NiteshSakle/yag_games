@@ -1,0 +1,173 @@
+<script type="text/javascript">
+    var contestId = '<?php echo isset($contestId) ? $contestId : 0; ?>';
+    var round = <?php echo isset($contestData['contestDetails']['current_round']) ? $contestData['contestDetails']['current_round'] : 0; ?>;
+
+    $(".brk-vote-lt,.brk-vote-rt").each(function (key, elem) {
+        $(elem).find('.vote-star').each(function (key2, elem2) {
+            var starValue = 10;
+
+            var mediaID = $(elem).data('media-id'); // Get the media ID these stars are for
+
+            $(elem2).css('cursor', 'pointer') // Assign a pointer cursor to those stars that are active				
+                    .mouseover(function () {
+                        highlightElements(elem, key2);
+                    }) // Assign a mouse over on the active stars				
+                    .click(function () {
+                        // Unbind stars to prevent double clicking
+                        $(".vote-star")
+                                .unbind()
+                                .css('cursor', 'default');
+                        var comboId = <?php echo isset($contestData['contestDetails']['combo_id']) ? $contestData['contestDetails']['combo_id'] : 0; ?>;
+                        submitVote(contestId, mediaID, round, comboId);
+                    }); // Do the rating when the star is clicked on
+        });
+    });
+
+    $('div[class^=brk-vote-it-img-]').on('mouseover click', function (e) {
+        var targetStar = $(this).data('target-star');
+        $(targetStar).find('.vote-star').trigger(e.type);
+    });
+
+    function submitVote(contestId, mediaId, round, comboId) {
+        var request = $.ajax({
+            url: gameBasePath + '/brackets/vote',
+            type: "POST",
+            data: {'contestId': contestId, 'mediaId': mediaId, 'round': round, 'comboId': comboId},
+            dataType: 'json',
+            beforeSend: function () {
+                $("#ajaxBusy").removeClass('hide');
+            },
+            complete: function () {
+                $("#ajaxBusy").addClass('hide');
+            }
+        });
+
+        request.done(function (msg) {
+            if (msg.success) {
+                $('p#msg').show().delay(5000).fadeOut('slow', function () {
+                    closeWorkbox();
+                });
+
+                showNextImagePopup();
+            } else {
+                alert(msg.message)
+            }
+        });
+
+        request.fail(function (jqXHR, textStatus) {
+            alert("Request failed: " + textStatus);
+        });
+    }
+
+    function showNextImagePopup() {
+        showModal(gameBasePath + '/brackets/get-next-art?contestId=' + contestId + '&round=' + round);
+
+    }
+
+    function highlightElements(elem, current) {
+        $(elem).find('.vote-star').each(function (key, elem2)
+        {
+            $(elem2).attr('src', '<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/star.1.png');
+            $('.vote-star').not(elem2).attr('src', '<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/star.0.png');
+            $('div[class^=brk-vote-it-img-] img').removeClass('combo-border');
+            var targetImg = $(elem).data('target-img');
+            $(targetImg).find('img').addClass('combo-border');
+        });
+    }
+</script>
+<?php if ($contestData['contestDetails'] && !$noImages) { ?>
+    <div class="modal-header text-center">
+        <button type="button" class="close btnxtop" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>        
+    </div>
+    <div class="modal-body brkt-voting-cont">
+        <div>
+            <div class="col-span-2 img1">
+                <div class="brk-vote-it-img-lt" data-target-star=".brk-vote-lt">
+                    <?php if (!empty($media1)) { ?>
+                        <img class="brk-image" src="<?php echo $this->mediaImage($media1, 'icons', 100); ?>" >
+                    <?php } else { ?>
+                        <div class="brk-empty-media"></div>
+                    <?php } ?>
+                </div>
+            </div>
+            <div class="col-span-2 img2">
+                <div class="brk-vote-it-img-rt" data-target-star=".brk-vote-rt">
+                    <?php if (!empty($media2)) { ?>
+                        <img class="brk-image pull-right" src="<?php echo $this->mediaImage($media2, 'icons', 100); ?>">
+                    <?php } else { ?>
+                        <div class="brk-empty-media pull-right"></div>
+                    <?php } ?>
+                </div>
+            </div>        
+        </div>
+        <div class="clear"></div>
+        <div class="mt-10 text-center purple-txt">
+            <div class="col-xs-4 col-sm-4 p-5 font12 brk-vote-lt" data-media-id="<?php echo $media1['media_id'] ?>" data-target-img=".brk-vote-it-img-lt">
+                <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/star.0.png" class="vote-star">
+                <p>Artist Name:&nbsp;<?php echo $media1['f_name']; ?></p>
+            </div>
+            <div class="col-xs-4 col-sm-4 p-5 font13 mt-5">
+                <div>OR</div>
+                <div><?php echo $contestData['round_name']; ?></div>                    
+                <div><strong><?php echo $contestData['totalRated'] + 1 ?>/<?php echo $contestData['count'] ?></strong></div>
+                <div><strong>FACEOFF</strong></div>
+            </div>
+            <div class="col-xs-4 col-sm-4 p-5 font12 brk-vote-rt" data-media-id="<?php echo isset($media2['media_id']) ? $media2['media_id'] : ""; ?>" data-target-img=".brk-vote-it-img-rt"> 
+                <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/star.0.png" class="vote-star">
+                <p>Artist Name:&nbsp;<?php echo isset($media2['f_name']) ? $media2['f_name'] : ""; ?></p>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+<?php } elseif ($showThankq && $noImages) {
+    ?>
+    <div class="modal-header">
+        <button type="button" class="close btnxtop" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>   
+    </div>
+    <div class="modal-body text-center rating-thankup-popup purple-txt">
+        <div>            
+            Thank you for checking out our "<?php echo $contest['name']?>". Unfortunately this image did not make it to the next round.            
+        </div>
+        <div class="center-block margin15">
+            <div>
+                <button onclick="showNextImagePopup()" class="btn btn-primary" style="width: 30%;">Ok</button>
+            </div>
+        </div>   
+    </div>
+<?php } else { ?>
+    <div class="modal-header">
+        <button type="button" class="close btnxtop" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>   
+    </div>
+    <div class="modal-body text-center rating-thankup-popup purple-txt">
+        <div>
+            <div>
+                <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/thankyou1.png" width="60px" height="60px">
+            </div>
+            <div>
+                <b>Thank You </b><br>
+                    for Voting <br>
+                    <?php if($contest['current_round'] != 6) { ?>
+                    Be sure to vote again<br>                        
+                    next round.
+                    <?php } ?>
+            </div>
+        </div>
+        <div>
+            <div class="text-center text-bold margin15">
+                <?php if($contest['current_round'] != 6) { ?>
+                    <div>Next round start: <?php $round_number = $contest['current_round']+1; $round = "round" . $round_number; echo date("m/d/Y", strtotime($contest[$round])); ?></div>
+                <?php } else { ?>
+                    <div>Winner announce Date: <?php echo date("m/d/Y", strtotime($contest['winners_announce_date'])); ?></div>
+                <?php } ?>
+            </div>  
+            <h2 class="mt-10">Want to Rate More Arts?</h2>
+            <div>
+                <a href="<?php echo $this->config('main_site', 'url') ?>/rate-and-review"><img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/img7.png" alt="Rate and Review" class="rate-review-img"></a>
+            </div>
+            <div class="rating-label1">OR</div>
+            <div>
+                <a href="<?php echo $this->basePath() ?>/active-contest" class="btn btn-primary">More Contests</a>
+            </div>
+        </div>   
+    </div>
+<?php } ?>

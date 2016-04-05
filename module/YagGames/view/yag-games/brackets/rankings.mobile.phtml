@@ -42,89 +42,59 @@ function artistName($artist)
         5 => array('label1' => 'CORE 4'),
         6 => array('label1' => 'SEMI-FINAL')
     );
-
-
-    for ($r = 1; $r <= 5; $r++) {        
-        if ($r <= $contest['current_round'] && isset($comboDetails[$r])) {
+    
+    $dStart = new DateTime(date("Y-m-d"));
+    $dEnd = new DateTime($contest['winners_announce_date']);
+    $dDiff = $dStart->diff($dEnd);
+    
+    if ($dEnd > $dStart) {
+        ?>
+        <div class="p0 col-md-12 col-lg-12 mt-10">            
+            <a href="<?php echo $this->basePath() ?>/brackets/voting/<?php echo $contestId; ?>" class="btn btn-primary">Get to Voting!</a>
+            <div class="text-center">Contest countdown: <?php echo $dDiff->days; ?> days remaining</div>
+        </div>    
+        <?php
+    }
+    for ($r = 1; $r <= 5; $r++) {
+        if ($contest['current_round'] >= $r && isset($comboDetails[$r])) {
             ?>
             <div id="<?php echo "r" . $r . "Section"; ?>" class="<?php echo $r >= 2 ? 'hide-1' : 'no-class'; ?>">    
                 <h3 class="bebas"><span class="purplecolor"><?php echo "ROUND $r | " . $roundsData[$r]['label1']; ?></span></h3>
                 <div class="clearfix"></div>   
-                <?php
-                $i = 0;
-                $j = 1;
-                foreach ($comboDetails[$r] as $combosArr) {
+                <ul class="bracket-pattern">
+                    <?php
+                    $i = 0;
+                    $j = 1;
+                    foreach ($comboDetails[$r] as $combosArr) {
+                        ?>
+                        <li class="combo-box-start combo-box-border">
+                            <?php if (!empty($combosArr['contest_media_id1'])) { ?>
+                                <img src="<?php echo $this->mediaImage($medias[$combosArr['contest_media_id1']], 'icons', '80'); ?>" class="first-img contest-img pointer" data-mediaid="<?php echo $this->KCrypt()->enc($medias[$combosArr['contest_media_id1']]['media_id']) ?>">
+                            <?php } ?>
+                        </li>
+                        <li class="combo-box-border">
+                            <?php if (!empty($combosArr['contest_media_id2'])) { ?>
+                                <img src="<?php echo $this->mediaImage($medias[$combosArr['contest_media_id2']], 'icons', '80'); ?>" class="second-img contest-img pointer" data-mediaid="<?php echo $this->KCrypt()->enc($medias[$combosArr['contest_media_id2']]['media_id']) ?>">
+                            <?php } ?>
+                            <ul>
+                                <li class="<?php echo $j % 2 == 0 ? 'r-even' : 'r-odd'; ?> combo-box-border">
+                                    <?php if (!empty($comboDetails[$r + 1][$i]["contest_media_id$j"])) { ?>
+                                        <img src="<?php echo $this->mediaImage($medias[$comboDetails[$r + 1][$i]["contest_media_id$j"]], 'icons', '90'); ?>"  class="result-img contest-img pointer" data-mediaid="<?php echo $this->KCrypt()->enc($medias[$comboDetails[$r + 1][$i]["contest_media_id$j"]]['media_id']) ?>">
+                                    <?php } ?>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <?php
+                        if ($j == 2) {
+                            $i++;
+                            $j = 1;
+                        } else {
+                            $j++;
+                        }
+                    }
                     ?>
-                    <table class="tg mt-10" border="0" data-comboId="<?php echo $combosArr['combo_id']; ?>" >
-                        <tbody>
-                            <tr>
-                                <td class="tg-yw4l"><hr style="width:15px"/></td>
-                                <td class="tg-yw4l" rowspan="2">
-                                    <div class="bracketbox1">
-                                        <?php if (!empty($combosArr['contest_media_id1'])) { ?>
-                                            <img src="<?php echo $this->mediaImage($medias[$combosArr['contest_media_id1']], 'icons', '80'); ?>" class="first-img contest-img pointer" data-mediaid="<?php echo $this->KCrypt()->enc($medias[$combosArr['contest_media_id1']]['media_id']) ?>">
-                                        <?php } else { ?>
-                                            <div class="bracket-empty-box"></div>
-                                        <?php } ?>
-                                    </div>
-                                </td>
-                                <td class="tg-yw4l bordertop borderright"></td>
-                                <td class="tg-yw4l borderbottom"></td>
-                                <td class="tg-yw4l" rowspan="4">
-                                    <div class="bracketbox2">
-                                        <?php if (!empty($comboDetails[$r + 1][$i]["contest_media_id$j"])) { ?>
-                                            <img src="<?php echo $this->mediaImage($medias[$comboDetails[$r + 1][$i]["contest_media_id$j"]], 'icons', '80'); ?>"  class="result-img contest-img pointer" data-mediaid="<?php echo $this->KCrypt()->enc($medias[$comboDetails[$r + 1][$i]["contest_media_id$j"]]['media_id']) ?>">
-                                        <?php } else { ?>
-                                            <div class="bracket-empty-box"></div>
-                                        <?php } ?>                                
-                                    </div>
-                                </td>
-                                <?php if ($j == 2) { ?>
-                                    <td class="tg-yw4l borderbottom borderright" rowspan="2"></td>
-                                    <td class="tg-yw4l bordertop"></td>
-                                <?php } else { ?>
-                                    <td rowspan="2"></td>
-                                    <td></td>
-                                <?php } ?>
-                            </tr> 
-                            <tr>
-                                <td class="tg-yw4l"></td>
-                                <td class="tg-yw4l"></td>
-                                <td class="tg-yw4l"></td>
-                                <td class="tg-yw4l"></td>
-                                <td class="tg-yw4l"></td>
-                                <td class="tg-yw4l"></td>
-                            </tr>
-                            <tr>
-                                <td class="tg-yw4l"><hr style="width:15px"/></td>
-                                <td class="tg-yw4l" rowspan="2">
-                                    <div class="bracketbox1">
-                                        <?php if (!empty($combosArr['contest_media_id2'])) { ?>
-                                            <img src="<?php echo $this->mediaImage($medias[$combosArr['contest_media_id2']], 'icons', '80'); ?>" class="second-img contest-img pointer" data-mediaid="<?php echo $this->KCrypt()->enc($medias[$combosArr['contest_media_id2']]['media_id']) ?>">
-                                        <?php } else { ?>
-                                            <div class="bracket-empty-box"></div>
-                                        <?php } ?>                                
-                                    </div>
-                                </td>                              
-                                <td class="tg-yw4l borderbottom  borderright" ></td>
-                                <td class="tg-yw4l bordertop"></td> 
-                                <?php if ($j == 1) { ?>                                         
-                                    <td class="tg-yw4l bordertop borderright"></td>
-                                    <td class="tg-yw4l borderbottom"></td>
-                                <?php } ?> 
-                            </tr>
-                            <?php
-                            if ($j == 2) {
-                                $i++;
-                                $j = 1;
-                            } else {
-                                $j++;
-                            }
-                            ?>
-                        </tbody>                    
-                    </table>
-                <?php }
-                ?>
+                </ul>    
                 <div class="margin5 clearfix"></div>
                 <table class="shipbtn table">
                     <tbody>
@@ -133,7 +103,7 @@ function artistName($artist)
                                 <?php if ($r == 1) { ?>
                                     <a href="<?php echo $this->basePath() ?>/new-contest" class="btn btn-primary font10 swipe-right"><i class="fa fa-arrow-left"></i> Contest</a>
                                 <?php } else { ?>
-                                    <button class="btn btn-primary font10 show-round-btn swipe-right" data-show-section="<?php echo "#r" . ($r - 1) . "Section"; ?>"><?php echo "ROUND " . ($r - 1) . " | " . $roundsData[$r - 1]['label1']; ?> <i class="fa fa-arrow-right"></i></button>
+                                    <button class="btn btn-primary font10 show-round-btn swipe-right" data-show-section="<?php echo "#r" . ($r - 1) . "Section"; ?>"><i class="fa fa-arrow-left"></i> <?php echo "ROUND " . ($r - 1) . " | " . $roundsData[$r - 1]['label1']; ?></button>
                                 <?php } ?>
                             </td>
                             <?php if ($r + 1 <= $contest['current_round']) { ?>
@@ -149,90 +119,46 @@ function artistName($artist)
             <?php
         }
     }
-    if (isset($comboDetails[6]) && isset($contestWinners[0])) {
+   
+    if ($contest['current_round'] >= 6 && isset($comboDetails[6])) {
         ?>
         <div id="r6Section" class="hide-1">    
             <h3 class="bebas"><span class="purplecolor">ROUND 6 | SEMI-FINAL</span></h3>
-            <div class="clearfix"></div>   
-            <?php
-            $i = 0;
-            $j = 1;
-            foreach ($comboDetails[6] as $combosArr) {
+            <div class="clearfix"></div> 
+            <ul class="bracket-pattern">
+                <?php
+                $j = 1;
+                foreach ($comboDetails[6] as $combosArr) {
+                    ?>
+                    <li class="combo-box-start combo-box-border">
+                        <?php if (!empty($combosArr['contest_media_id1'])) { ?>
+                            <img src="<?php echo $this->mediaImage($medias[$combosArr['contest_media_id1']], 'icons', '80'); ?>" class="first-img contest-img pointer" data-mediaid="<?php echo $this->KCrypt()->enc($medias[$combosArr['contest_media_id1']]['media_id']) ?>">
+                        <?php } ?>
+                    </li>
+                    <li class="combo-box-border">
+                        <?php if (!empty($combosArr['contest_media_id2'])) { ?>
+                            <img src="<?php echo $this->mediaImage($medias[$combosArr['contest_media_id2']], 'icons', '80'); ?>" class="second-img contest-img pointer" data-mediaid="<?php echo $this->KCrypt()->enc($medias[$combosArr['contest_media_id2']]['media_id']) ?>">
+                        <?php } ?>
+                        <ul>
+                            <li class="r-semi-result combo-box-border">
+                                <?php if (!empty($contestWinners[0]["contest_media_id"])) { ?>
+                                    <img src="<?php echo $this->mediaImage($medias[$contestWinners[0]["contest_media_id"]], 'icons', '90'); ?>"  class="result-img contest-img pointer" data-mediaid="<?php echo $this->KCrypt()->enc($medias[$contestWinners[0]["contest_media_id"]]['media_id']) ?>">
+                                <?php } ?>
+                            </li>
+                        </ul>
+                    </li>
+
+                <?php }
                 ?>
-                <table class="tg mt-10" border="0" data-comboId="<?php echo $combosArr['combo_id']; ?>" >
-                    <tbody>
-                        <tr>
-                            <td class="tg-yw4l"><hr style="width:15px"/></td>
-                            <td class="tg-yw4l" rowspan="2">
-                                <div class="bracketbox1">
-                                    <?php if (!empty($combosArr['contest_media_id1'])) { ?>
-                                        <img src="<?php echo $this->mediaImage($medias[$combosArr['contest_media_id1']], 'icons', '80'); ?>" class="first-img contest-img pointer" data-mediaid="<?php echo $this->KCrypt()->enc($medias[$combosArr['contest_media_id1']]['media_id']) ?>">
-                                    <?php } else { ?>
-                                        <div class="bracket-empty-box"></div>
-                                    <?php } ?>
-                                </div>
-                            </td>
-                            <td class="tg-yw4l bordertop borderright"></td>
-                            <td class="tg-yw4l borderbottom"></td>
-                            <td class="tg-yw4l" rowspan="4">
-                                <div class="bracketbox2">
-                                    <?php if (!empty($contestWinners[0]["contest_media_id"])) { ?>
-                                        <img src="<?php echo $this->mediaImage($medias[$contestWinners[0]["contest_media_id"]], 'icons', '80'); ?>"  class="result-img contest-img pointer" data-mediaid="<?php echo $this->KCrypt()->enc($medias[$contestWinners[0]["contest_media_id"]]['media_id']) ?>">
-                                    <?php } else { ?>
-                                        <div class="bracket-empty-box"></div>
-                                    <?php } ?>                                
-                                </div>
-                            </td>
-                            <?php if ($j == 2) { ?>
-                                <td class="tg-yw4l borderbottom borderright" rowspan="2"></td>
-                                <td class="tg-yw4l bordertop"></td>
-                            <?php } else { ?>
-                                <td rowspan="2"></td>
-                                <td></td>
-                            <?php } ?>
-                        </tr> 
-                        <tr>
-                            <td class="tg-yw4l" colspan="6"></td>                            
-                        </tr>
-                        <tr>
-                            <td class="tg-yw4l"><hr style="width:15px"/></td>
-                            <td class="tg-yw4l" rowspan="2">
-                                <div class="bracketbox1">
-                                    <?php if (!empty($combosArr['contest_media_id2'])) { ?>
-                                        <img src="<?php echo $this->mediaImage($medias[$combosArr['contest_media_id2']], 'icons', '80'); ?>" class="second-img contest-img pointer" data-mediaid="<?php echo $this->KCrypt()->enc($medias[$combosArr['contest_media_id2']]['media_id']) ?>">
-                                    <?php } else { ?>
-                                        <div class="bracket-empty-box"></div>
-                                    <?php } ?>                                
-                                </div>
-                            </td>                              
-                            <td class="tg-yw4l borderbottom  borderright" ></td>
-                            <td class="tg-yw4l bordertop"></td> 
-                            <?php if ($j == 1) { ?>                                         
-                                <td></td>
-                                <td class="tg-yw4l"></td>
-                            <?php } ?> 
-                        </tr>
-                        <?php
-                        if ($j == 2) {
-                            $i++;
-                            $j = 1;
-                        } else {
-                            $j++;
-                        }
-                        ?>
-                    </tbody>                    
-                </table>
-            <?php }
-            ?>
+            </ul>
             <div class="margin5 clearfix"></div>
             <table class="shipbtn table">
                 <tbody>
                     <tr>
                         <td><button class="btn btn-primary font10 show-round-btn swipe-right" data-show-section="#r5Section"><i class="fa fa-arrow-left"></i> ROUND 5 / CORE 4</button></td>
-                         <?php 
-                         if (isset($contestWinners[0])) { ?>
-                        <td><button class="btn btn-primary font10 show-round-btn swipe-left" data-show-section="#championSection">Champion <i class="fa fa-arrow-right"></i></button></td>
-                         <?php } ?>
+                        <?php if (isset($contestWinners[0])) { ?>
+                            <td><button class="btn btn-primary font10 show-round-btn swipe-left" data-show-section="#championSection">Champion <i class="fa fa-arrow-right"></i></button></td>
+                        <?php } ?>
                     </tr>
                     <tr>
                         <td colspan="2"><b class="font10" align="center">SWIPE OR USE BUTTONS TO VIEW ADDITIONAL ROUNDS</b> </td>
@@ -267,7 +193,7 @@ function artistName($artist)
                 <tbody>
                     <tr>
                         <td><button class="btn btn-primary font10 show-round-btn swipe-right" data-show-section="#r6Section"><i class="fa fa-arrow-left"></i> ROUND 6 / SEMI-FINAL</button></td>
-                        <td><a href="<?php echo $this->basePath() ?>/new-contest" class="btn btn-primary font10 swipe-left"><i class="fa fa-arrow-right"></i> Contest</a></td>                        
+                        <td><a href="<?php echo $this->basePath() ?>/new-contest" class="btn btn-primary font10 swipe-left">Contest <i class="fa fa-arrow-right"></i></a></td>                        
                     </tr>
                     <tr>
                         <td colspan="2"><b class="font10" align="center">SWIPE OR USE BUTTONS TO VIEW ADDITIONAL ROUNDS</b> </td>
@@ -277,3 +203,10 @@ function artistName($artist)
         </div>
     <?php } ?>
 </div>
+<script>
+    $(document).ready(function(){
+        $('ul.bracket-pattern li img.contest-img').each(function(key, elem) {
+           $(this).parent('li.combo-box-border').removeClass('combo-box-border'); 
+        });
+    });
+</script>

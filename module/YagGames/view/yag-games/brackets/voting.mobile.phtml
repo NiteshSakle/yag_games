@@ -1,29 +1,183 @@
 <?php
-    $this->headMeta()->setProperty('og:title', $contest['name']);
-    $this->headMeta()->setProperty('og:type', 'website');
-    
-    if($shareMedia) {
-        $this->headMeta()->setProperty('og:image', $this->mediaImage($shareMedia, 'samples'));
-        $this->headMeta()->setProperty('og:description', 'I entered the ' . $contest['name'] . ' on YOURARTGALLERY.COM. Check out now');
-    } else {
-        $this->headMeta()->setProperty('og:image', $this->config('aws', 'path') . $contest['thumbnail']);
-        $this->headMeta()->setProperty('og:description', $contest['name'] . ' is available on YOURARTGALLERY.COM. CHECKOUT NOW! ' . $this->config('main_site' ,'url') . '/contests');
-    }
-    
-    $this->headMeta()->setProperty('twitter:card', 'summary');
-    $this->headMeta()->setProperty('twitter:site', '@YourArtGallery');
-    $this->headMeta()->setProperty('twitter:title', $contest['name']);
-    
-    if($shareMedia) {
-        $this->headMeta()->setProperty('twitter:image', $this->mediaImage($shareMedia, 'samples'));
-        $this->headMeta()->setProperty('twitter:description', 'I entered the ' . $contest['name'] . ' on YOURARTGALLERY.COM. Check out now ');    
-    } else {
-        $this->headMeta()->setProperty('twitter:image', $this->config('aws', 'path') . $contest['thumbnail']);    
-        $this->headMeta()->setProperty('twitter:description', $contest['name'] . ' is available on YOURARTGALLERY.COM. CHECKOUT NOW! ' . $this->config('main_site' ,'url') . '/contests');    
-    }
-        
-    function artistName($artist){
-        $firtName = str_split($artist['f_name']);
-        return strtoupper($firtName[0]).".".$artist['l_name'];
-    }
+$this->headMeta()->setProperty('og:title', $contest['name']);
+$this->headMeta()->setProperty('og:type', 'website');
+
+if ($shareMedia) {
+    $this->headMeta()->setProperty('og:image', $this->mediaImage($shareMedia, 'samples'));
+    $this->headMeta()->setProperty('og:description', 'I entered the ' . $contest['name'] . ' on YOURARTGALLERY.COM. Check out now');
+} else {
+    $this->headMeta()->setProperty('og:image', $this->config('aws', 'path') . $contest['thumbnail']);
+    $this->headMeta()->setProperty('og:description', $contest['name'] . ' is available on YOURARTGALLERY.COM. CHECKOUT NOW! ' . $this->config('main_site', 'url') . '/contests');
+}
+
+$this->headMeta()->setProperty('twitter:card', 'summary');
+$this->headMeta()->setProperty('twitter:site', '@YourArtGallery');
+$this->headMeta()->setProperty('twitter:title', $contest['name']);
+
+if ($shareMedia) {
+    $this->headMeta()->setProperty('twitter:image', $this->mediaImage($shareMedia, 'samples'));
+    $this->headMeta()->setProperty('twitter:description', 'I entered the ' . $contest['name'] . ' on YOURARTGALLERY.COM. Check out now ');
+} else {
+    $this->headMeta()->setProperty('twitter:image', $this->config('aws', 'path') . $contest['thumbnail']);
+    $this->headMeta()->setProperty('twitter:description', $contest['name'] . ' is available on YOURARTGALLERY.COM. CHECKOUT NOW! ' . $this->config('main_site', 'url') . '/contests');
+}
+
+function artistName($artist)
+{
+    $firtName = str_split($artist['f_name']);
+    return strtoupper($firtName[0]) . "." . $artist['l_name'];
+}
 ?>
+<div id="content">
+    <div class="top-description">
+        <h2 class=" wowload fadeInUp purple_title vmin3">BRACKET STANDINGS</h2>
+        <h3 class="bebas"><?php echo $contest['name']; ?></h3>
+        <p><?php echo $contest['description']; ?></p>
+    </div>
+    <?php
+    $roundsData = array(
+        1 => array('label1' => 'STARTING 64'),
+        2 => array('label1' => 'TOP 32'),
+        3 => array('label1' => 'SUPER 16'),
+        4 => array('label1' => 'GREAT 8'),
+        5 => array('label1' => 'CORE 4'),
+        6 => array('label1' => 'SEMI-FINAL')
+    );
+
+    for ($r = 1; $r <= 5; $r++) {
+        if ($contest['current_round'] >= $r && isset($comboDetails[$r])) {
+            ?>
+            <div id="<?php echo "r" . $r . "Section"; ?>" class="<?php echo $contest['current_round'] != $r ? 'hide-1' : 'no-class';  ?>">    
+                <h3 class="bebas"><span class="purplecolor"><?php echo "ROUND $r | " . $roundsData[$r]['label1']; ?></span></h3>
+                <div class="clearfix"></div>   
+                <ul class="bracket-pattern">
+                    <?php
+                    $i = 0;
+                    $j = 1;
+                    foreach ($comboDetails[$r] as $combosArr) {
+                        ?>
+                        <li class="combo-box-start combo-box-border">
+                            <?php if (!empty($combosArr['contest_media_id1'])) { ?>
+                                <img src="<?php echo $this->mediaImage($medias[$combosArr['contest_media_id1']], 'icons', '80'); ?>" data-mediaid="<?php echo $medias[$combosArr['contest_media_id1']]['media_id']; ?>" data-round="<?php echo $r; ?>" data-comboId="<?php echo $combosArr['combo_id']; ?>" class="first-img contest-img pointer">
+                            <?php } ?>
+                        </li>
+                        <li class="combo-box-border">
+                            <?php if (!empty($combosArr['contest_media_id2'])) { ?>
+                                <img src="<?php echo $this->mediaImage($medias[$combosArr['contest_media_id2']], 'icons', '80'); ?>" data-mediaid="<?php echo $medias[$combosArr['contest_media_id2']]['media_id']; ?>" data-round="<?php echo $r; ?>" data-comboId="<?php echo $combosArr['combo_id']; ?>" class="second-img contest-img pointer" >
+                            <?php } ?>
+                            <ul>
+                                <li class="<?php echo $j % 2 == 0 ? 'r-even' : 'r-odd'; ?> combo-box-border">
+                                    <?php if (!empty($comboDetails[$r + 1][$i]["contest_media_id$j"])) { ?>
+                                        <img src="<?php echo $this->mediaImage($medias[$comboDetails[$r + 1][$i]["contest_media_id$j"]], 'icons', '90'); ?>"  data-mediaid="<?php echo $medias[$comboDetails[$r + 1][$i]["contest_media_id$j"]]['media_id']; ?>" data-round="<?php echo $r+1; ?>" data-comboId="<?php $comboDetails[$r + 1][$i]['combo_id']; ?>" class="result-img contest-img pointer">
+                                    <?php } ?>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <?php
+                        if ($j == 2) {
+                            $i++;
+                            $j = 1;
+                        } else {
+                            $j++;
+                        }
+                    }
+                    ?>
+                </ul>    
+                <div class="margin5 clearfix"></div>
+                <table class="shipbtn table">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <?php if ($r == 1) { ?>
+                                    <a href="<?php echo $this->basePath() ?>/new-contest" class="btn btn-primary font10 swipe-right"><i class="fa fa-arrow-left"></i> Contest</a>
+                                <?php } else { ?>
+                                    <button class="btn btn-primary font10 show-round-btn swipe-right" data-show-section="<?php echo "#r" . ($r - 1) . "Section"; ?>"><i class="fa fa-arrow-left"></i> <?php echo "ROUND " . ($r - 1) . " | " . $roundsData[$r - 1]['label1']; ?></button>
+                                <?php } ?>
+                            </td>
+                            <?php if ($r + 1 <= $contest['current_round']) { ?>
+                                <td><button class="btn btn-primary font10 show-round-btn swipe-left" data-show-section="<?php echo "#r" . ($r + 1) . "Section"; ?>"><?php echo "ROUND " . ($r + 1) . " | " . $roundsData[$r + 1]['label1']; ?> <i class="fa fa-arrow-right"></i></button></td>
+                            <?php } ?>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><b class="font10" align="center">SWIPE OR USE BUTTONS TO VIEW ADDITIONAL ROUNDS</b> </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <?php
+        }
+    }
+    
+    if ($contest['current_round'] >= 6 && isset($comboDetails[6])) {
+        ?>
+        <div id="r6Section" class="<?php echo $contest['current_round'] == 6 ? 'no-class' : 'hide-1';  ?>">    
+            <h3 class="bebas"><span class="purplecolor">ROUND 6 | SEMI-FINAL</span></h3>
+            <div class="clearfix"></div> 
+            <ul class="bracket-pattern">
+                <?php
+                $j = 1;                
+                foreach ($comboDetails[6] as $combosArr) {
+                    ?>
+                    <li class="combo-box-border">
+                        <?php if (!empty($combosArr['contest_media_id1'])) { ?>
+                            <img src="<?php echo $this->mediaImage($medias[$combosArr['contest_media_id1']], 'icons', '80'); ?>" data-mediaid="<?php echo $medias[$combosArr['contest_media_id1']]['media_id']; ?>" data-round="6" data-comboId="<?php echo $combosArr['combo_id']; ?>" class="first-img contest-img pointer">
+                        <?php } ?>
+                    </li>
+                    <li class="combo-box-border">
+                        <?php if (!empty($combosArr['contest_media_id2'])) { ?>
+                            <img src="<?php echo $this->mediaImage($medias[$combosArr['contest_media_id2']], 'icons', '80'); ?>" data-mediaid="<?php echo $medias[$combosArr['contest_media_id2']]['media_id']; ?>" data-round="6" data-comboId="<?php echo $combosArr['combo_id']; ?>" class="second-img contest-img pointer">
+                        <?php } ?>
+                        <ul>
+                            <li class="r-semi-result combo-box-border">
+                                <?php if (!empty($contestWinners[0]["contest_media_id"])) { ?>
+                                    <img src="<?php echo $this->mediaImage($medias[$contestWinners[0]["contest_media_id"]], 'icons', '90'); ?>"  data-mediaid="<?php echo $medias[$contestWinners[0]["contest_media_id"]]['media_id']; ?>" class="result-img"> 
+                                <?php } ?>
+                            </li>
+                        </ul>
+                    </li>
+
+                <?php }
+                ?>
+            </ul>
+            <div class="margin5 clearfix"></div>
+            <table class="shipbtn table">
+                <tbody>
+                    <tr>
+                        <td><button class="btn btn-primary font10 show-round-btn swipe-right" data-show-section="#r5Section"><i class="fa fa-arrow-left"></i> ROUND 5 / CORE 4</button></td>
+                        <?php if (isset($contestWinners[0])) { ?>
+                            <td><button class="btn btn-primary font10 show-round-btn swipe-left" data-show-section="#championSection">Champion <i class="fa fa-arrow-right"></i></button></td>
+                        <?php } ?>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><b class="font10" align="center">SWIPE OR USE BUTTONS TO VIEW ADDITIONAL ROUNDS</b> </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <?php
+    }
+    ?>
+</div>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('ul.bracket-pattern li img.contest-img').each(function(key, elem) {
+           $(this).parent('li.combo-box-border').removeClass('combo-box-border'); 
+        });
+    });
+    
+    var round = <?php echo isset($contest['current_round']) ? $contest['current_round'] : 0; ?>;
+    $(window).ready(function () {
+<?php if (!$shareMedia) { ?>
+            showModal(gameBasePath + '/brackets/get-next-art?contestId=' + contestId + '&round=' + round);
+<?php } else { ?>
+            var mediaId = <?php echo $shareMedia['media_id']; ?>;
+            showModal(gameBasePath + '/brackets/get-next-art?contestId=' + contestId + '&round=' + round + '&mediaId=' + mediaId);
+<?php } ?>
+    });
+
+    var contestId = "<?php echo $contestId; ?>";
+    $('.contest-img').on('click', function () {
+        showModal(gameBasePath + '/brackets/get-next-art?contestId=' + contestId + '&comboId=' + $(this).data('comboid') + '&round=' + $(this).data('round') + '&mediaId=' + $(this).data('mediaid'));
+    });
+</script>
