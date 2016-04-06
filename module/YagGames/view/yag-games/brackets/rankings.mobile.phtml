@@ -78,7 +78,7 @@ function artistName($artist)
                             <?php } ?>
                             <ul>
                                 <li class="<?php echo $j % 2 == 0 ? 'r-even' : 'r-odd'; ?> combo-box-border">
-                                    <?php if (!empty($medias[$comboDetails[$r + 1][$i]["contest_media_id$j"]])) { ?>
+                                    <?php if (isset($comboDetails[$r + 1][$i]) &&  !empty($medias[$comboDetails[$r + 1][$i]["contest_media_id$j"]])) { ?>
                                         <img src="<?php echo $this->mediaImage($medias[$comboDetails[$r + 1][$i]["contest_media_id$j"]], 'icons', '90'); ?>"  class="result-img contest-img pointer" data-mediaid="<?php echo $this->KCrypt()->enc($medias[$comboDetails[$r + 1][$i]["contest_media_id$j"]]['media_id']) ?>">
                                     <?php } ?>
                                 </li>
