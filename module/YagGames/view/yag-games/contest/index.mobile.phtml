@@ -1,3 +1,4 @@
+<?php $session = $this->session(); ?>
 <div id="content">
     <div class="top-description">
         <h2 class="wowload fadeInUp purple_title vmin3">CHALLENGES & CONTESTS</h2>
@@ -27,8 +28,8 @@
                     ?>
                 
                 <p class="wowload  text-colored" > <?php echo $contest['description']; ?></p>
-                <p>Voting Begins: <b><?php echo date("F jS, Y", strtotime($contest['voting_start_date'])); ?></b></br>
-                    Winner Announced: <b><?php echo date("F jS, Y", strtotime($contest['winners_announce_date'])); ?></b></br>
+                <p>Voting Begins: <b><?php echo date("F jS, Y", strtotime($contest['voting_start_date'])); ?></b><br>
+                    Winner Announced: <b><?php echo date("F jS, Y", strtotime($contest['winners_announce_date'])); ?></b><br>
                 </p>
                 <div class="clearfix grid ">
                     <figure class="default-cursor" style="width:100%">                    

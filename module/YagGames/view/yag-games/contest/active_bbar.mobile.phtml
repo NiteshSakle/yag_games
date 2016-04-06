@@ -1,0 +1,51 @@
+<div class="p0 col-md-8 col-lg-8">
+    <?php
+    if ($contest['coming_soon'] == 0) {
+        if ($contest['voting_started']):
+            ?>
+            <button class="btn btn-primary active-btn" onclick="window.location = '<?php echo $this->basePath() ?>/<?php echo $contestType; ?>/voting/<?php echo $contest['id']; ?>'">Vote Now</button>
+        <?php else: ?>
+            <button class="btn btn-primary vote-soon grey-white-btn default-cursor" >Vote Soon</button>
+        <?php
+        endif;
+    } elseif ($contest['coming_soon'] == 1) {
+        ?>
+        <button class="btn btn-primary grey-white-btn" disabled="disabled">Coming Soon</button>   
+    <?php } ?>
+</div>           
+<br>
+<div class="p0 col-md-8 col-lg-12">
+    <button class="btn btn-primary"  onclick="window.location = '<?php echo $this->basePath() ?>/<?php echo $contestType; ?>/learn-more'">Learn More</button>
+</div>
+<br>
+<?php if ($contest['voting_started']): ?>
+    <div class="p0 col-md-8 col-lg-12">
+        <button class="btn btn-primary active-btn" onclick="window.location = '<?php echo $this->basePath() ?>/<?php echo $contestType; ?>/rankings/<?php echo $contest['id']; ?>'">Rankings</button>            
+    </div>
+    <br>
+<?php endif; ?>
+<div class="col-md-12 col-xs-12 col-sm-12 p0 mb-10">
+    <div class="col-md-4 col-xs-4 col-sm-4 contest-winner p0 text-center">
+        <?php if ($contest['coming_soon'] == 0) { ?>
+            <?php $percentage = ($contest['total_entries']) ? ($contest['total_entries'] / $contest['max_no_of_photos']) * 100 : 0 ?>
+            <img src="<?php echo $this->basePath() ?>/img/closed.png"  alt="contest status" style="width:63%">
+        <?php } ?>   
+    </div>       
+    <div class="col-md-8 col-xs-8 col-sm-8 contest-winner">
+        <div class="text-center">
+            <?php if (isset($contest['entered']) && $contest['entered']): ?>
+                Share Your Submission for Votes
+            <?php else: ?>
+                Share this contest
+            <?php endif; ?>
+        </div>
+        <?php
+        echo $this->partial('social_sharing.phtml', array(
+            'contest' => $contest,
+            'type' => $type,
+            'contestType' => $contestType,
+        ));
+        ?> 
+    </div>
+</div>
+<div class="clear"></div>
