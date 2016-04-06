@@ -21,12 +21,6 @@ if ($shareMedia) {
     $this->headMeta()->setProperty('twitter:image', $this->config('aws', 'path') . $contest['thumbnail']);
     $this->headMeta()->setProperty('twitter:description', $contest['name'] . ' is available on YOURARTGALLERY.COM. CHECKOUT NOW! ' . $this->config('main_site', 'url') . '/contests');
 }
-
-function artistName($artist)
-{
-    $firtName = str_split($artist['f_name']);
-    return strtoupper($firtName[0]) . "." . $artist['l_name'];
-}
 ?>
 <div id="content">
     <div class="top-description">
@@ -47,7 +41,7 @@ function artistName($artist)
     for ($r = 1; $r <= 5; $r++) {
         if ($contest['current_round'] >= $r && isset($comboDetails[$r])) {
             ?>
-            <div id="<?php echo "r" . $r . "Section"; ?>" class="<?php echo $contest['current_round'] != $r ? 'hide-1' : 'no-class';  ?>">    
+            <div id="<?php echo "r" . $r . "Section"; ?>" class="<?php echo $contest['current_round'] != $r ? 'hide-1' : 'no-class'; ?>">    
                 <h3 class="bebas"><span class="purplecolor"><?php echo "ROUND $r | " . $roundsData[$r]['label1']; ?></span></h3>
                 <div class="clearfix"></div>   
                 <ul class="bracket-pattern">
@@ -57,18 +51,18 @@ function artistName($artist)
                     foreach ($comboDetails[$r] as $combosArr) {
                         ?>
                         <li class="combo-box-start combo-box-border">
-                            <?php if (!empty($combosArr['contest_media_id1'])) { ?>
+                            <?php if (!empty($medias[$combosArr['contest_media_id1']])) { ?>
                                 <img src="<?php echo $this->mediaImage($medias[$combosArr['contest_media_id1']], 'icons', '80'); ?>" data-mediaid="<?php echo $medias[$combosArr['contest_media_id1']]['media_id']; ?>" data-round="<?php echo $r; ?>" data-comboId="<?php echo $combosArr['combo_id']; ?>" class="first-img contest-img pointer">
                             <?php } ?>
                         </li>
                         <li class="combo-box-border">
-                            <?php if (!empty($combosArr['contest_media_id2'])) { ?>
+                            <?php if (!empty($medias[$combosArr['contest_media_id2']])) { ?>
                                 <img src="<?php echo $this->mediaImage($medias[$combosArr['contest_media_id2']], 'icons', '80'); ?>" data-mediaid="<?php echo $medias[$combosArr['contest_media_id2']]['media_id']; ?>" data-round="<?php echo $r; ?>" data-comboId="<?php echo $combosArr['combo_id']; ?>" class="second-img contest-img pointer" >
                             <?php } ?>
                             <ul>
                                 <li class="<?php echo $j % 2 == 0 ? 'r-even' : 'r-odd'; ?> combo-box-border">
-                                    <?php if (!empty($comboDetails[$r + 1][$i]["contest_media_id$j"])) { ?>
-                                        <img src="<?php echo $this->mediaImage($medias[$comboDetails[$r + 1][$i]["contest_media_id$j"]], 'icons', '90'); ?>"  data-mediaid="<?php echo $medias[$comboDetails[$r + 1][$i]["contest_media_id$j"]]['media_id']; ?>" data-round="<?php echo $r+1; ?>" data-comboId="<?php $comboDetails[$r + 1][$i]['combo_id']; ?>" class="result-img contest-img pointer">
+                                    <?php if (!empty($medias[$comboDetails[$r + 1][$i]["contest_media_id$j"]])) { ?>
+                                        <img src="<?php echo $this->mediaImage($medias[$comboDetails[$r + 1][$i]["contest_media_id$j"]], 'icons', '90'); ?>"  data-mediaid="<?php echo $medias[$comboDetails[$r + 1][$i]["contest_media_id$j"]]['media_id']; ?>" data-round="<?php echo $r + 1; ?>" data-comboId="<?php $comboDetails[$r + 1][$i]['combo_id']; ?>" class="result-img contest-img pointer">
                                     <?php } ?>
                                 </li>
                             </ul>
@@ -108,32 +102,28 @@ function artistName($artist)
             <?php
         }
     }
-    
+
     if ($contest['current_round'] >= 6 && isset($comboDetails[6])) {
         ?>
-        <div id="r6Section" class="<?php echo $contest['current_round'] == 6 ? 'no-class' : 'hide-1';  ?>">    
+        <div id="r6Section" class="<?php echo $contest['current_round'] == 6 ? 'no-class' : 'hide-1'; ?>">    
             <h3 class="bebas"><span class="purplecolor">ROUND 6 | SEMI-FINAL</span></h3>
             <div class="clearfix"></div> 
             <ul class="bracket-pattern">
                 <?php
-                $j = 1;                
+                $j = 1;
                 foreach ($comboDetails[6] as $combosArr) {
                     ?>
                     <li class="combo-box-border">
-                        <?php if (!empty($combosArr['contest_media_id1'])) { ?>
+                        <?php if (!empty($medias[$combosArr['contest_media_id1']])) { ?>
                             <img src="<?php echo $this->mediaImage($medias[$combosArr['contest_media_id1']], 'icons', '80'); ?>" data-mediaid="<?php echo $medias[$combosArr['contest_media_id1']]['media_id']; ?>" data-round="6" data-comboId="<?php echo $combosArr['combo_id']; ?>" class="first-img contest-img pointer">
                         <?php } ?>
                     </li>
                     <li class="combo-box-border">
-                        <?php if (!empty($combosArr['contest_media_id2'])) { ?>
+                        <?php if (!empty($medias[$combosArr['contest_media_id2']])) { ?>
                             <img src="<?php echo $this->mediaImage($medias[$combosArr['contest_media_id2']], 'icons', '80'); ?>" data-mediaid="<?php echo $medias[$combosArr['contest_media_id2']]['media_id']; ?>" data-round="6" data-comboId="<?php echo $combosArr['combo_id']; ?>" class="second-img contest-img pointer">
                         <?php } ?>
                         <ul>
-                            <li class="r-semi-result combo-box-border">
-                                <?php if (!empty($contestWinners[0]["contest_media_id"])) { ?>
-                                    <img src="<?php echo $this->mediaImage($medias[$contestWinners[0]["contest_media_id"]], 'icons', '90'); ?>"  data-mediaid="<?php echo $medias[$contestWinners[0]["contest_media_id"]]['media_id']; ?>" class="result-img"> 
-                                <?php } ?>
-                            </li>
+                            <li class="r-semi-result combo-box-border"></li>
                         </ul>
                     </li>
 
@@ -160,12 +150,12 @@ function artistName($artist)
     ?>
 </div>
 <script type="text/javascript">
-    $(document).ready(function(){
-        $('ul.bracket-pattern li img.contest-img').each(function(key, elem) {
-           $(this).parent('li.combo-box-border').removeClass('combo-box-border'); 
+    $(document).ready(function () {
+        $('ul.bracket-pattern li img.contest-img').each(function (key, elem) {
+            $(this).parent('li.combo-box-border').removeClass('combo-box-border');
         });
     });
-    
+
     var round = <?php echo isset($contest['current_round']) ? $contest['current_round'] : 0; ?>;
     $(window).ready(function () {
 <?php if (!$shareMedia) { ?>

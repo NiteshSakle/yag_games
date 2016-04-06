@@ -68,17 +68,17 @@ function artistName($artist)
                     foreach ($comboDetails[$r] as $combosArr) {
                         ?>
                         <li class="combo-box-start combo-box-border">
-                            <?php if (!empty($combosArr['contest_media_id1'])) { ?>
+                            <?php if (!empty($medias[$combosArr['contest_media_id1']])) { ?>
                                 <img src="<?php echo $this->mediaImage($medias[$combosArr['contest_media_id1']], 'icons', '80'); ?>" class="first-img contest-img pointer" data-mediaid="<?php echo $this->KCrypt()->enc($medias[$combosArr['contest_media_id1']]['media_id']) ?>">
                             <?php } ?>
                         </li>
                         <li class="combo-box-border">
-                            <?php if (!empty($combosArr['contest_media_id2'])) { ?>
+                            <?php if (!empty($medias[$combosArr['contest_media_id2']])) { ?>
                                 <img src="<?php echo $this->mediaImage($medias[$combosArr['contest_media_id2']], 'icons', '80'); ?>" class="second-img contest-img pointer" data-mediaid="<?php echo $this->KCrypt()->enc($medias[$combosArr['contest_media_id2']]['media_id']) ?>">
                             <?php } ?>
                             <ul>
                                 <li class="<?php echo $j % 2 == 0 ? 'r-even' : 'r-odd'; ?> combo-box-border">
-                                    <?php if (!empty($comboDetails[$r + 1][$i]["contest_media_id$j"])) { ?>
+                                    <?php if (!empty($medias[$comboDetails[$r + 1][$i]["contest_media_id$j"]])) { ?>
                                         <img src="<?php echo $this->mediaImage($medias[$comboDetails[$r + 1][$i]["contest_media_id$j"]], 'icons', '90'); ?>"  class="result-img contest-img pointer" data-mediaid="<?php echo $this->KCrypt()->enc($medias[$comboDetails[$r + 1][$i]["contest_media_id$j"]]['media_id']) ?>">
                                     <?php } ?>
                                 </li>
@@ -131,17 +131,17 @@ function artistName($artist)
                 foreach ($comboDetails[6] as $combosArr) {
                     ?>
                     <li class="combo-box-start combo-box-border">
-                        <?php if (!empty($combosArr['contest_media_id1'])) { ?>
+                        <?php if (!empty($medias[$combosArr['contest_media_id1']])) { ?>
                             <img src="<?php echo $this->mediaImage($medias[$combosArr['contest_media_id1']], 'icons', '80'); ?>" class="first-img contest-img pointer" data-mediaid="<?php echo $this->KCrypt()->enc($medias[$combosArr['contest_media_id1']]['media_id']) ?>">
                         <?php } ?>
                     </li>
                     <li class="combo-box-border">
-                        <?php if (!empty($combosArr['contest_media_id2'])) { ?>
+                        <?php if (!empty($medias[$combosArr['contest_media_id2']])) { ?>
                             <img src="<?php echo $this->mediaImage($medias[$combosArr['contest_media_id2']], 'icons', '80'); ?>" class="second-img contest-img pointer" data-mediaid="<?php echo $this->KCrypt()->enc($medias[$combosArr['contest_media_id2']]['media_id']) ?>">
                         <?php } ?>
                         <ul>
                             <li class="r-semi-result combo-box-border">
-                                <?php if (!empty($contestWinners[0]["contest_media_id"])) { ?>
+                                <?php if (isset($contestWinners[0]) && !empty($medias[$contestWinners[0]["contest_media_id"]])) { ?>
                                     <img src="<?php echo $this->mediaImage($medias[$contestWinners[0]["contest_media_id"]], 'icons', '90'); ?>"  class="result-img contest-img pointer" data-mediaid="<?php echo $this->KCrypt()->enc($medias[$contestWinners[0]["contest_media_id"]]['media_id']) ?>">
                                 <?php } ?>
                             </li>
@@ -176,7 +176,7 @@ function artistName($artist)
                 <div class="clearfix"></div>  
                 <div class="center-block">
                     <div class="brk-img">
-                        <?php if (!empty($contestWinners[0]["contest_media_id"])) { ?>
+                        <?php if (!empty($medias[$contestWinners[0]["contest_media_id"]])) { ?>
                             <img src="<?php echo $this->mediaImage($medias[$contestWinners[0]["contest_media_id"]], 'icons', '150'); ?>"  class="result-img contest-img pointer" data-mediaid="<?php echo $this->KCrypt()->enc($medias[$contestWinners[0]["contest_media_id"]]['media_id']) ?>">
                         <?php } else { ?>
                             <div class="bracket-empty-box"></div>

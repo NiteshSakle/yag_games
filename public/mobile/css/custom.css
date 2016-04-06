@@ -103,7 +103,7 @@ ul.bracket-pattern > li {
 }
 ul.bracket-pattern > li > ul > li {
     position: absolute;
-    top: -48px;
+    top: -61px;
     left: 136px;
 }
 ul.bracket-pattern > li:before
