@@ -367,7 +367,7 @@
 
         request.done(function (msg) {
             if (msg.success) {
-                saveArtistActivity('entered_contest', contestId, mediaId);
+                save_share_activity('entered_contest', mediaId, '0', contestId);
                 location.reload(); 
             } else {
                 alert(msg.message)
