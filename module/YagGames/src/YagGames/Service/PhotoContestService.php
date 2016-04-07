@@ -111,6 +111,13 @@ class PhotoContestService
       if ($count) {
         throw new \YagGames\Exception\PhotoContestException("You have already voted for this media in this contest today.");
       }
+    } elseif (!empty($userSession['guest_user_id'])) {
+      $count = $contestMediaRatingTable->hasAlreadyVotedForThisContestMediaToday($contestMediaData['id'], $userSession['guest_user_id']);
+      if ($count) {
+        throw new \YagGames\Exception\PhotoContestException("You have already voted for this media in this contest today.");
+      } 
+    } else {
+        throw new \YagGames\Exception\PhotoContestException("You have not loggedIn.");
     }
     
     $clientIPService = $this->getServiceLocator()->get('clientIPService');            
@@ -119,7 +126,7 @@ class PhotoContestService
     // now submit vote
     $contestMediaRating = new \YagGames\Model\ContestMediaRating();
     $contestMediaRating->contest_media_id = $contestMediaData['id'];
-    $contestMediaRating->member_id = (!empty($userSession['mem_id'])) ? $userSession['mem_id'] : 0;
+    $contestMediaRating->member_id = (!empty($userSession['mem_id'])) ? $userSession['mem_id'] : $userSession['guest_user_id'];
     $contestMediaRating->rating = $rating;
     $contestMediaRating->round = 0;
     $contestMediaRating->ip_address = $clientIP;

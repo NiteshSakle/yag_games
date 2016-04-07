@@ -187,8 +187,13 @@ class BracketsController extends BaseController
         $contestId = $this->params()->fromRoute('id', null);
         $this->session = $this->sessionPlugin();
         $userId = '';
+        $guestloggedIn = 0;
         if (isset($this->session->mem_id)) {
-            $userId = $this->session->mem_id;
+          $userId = $this->session->mem_id;
+          $guestloggedIn = 1;
+        } elseif (isset($this->session->guest_user_id)) {
+          $userId = $this->session->guest_user_id;
+          $guestloggedIn = 1;
         }
 
         //get contest details
@@ -230,6 +235,7 @@ class BracketsController extends BaseController
         $vm->setVariable('contest', $this->contest);
         $vm->setVariable('comboDetails', $contestComboDetails);
         $vm->setVariable('shareMedia', $media);
+        $vm->setVariable('guestloggedIn', $guestloggedIn);
         return $vm;
     }
 
@@ -324,9 +330,16 @@ class BracketsController extends BaseController
             if (isset($this->session->mem_id)) {
                 $userId = $this->session->mem_id;
                 $ratedMedia = array();
+            } elseif(isset($this->session->guest_user_id)) {
+//                $userId = '';
+//                $ratedMedia = $this->getRatedMedia($contestId, $round); //fill the data from cookie
+                $userId = $this->session->guest_user_id;
+                $ratedMedia = array(); //fill the data from cookie
             } else {
-                $userId = '';
-                $ratedMedia = $this->getRatedMedia($contestId, $round); //fill the data from cookie
+                return $this->redirect()->toRoute('brackets', array(
+                  'id' => $contestId,
+                  'action' => 'voting'
+                ));
             }
 
             $bracketService = $this->getServiceLocator()->get('bracketService');
@@ -347,9 +360,9 @@ class BracketsController extends BaseController
                 }
             }
 
-            if (!isset($this->session->mem_id)) {
-                $contestData['totalRated'] = count($ratedMedia);
-            }
+//            if (!isset($this->session->mem_id)) {
+//                $contestData['totalRated'] = count($ratedMedia);
+//            }
         }
 
         $viewModel = new ViewModel(array('media1' => $media1, 'media2' => $media2, 'contestId' => $contestId, 'contestData' => $contestData, 'noImages' => $noImages, 'contest' => $this->contest, 'showThankq' => $showThankq));
@@ -363,7 +376,9 @@ class BracketsController extends BaseController
         $userId = '';
         if (isset($this->session->mem_id)) {
             $userId = $this->session->mem_id;
-        }
+        } elseif(isset($this->session->guest_user_id)) {
+            $userId = $this->session->guest_user_id;    
+        } 
 
         $request = $this->getRequest();
         if ($request->isPost()) {

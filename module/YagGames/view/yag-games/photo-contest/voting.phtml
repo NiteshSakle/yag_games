@@ -127,9 +127,13 @@
     ));
     ?>
 </div>
-    <script type="text/javascript">
-
+<script type="text/javascript">    
+    var guestloggedIn = <?php echo $guestloggedIn; ?>;
+    
     $(window).ready(function () {
+        if(!guestloggedIn) {
+            guestLogin();
+        } else {        
     <?php if (empty($search) && !$shareMedia) { ?>
             workbox({
                 page: gameBasePath + '/photo-contest/get-next-art?contestId=' + contestId,
@@ -142,17 +146,28 @@
                 page: gameBasePath + '/photo-contest/get-next-art?contestId=' + contestId + '&mediaId=' + mediaId,
                 mini: true
             });
-    
     <?php } ?>
-            scroll(0, 0);
+        }
+        scroll(0, 0);
     });
+        
+    function guestLogin(){
+        workbox({
+            page: baseURL + '/workbox.php?mode=guestLogin', 
+            mini: true 
+        });
+    }
 
-        var contestId = "<?php echo $contestId; ?>";
-        $('.media_image').click(function () {
+    var contestId = "<?php echo $contestId; ?>";
+    $('.media_image').click(function () {
+        if(!guestloggedIn){
+            guestLogin();
+        } else {
             workbox({
                 page: gameBasePath + '/photo-contest/get-next-art?contestId=' + contestId + '&mediaId=' + $(this).data('media_id'),
                 mini: true
             });
-            scroll(0, 0);
-        });
-    </script>
+        }
+        scroll(0, 0);
+    });
+</script>
