@@ -84,7 +84,7 @@ class BracketService
     
   }
 
-  public function addVoteToArt($contestId, $mediaId, $userSession, $comboId)
+  public function addVoteToArt($contestId, $mediaId, $userId, $comboId)
   {
     $contestTable = $this->getServiceLocator()->get('YagGames\Model\ContestTable');
     $contestData = $contestTable->fetchRecord($contestId);
@@ -108,13 +108,8 @@ class BracketService
     
     // Can rate once for a media in one round
     $contestMediaRatingTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaRatingTable');
-    if (!empty($userSession['mem_id'])) {
-      $count = $contestMediaRatingTable->hasAlreadyVotedForThisBracketContest($contestData['current_round'], $comboId, $userSession['mem_id'], $contestData['id']);
-      if ($count) {
-        throw new \YagGames\Exception\BracketException("You have already voted for this combo in this Round");
-      }
-    } elseif (!empty($userSession['guest_user_id'])) {
-      $count = $contestMediaRatingTable->hasAlreadyVotedForThisBracketContest($contestData['current_round'], $comboId, $userSession['guest_user_id'], $contestData['id']);
+    if (!empty($userId)) {
+      $count = $contestMediaRatingTable->hasAlreadyVotedForThisBracketContest($contestData['current_round'], $comboId, $userId, $contestData['id']);
       if ($count) {
         throw new \YagGames\Exception\BracketException("You have already voted for this combo in this Round");
       }
@@ -128,7 +123,7 @@ class BracketService
     // now submit vote
     $contestMediaRating = new \YagGames\Model\ContestMediaRating();
     $contestMediaRating->contest_media_id = $contestMediaData['id'];
-    $contestMediaRating->member_id = (!empty($userSession['mem_id'])) ? $userSession['mem_id'] : $userSession['guest_user_id'];
+    $contestMediaRating->member_id = (!empty($userId)) ? $userId : 0;
     $contestMediaRating->rating = 10;
     $contestMediaRating->round = $contestData['current_round'];
     $contestMediaRating->bracket_combo_id = $comboId;

@@ -76,10 +76,8 @@ return array(
                 
         'sessionService' => function(ServiceLocatorInterface $serviceLocator) {
             $sessionContainer = new Container('member');
-            $sessionContainer1 = new Container('guestUser');
             $sessionService = new SessionService();
             $sessionService->setSessionContainer($sessionContainer);
-            $sessionService->setSessionContainer($sessionContainer1);
             return $sessionService;
         },
                 

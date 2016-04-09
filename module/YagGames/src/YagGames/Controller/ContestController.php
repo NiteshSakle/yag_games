@@ -225,4 +225,29 @@ class ContestController extends BaseController
         return "";
     }
   }
+  
+  public function testAction()
+  {
+      echo  "<pre>";
+      var_dump($_SESSION);
+      echo "</pre>";
+      $this->getConfig();
+      $contest['main_site_url'] = "http://localhost/yag";
+      $contest['thumbnail']= "NOT_UPDATED" ;
+      $contest['name'] = "teas";
+      $winner['f_name'] = "vishwa";
+      $winner['title'] = "image";
+      $contestTopWinners[0] = "tesh";
+      $contestTopWinners[1] = "tesh";
+    $data['awsPath'] = $this->config['aws']['path'];
+    $data['promoCode'] = "test";
+    $data['contest'] = $contest;
+    $data['winner'] = $winner;
+    $data['contestTopWinners'] = $contestTopWinners;
+    $view = new ViewModel($data);
+    $view->setTemplate('email/test');
+
+    return $view;
+      
+  }
 }
