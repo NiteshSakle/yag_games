@@ -50,6 +50,9 @@
         font-size: 22px;
         color: white;
     }
+    .guestlogin-popup {
+        margin: 10px 1px 1px -60px;
+    }
 </style>
 <div  class="home_content clearfix">
     <div class="inner_main clearfix">
@@ -677,7 +680,6 @@
     $('.white-border').click(function () {
         if(!guestloggedIn){
             guestLogin();
-            scroll(0, 0);
         } else {
             workbox({
                 page: gameBasePath + '/brackets/get-next-art?contestId=' + contestId + '&comboId=' + $(this).data('comboid') + '&round=' + $(this).data('round') + '&mediaId=' + $(this).data('mediaid'),
