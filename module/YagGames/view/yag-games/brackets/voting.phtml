@@ -653,7 +653,9 @@
     
     $(window).ready(function () {
         if(!guestloggedIn) {
-            guestLogin();
+            setTimeout(function(){
+                guestLogin();
+            },100);
         } else {
     <?php if (!$shareMedia) { ?>
         workbox({
