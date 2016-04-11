@@ -199,8 +199,8 @@ class PhotoContestController extends BaseController
     if (isset($this->session->mem_id)) {
       $userId = $this->session->mem_id;
       $guestloggedIn = 1;
-    } elseif (isset($this->session->guest_user_id)) {
-      $userId = $this->session->guest_user_id;
+    } elseif (isset($_SESSION['guestUser']['guest_user_id'])) {
+      $userId = $_SESSION['guestUser']['guest_user_id'];
       $guestloggedIn = 1;
     }
 
@@ -312,8 +312,8 @@ class PhotoContestController extends BaseController
     if (isset($this->session->mem_id)) {
       $userId = $this->session->mem_id;
       $ratedMedia = array();
-    } elseif(isset($this->session->guest_user_id)) {
-      $userId = $this->session->guest_user_id;
+    } elseif(isset($_SESSION['guestUser']['guest_user_id'])) {
+      $userId = $_SESSION['guestUser']['guest_user_id'];
       $ratedMedia = array(); //fill the data from cookie
     } else {
 //      $userId = '';
@@ -342,8 +342,8 @@ class PhotoContestController extends BaseController
     $userId = '';
     if (isset($this->session->mem_id)) {
         $userId = $this->session->mem_id;
-    } elseif(isset($this->session->guest_user_id)) {
-        $userId = $this->session->guest_user_id;    
+    } elseif(isset($_SESSION['guestUser']['guest_user_id'])) {
+        $userId = $_SESSION['guestUser']['guest_user_id'];    
     }
 
     $request = $this->getRequest();
@@ -399,7 +399,7 @@ class PhotoContestController extends BaseController
 
       $photoContestService = $this->getServiceLocator()->get('photoContestService');
       try {
-        $contestMediaRatingId = $photoContestService->addVoteToArt($contestId, $mediaId, $this->session, $rating);
+        $contestMediaRatingId = $photoContestService->addVoteToArt($contestId, $mediaId, $userId, $rating);
       } catch (PhotoContestException $e) {
         return new JsonModel(array(
             'success' => false,
