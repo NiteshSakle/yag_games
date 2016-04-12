@@ -202,7 +202,15 @@ div.brkt-voting-cont {
 ul.no-disc {
     list-style: none;
 }
+@media (max-width: 320px) { 
+    div.pc-rank div.figure {
+        height: 200px !important;
+    }
+}
 @media only screen and (min-device-width: 321px) and (max-device-width: 568px) { 
+    div.pc-rank div.figure {
+        height: 225px !important;
+    }
     ul.bracket-pattern {
         margin-left: 43px !important;
     }
