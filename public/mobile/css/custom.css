@@ -207,6 +207,9 @@ div.brkt-voting-cont {
 ul.no-disc {
     list-style: none;
 }
+div.dates-section {
+    line-height: 22px;
+}
 @media (max-width: 320px) { 
     div.pc-rank div.figure {
         height: 200px !important;

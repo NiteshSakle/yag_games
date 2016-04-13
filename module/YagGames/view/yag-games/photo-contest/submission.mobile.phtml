@@ -13,26 +13,26 @@
     </div><br>   
     <div class="spacer">
         <div class="clearfix grid">
+            <div class="mb-5"><small class="text-bold">Swipe left to view more</small></div>
             <div class="swiper-container mb-10">
                  <div id="subArtsList" class="swiper-wrapper">                    
                  </div>                 
-            </div>
-            <small>Swipe arts to view more</small><br>
+            </div>           
             <i><small>Full image will be shown for voting</small></i><br>
         </div>        
         <div class="p0 col-md-8 col-lg-12 mt-10">
-            <button id="submitArtBtn" class="btn btn-primary" disabled="disable">SUBMIT THIS IMAGE</button>
+            <button id="submitArtBtn" class="btn btn-primary btn-lite-purple" disabled="disable">SUBMIT THIS IMAGE</button>
         </div>
         <br>
         <p>
             <b>OPEN ENTRIES END: <?php echo date("F jS, Y", strtotime($contest['entry_end_date'])); ?><br>
                 VOTING BEGINS: <?php echo date("F jS, Y", strtotime($contest['voting_start_date'])); ?></b><br><br>            
-            <b><?php echo date("F jS, Y", strtotime($contest['winners_announce_date'])); ?>: </b><b class="purplecolor">WINNERS ANNOUNCED</b><br>
+            <b class="purplecolor">WINNERS ANNOUNCED: </b><b><?php echo date("F jS, Y", strtotime($contest['winners_announce_date'])); ?></b><br>
         </p>				
         <div class="bs-example">
             <div id="accordion" class="panel-group contest-rules" data-accr-toggle-icons="true">
                 <div class="panel panel-default">
-                    <div class="panel-heading" data-toggle="collapse" data-parent="#accordion" data-target="#collapseOne" >
+                    <div class="panel-heading pointer" data-toggle="collapse" data-parent="#accordion" data-target="#collapseOne" >
                         <h4 class="panel-title">
                             <a class="bebas">CONTEST RULES&nbsp;&nbsp;<i id="faIconTwo" class="fa fa-plus-square-o"></i></a>
                         </h4>

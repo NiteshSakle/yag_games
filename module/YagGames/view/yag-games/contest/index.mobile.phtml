@@ -18,21 +18,92 @@
             ?>
             <div class="border-b spacer mb-10 mt-10">
                 <?php
-                    if ($type == 'exclusive') {
-                        ?>
-                        <span class="text-gold text-bold">Exclusive</span>
-                        <h2 class="bebas mt-5"><?php echo $contest['name']; ?></h2>
-                    <?php  } else { ?>
-                        <h2 class="bebas"><?php echo $contest['name']; ?></h2>
-                    <?php }
+                if ($type == 'exclusive') {
                     ?>
-                
-                <p class="wowload  text-colored" > <?php echo $contest['description']; ?></p>
-                <p>Voting Begins: <b><?php echo date("F jS, Y", strtotime($contest['voting_start_date'])); ?></b><br>
-                    Winner Announced: <b><?php echo date("F jS, Y", strtotime($contest['winners_announce_date'])); ?></b><br>
-                </p>
-                <div class="clearfix grid ">
-                    <figure class="default-cursor" style="width:100%">                    
+                    <span class="text-gold text-bold">Exclusive</span>
+                    <h2 class="bebas mt-10"><?php echo $contest['name']; ?></h2>
+                <?php } else { ?>
+                    <h2 class="bebas mb-10"><?php echo $contest['name']; ?></h2>
+                <?php }
+                ?>
+                <p class="wowload  text-colored mb-10"> <?php echo $contest['description']; ?></p>
+                <div class="dates-section">
+                    <?php if ($contest['coming_soon'] == 1) { ?>
+                        <span class="purple-txt text-bold">Contest Start Date: </span><span class="purple-txt text-bold"><?php echo date("F jS, Y", strtotime($contest['entry_start_date'])); ?></span><br>
+                    <?php } ?>
+                    <?php
+                    if ($contest['max_no_of_photos'] == $contest['total_entries']) {
+                        $date_details = 'active';
+                    } else {
+                        $date_details = $contest['my_type'];
+                    }
+
+                    if ($date_details == 'new') {
+                        ?>                                    
+                        <?php if ($contest['type_id'] == 3) { ?>
+                            <span class="purple-txt">Open Entries End: </span><span class="purple-txt"><?php echo date("F jS, Y", strtotime($contest['entry_end_date'])); ?></span><br>
+                            <span class="purple-txt">Voting Begins: </span><span class="purple-txt"><?php echo date("F jS, Y", strtotime($contest['voting_start_date'])); ?></span><br>
+                            <br>
+                            <div class="brk-dates" data-current-round='<?php echo $contest['current_round']; ?>'>
+                                <span data-round-label='1' class="r-lbl-1"><?php echo date("m/d/Y", strtotime($contest['round1'])); ?> -</span><span data-round-label='1' class="r-lbl-2"> Round One 64</span><br>
+                                <span data-round-label='2' class="r-lbl-1"><?php echo date("m/d/Y", strtotime($contest['round2'])); ?> -</span><span data-round-label='2' class="r-lbl-2">  Round Two 32</span><br>
+                                <span data-round-label='3' class="r-lbl-1"><?php echo date("m/d/Y", strtotime($contest['round3'])); ?> -</span><span data-round-label='3' class="r-lbl-2">  Super 16</span><br>
+                                <span data-round-label='4' class="r-lbl-1"><?php echo date("m/d/Y", strtotime($contest['round4'])); ?> -</span><span data-round-label='4' class="r-lbl-2">  Great 8</span><br>
+                                <span data-round-label='5' class="r-lbl-1"><?php echo date("m/d/Y", strtotime($contest['round5'])); ?> -</span><span data-round-label='5' class="r-lbl-2">  Core 4</span><br>
+                                <span data-round-label='6' class="r-lbl-1"><?php echo date("m/d/Y", strtotime($contest['round6'])); ?> -</span><span data-round-label='6' class="r-lbl-2">  Championship Round!</span><br>
+                            </div>
+                        <?php } else { ?>
+                            <span class="purple-txt">Enter by: </span><span class="purple-txt"><?php echo date("F jS, Y", strtotime($contest['entry_end_date'])); ?></span>
+                        <?php } ?>
+
+                    <?php } elseif ($date_details == 'active') { ?>
+                        <?php
+                        if ($contest['type_id'] == 3) {
+                            if ($contest['voting_started'] == 1) {
+                                ?>
+                                <span class="purple-txt">CURRENTLY IN ROUND: </span>
+                            <?php } else { ?>
+                                <span class="purple-txt">Voting Begins: </span>
+                                <span class="purple-txt"><?php echo date("F jS, Y", strtotime($contest['voting_start_date'])); ?></span>
+                                <?php
+                            }
+                            ?>
+                            <?php if ($contest['coming_soon'] != 1) { ?>
+                                <br>
+                                <div class="brk-dates" data-current-round='<?php echo $contest['current_round']; ?>'>
+                                    <span data-round-label='1' class="r-lbl-1"><?php echo date("m/d/Y", strtotime($contest['round1'])); ?> -</span><span data-round-label='1' class="r-lbl-2"> Round One 64</span><br>
+                                    <span data-round-label='2' class="r-lbl-1"><?php echo date("m/d/Y", strtotime($contest['round2'])); ?> -</span><span data-round-label='2' class="r-lbl-2">  Round Two 32</span><br>
+                                    <span data-round-label='3' class="r-lbl-1"><?php echo date("m/d/Y", strtotime($contest['round3'])); ?> -</span><span data-round-label='3' class="r-lbl-2">  Super 16</span><br>
+                                    <span data-round-label='4' class="r-lbl-1"><?php echo date("m/d/Y", strtotime($contest['round4'])); ?> -</span><span data-round-label='4' class="r-lbl-2">  Great 8</span><br>
+                                    <span data-round-label='5' class="r-lbl-1"><?php echo date("m/d/Y", strtotime($contest['round5'])); ?> -</span><span data-round-label='5' class="r-lbl-2">  Core 4</span><br>
+                                    <span data-round-label='6' class="r-lbl-1"><?php echo date("m/d/Y", strtotime($contest['round6'])); ?> -</span><span data-round-label='6' class="r-lbl-2">  Championship Round!</span><br>
+                                </div>
+                            <?php } ?>
+                        <?php } else { ?>
+                            <span class="purple-txt">Voting Begins: </span><span class="purple-txt"><?php echo date("F jS, Y", strtotime($contest['voting_start_date'])); ?></span>
+                        <?php } ?>
+                    <?php } elseif ($date_details == 'past') { ?>
+                        <?php if ($contest['type_id'] == 3) { ?>
+                            <span class="purple-txt">CURRENTLY IN ROUND: </span>
+                            <br>
+                            <div class="brk-dates" data-current-round='<?php echo $contest['current_round']; ?>'>
+                                <span data-round-label='1' class="r-lbl-1"><?php echo date("m/d/Y", strtotime($contest['round1'])); ?> -</span><span data-round-label='1' class="r-lbl-2"> Round One 64</span><br>
+                                <span data-round-label='2' class="r-lbl-1"><?php echo date("m/d/Y", strtotime($contest['round2'])); ?> -</span><span data-round-label='2' class="r-lbl-2">  Round Two 32</span><br>
+                                <span data-round-label='3' class="r-lbl-1"><?php echo date("m/d/Y", strtotime($contest['round3'])); ?> -</span><span data-round-label='3' class="r-lbl-2">  Super 16</span><br>
+                                <span data-round-label='4' class="r-lbl-1"><?php echo date("m/d/Y", strtotime($contest['round4'])); ?> -</span><span data-round-label='4' class="r-lbl-2">  Great 8</span><br>
+                                <span data-round-label='5' class="r-lbl-1"><?php echo date("m/d/Y", strtotime($contest['round5'])); ?> -</span><span data-round-label='5' class="r-lbl-2">  Core 4</span><br>
+                                <span data-round-label='6' class="r-lbl-1"><?php echo date("m/d/Y", strtotime($contest['round6'])); ?> -</span><span data-round-label='6' class="r-lbl-2">  Championship Round!</span><br>
+                            </div>
+                            <span class="purple-txt">Winner Announced: </span><span class="purple-txt"><?php echo date("F jS, Y", strtotime($contest['winners_announce_date'])); ?></span>
+                        <?php } ?>                
+                    <?php } ?>
+                    <?php if ($contest['type_id'] != 3 || $date_details != 'past') { ?>
+                        <br>                                
+                        <span class="purple-txt">Winner Announced: </span><span class="purple-txt"><?php echo date("F jS, Y", strtotime($contest['winners_announce_date'])); ?></span>
+                    <?php } ?>
+                </div>
+                <div class="clearfix grid mt-10">
+                    <figure class="default-cursor" style="width:100%;margin: 0 !important;">                    
                         <img src="<?php echo $this->config('aws', 'path') . $contest['thumbnail']; ?>" >
                     </figure>
                 </div>
@@ -44,7 +115,7 @@
                         break;
                     case 'exclusive':
                         $partial = 'exclusive_bbar.mobile.phtml';
-                        break;                 
+                        break;
                     case 'my':
                         $partial = 'my_bbar.mobile.phtml';
                         break;
@@ -64,7 +135,7 @@
                     case 'default':
                         $contestType = 'brackets';
                 }
-                
+
                 echo $this->partial($partial, array(
                     'contest' => $contest,
                     'type' => $type,
@@ -109,4 +180,11 @@ echo $this->paginationControl($this->paginator, 'Sliding', 'paginator-slide', ar
             window.location.href = "<?php echo $this->config('main_site', 'url') ?>/contests";
         });
 <?php } ?>
+    $(document).ready(function () {
+        $('.brk-dates').each(function (i) {
+            var curRnd = $(this).data('current-round');
+            $(this).children('span[data-round-label=' + curRnd + '].r-lbl-1').addClass('purple-txt text-bold');
+            $(this).children('span[data-round-label=' + curRnd + '].r-lbl-2').addClass('purple-txt text-bold');
+        });
+    });
 </script>
