@@ -94,9 +94,9 @@ ul.bracket-pattern, ul.bracket-pattern ul{
 ul.bracket-pattern li.combo-box-border {
     border: solid 1px #000;
 }
-ul.bracket-pattern li {    
-    width: 80px;
-    height: 80px;
+ul.bracket-pattern li, ul.bracket-pattern li img {    
+    width: 80px !important;
+    height: 80px !important;
 }
 ul.bracket-pattern > li {
     margin-bottom: 10px;
