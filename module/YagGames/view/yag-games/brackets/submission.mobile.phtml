@@ -4,26 +4,25 @@
         <h2 class=" wowload fadeInUp purple_title vmin3">ENTER CONTEST NOW</h2>                
     </div>
     <h3 class="bebas">ENTER THIS CONTEST: <span class="purplecolor"><?php echo $contest['name']; ?></span></h3>
-    <p class="text-colored mb-10">Choose from one of your uploaded images and submit it for this contest or upload a new image!</p>
-    <div>        
-        <div class="text-center">
-            <button id="uploadArtBtn" class="btn btn-primary font10">UPLOAD NEW IMAGE</button>            
-        </div>
-        <div class="clear"><i><small>YAG Artist must have room in their portfolio if this option is selected</small></i></div>
-    </div><br>   
+    <p class="text-colored mb-10">Choose from one of your uploaded images and submit it for this contest or upload a new image!</p>       
     <div class="spacer">
         <div class="clearfix grid">
             <div class="mb-5"><small class="text-bold">Swipe left to view more</small></div>
             <div class="swiper-container mb-10">
-                 <div id="subArtsList" class="swiper-wrapper">                    
-                 </div>                 
+                 <div id="subArtsList" class="swiper-wrapper"></div>                 
             </div>            
             <i><small>Full image will be shown for voting</small></i><br>
         </div>        
         <div class="p0 col-md-8 col-lg-12 mt-10">
             <button id="submitArtBtn" class="btn btn-primary btn-lite-purple" disabled="disable">SUBMIT THIS IMAGE</button>
         </div>
-        <br>
+        <div class="purple-txt text-bold text-center mt-10 mb-10">OR</div>
+        <div>        
+            <div class="text-center">
+                <button id="uploadArtBtn" class="btn btn-primary font10">UPLOAD NEW IMAGE</button>            
+            </div>
+            <div class="clear"><i><small>YAG Artist must have room in their portfolio if this option is selected</small></i></div>
+        </div><br>
         <p>
             <b>OPEN ENTRIES END: <?php echo date("F jS, Y", strtotime($contest['entry_end_date'])); ?><br>
                 VOTING BEGINS: <?php echo date("F jS, Y", strtotime($contest['voting_start_date'])); ?></b><br><br>

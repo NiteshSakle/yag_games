@@ -4,26 +4,25 @@
         <h2 class=" wowload fadeInUp purple_title vmin3">ENTER CONTEST NOW</h2>                
     </div>
     <h3 class="bebas">ENTER THIS CONTEST: <span class="purplecolor"><?php echo $contest['name']; ?></span></h3>
-    <p class="text-colored mb-10">Choose from one of your uploaded images and submit it for this contest or upload a new image!</p>
-    <div>        
-        <div class="text-center">
-            <button id="uploadArtBtn" class="btn btn-primary font10">UPLOAD NEW IMAGE</button>            
-        </div>
-        <div class="clear"><i><small>YAG Artist must have room in their portfolio if this option is selected</small></i></div>
-    </div><br>   
+    <p class="text-colored mb-10">Choose from one of your uploaded images and submit it for this contest or upload a new image!</p>    
     <div class="spacer">
         <div class="clearfix grid">
             <div class="mb-5"><small class="text-bold">Swipe left to view more</small></div>
             <div class="swiper-container mb-10">
-                 <div id="subArtsList" class="swiper-wrapper">                    
-                 </div>                 
+                <div id="subArtsList" class="swiper-wrapper"></div>                 
             </div>           
             <i><small>Full image will be shown for voting</small></i><br>
         </div>        
         <div class="p0 col-md-8 col-lg-12 mt-10">
             <button id="submitArtBtn" class="btn btn-primary btn-lite-purple" disabled="disable">SUBMIT THIS IMAGE</button>
-        </div>
-        <br>
+        </div>      
+        <div class="purple-txt text-bold text-center mt-10 mb-10">OR</div>
+        <div>        
+            <div class="text-center">                
+                <button id="uploadArtBtn" class="btn btn-primary font10">UPLOAD NEW IMAGE</button>            
+            </div>
+            <div class="clear"><i><small>YAG Artist must have room in their portfolio if this option is selected</small></i></div>
+        </div><br>        
         <p>
             <b>OPEN ENTRIES END: <?php echo date("F jS, Y", strtotime($contest['entry_end_date'])); ?><br>
                 VOTING BEGINS: <?php echo date("F jS, Y", strtotime($contest['voting_start_date'])); ?></b><br><br>            
@@ -110,12 +109,12 @@
                     Don’t forget to share with your friends!
                 </div>
                 <div>
-                    <?php if($media) { ?>
+                    <?php if ($media) { ?>
                         <ul class="social_links mt-5 pl-0">
-                            <li><a class="addthis_button_facebook" addthis:url="<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/<?php echo $contest['id']; ?>/mid/<?php echo $media['media_id']; ?>"/><img src="<?php echo $this->config('main_site', 'url') ?>/assets/themes/yag_mobile/images/facebook.png"  alt="Share to Facebook" /></a></li>
-                            <li><a class="addthis_button_twitter" addthis:url="<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/<?php echo $contest['id']; ?>/mid/<?php echo $media['media_id']; ?>"><img src="<?php echo $this->config('main_site', 'url') ?>/assets/themes/yag_mobile/images/twitter.png"  alt="Share to Twitter" /></a></li>                
-                            <li><a class="addthis_button_pinterest_share" pi:pinit:url="<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/<?php echo $contest['id']; ?>/mid/<?php echo $media['media_id']; ?>" pi:pinit:media="<?php echo $this->mediaImage($media, 'samples'); ?>"><img src="<?php echo $this->config('main_site', 'url') ?>/assets/themes/yag_mobile/images/pinterest.png"  alt="Share to Pinterest" /></a></li>
-                            <li><a href="https://plusone.google.com/share?url=<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/<?php echo $contest['id']; ?>/mid/<?php echo $media['media_id'];?>" target="_blank" ><img src="<?php echo $this->config('main_site', 'url') ?>/assets/themes/yag_mobile/images/google_plus.png"  alt="Share to Google" /></a></li>
+                            <li><a class="addthis_button_facebook" addthis:url="<?php echo $this->config('main_site', 'url') ?>/contests/details/id/<?php echo $contest['id']; ?>/mid/<?php echo $media['media_id']; ?>"/><img src="<?php echo $this->config('main_site', 'url') ?>/assets/themes/yag_mobile/images/facebook.png"  alt="Share to Facebook" /></a></li>
+                            <li><a class="addthis_button_twitter" addthis:url="<?php echo $this->config('main_site', 'url') ?>/contests/details/id/<?php echo $contest['id']; ?>/mid/<?php echo $media['media_id']; ?>"><img src="<?php echo $this->config('main_site', 'url') ?>/assets/themes/yag_mobile/images/twitter.png"  alt="Share to Twitter" /></a></li>                
+                            <li><a class="addthis_button_pinterest_share" pi:pinit:url="<?php echo $this->config('main_site', 'url') ?>/contests/details/id/<?php echo $contest['id']; ?>/mid/<?php echo $media['media_id']; ?>" pi:pinit:media="<?php echo $this->mediaImage($media, 'samples'); ?>"><img src="<?php echo $this->config('main_site', 'url') ?>/assets/themes/yag_mobile/images/pinterest.png"  alt="Share to Pinterest" /></a></li>
+                            <li><a href="https://plusone.google.com/share?url=<?php echo $this->config('main_site', 'url') ?>/contests/details/id/<?php echo $contest['id']; ?>/mid/<?php echo $media['media_id']; ?>" target="_blank" ><img src="<?php echo $this->config('main_site', 'url') ?>/assets/themes/yag_mobile/images/google_plus.png"  alt="Share to Google" /></a></li>
                         </ul>
                         <div class="purple-txt mb-5">OR</div>
                         <div>
@@ -136,25 +135,25 @@
             <div class="modal-body text-center">  
                 <h2 class="purple-txt mb-10 bebas mt-0">Congratulations you have successfully entered the photo contest!</h2>
                 <p>Your image has been uploaded to your profile and the photo contest. <br>
-                We will reach out to you once it is time to start voting!</p>
-                <?php if($media) { ?>
-                <div class="uploaded-art">                    
-                    <img height="130" width="130" class="art-icon" src="<?php echo $this->mediaImage($media, 'icons'); ?>" >                    
-                    <img class="yag-icon" src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/man-icon-yag.png">
-                </div>
-                <div class="clear"></div>
-                <div>
-                    <ul class="social_links mt-10 pl-0">
-                        <li><a class="addthis_button_facebook" addthis:url="<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/<?php echo $contest['id']; ?>/mid/<?php echo $media['media_id']; ?>"/><img src="<?php echo $this->config('main_site', 'url') ?>/assets/themes/yag_mobile/images/facebook.png"  alt="Share to Facebook" /></a></li>
-                        <li><a class="addthis_button_twitter" addthis:url="<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/<?php echo $contest['id']; ?>/mid/<?php echo $media['media_id']; ?>"><img src="<?php echo $this->config('main_site', 'url') ?>/assets/themes/yag_mobile/images/twitter.png"  alt="Share to Twitter" /></a></li>                
-                        <li><a class="addthis_button_pinterest_share" pi:pinit:url="<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/<?php echo $contest['id']; ?>/mid/<?php echo $media['media_id']; ?>" pi:pinit:media="<?php echo $this->mediaImage($media, 'samples'); ?>"><img src="<?php echo $this->config('main_site', 'url') ?>/assets/themes/yag_mobile/images/pinterest.png"  alt="Share to Pinterest" /></a></li>
-                        <li><a href="https://plusone.google.com/share?url=<?php echo $this->config('main_site' ,'url') ?>/contests/details/id/<?php echo $contest['id']; ?>/mid/<?php echo $media['media_id'];?>" target="_blank" ><img src="<?php echo $this->config('main_site', 'url') ?>/assets/themes/yag_mobile/images/google_plus.png"  alt="Share to Google" /></a></li>
-                    </ul>
-                    <div class="purple-txt mb-5">OR</div>
+                    We will reach out to you once it is time to start voting!</p>
+                <?php if ($media) { ?>
+                    <div class="uploaded-art">                    
+                        <img height="130" width="130" class="art-icon" src="<?php echo $this->mediaImage($media, 'icons'); ?>" >                    
+                        <img class="yag-icon" src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/man-icon-yag.png">
+                    </div>
+                    <div class="clear"></div>
                     <div>
-                        <a href ="<?php echo $this->basePath() ?>/new-contest"  class="btn btn-primary">Enter Another Contest</a>
-                    </div>                    
-                </div>
+                        <ul class="social_links mt-10 pl-0">
+                            <li><a class="addthis_button_facebook" addthis:url="<?php echo $this->config('main_site', 'url') ?>/contests/details/id/<?php echo $contest['id']; ?>/mid/<?php echo $media['media_id']; ?>"/><img src="<?php echo $this->config('main_site', 'url') ?>/assets/themes/yag_mobile/images/facebook.png"  alt="Share to Facebook" /></a></li>
+                            <li><a class="addthis_button_twitter" addthis:url="<?php echo $this->config('main_site', 'url') ?>/contests/details/id/<?php echo $contest['id']; ?>/mid/<?php echo $media['media_id']; ?>"><img src="<?php echo $this->config('main_site', 'url') ?>/assets/themes/yag_mobile/images/twitter.png"  alt="Share to Twitter" /></a></li>                
+                            <li><a class="addthis_button_pinterest_share" pi:pinit:url="<?php echo $this->config('main_site', 'url') ?>/contests/details/id/<?php echo $contest['id']; ?>/mid/<?php echo $media['media_id']; ?>" pi:pinit:media="<?php echo $this->mediaImage($media, 'samples'); ?>"><img src="<?php echo $this->config('main_site', 'url') ?>/assets/themes/yag_mobile/images/pinterest.png"  alt="Share to Pinterest" /></a></li>
+                            <li><a href="https://plusone.google.com/share?url=<?php echo $this->config('main_site', 'url') ?>/contests/details/id/<?php echo $contest['id']; ?>/mid/<?php echo $media['media_id']; ?>" target="_blank" ><img src="<?php echo $this->config('main_site', 'url') ?>/assets/themes/yag_mobile/images/google_plus.png"  alt="Share to Google" /></a></li>
+                        </ul>
+                        <div class="purple-txt mb-5">OR</div>
+                        <div>
+                            <a href ="<?php echo $this->basePath() ?>/new-contest"  class="btn btn-primary">Enter Another Contest</a>
+                        </div>                    
+                    </div>
                 <?php } ?>
             </div>
         </div>        
@@ -165,24 +164,24 @@
     addthis_share = {
         passthrough: {
             twitter: {
-                text: 'I entered the <?php echo $contest['name'];?>  on YOURARTGALLERY.COM.'
+                text: 'I entered the <?php echo $contest['name']; ?>  on YOURARTGALLERY.COM.'
             }
         }
     }
 </script>
 <script type="text/javascript" src="<?php echo $this->basePath() ?>/mobile/js/swiper.min.js"></script>
 <script>
-    $(document).ready(function(){
-        <?php if ($showPopupDiv) { ?>
+    $(document).ready(function () {
+<?php if ($showPopupDiv) { ?>
             $('div#uploadSubArtModal').modal('show');
-        <?php } elseif ($showSubmitPopupDiv) { ?>
+<?php } elseif ($showSubmitPopupDiv) { ?>
             $('div#subArtModal').modal('show');
-        <?php } ?>
+<?php } ?>
         $.ajax({
             url: gameBasePath + '/media/get-my-media/size/100',
-            type: 'get',            
+            type: 'get',
             dataType: 'html',
-            success: function(data) {
+            success: function (data) {
                 $('#subArtsList').html(data);
                 $('#submitArtBtn').removeAttr('disabled');
             },
@@ -192,18 +191,18 @@
             complete: function () {
                 hideLoader();
             }
-        }); 
-        
+        });
+
         var contestId = "<?php echo $contest['id']; ?>";
-        $('#submitArtBtn').on('click', function() {
-            
-            if ($('div#subArtsList .swiper-slide-active').length == 1  && $('div#subArtsList .swiper-slide-active').data('mediaid') > 0) {
+        $('#submitArtBtn').on('click', function () {
+
+            if ($('div#subArtsList .swiper-slide-active').length == 1 && $('div#subArtsList .swiper-slide-active').data('mediaid') > 0) {
                 $.ajax({
                     url: gameBasePath + '/photo-contest/art-submission',
                     type: "POST",
-                    data: {'media_id': $('div#subArtsList .swiper-slide-active').data('mediaid'), 'contestId': contestId },
+                    data: {'media_id': $('div#subArtsList .swiper-slide-active').data('mediaid'), 'contestId': contestId},
                     dataType: 'json',
-                    success: function(data) {
+                    success: function (data) {
                         if (data.success) {
                             location.reload();
                         } else {
@@ -221,12 +220,12 @@
                 alert('Art is not selected, please select the Art which you want to submit or upload new art!')
             }
         });
-        
-        $('#uploadArtBtn').on('click', function(){
-           uploadArt(contestId); 
+
+        $('#uploadArtBtn').on('click', function () {
+            uploadArt(contestId);
         });
     });
-    
+
     function uploadArt(contestId) {
         var request = $.ajax({
             url: gameBasePath + '/photo-contest/upload-art',
