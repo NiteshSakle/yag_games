@@ -64,18 +64,30 @@ echo $this->paginationControl($this->paginator, 'Sliding', 'paginator-slide', ar
 ));
 ?>
 <script type="text/javascript">
+    var guestloggedIn = <?php echo $guestloggedIn; ?>;
 
     $(window).ready(function () {
-<?php if (empty($search) && !$shareMedia) { ?>
-       showModal(gameBasePath + '/photo-contest/get-next-art?contestId=' + contestId);
-<?php } elseif (isset($shareMedia['media_id'])) {
-    ?>
-       var mediaId = <?php echo $shareMedia['media_id']; ?>;
-       showModal(gameBasePath + '/photo-contest/get-next-art?contestId=' + contestId + '&mediaId=' + mediaId);
-<?php } ?>
+        if (!guestloggedIn) {
+            setTimeout(function () {
+                guestLogin();
+            }, 100);
+        } else {
+            <?php if (empty($search) && !$shareMedia) { ?>
+                    showModal(gameBasePath + '/photo-contest/get-next-art?contestId=' + contestId);
+            <?php } elseif (isset($shareMedia['media_id'])) {
+            ?>
+                var mediaId = <?php echo $shareMedia['media_id']; ?>;
+                showModal(gameBasePath + '/photo-contest/get-next-art?contestId=' + contestId + '&mediaId=' + mediaId);
+            <?php } ?>
+        }
     });
+
+    function guestLogin() {
+        showModal(baseURL + '/workbox.php?mobileView=true&mode=guestLogin');
+    }
+
     var contestId = "<?php echo $contestId; ?>";
     $('.media-image').click(function () {
-       showModal(gameBasePath + '/photo-contest/get-next-art?contestId=' + contestId + '&mediaId=' + $(this).data('media_id'));
+        showModal(gameBasePath + '/photo-contest/get-next-art?contestId=' + contestId + '&mediaId=' + $(this).data('media_id'));
     });
 </script>
