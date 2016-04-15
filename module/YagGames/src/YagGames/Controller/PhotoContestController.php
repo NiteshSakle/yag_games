@@ -190,9 +190,18 @@ class PhotoContestController extends BaseController
     $contestId = $this->params()->fromRoute('id', null);
     $search = $this->params()->fromPost('search', null);
     $this->session = $this->sessionPlugin();
+    
+//    echo "<pre>";
+//    var_dump($_SESSION);
+//    echo "</pre>";
     $userId = '';
+    $guestloggedIn = 0;
     if (isset($this->session->mem_id)) {
       $userId = $this->session->mem_id;
+      $guestloggedIn = 1;
+    } elseif (isset($_SESSION['guestUser']['guest_user_id'])) {
+      $userId = $_SESSION['guestUser']['guest_user_id'];
+      $guestloggedIn = 1;
     }
 
     //get contest details
@@ -238,6 +247,7 @@ class PhotoContestController extends BaseController
     $vm->setVariable('contest', $this->contest);
     $vm->setVariable('page', $page);
     $vm->setVariable('size', $size);
+    $vm->setVariable('guestloggedIn', $guestloggedIn);
     return $vm;
   }
 
@@ -302,16 +312,24 @@ class PhotoContestController extends BaseController
     if (isset($this->session->mem_id)) {
       $userId = $this->session->mem_id;
       $ratedMedia = array();
+    } elseif(isset($_SESSION['guestUser']['guest_user_id'])) {
+      $userId = $_SESSION['guestUser']['guest_user_id'];
+      $ratedMedia = array(); //fill the data from cookie
     } else {
-      $userId = '';
-      $ratedMedia = $this->getRatedMedia($contestId); //fill the data from cookie
+//      $userId = '';
+//      $ratedMedia = $this->getRatedMedia($contestId); //fill the data from cookie
+      return $this->redirect()->toRoute('photo-contest', array(
+        'id' => $contestId,
+        'action' => 'voting'
+      ));
     }
 
     $photoContestService = $this->getServiceLocator()->get('photoContestService');
     $media = $photoContestService->getNextContestMedia($contestId, $userId, $mediaId, $ratedMedia);
-    if (!isset($this->session->mem_id)) {
-      $media['totalRated'] = count($ratedMedia);
-    }
+    
+//    if (!isset($this->session->mem_id)) {
+//      $media['totalRated'] = count($ratedMedia);
+//    } 
 
     $viewModel = new ViewModel(array('media' => $media, 'contestId' => $contestId, 'mediaId' => $mediaId));
 
@@ -323,7 +341,9 @@ class PhotoContestController extends BaseController
     $this->session = $this->sessionPlugin();
     $userId = '';
     if (isset($this->session->mem_id)) {
-      $userId = $this->session->mem_id;
+        $userId = $this->session->mem_id;
+    } elseif(isset($_SESSION['guestUser']['guest_user_id'])) {
+        $userId = $_SESSION['guestUser']['guest_user_id'];    
     }
 
     $request = $this->getRequest();
@@ -379,7 +399,7 @@ class PhotoContestController extends BaseController
 
       $photoContestService = $this->getServiceLocator()->get('photoContestService');
       try {
-        $contestMediaRatingId = $photoContestService->addVoteToArt($contestId, $mediaId, $this->session, $rating);
+        $contestMediaRatingId = $photoContestService->addVoteToArt($contestId, $mediaId, $userId, $rating);
       } catch (PhotoContestException $e) {
         return new JsonModel(array(
             'success' => false,

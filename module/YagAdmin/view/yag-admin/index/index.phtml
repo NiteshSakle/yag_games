@@ -568,7 +568,6 @@
                 type: 'POST',
                 data: 'id=' + $(this).attr('contest_id'),
                 success: function (response) {
-                    console.log(response);
                     $('#id').val(response.data.id);
                     $('#name').val(response.data.name);
                     $('#description').data("wysihtml5").editor.setValue(response.data.description);

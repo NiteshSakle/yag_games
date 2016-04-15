@@ -618,3 +618,24 @@ body {
 .nav-others ul li.myaccount-dropmenu li a { min-width: 136px;}
 .footer-social img{width: 24px;height: 24px;}
 .footer_box h1{line-height: 26px;}
+
+.guestlogin-popup .social_login img {
+    height: 42px;
+}
+.guestlogin-popup .social_login {
+    width: 370px;
+}
+
+.guestlogin-popup{
+    margin: 70px 1px 1px -60px;
+    width: 166%;
+}
+.guestlogin-email {
+    width: 310px;
+}
+.guestlogin-email input[type="text"] {
+    width: 100% !important;
+}
+.formError .formErrorContent{
+    width: 130%;
+}

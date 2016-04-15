@@ -50,6 +50,9 @@
         font-size: 22px;
         color: white;
     }
+    .guestlogin-popup {
+        margin: 10px 1px 1px -60px;
+    }
 </style>
 <div  class="home_content clearfix">
     <div class="inner_main clearfix">
@@ -644,29 +647,45 @@
     </div>
 </div>
 
-    <script type="text/javascript">
-        var round = <?php echo isset($contest['current_round'])?$contest['current_round']:0; ?>;
-        $(window).ready(function () {
-        <?php if (!$shareMedia) { ?>
-            workbox({
-                page: gameBasePath + '/brackets/get-next-art?contestId=' + contestId + '&round=' + round,
-            });
-            scroll(0, 0);
-        <?php } else { ?>
-            var mediaId = <?php echo $shareMedia['media_id']; ?>;
-            workbox({
-                page: gameBasePath + '/brackets/get-next-art?contestId=' + contestId + '&round=' + round + '&mediaId=' + mediaId,
-            });
-            scroll(0, 0);
-        <?php } ?>
+<script type="text/javascript">
+    var guestloggedIn = <?php echo $guestloggedIn; ?>;
+    var round = <?php echo isset($contest['current_round'])?$contest['current_round']:0; ?>;
+    
+    $(window).ready(function () {
+        if(!guestloggedIn) {
+            setTimeout(function(){
+                guestLogin();
+            },100);
+        } else {
+    <?php if (!$shareMedia) { ?>
+        workbox({
+            page: gameBasePath + '/brackets/get-next-art?contestId=' + contestId + '&round=' + round,
         });
+    <?php } else { ?>
+        var mediaId = <?php echo $shareMedia['media_id']; ?>;
+        workbox({
+            page: gameBasePath + '/brackets/get-next-art?contestId=' + contestId + '&round=' + round + '&mediaId=' + mediaId,
+        });
+    <?php } ?>
+        }
+         scroll(0, 0);
+    });
         
-        
-        var contestId = "<?php echo $contestId; ?>";
-        $('.white-border').click(function () {
-            console.log($(this).data());
+    function guestLogin(){
+        workbox({
+            page: baseURL + '/workbox.php?mode=guestLogin', 
+            mini: true 
+        });
+    }
+
+    var contestId = "<?php echo $contestId; ?>";
+    $('.white-border').click(function () {
+        if(!guestloggedIn){
+            guestLogin();
+        } else {
             workbox({
                 page: gameBasePath + '/brackets/get-next-art?contestId=' + contestId + '&comboId=' + $(this).data('comboid') + '&round=' + $(this).data('round') + '&mediaId=' + $(this).data('mediaid'),
             });
-        });
+        }
+    });
     </script>
