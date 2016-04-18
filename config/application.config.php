@@ -8,7 +8,8 @@
 return array(
     'modules' => array(        
         'YagGames', 
-        'YagAdmin'
+        'YagAdmin',       
+        'Gregblog\MobileView'       
     ),
     
     'module_listener_options' => array(

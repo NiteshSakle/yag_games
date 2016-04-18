@@ -1,0 +1,190 @@
+<?php $session = $this->session(); ?>
+<div id="content">
+    <div class="top-description">
+        <h2 class="wowload fadeInUp purple_title vmin3">CHALLENGES & CONTESTS</h2>
+        <?php
+        echo $this->partial('contest_menu.mobile.phtml', array('type' => $type, 'session' => $this->session()));
+        ?>
+        <br>  
+    </div>
+    <?php if (empty($data)) { ?>
+        <br><div class="alert alert-info" role="alert"><?php echo $type == 'my' ? "You have not participated in any contest yet" : "More contests coming soon!"; ?></div>    
+        <?php
+    } else {
+        foreach ($data as $contest) {
+            $today = strtotime(date('Y-m-d'));
+            $entryEndDate = strtotime($contest['entry_end_date']);
+            $percentage = ($contest['total_entries']) ? floor(($contest['total_entries'] / $contest['max_no_of_photos']) * 100) : 0;
+            ?>
+            <div class="border-b spacer mb-10 mt-10">
+                <?php
+                if ($type == 'exclusive') {
+                    ?>
+                    <span class="text-gold text-bold">Exclusive</span>
+                    <h2 class="bebas mt-10"><?php echo $contest['name']; ?></h2>
+                <?php } else { ?>
+                    <h2 class="bebas mb-10"><?php echo $contest['name']; ?></h2>
+                <?php }
+                ?>
+                <p class="wowload  text-colored mb-10"> <?php echo $contest['description']; ?></p>
+                <div class="dates-section">
+                    <?php if ($contest['coming_soon'] == 1) { ?>
+                        <span class="purple-txt text-bold">Contest Start Date: </span><span class="purple-txt text-bold"><?php echo date("F jS, Y", strtotime($contest['entry_start_date'])); ?></span><br>
+                    <?php } ?>
+                    <?php
+                    if ($contest['max_no_of_photos'] == $contest['total_entries']) {
+                        $date_details = 'active';
+                    } else {
+                        $date_details = $contest['my_type'];
+                    }
+
+                    if ($date_details == 'new') {
+                        ?>                                    
+                        <?php if ($contest['type_id'] == 3) { ?>
+                            <span class="purple-txt">Open Entries End: </span><span class="purple-txt"><?php echo date("F jS, Y", strtotime($contest['entry_end_date'])); ?></span><br>
+                            <span class="purple-txt">Voting Begins: </span><span class="purple-txt"><?php echo date("F jS, Y", strtotime($contest['voting_start_date'])); ?></span><br>
+                            <br>
+                            <div class="brk-dates" data-current-round='<?php echo $contest['current_round']; ?>'>
+                                <span data-round-label='1' class="r-lbl-1"><?php echo date("m/d/Y", strtotime($contest['round1'])); ?> -</span><span data-round-label='1' class="r-lbl-2"> Round One 64</span><br>
+                                <span data-round-label='2' class="r-lbl-1"><?php echo date("m/d/Y", strtotime($contest['round2'])); ?> -</span><span data-round-label='2' class="r-lbl-2">  Round Two 32</span><br>
+                                <span data-round-label='3' class="r-lbl-1"><?php echo date("m/d/Y", strtotime($contest['round3'])); ?> -</span><span data-round-label='3' class="r-lbl-2">  Super 16</span><br>
+                                <span data-round-label='4' class="r-lbl-1"><?php echo date("m/d/Y", strtotime($contest['round4'])); ?> -</span><span data-round-label='4' class="r-lbl-2">  Great 8</span><br>
+                                <span data-round-label='5' class="r-lbl-1"><?php echo date("m/d/Y", strtotime($contest['round5'])); ?> -</span><span data-round-label='5' class="r-lbl-2">  Core 4</span><br>
+                                <span data-round-label='6' class="r-lbl-1"><?php echo date("m/d/Y", strtotime($contest['round6'])); ?> -</span><span data-round-label='6' class="r-lbl-2">  Championship Round!</span><br>
+                            </div>
+                        <?php } else { ?>
+                            <span class="purple-txt">Enter by: </span><span class="purple-txt"><?php echo date("F jS, Y", strtotime($contest['entry_end_date'])); ?></span>
+                        <?php } ?>
+
+                    <?php } elseif ($date_details == 'active') { ?>
+                        <?php
+                        if ($contest['type_id'] == 3) {
+                            if ($contest['voting_started'] == 1) {
+                                ?>
+                                <span class="purple-txt">CURRENTLY IN ROUND: </span>
+                            <?php } else { ?>
+                                <span class="purple-txt">Voting Begins: </span>
+                                <span class="purple-txt"><?php echo date("F jS, Y", strtotime($contest['voting_start_date'])); ?></span>
+                                <?php
+                            }
+                            ?>
+                            <?php if ($contest['coming_soon'] != 1) { ?>
+                                <br>
+                                <div class="brk-dates" data-current-round='<?php echo $contest['current_round']; ?>'>
+                                    <span data-round-label='1' class="r-lbl-1"><?php echo date("m/d/Y", strtotime($contest['round1'])); ?> -</span><span data-round-label='1' class="r-lbl-2"> Round One 64</span><br>
+                                    <span data-round-label='2' class="r-lbl-1"><?php echo date("m/d/Y", strtotime($contest['round2'])); ?> -</span><span data-round-label='2' class="r-lbl-2">  Round Two 32</span><br>
+                                    <span data-round-label='3' class="r-lbl-1"><?php echo date("m/d/Y", strtotime($contest['round3'])); ?> -</span><span data-round-label='3' class="r-lbl-2">  Super 16</span><br>
+                                    <span data-round-label='4' class="r-lbl-1"><?php echo date("m/d/Y", strtotime($contest['round4'])); ?> -</span><span data-round-label='4' class="r-lbl-2">  Great 8</span><br>
+                                    <span data-round-label='5' class="r-lbl-1"><?php echo date("m/d/Y", strtotime($contest['round5'])); ?> -</span><span data-round-label='5' class="r-lbl-2">  Core 4</span><br>
+                                    <span data-round-label='6' class="r-lbl-1"><?php echo date("m/d/Y", strtotime($contest['round6'])); ?> -</span><span data-round-label='6' class="r-lbl-2">  Championship Round!</span><br>
+                                </div>
+                            <?php } ?>
+                        <?php } else { ?>
+                            <span class="purple-txt">Voting Begins: </span><span class="purple-txt"><?php echo date("F jS, Y", strtotime($contest['voting_start_date'])); ?></span>
+                        <?php } ?>
+                    <?php } elseif ($date_details == 'past') { ?>
+                        <?php if ($contest['type_id'] == 3) { ?>
+                            <span class="purple-txt">CURRENTLY IN ROUND: </span>
+                            <br>
+                            <div class="brk-dates" data-current-round='<?php echo $contest['current_round']; ?>'>
+                                <span data-round-label='1' class="r-lbl-1"><?php echo date("m/d/Y", strtotime($contest['round1'])); ?> -</span><span data-round-label='1' class="r-lbl-2"> Round One 64</span><br>
+                                <span data-round-label='2' class="r-lbl-1"><?php echo date("m/d/Y", strtotime($contest['round2'])); ?> -</span><span data-round-label='2' class="r-lbl-2">  Round Two 32</span><br>
+                                <span data-round-label='3' class="r-lbl-1"><?php echo date("m/d/Y", strtotime($contest['round3'])); ?> -</span><span data-round-label='3' class="r-lbl-2">  Super 16</span><br>
+                                <span data-round-label='4' class="r-lbl-1"><?php echo date("m/d/Y", strtotime($contest['round4'])); ?> -</span><span data-round-label='4' class="r-lbl-2">  Great 8</span><br>
+                                <span data-round-label='5' class="r-lbl-1"><?php echo date("m/d/Y", strtotime($contest['round5'])); ?> -</span><span data-round-label='5' class="r-lbl-2">  Core 4</span><br>
+                                <span data-round-label='6' class="r-lbl-1"><?php echo date("m/d/Y", strtotime($contest['round6'])); ?> -</span><span data-round-label='6' class="r-lbl-2">  Championship Round!</span><br>
+                            </div>
+                            <span class="purple-txt">Winner Announced: </span><span class="purple-txt"><?php echo date("F jS, Y", strtotime($contest['winners_announce_date'])); ?></span>
+                        <?php } ?>                
+                    <?php } ?>
+                    <?php if ($contest['type_id'] != 3 || $date_details != 'past') { ?>
+                        <br>                                
+                        <span class="purple-txt">Winner Announced: </span><span class="purple-txt"><?php echo date("F jS, Y", strtotime($contest['winners_announce_date'])); ?></span>
+                    <?php } ?>
+                </div>
+                <div class="clearfix grid mt-10">
+                    <figure class="default-cursor" style="width:100%;margin: 0 !important;">                    
+                        <img src="<?php echo $this->config('aws', 'path') . $contest['thumbnail']; ?>" >
+                    </figure>
+                </div>
+                <br>
+                <?php
+                switch ($type) {
+                    case 'new':
+                        $partial = 'new_bbar.mobile.phtml';
+                        break;
+                    case 'exclusive':
+                        $partial = 'exclusive_bbar.mobile.phtml';
+                        break;
+                    case 'my':
+                        $partial = 'my_bbar.mobile.phtml';
+                        break;
+                    case 'default':
+                        $partial = 'my_bbar.mobile.phtml';
+                }
+
+                switch ($contest['contest_type']) {
+                    case 'Photo Contest':
+                        $contestType = 'photo-contest';
+                        break;
+                    case 'Fan Favorite':
+                        $contestType = 'fan-favorite';
+                        break;
+                    case 'Brackets':
+                        $contestType = 'brackets';
+                    case 'default':
+                        $contestType = 'brackets';
+                }
+
+                echo $this->partial($partial, array(
+                    'contest' => $contest,
+                    'type' => $type,
+                    'contestType' => $contestType,
+                ));
+                ?>
+            </div>            
+            <?php
+        }
+    }
+    ?>
+</div>
+<?php
+echo $this->paginationControl($this->paginator, 'Sliding', 'paginator-slide', array(
+    'route' => 'home',
+    'routeParams' => array(
+        'action' => $this->getHelperPluginManager()->getServiceLocator()->get('Application')->getMvcEvent()->getRouteMatch()->getParam('action')
+    ),
+    'queryParams' => array(
+    )
+));
+?>
+<div class="modal fade" id="upgradeMemShipModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">                        
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header flagInappModal">
+                <button type="button" class="close btnxtop" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>        
+            </div>
+            <div class="modal-body text-center">
+                <p>This contest is available for Platinum members only. Simply upgrade your membership level to enter or take advantage of all membership level contests <a href="<?php echo $this->config('main_site', 'url') ?>/contests" style="color: #6E6E70;">here.</a></p>                
+                <a class="btn btn-primary" href="<?php echo $this->config('main_site', 'url') ?>/upgrade.account.php">Upgrade Membership</a>
+            </div>
+        </div>
+    </div>          
+</div>
+<script>
+<?php if ($type == 'exclusive' && $session->mem_id && $session->membership != 4) { ?>
+        $('#upgradeMemShipModal').modal({
+            keyboard: false,
+            show: true
+        }).on('hidden.bs.modal', function (e) {
+            window.location.href = "<?php echo $this->config('main_site', 'url') ?>/contests";
+        });
+<?php } ?>
+    $(document).ready(function () {
+        $('.brk-dates').each(function (i) {
+            var curRnd = $(this).data('current-round');
+            $(this).children('span[data-round-label=' + curRnd + '].r-lbl-1').addClass('purple-txt text-bold');
+            $(this).children('span[data-round-label=' + curRnd + '].r-lbl-2').addClass('purple-txt text-bold');
+        });
+    });
+</script>

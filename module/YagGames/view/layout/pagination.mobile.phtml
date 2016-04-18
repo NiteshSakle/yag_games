@@ -1,0 +1,29 @@
+<?php if ($this->pageCount > 1) { ?>
+    <div class="text-center">
+        <ul class="pagination">           
+            <li <?php echo!isset($this->previous) ? 'class="disabled"' : ''; ?>>
+                <a href="<?php echo $this->url($this->route, array_merge(array('page' => $this->first), $this->routeParams), array('query' => $this->queryParams)); ?>">&laquo;</a>
+            </li>
+            <li <?php echo!isset($this->previous) ? 'class="disabled"' : ''; ?>>
+                <a href="<?php echo $this->url($this->route, array_merge(array('page' => $this->previous), $this->routeParams), array('query' => $this->queryParams)); ?>">&lsaquo;</a>
+            </li>
+
+            <!-- Numbered page links -->
+            <?php foreach ($this->pagesInRange as $page): ?>
+                <li <?php echo $page == $this->current ? 'class="active"' : ''; ?>><a href="<?php echo $this->url($this->route, array_merge(array('page' => $page), $this->routeParams), array('query' => $this->queryParams)); ?>">
+                        <?php echo $page; ?>
+                    </a>
+                </li>
+            <?php endforeach; ?>
+
+            <!-- Next page link -->
+            <li <?php echo!isset($this->next) ? 'class="disabled"' : ''; ?>>
+                <a href="<?php echo $this->url($this->route, array_merge(array('page' => $this->next), $this->routeParams), array('query' => $this->queryParams)); ?>">&rsaquo;</a>
+            </li>
+            <!-- Last page link -->
+            <li <?php echo!isset($this->next) ? 'class="disabled"' : ''; ?>>
+                <a href="<?php echo $this->url($this->route, array_merge(array('page' => $this->last), $this->routeParams), array('query' => $this->queryParams)); ?>">&raquo;</a>
+            </li>            
+        </ul>
+    </div>
+<?php } ?>

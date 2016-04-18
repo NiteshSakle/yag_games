@@ -1,0 +1,98 @@
+<?php $session = $this->session(); ?>
+<div class="navbar-wrapper">
+    <div>
+        <div class="navbar navbar-inverse navbar-fixed-top" role="navigation" id="top-nav">
+            <div>
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>                    
+                    <div class="logo"><a class="navbar-brand" href="<?php echo $this->config('main_site', 'url') ?>"><img src="<?php echo $this->config('main_site', 'url') ?>/assets/themes/yag_mobile/images/logo.png" alt="logo"></a></div>                    
+                    <div class="cart hidden-md hidden-lg"><a href="<?php echo $this->config('main_site', 'url') ?>/cart.php"><img src="<?php echo $this->config('main_site', 'url') ?>/assets/themes/yag_mobile/images/kart.png"></a></div>
+                </div>
+                <div class="navbar-collapse collapse top-navbar">
+                    <ul class="nav navbar-nav navbar-right scroll">        
+                        <li><a href="<?php echo $this->config('main_site', 'url') ?>">Home</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">About<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li ><a href="<?php echo $this->config('main_site', 'url') ?>/about-us">About Us</a></li>
+                                <li ><a href="<?php echo $this->config('main_site', 'url') ?>/about-our-prints">Our Products</a></li>
+                                <li ><a href="<?php echo $this->config('main_site', 'url') ?>/sell-your-art">Sell Your Art</a></li>
+                                <li ><a href="http://yaguniversity.tumblr.com/tagged/news">News / Events</a></li>                
+                            </ul>
+                        </li>     
+                        <?php if ($session->mem_id) { ?>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">My Account<span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <?php if ($session->login_as_buyer == 1 && $session->membership == 1) { ?>                                
+                                        <li><a href="<?php echo $this->config('main_site', 'url') ?>/create.artist.account.php">My Portfolio</a></li>    
+                                    <?php } else { ?>
+                                        <li><a href="<?php echo $this->config('main_site', 'url') ?>/artist.welcome.php">My Portfolio</a></li>
+                                    <?php } ?>
+
+                                    <?php if ($session->login_as_buyer == 1) { ?>
+                                        <li><a href="<?php echo $this->config('main_site', 'url') ?>/buyer.welcome.php" >Buyer Account</a></li>
+                                    <?php } else { ?> 
+                                        <?php if (1) { ?>
+                                            <li><a href="<?php echo $this->config('main_site', 'url') ?>/buyer.welcome.php" >Buyer Account</a></li>
+                                        <?php } else { ?>
+                                            <li><a data-toggle="modal" data-target="#noOrderModal" href="#">Buyer Account</a></li>
+                                            <div class="modal fade" id="noOrderModal" tabindex="-1" role="dialog">                          
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <button type="button" class="close btnxtop" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>                                   
+                                                        </div>
+                                                        <div class="modal-body text-center">
+                                                            <div class="bebas no-orders-label1">
+                                                                Oops! It looks like you haven't placed an order yet!
+                                                            </div>
+                                                            <a href="<?php echo $this->config('main_site', 'url') ?>/image-search" class="btn btn-primary">START A SEARCH</a>
+                                                        </div>                                 
+                                                    </div>
+                                                </div>                          
+                                            </div>                        
+                                            <?php
+                                        }
+                                    }
+                                    ?>
+                                </ul>
+                            </li>        
+                        <?php } ?>
+                        <li><a href="<?php echo $this->config('main_site', 'url') ?>/image-search">Shop</a></li>
+                        <li><a href="<?php echo $this->config('main_site', 'url') ?>/rate-and-review">Critique Art</a></li>
+                        <li><a href="<?php echo $this->config('main_site', 'url') ?>/contests">Contests</a></li>
+                        <li class="text-danger"><a href="http://yaguniversity.tumblr.com/">YAG University (BLOG)</a></li>        
+                        <?php if ($session->mem_id) { ?>
+                            <li>
+                                <?php if ($session->login_as_buyer == 1 && $session->membership == 1) { ?> 
+                                    <a href="<?php echo $this->config('main_site', 'url') ?>/buyer.welcome.php" class="purple-txt">
+                                    <?php } else { ?>
+                                        <a href="<?php echo $this->config('main_site', 'url') ?>/artist.welcome.php" class="purple-txt">
+                                            <?php
+                                        }
+
+                                        if ($session->username != "") {
+                                            echo $session->username;
+                                        } else {
+                                            echo $session->f_name;
+                                        }
+                                        ?></a>
+                            </li>
+                            <li><a href="<?php echo $this->config('main_site', 'url') ?>/login.php?cmd=logout">Logout</a></li>
+                        <?php } else {
+                            ?>
+                            <li><a id="headerLoginBtn" href="#" class="purple-txt">Login or Join for FREE</a></li>             
+                        <?php } ?>
+                    </ul>
+                </div>
+            </div>            
+            <div id="topscroll-txt" class="strip clearfix"><marquee scrollamount="2"> <?php echo $this->layout()->settings['home_header_text_msg']; ?></marquee></div>
+        </div>
+    </div>
+</div>

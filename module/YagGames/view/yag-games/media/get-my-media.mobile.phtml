@@ -1,0 +1,15 @@
+<?php foreach ($medias as $key => $media) { ?>    
+    <div class="swiper-slide" data-mediaid="<?php echo $media['media_id'] ?>">
+        <img src="<?php echo $this->mediaImage($media, 'icons', '150'); ?>" alt="<?php echo $media['title'] ?>" class="sbt-img">        
+    </div>    
+<?php } ?>
+<script>
+    $(document).ready(function () {
+        var swiper = new Swiper('.swiper-container', {
+            slidesPerView: 1,
+            spaceBetween: 30,
+            freeMode: true,
+            freeModeSticky: true
+        });
+    });
+</script>

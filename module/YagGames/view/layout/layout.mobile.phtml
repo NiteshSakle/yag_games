@@ -1,0 +1,68 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="Content-Type" content="text/html; charset={$pageEncoding}" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <?php echo $this->headTitle('Online Galleries- Your Art Gallery- Buy Sell Share Art &ndash; Your Art Gallery')->setAutoEscape(false) ?>
+        <meta name="description" content="Your Art Gallery is an easy to use online gallery for artists to share, buy, and sell Fine Art photography. Create your own gallery or browse for your perfect art piece today!">
+        <meta name="keywords" content="Art Photography, Photography, Canvas Prints, Fine Art Gallery, eGallery, Image Gallery, Stock Images, Photographic Art, Digital Imaging Photography, Stock Pictures, Create Your Gallery, Online Gallery, Buy Art, Sell My Art, Online Portfolio, Create Your Portfolio, Portfolios">
+        <meta name="robots" content="index, follow">
+        <link rel="shortcut icon" href="<?php echo $this->basePath('favicon.ico') ?>"/>       
+
+        <!-- Google fonts -->
+        <link href='//fonts.googleapis.com/css?family=Roboto:400,300,700' rel='stylesheet' type='text/css'>
+        <link href='//fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
+        <link href='//fonts.googleapis.com/css?family=Josefin+Sans:600' rel='stylesheet' type='text/css'>
+        <!-- font awesome -->
+        <link href="//fortawesome.github.io/Font-Awesome/assets/font-awesome/css/font-awesome.css" rel="stylesheet">
+
+        <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+        <script type="text/javascript" language="javascript">
+            var baseURL = '<?php echo $this->config('main_site', 'url') ?>';
+            var gameBasePath = '<?php echo $this->basePath() ?>';
+            var disableRgtClk = false;
+        </script>
+        <link type="text/css" rel="stylesheet" href="<?php echo $this->config('main_site', 'theme_assets_path') ?>_mobile/bootstrap/css/bootstrap.min.css">
+        <link type="text/css" rel="stylesheet" href="<?php echo $this->config('main_site', 'theme_assets_path') ?>_mobile/animate/set.css">
+        <link type="text/css" rel="stylesheet" href="<?php echo $this->config('main_site', 'theme_assets_path') ?>/css/validationEngine.jquery.css">
+        <link type="text/css" rel="stylesheet" href="<?php echo $this->config('main_site', 'theme_assets_path') ?>_mobile/css/style.css">
+        <link type="text/css" rel="stylesheet" href="<?php echo $this->config('main_site', 'theme_assets_path') ?>_mobile/css/custom.css">        
+        <link type="text/css" rel="stylesheet" href="<?php echo $this->basePath() ?>/mobile/css/custom.css">
+        <script type="text/javascript" src="<?php echo $this->config('main_site', 'theme_assets_path') ?>_mobile/js/wow.min.js"></script>
+        <script type="text/javascript" src="<?php echo $this->config('main_site', 'theme_assets_path') ?>_mobile/bootstrap/js/bootstrap.js"></script>
+        <script type="text/javascript" src="<?php echo $this->config('main_site', 'theme_assets_path') ?>_mobile/js/touchSwipe.min.js"></script>
+        <script type="text/javascript" src="<?php echo $this->config('main_site', 'theme_assets_path') ?>_mobile/js/respond.js"></script>
+        <script type="text/javascript" src="<?php echo $this->config('main_site', 'url') ?>/assets/javascript/custom.js"></script>
+        <script type="text/javascript" src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/js/jquery.validationEngine.js"></script>
+        <script type="text/javascript" src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/js/error-messages.js"></script>
+        <script type="text/javascript" src="<?php echo $this->config('main_site', 'theme_assets_path') ?>_mobile/js/script.js"></script>
+        <script type="text/javascript" src="<?php echo $this->basePath() ?>/mobile/js/script.js"></script>
+    </head>
+    <body>
+        <div id="loaderImgDiv">
+            <div class="load-image">
+                <img src="<?php echo $this->config('main_site', 'url')?>/assets/themes/yag_mobile/images/ajax-loader.gif" alt="loading">
+            </div>
+            <div class="background-load"></div>
+        </div>        
+        <?php echo $this->partial('navigation.mobile.phtml'); ?>
+        <div class="wrapper flashMessages">
+            <?php
+            $flash = $this->flashMessenger();
+            $flash->setMessageOpenFormat('<div%s>
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+              &times;
+          </button>
+          <ul class="no-disc"><li>')
+                    ->setMessageSeparatorString('</li><li>')
+                    ->setMessageCloseString('</li></ul></div>');
+
+            echo $flash->render('error', array('alert', 'alert-dismissible', 'alert-danger', 'mt-10'));
+            ?>
+        </div>
+        <?php echo $this->content; ?>
+        <?php echo $this->partial('footer.mobile.phtml'); ?>
+    </body>
+</html>

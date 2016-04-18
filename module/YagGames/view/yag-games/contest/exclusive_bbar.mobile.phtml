@@ -1,0 +1,19 @@
+<?php
+switch ($contest['my_type']) {
+  case 'new':
+    $partial = 'new_bbar.mobile.phtml';
+    break;
+  case 'active':
+    $partial = 'active_bbar.mobile.phtml';
+    break;
+  case 'past':
+    $partial = 'past_bbar.mobile.phtml';
+    break;
+}
+
+echo $this->partial($partial, array(
+    'contest' => $contest,
+    'type' => $type,
+    'contestType' => $contestType,
+));
+?>

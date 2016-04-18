@@ -1,0 +1,70 @@
+<?php
+    $this->headMeta()->setProperty('twitter:card', 'summary');
+    $this->headMeta()->setProperty('twitter:site', '@YourArtGallery');
+    $this->headMeta()->setProperty('twitter:title', $contest['name']);
+    
+    
+    if($shareMedia) {
+        $this->headMeta()->setProperty('twitter:image', $this->mediaImage($shareMedia, 'samples'));
+        $this->headMeta()->setProperty('twitter:description', 'Thanks for your votes in the YOURARTGALLERY.COM ' . $contest['name'] . '. Checkout how I did');    
+    } else {
+        $this->headMeta()->setProperty('twitter:image', $this->config('aws', 'path') . $contest['thumbnail']);    
+        $this->headMeta()->setProperty('twitter:description', 'Check out the winners of the '.$contest['name'].' '.$this->config('main_site' ,'url') . '/contests/past-winners');
+    }
+    
+    $this->headMeta()->setProperty('og:title', $contest['name']);
+    $this->headMeta()->setProperty('og:type', 'website');
+    if($shareMedia) {
+        $this->headMeta()->setProperty('og:image', $this->mediaImage($shareMedia, 'samples'));
+        $this->headMeta()->setProperty('og:description', 'Thanks for your votes in the YOURARTGALLERY.COM ' . $contest['name'] . '. Checkout how I did');
+    } else {
+        $this->headMeta()->setProperty('og:image', $this->config('aws', 'path') . $contest['thumbnail']);
+        $this->headMeta()->setProperty('og:description', 'Check out the winners of the '.$contest['name'].' '.$this->config('main_site' ,'url') . '/contests/past-winners');
+    }
+    
+    $dStart = new DateTime(date("Y-m-d"));
+    $dEnd = new DateTime($contest['winners_announce_date']);
+    $dDiff = $dStart->diff($dEnd);
+?>
+<div id="content">
+    <div class="top-description">
+        <h2 class=" wowload fadeInUp purple_title vmin3">CHALLENGES & CONTESTS</h2>                
+    </div>
+    <h3 class="bebas">WHAT IS ART?</span></h3>
+    <p class="text-colored" ><b>It’s your turn to help choose.</b> these talented artists have been selected to show their work and need you to choose your favorite image to win!</p>
+    <?php if ($dEnd > $dStart) { ?>
+    <div class="p0 col-md-12 col-lg-12">
+        <a href="<?php echo $this->basePath() ?>/photo-contest/voting/<?php echo $contestId; ?>" class="btn btn-primary">Get to Voting!</a>
+        <div class="text-center">Contest countdown: <?php echo $dDiff->days; ?> days remaining</div>
+    </div>    
+    <?php } ?>
+    <div class="col-lg-12 grid picalign mt-10 pc-rank">   
+        <?php foreach ($medias as $key => $media) { 
+            $i = $key + 1;
+            ?>
+        <div class="effect-oscar  wowload   col-xs-6 col-sm-6 figure">
+            <div>
+                <a class="media-image" href="<?php echo $this->config('main_site', 'url').'/photo/'.$this->KCrypt()->enc($media['media_id']).'/'. str_replace(" ", "-", $media['title']).'.html' ?>" data-mediaid="<?php echo $media['media_id'] ?>">
+                    <img  src="<?php echo $this->mediaImage($media, 'icons', '150'); ?>" title="<?php echo $media['title'] ?>" alt="<?php echo $media['title'] ?>" class="art-1">
+                </a>
+                <div class="text-center"> 
+                    <h4 class="bebas purplecolor mb-0 default-cursor"><?php echo $this->ordinal((($page - 1) * $size) + $i, TRUE); ?> PlACE</h4>
+                    <div class="r-label1"><b class="font12 default-cursor"><?php echo $media['f_name'] ?></b></div>
+                    <div class=""><a href="<?php echo $this->config('main_site', 'url') ?>/<?php echo $media['username'] ?>" class="onhover-ul"><?php echo $media['username'] ?></a></div>                
+                </div>
+            </div>
+        </div>     
+        <?php } ?>
+    </div>
+    <div class="clearfix"></div>     
+</div>
+<?php
+echo $this->paginationControl($this->paginator, 'Sliding', 'paginator-slide', array(
+    'route' => 'photo-contest',
+    'routeParams' => array(
+        'action' => 'rankings',
+        'id' => $this->contestId,
+        'size' => $this->size
+    )
+));
+?>

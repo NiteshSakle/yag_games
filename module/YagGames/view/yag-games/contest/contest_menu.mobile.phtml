@@ -1,0 +1,25 @@
+<div class="row contests">
+    <div class="col-span-2">		
+        <a href="<?php echo $this->basePath() ?>/new-contest" class="btn btn-primary <?php echo $type == 'new' ? 'active' :'';?>">NEW CONTESTS</a>
+    </div>
+    <div class="col-span-2">	
+        <a href="<?php echo $this->basePath() ?>/past-winners" class="btn btn-primary <?php echo $type == 'past-winners' ? 'active' :'';?>">PAST WINNERS</a>
+    </div>
+</div><br/>
+<div class="row contests">
+    <?php if ($session->mem_id) { ?>
+        <div class="col-span-2">		
+            <a href="<?php echo $this->basePath() ?>/my-contest" class="btn btn-primary <?php echo $type == 'my' ? 'active' :'';?>">MY CONTESTS</a>
+        </div>
+        <div class="col-span-2">	
+            <a href="<?php echo $this->basePath() ?>/exclusive-contest" class="btn btn-primary  <?php echo $type == 'exclusive' ? 'active' :'';?>">EXCLUSIVE CONTESTS</a>
+        </div>
+    <?php } else { ?>
+        <div class="col-span-2">		
+            <a href="#" class="btn btn-primary showModal <?php echo $type == 'my' ? 'active' :'';?>" data-href="<?php echo $this->config('main_site', 'url') ?>/workbox.php?mobileView=true&mode=loginPopup&login_type=artist&login_redirect=contests/my-contest">MY CONTESTS</a>
+        </div>
+        <div class="col-span-2">	
+            <a href="#" class="btn btn-primary showModal  <?php echo $type == 'exclusive' ? 'active' :'';?>" data-href="<?php echo $this->config('main_site', 'url') ?>/workbox.php?mobileView=true&mode=loginPopup&login_type=artist&login_redirect=contests/exclusive-contest">EXCLUSIVE CONTESTS</a>
+        </div>
+    <?php } ?>
+</div>

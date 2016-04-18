@@ -1,0 +1,41 @@
+<div class="p0 col-md-8 col-lg-8">
+    <button class="btn btn-primary" onclick="window.location = '<?php echo $this->basePath() ?>/<?php echo $contestType; ?>/rankings/<?php echo $contest['id']; ?>'">Winner's Announced</button>
+</div>
+<br>
+<div class="p0 col-md-8 col-lg-8">
+    <button class="btn btn-primary"  onclick="window.location = '<?php echo $this->basePath() ?>/<?php echo $contestType; ?>/learn-more'">Learn More</button>
+</div>
+<br>
+<div class="col-md-12 col-xs-12 col-sm-12 p0 mb-10">
+    <div class="col-md-4 col-xs-4 col-sm-4 contest-winner p0 text-center">
+        <?php if (empty($contest['rank'])): ?>
+            <img src="<?php echo $this->basePath() ?>/img/closed.png"  alt="contest status" style="width:63%">
+        <?php elseif ($contest['rank'] == 1 && $contest['type_id'] != 3) : ?>
+            <div class="you_ranked">You Ranked - WINNER</div>            
+            <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/trophy.png"  alt="contest status" style="width:30%">
+        <?php elseif ($contest['rank'] >= 2 && $contest['rank'] <= 10 && $contest['type_id'] != 3): ?>
+            <div class="you_ranked">You Ranked - Top 10</div>            
+            <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/trophy.png"  alt="contest status" style="width:30%">
+        <?php elseif ($contest['type_id'] == 3): ?>
+            <div class="you_ranked">You Ranked - <?php echo $contest['barcket_badge']; ?></div>            
+            <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/trophy.png"  alt="contest status" style="width:30%">
+        <?php endif; ?>
+    </div>
+    <div class="col-md-8 col-xs-8 col-sm-8 contest-winner">    
+        <div class="text-center">
+            <?php if (isset($contest['entered']) && $contest['entered']): ?>
+                Share how you did
+            <?php else: ?>
+                Share this contest
+            <?php endif; ?>
+        </div>
+        <?php
+        echo $this->partial('social_sharing.phtml', array(
+            'contest' => $contest,
+            'type' => $type,
+            'contestType' => $contestType,
+        ));
+        ?>
+    </div>
+</div>
+<div class="clear"></div>

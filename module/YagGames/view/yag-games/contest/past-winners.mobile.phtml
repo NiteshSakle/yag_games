@@ -1,0 +1,157 @@
+<div id="content">
+    <div class="top-description">
+        <h2 class="wowload fadeInUp purple_title vmin3">CHALLENGES & CONTESTS</h2>
+        <?php
+        echo $this->partial('contest_menu.mobile.phtml', array('type' => $type, 'session' => $this->session()));
+        ?>
+        <br>  
+    </div>
+    <?php if (empty($data['contests'])) { ?>
+        <br><div class="alert alert-info" role="alert"><?php echo $type == 'my' ? "You have not participated in any contest yet" : "More contests coming soon!"; ?></div>    
+        <?php
+    } else {
+        foreach ($data['contests'] as $contest) {
+            if (isset($data['winners'][$contest['id']])) {
+
+                switch ($contest['contest_type']) {
+                    case 'Photo Contest':
+                        $contestType = 'photo-contest';
+                        $contestLabel = 'Photo Contest';
+                        break;
+                    case 'Fan Favorite':
+                        $contestType = 'fan-favorite';
+                        $contestLabel = 'Fan Favorite';
+                        break;
+                    case 'Brackets':
+                        $contestType = 'brackets';
+                        $contestLabel = 'Bracket Contest';
+                    case 'default':
+                        $contestType = 'brackets';
+                        $contestLabel = 'Bracket Contest';
+                }
+
+                $winnerDetails = array('name' => '', 'mediaTitle' => '', 'username' => '', 'img' => '', 'mediaId' => '', 'media' => array());
+                if (!empty($data['winners'][$contest['id']][0])) {
+                    $winnerDetails['name'] = $data['winners'][$contest['id']][0]['f_name'];
+                    $winnerDetails['username'] = $data['winners'][$contest['id']][0]['username'];
+                    $winnerDetails['img'] = $data['winners'][$contest['id']][0]['f_name'];
+                    $winnerDetails['mediaId'] = $data['winners'][$contest['id']][0]['media_id'];
+                    $winnerDetails['mediaTitle'] = $data['winners'][$contest['id']][0]['title'];
+                    $winnerDetails['media'] = $data['winners'][$contest['id']][0];
+                }
+                ?>
+                <div class="borderbtm">
+                    <div class="bs-example">
+                        <table class="table table-condensed" style="font-size:12px !important;">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <h4 class="bebas"><?php echo $contestLabel; ?></h4>
+                                        <div class="bebas purple_title"><?php echo $contest['name']; ?><br>
+                                        </div>
+                                        <p class="small">Winner Announced: <?php echo date("F jS, Y", strtotime($contest['winners_announce_date'])); ?></p>
+                                        <p>Artist Name: <b><?php echo $winnerDetails['name']; ?></b><br>
+                                            User Name: <b><a href="<?php echo $this->config('main_site', 'url') ?>/<?php echo $winnerDetails['username'] ?>" class="onhover-ul"><?php echo $winnerDetails['username'] ?></a></b>
+                                        </p>
+                                    </td>
+                                    <td>
+                                        <div   class=" clearfix grid ">
+                                            <figure class="effect-oscar  wowload" style="width:100%">                    
+                                                <a class="media_image" href="<?php echo $this->config('main_site', 'url') . '/photo/' . $this->KCrypt()->enc($winnerDetails['mediaId']) . '/' . str_replace(" ", "-", $winnerDetails['mediaTitle']) . '.html' ?>">
+                                                    <img src="<?php echo $this->mediaImage($winnerDetails['media'], 'icons', '150'); ?>" title="<?php echo $winnerDetails['mediaTitle']; ?>" alt="<?php echo $winnerDetails['mediaTitle'] ?>" >
+                                                </a> 
+                                            </figure>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div> 
+                                            <?php
+                                            if (isset($contest['entered']) && $contest['entered']) {
+                                                echo 'Share how you did';
+                                            } else {
+                                                echo 'Share the Winners';
+                                            }
+                                            ?>
+                                        </div>
+                                        <div class="pull-left">
+                                            <?php
+                                            echo $this->partial('social_sharing.phtml', array(
+                                                'contest' => $contest,
+                                                'type' => $type,
+                                                'contestType' => $contestType,
+                                            ));
+                                            ?>  
+                                        </div>
+                                    </td>
+                                    <td class="p-0">
+                                        <div class="p0 col-md-8 col-lg-8">
+                                            <div class="p0 col-md-8 col-lg-12 contests">
+                                                <button class="btn btn-primary view-past-winners" data-toggle="modal" data-target="<?php echo '#contestWinners' . $contest['id'] ?>">View More Winners</button>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br>
+                    </div>
+                </div>
+                <div class="modal fade" id="<?php echo 'contestWinners' . $contest['id'] ?>" tabindex="-1" role="dialog" aria-labelledby="remoteModal" data-backdrop="static" data-keyboard="false">                        
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close btnxtop" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            </div> 
+                            <div class="modal-body">
+                                <h4 class="purple-txt text-center bebas mt-0"><?php echo $contest['name'] . ' Winners'; ?></h4>
+                                <div class="row mt-10">
+                                    <?php
+                                    foreach ($data['winners'][$contest['id']] as $key => $media):
+                                        $i = $key + 1;
+                                        ?>
+                                        <div class="col-span-2">
+                                            <div class="text-center">
+                                                <a href="<?php echo $this->config('main_site', 'url') . '/photo/' . $this->KCrypt()->enc($media['media_id']) . '/' . str_replace(" ", "-", $media['title']) . '.html' ?>" data-media_id="<?php echo $media['media_id'] ?>">
+                                                    <img src="<?php echo $this->mediaImage($media, 'icons', '120'); ?>" title="<?php echo $media['title'] ?>" alt="<?php echo $media['title'] ?>" />
+                                                </a> 
+                                                <div class="font12 mt-5">Artist Name: <?php echo $media['f_name'] ?></div>
+                                                <div class="font11">User Name: <a href="<?php echo $this->config('main_site', 'url') ?>/<?php echo $media['username'] ?>" class="onhover-ul"><?php echo $media['username'] ?></a></div>
+                                                <div class="font13">                                            
+                                                    <?php if ($contest['type_id'] != 3) { ?>
+                                                        <strong><?php echo $this->ordinal($i); ?></strong>
+                                                    <?php } else { ?>
+                                                        <strong><?php echo $data['winners'][$contest['id']][$key]['badge']; ?></strong>
+                                                    <?php } ?>                                            
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <?php if ($i % 2 == 0 && $i != 10): ?>
+                                        </div>
+                                        <div class="clear"></div>
+                                        <div class="row mt-10">
+                                        <?php endif; ?>
+
+                                    <?php endforeach; ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>          
+                </div>
+                <?php
+            }
+        }
+    }
+    ?>
+</div>
+<?php
+echo $this->paginationControl($this->paginator, 'Sliding', 'paginator-slide', array(
+    'route' => 'home',
+    'routeParams' => array(
+        'action' => $this->getHelperPluginManager()->getServiceLocator()->get('Application')->getMvcEvent()->getRouteMatch()->getParam('action')
+    ),
+    'queryParams' => array(
+    )
+));
+?>
