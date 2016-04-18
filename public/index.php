@@ -5,6 +5,13 @@
  */
 chdir(dirname(__DIR__));
 
+session_start();
+if(isset($_SESSION['HA::CONFIG']) || isset($_SESSION['HA::STORE']) || isset($_SESSION['FlashMessenger']) ) {
+    unset($_SESSION['HA::CONFIG']);
+    unset($_SESSION['HA::STORE']);
+    unset($_SESSION['FlashMessenger']);
+}
+
 // Decline static file requests back to the PHP built-in webserver
 if (php_sapi_name() === 'cli-server') {
     $path = realpath(__DIR__ . parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
