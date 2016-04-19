@@ -223,3 +223,28 @@ div.dates-section {
         margin-left: 43px !important;
     }
 }
+.contest-winner div.progress {
+    position: relative;
+    top: -32px;    
+    background-color: #d1d3d4;    
+    border-radius: 0px;
+    height: 20px;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+}
+.progress-bar-success {
+    background-color: #e5da7c;
+    text-align: center;
+    height: 22px;
+    font-size: 24px;
+    color: #646567;
+    padding: 3% 0%;
+}
+.progress-percentage {
+    color: #646567;
+    font-size: 15px;
+    position: absolute;
+    display: block;
+    width: 100%;
+    margin-top: -2px;
+}

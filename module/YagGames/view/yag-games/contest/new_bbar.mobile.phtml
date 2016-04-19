@@ -7,25 +7,32 @@ $percentage = ($contest['total_entries']) ? floor(($contest['total_entries'] / $
 <div class="p0 col-md-8 col-lg-8">
     <?php
     if ($contest['coming_soon'] == 0) {
-        if ($contest['voting_started']) { ?>
-             <button class="btn btn-primary active-btn" onclick="window.location = '<?php echo $this->basePath() ?>/<?php echo $contestType; ?>/voting/<?php echo $contest['id']; ?>'">Vote Now</button>
+        if ($contest['voting_started']) {
+            ?>
+            <button class="btn btn-primary active-btn" onclick="window.location = '<?php echo $this->basePath() ?>/<?php echo $contestType; ?>/voting/<?php echo $contest['id']; ?>'">Vote Now</button>
         <?php } elseif ($percentage == 100 || ($entryEndDate < $today)) { ?>
             <button class="btn btn-primary vote-soon grey-white-btn default-cursor" >Vote Soon</button>
-        <?php } elseif (isset($contest['entered']) && $contest['entered']) {
+            <?php
+        } elseif (isset($contest['entered']) && $contest['entered']) {
             $media = array();
             $media['media_id'] = $contest['media_id'];
             $media['folder_id'] = $contest['folder_id'];
             ?>
             <button class="btn btn-primary" data-toggle="modal" data-target="#yourIntoContestModal" data-contest-name="<?php echo $contest['name']; ?>" data-img-src="<?php echo $this->mediaImage($media, 'icons'); ?>">You're In</button>
-        <?php } elseif ($session->mem_id) {
-            if ($session->login_as_buyer == 1) { ?>
+            <?php
+        } elseif ($session->mem_id) {
+            if ($session->login_as_buyer == 1) {
+                ?>
                 <button class="btn btn-primary active-btn showModal" data-href="<?php echo $this->config('main_site', 'url') ?>/workbox.php?mobileView=true&mode=loginPopup&login_type=artist">Enter Contest</button>
             <?php } else { ?>
                 <button class="btn btn-primary active-btn" onclick="window.location = '<?php echo $this->basePath() ?>/<?php echo $contestType; ?>/submission/<?php echo $contest['id']; ?>'">Enter Contest</button>
-            <?php }
-        } else { ?>
+                <?php
+            }
+        } else {
+            ?>
             <button class="btn btn-primary active-btn showModal" data-href="<?php echo $this->config('main_site', 'url') ?>/workbox.php?mobileView=true&mode=loginPopup&login_type=artist&login_redirect=contests/<?php echo $contestType; ?>/submission/<?php echo $contest['id']; ?>">Enter Contest</button>
-        <?php }
+            <?php
+        }
     } elseif ($contest['coming_soon'] == 1) {
         ?>
         <button class="btn btn-primary grey-white-btn"  disabled="disabled">Coming Soon</button>
@@ -42,22 +49,45 @@ $percentage = ($contest['total_entries']) ? floor(($contest['total_entries'] / $
     </div>
 <?php } ?>
 <br>    
-<div class="mb-10">
-    <div class="text-center">
-        <?php if (isset($contest['entered']) && $contest['entered']): ?>
-            Share Your Submission for Votes
-        <?php else: ?>
-            Share this contest
-        <?php endif; ?>
-    </div>
+<div class="col-md-12 col-xs-12 col-sm-12 p0 mb-10">    
     <?php
-    echo $this->partial('social_sharing.phtml', array(
-        'contest' => $contest,
-        'type' => $type,
-        'contestType' => $contestType,
-    ));
-    ?> 
+    $shareSectionCssClass = "";
+    if ($contest['coming_soon'] == 0) {
+        $shareSectionCssClass = "col-md-8 col-xs-8 col-sm-8";
+        ?>
+        <div class="col-md-4 col-xs-4 col-sm-4 contest-winner p0 text-center">
+            <?php
+            if ($contest['voting_started'] || $percentage == 100 || ($entryEndDate < $today)) {
+                ?>
+                <img src="<?php echo $this->basePath() ?>/img/closed.png"  alt="contest closed" style="width:63%" />
+            <?php } else { ?>
+                <img src="<?php echo $this->basePath() ?>/img/congratulation.png" style="width:63%" alt="contest status" />        
+                <div class="progress">
+                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="<?php echo $percentage ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?php echo $percentage ?>%"> <span class="progress-percentage"><?php echo $percentage ?><span>%</span>&nbsp;FULL</span></div>
+                </div>
+            <?php }
+            ?>
+        </div>
+    <?php }
+    ?>    
+    <div class="<?php echo $shareSectionCssClass; ?> contest-winner">
+        <div class="text-center">
+            <?php if (isset($contest['entered']) && $contest['entered']): ?>
+                Share Your Submission for Votes
+            <?php else: ?>
+                Share this contest
+            <?php endif; ?>
+        </div>
+        <?php
+        echo $this->partial('social_sharing.phtml', array(
+            'contest' => $contest,
+            'type' => $type,
+            'contestType' => $contestType,
+        ));
+        ?> 
+    </div>
 </div>
+<div class="clear"></div>
 <div class="modal fade" id="yourIntoContestModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">                        
     <div class="modal-dialog" role="document">
         <div class="modal-content">
