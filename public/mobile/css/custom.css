@@ -210,18 +210,11 @@ ul.no-disc {
 div.dates-section {
     line-height: 22px;
 }
-@media (max-width: 320px) { 
-    div.pc-rank div.figure {
-        height: 200px !important;
-    }
-}
-@media only screen and (min-device-width: 321px) and (max-device-width: 568px) { 
-    div.pc-rank div.figure {
-        height: 225px !important;
-    }
-    ul.bracket-pattern {
-        margin-left: 43px !important;
-    }
+.artist-name {
+    text-align: center;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 .contest-winner div.progress {
     position: relative;
@@ -247,4 +240,17 @@ div.dates-section {
     display: block;
     width: 100%;
     margin-top: -2px;
+}
+@media (max-width: 320px) { 
+    div.pc-rank div.figure {
+        height: 200px !important;
+    }
+}
+@media only screen and (min-device-width: 321px) and (max-device-width: 568px) { 
+    div.pc-rank div.figure {
+        height: 225px !important;
+    }
+    ul.bracket-pattern {
+        margin-left: 43px !important;
+    }
 }

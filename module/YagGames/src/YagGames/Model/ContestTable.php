@@ -506,7 +506,7 @@ class ContestTable extends BaseTable {
                     ->columns(array('contest_id' => 'id', 'contest_type' => 'type_id'))
                     ->join(array('cm' => 'contest_media'), 'cm.contest_id = c.id', array())
                     ->join(array('m' => 'ps4_media'), 'm.media_id = cm.media_id', array('media_id', 'folder_id', 'owner','title'))
-                    ->join(array('u' => 'ps4_members'), 'm.owner = u.mem_id', array('username', 'f_name', 'email'))
+                    ->join(array('u' => 'ps4_members'), 'm.owner = u.mem_id', array('username', 'f_name', 'l_name', 'email'))
                     ->join(array('cw' => 'contest_winner'), 'cm.id=cw.contest_media_id', array('rank'));
             
             if(is_array($contestIds)){

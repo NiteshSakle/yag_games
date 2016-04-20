@@ -123,7 +123,7 @@
             <div class="col-md-4">
                 <div class="brk-vote-lt text-center" data-media-id="<?php echo $media1['media_id'] ?>" data-target-img=".brk-vote-it-img-lt">
                     <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/star.0.png" class="voteStar">
-                    <p>Artist Name:&nbsp;<?php echo $media1['f_name']; ?></p>
+                    <p class="artist-name"><?php echo $media1['f_name'].' '.$media1['l_name']; ?></p>
                 </div>
             </div>
             <div class="col-md-2 text-center no-padding">
@@ -137,7 +137,7 @@
             <div class="col-md-4">
                 <div class="brk-vote-rt text-center" data-media-id="<?php echo isset($media2['media_id']) ? $media2['media_id'] : ""; ?>" data-target-img=".brk-vote-it-img-rt">
                     <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/star.0.png" class="voteStar">
-                    <p>Artist Name:&nbsp;<?php echo isset($media2['f_name'])?$media2['f_name'] : ""; ?></p>
+                    <p class="artist-name"><?php echo isset($media2['f_name']) && isset($media2['l_name']) ? $media2['f_name'].' '.$media2['l_name'] : ""; ?></p>
                 </div>
             </div>
             <div class="col-md-1"></div>

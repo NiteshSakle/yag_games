@@ -96,8 +96,7 @@
                                 <a class="media_image" href="#." data-media_id="<?php echo $media['media_id'] ?>">
                                     <img mediaid="<?php echo $this->KCrypt()->enc($media['media_id']) ?>" src="<?php echo $this->mediaImage($media, 'icons', '150'); ?>" title="<?php echo $media['title'] ?>" alt="<?php echo $media['title'] ?>" />
                                 </a> 
-                                <div class="artist-name" style="font-size: 13px;">Artist Name: <?php echo $media['f_name'] ?></div>
-                                <div class="user-name" style="font-size: 13px;">User Name: <a href="<?php echo $this->config('main_site', 'url') ?>/<?php echo $media['username'] ?>"><?php echo $media['username'] ?></a></div>
+                                <div class="artist-name" style="font-size: 13px;"><a href="<?php echo $this->config('main_site', 'url') ?>/<?php echo $media['username'] ?>" class="onhover-ul font12 text-bold"><?php echo $media['f_name'].' '.$media['l_name']; ?></a></div>                                
                             </div>
                         </div>
                         <?php if ($i != 1 && $i % 5 == 0): ?>

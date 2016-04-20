@@ -98,7 +98,7 @@
                 <div class="text-center purple-txt">
                     <div class="heading text-bold font17">Rate It!</div>
                     <div class="font13 text-bold">Title: <?php echo $media['title'] ?></div>
-                    <div class="font13">Artist: <?php echo $media['f_name'] ?></div>            	
+                    <div class="font13 artist-name"><?php echo $media['f_name'].' '.$media['l_name'] ?></div>            	
                     <div><?php echo $media['totalRated'] + 1 ?>/<?php echo $media['count'] ?></div>
                 </div>               
             </div>

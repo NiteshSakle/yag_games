@@ -35,17 +35,16 @@ if ($shareMedia) {
     </div>    
     <div class="col-lg-12 grid picalign mt-10">   
         <?php foreach ($medias as $key => $media) { ?>
-            <figure class="effect-oscar  wowload   col-xs-6 col-sm-6">
+            <div class="effect-oscar  wowload   col-xs-6 col-sm-6 figure mb-10">
                 <div>
                     <a class="media-image" href="#" data-mediaid="<?php echo $media['media_id'] ?>">
-                        <img  src="<?php echo $this->mediaImage($media, 'icons', '150'); ?>" title="<?php echo $media['title'] ?>" alt="<?php echo $media['title'] ?>" width="100px" height="100px">
+                        <img  src="<?php echo $this->mediaImage($media, 'icons', '150'); ?>" title="<?php echo $media['title'] ?>" alt="<?php echo $media['title'] ?>" class="art-1" >
                     </a>
-                    <div class="text-center">                    
-                        <b class="font12 default-cursor"><?php echo $media['f_name'] ?></b></br>
-                        <a href="<?php echo $this->config('main_site', 'url') ?>/<?php echo $media['username'] ?>" class="onhover-ul"><?php echo $media['username'] ?></a>
+                    <div class="artist-name">                        
+                       <a href="<?php echo $this->config('main_site', 'url') ?>/<?php echo $media['username'] ?>" class="onhover-ul font12 text-bold"><?php echo $media['f_name'].' '.$media['l_name']; ?></a>
                     </div>
                 </div>
-            </figure>     
+            </div>     
         <?php } ?>
     </div>
     <div class="clearfix"></div>     

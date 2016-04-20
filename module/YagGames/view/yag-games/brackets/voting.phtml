@@ -372,13 +372,7 @@
                         <div class="col-md-12 col-xs-12 no-margin-padding round6-center-text">
                             <?php if(isset($contestWinners[0])){ ?>
                             <b>Total Votes: <?php echo $contestWinners[0]['no_of_votes']; ?></b>
-                            <div class="artist-name violet-text" style="font-size: 12px; padding: 0px 5px;">Artist Name: <?php echo artistName($contestWinners[0]); ?></div>
-                            <div class="artist-name violet-text" style="font-size: 12px; padding: 0px 5px;">User Name:<a href="<?php echo $this->config('main_site', 'url') ?>/<?php echo $contestWinners[0]['username'] ?>" class="violet-text"><?php echo $contestWinners[0]['username']; ?></a></div>
-<!--                            Total Votes: 158<br>
-                            <span class="violet-text">
-                            Artist Name: Matthews Thomas<br>
-                            User Name: ThomasPhoto
-                            </span>-->
+                            <div class="artist-name violet-text" style="font-size: 12px; padding: 0px 5px;"><a href="<?php echo $this->config('main_site', 'url') ?>/<?php echo $contestWinners[0]['username'] ?>" class="violet-text"><a href="<?php echo $this->config('main_site', 'url') ?>/<?php echo $contestWinners[0]['username'] ?>" class="violet-text"><?php echo $contestWinners[0]['f_name'].' '.$contestWinners[0]['l_name']; ?></a></div>                            
                             <?php } ?>
                         </div>
                     </div>

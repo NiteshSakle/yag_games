@@ -49,8 +49,7 @@
                 </a>
                 <div class="text-center"> 
                     <h4 class="bebas purplecolor mb-0 default-cursor"><?php echo $this->ordinal((($page - 1) * $size) + $i, TRUE); ?> PlACE</h4>
-                    <div class="r-label1"><b class="font12 default-cursor"><?php echo $media['f_name'] ?></b></div>
-                    <div class=""><a href="<?php echo $this->config('main_site', 'url') ?>/<?php echo $media['username'] ?>" class="onhover-ul"><?php echo $media['username'] ?></a></div>                
+                    <div class="r-label1 artist-name"><a href="<?php echo $this->config('main_site', 'url') ?>/<?php echo $media['username'] ?>" class="onhover-ul font12 text-bold"><?php echo $media['f_name'].' '.$media['l_name']; ?></a></div>                    
                 </div>
             </div>
         </div>     

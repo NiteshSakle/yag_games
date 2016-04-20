@@ -115,8 +115,7 @@
                                 <a class="media_image" href="<?php echo $this->config('main_site', 'url').'/photo/'.$this->KCrypt()->enc($media['media_id']).'/'. str_replace(" ", "-", $media['title']).'.html' ?>" data-media_id="<?php echo $media['media_id'] ?>">
                                     <img mediaid="<?php echo $this->KCrypt()->enc($media['media_id']) ?>" class="mediaThumb" src="<?php echo $this->mediaImage($media, 'icons' , '150'); ?>" title="<?php echo $media['title'] ?>" alt="<?php echo $media['title'] ?>" />
                                 </a> 
-                                <div class="artist-name" style="font-size: 13px;">Artist Name: <?php echo $media['f_name'] ?></div>
-                                <div class="user-name" style="font-size: 13px;">User Name: <a href="<?php echo $this->config('main_site', 'url') ?>/<?php echo $media['username'] ?>"><?php echo $media['username'] ?></a></div>
+                                <div class="artist-name" style="font-size: 13px;"><a href="<?php echo $this->config('main_site', 'url') ?>/<?php echo $media['username'] ?>" class="onhover-ul font12 text-bold"><?php echo $media['f_name'].' '.$media['l_name']; ?></a></div>                                
                                 <div class="rank"><strong style="font-size: 25px;color: #646567;"><?php echo $this->ordinal((($page - 1) * $size) + $i); ?></strong></div>
                             </div>
                         </div>

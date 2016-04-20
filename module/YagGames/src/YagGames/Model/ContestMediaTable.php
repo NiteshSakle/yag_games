@@ -203,7 +203,7 @@ class ContestMediaTable extends BaseTable {
                     ->from(array('c' => 'contest'))
                     ->join(array('cm' => 'contest_media'), 'cm.contest_id = c.id', array('*'))
                     ->join(array('m' => 'ps4_media'), 'm.media_id = cm.media_id', array('*'))
-                    ->join(array('u' => 'ps4_members'), 'm.owner = u.mem_id', array('username', 'f_name'))
+                    ->join(array('u' => 'ps4_members'), 'm.owner = u.mem_id', array('username', 'f_name', 'l_name'))
                     ->join(array('cmr' => 'contest_media_rating'), 'cm.id = cmr.contest_media_id', array(), 'left')
                     ->columns($columns)
                     ->where(array('cm.contest_id' => $contestId))
@@ -410,7 +410,7 @@ class ContestMediaTable extends BaseTable {
                         ->from(array('cm' => 'contest_media'))
                         ->columns(array('*'))
                         ->join(array('m' => 'ps4_media'), 'm.media_id = cm.media_id', array('*'))
-                        ->join(array('u' => 'ps4_members'), 'm.owner = u.mem_id', array('username', 'f_name'))
+                        ->join(array('u' => 'ps4_members'), 'm.owner = u.mem_id', array('username', 'f_name', 'l_name'))
                         ->where(array('cm.contest_id' => $contestId))
                         ->limit($limit)
                         ->group('cm.media_id');

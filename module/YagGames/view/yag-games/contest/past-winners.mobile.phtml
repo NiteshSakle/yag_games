@@ -32,7 +32,7 @@
 
                 $winnerDetails = array('name' => '', 'mediaTitle' => '', 'username' => '', 'img' => '', 'mediaId' => '', 'media' => array());
                 if (!empty($data['winners'][$contest['id']][0])) {
-                    $winnerDetails['name'] = $data['winners'][$contest['id']][0]['f_name'];
+                    $winnerDetails['name'] = $data['winners'][$contest['id']][0]['f_name'].' '.$data['winners'][$contest['id']][0]['l_name'];
                     $winnerDetails['username'] = $data['winners'][$contest['id']][0]['username'];
                     $winnerDetails['img'] = $data['winners'][$contest['id']][0]['f_name'];
                     $winnerDetails['mediaId'] = $data['winners'][$contest['id']][0]['media_id'];
@@ -49,18 +49,16 @@
                                         <h4 class="bebas"><?php echo $contestLabel; ?></h4>
                                         <div class="bebas purple_title"><?php echo $contest['name']; ?><br>
                                         </div>
-                                        <p class="small">Winner Announced: <?php echo date("F jS, Y", strtotime($contest['winners_announce_date'])); ?></p>
-                                        <p>Artist Name: <b><?php echo $winnerDetails['name']; ?></b><br>
-                                            User Name: <b><a href="<?php echo $this->config('main_site', 'url') ?>/<?php echo $winnerDetails['username'] ?>" class="onhover-ul"><?php echo $winnerDetails['username'] ?></a></b>
-                                        </p>
+                                        <div class="font11 mb-10">Winner Announced: <?php echo date("F jS, Y", strtotime($contest['winners_announce_date'])); ?></div>
+                                        <div class="mb-10">Artist Name:&nbsp;<a href="<?php echo $this->config('main_site', 'url') ?>/<?php echo $winnerDetails['username'] ?>" class="onhover-ul text-bold"><?php echo $winnerDetails['name']; ?></a></div>
                                     </td>
                                     <td>
-                                        <div   class=" clearfix grid ">
-                                            <figure class="effect-oscar  wowload" style="width:100%">                    
+                                        <div class="clearfix grid ">
+                                            <div class="effect-oscar  wowload figure">                    
                                                 <a class="media_image" href="<?php echo $this->config('main_site', 'url') . '/photo/' . $this->KCrypt()->enc($winnerDetails['mediaId']) . '/' . str_replace(" ", "-", $winnerDetails['mediaTitle']) . '.html' ?>">
-                                                    <img src="<?php echo $this->mediaImage($winnerDetails['media'], 'icons', '150'); ?>" title="<?php echo $winnerDetails['mediaTitle']; ?>" alt="<?php echo $winnerDetails['mediaTitle'] ?>" >
+                                                    <img src="<?php echo $this->mediaImage($winnerDetails['media'], 'icons', '120'); ?>" title="<?php echo $winnerDetails['mediaTitle']; ?>" alt="<?php echo $winnerDetails['mediaTitle'] ?>" class="art-1" style="width: 120px !important; height: 120px !important;">
                                                 </a> 
-                                            </figure>
+                                            </div>
                                         </div>
                                     </td>
                                 </tr>
@@ -116,8 +114,7 @@
                                                 <a href="<?php echo $this->config('main_site', 'url') . '/photo/' . $this->KCrypt()->enc($media['media_id']) . '/' . str_replace(" ", "-", $media['title']) . '.html' ?>" data-media_id="<?php echo $media['media_id'] ?>">
                                                     <img src="<?php echo $this->mediaImage($media, 'icons', '120'); ?>" title="<?php echo $media['title'] ?>" alt="<?php echo $media['title'] ?>" />
                                                 </a> 
-                                                <div class="font12 mt-5">Artist Name: <?php echo $media['f_name'] ?></div>
-                                                <div class="font11">User Name: <a href="<?php echo $this->config('main_site', 'url') ?>/<?php echo $media['username'] ?>" class="onhover-ul"><?php echo $media['username'] ?></a></div>
+                                                <div class="font12 mt-5 artist-name"><a href="<?php echo $this->config('main_site', 'url') ?>/<?php echo $media['username'] ?>" class="onhover-ul font12 text-bold"><?php echo $media['f_name'].' '.$media['l_name']; ?></a></div>                                                
                                                 <div class="font13">                                            
                                                     <?php if ($contest['type_id'] != 3) { ?>
                                                         <strong><?php echo $this->ordinal($i); ?></strong>

@@ -20,12 +20,6 @@ if ($shareMedia) {
     $this->headMeta()->setProperty('og:image', $this->config('aws', 'path') . $contest['thumbnail']);
     $this->headMeta()->setProperty('og:description', $contest['name'] . ' is available on YOURARTGALLERY.COM. CHECKOUT NOW! ' . $this->config('main_site', 'url') . '/contests/past-winners');
 }
-
-function artistName($artist)
-{
-    $firtName = str_split($artist['f_name']);
-    return strtoupper($firtName[0]) . "." . $artist['l_name'];
-}
 ?>
 <div id="content" class="bracket-rankings">
     <div class="top-description">
@@ -183,8 +177,7 @@ function artistName($artist)
                         <?php } ?>
                         <div class="text-center">    
                             <div class="mt-5"><b>Total Votes: <?php echo $contestWinners[0]['no_of_votes']; ?></b></div>
-                            <div class="font12 purple-txt">Artist Name: <?php echo artistName($contestWinners[0]); ?></div>
-                            <div class="font12 purple-txt">User Name: <a href="<?php echo $this->config('main_site', 'url') ?>/<?php echo $contestWinners[0]['username'] ?>" class="onhover-ul purple-txt"><?php echo $contestWinners[0]['username']; ?></a></div>
+                            <div class="font12 purple-txt artist-name text-bold"><a href="<?php echo $this->config('main_site', 'url') ?>/<?php echo $contestWinners[0]['username'] ?>" class="onhover-ul purple-txt"><?php echo $contestWinners[0]['f_name'].' '.$contestWinners[0]['l_name']; ?></a></div>                            
                         </div>
                     </div>
                 </div>

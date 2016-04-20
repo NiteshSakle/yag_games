@@ -104,7 +104,7 @@
         <div class="mt-10 text-center purple-txt">
             <div class="col-xs-4 col-sm-4 p-5 font12 brk-vote-lt" data-media-id="<?php echo $media1['media_id'] ?>" data-target-img=".brk-vote-it-img-lt">
                 <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/star.0.png" class="vote-star">
-                <p>Artist Name:&nbsp;<?php echo $media1['f_name']; ?></p>
+                <p class="artist-name"><?php echo $media1['f_name'].' '.$media1['l_name']; ?></p>
             </div>
             <div class="col-xs-4 col-sm-4 p-5 font13 mt-5">
                 <div>OR</div>
@@ -114,7 +114,7 @@
             </div>
             <div class="col-xs-4 col-sm-4 p-5 font12 brk-vote-rt" data-media-id="<?php echo isset($media2['media_id']) ? $media2['media_id'] : ""; ?>" data-target-img=".brk-vote-it-img-rt"> 
                 <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/star.0.png" class="vote-star">
-                <p>Artist Name:&nbsp;<?php echo isset($media2['f_name']) ? $media2['f_name'] : ""; ?></p>
+                <p class="artist-name"><?php echo isset($media2['f_name']) && isset($media2['l_name']) ? $media2['f_name'].' '.$media2['l_name'] : ""; ?></p>
             </div>
         </div>
         <div class="clear"></div>

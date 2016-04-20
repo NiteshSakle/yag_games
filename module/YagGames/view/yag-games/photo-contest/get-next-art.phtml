@@ -130,7 +130,7 @@
             <div class="rate-it-details" style="width:100% !important;margin: 0px !important;">
                 <div class="heading">Rate It!</div>
                 <div class="rate-it-details-head">Title: <?php echo $media['title'] ?></div>
-                <div>Artist: <?php echo $media['f_name'] ?></div>            	
+                <div class="artist-name"><?php echo $media['f_name'].' '.$media['l_name'] ?></div>            	
             </div>
             <div class="rate-it-category">
                 <div class="category-name"> <?php echo $media['totalRated'] + 1 ?>/<?php echo $media['count'] ?></div>  
