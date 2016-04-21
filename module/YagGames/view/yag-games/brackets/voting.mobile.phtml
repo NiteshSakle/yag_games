@@ -171,26 +171,6 @@ if ($shareMedia) {
                 showModal(gameBasePath + '/brackets/get-next-art?contestId=' + contestId + '&round=' + round + '&mediaId=' + mediaId);
 <?php } ?>
         }
-
-        function calculateAspectRatioFit(srcWidth, srcHeight, maxWidth, maxHeight) {            
-            var ratio = Math.min(maxWidth / srcWidth, maxHeight / srcHeight);
-            return {width: srcWidth * ratio, height: srcHeight * ratio};
-        }
-        
-        $('#remoteModal').on('show.bs.modal', function () {
-            $('img.brk-image').each(function () {                
-                var $this = $(this);
-                $("<img/>")
-                    .attr("src", $(this).attr("src"))
-                    .load(function() {                        
-                        pic_real_width = this.width;
-                        pic_real_height = this.height;
-                        var newDim = calculateAspectRatioFit(pic_real_width, pic_real_height, 120, 120);                
-                        $this.css({width:newDim.width, height:newDim.height});
-                    });                    
-                
-            });
-        });
     });
 
     function guestLogin() {
