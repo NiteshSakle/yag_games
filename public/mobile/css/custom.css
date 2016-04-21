@@ -194,9 +194,7 @@ div.brkt-voting-cont {
 }
 .brkt-voting-cont img.brk-image{
     border: 5px solid #FFF;
-    vertical-align: middle;
-    max-width: 120px;
-    max-height: 120px;
+    vertical-align: middle;    
 }
 .brkt-voting-cont .brk-vote-it-img-lt,
 .brkt-voting-cont .brk-vote-it-img-rt {
@@ -207,9 +205,7 @@ div.brkt-voting-cont {
     cursor: pointer;
 }
 .brkt-voting-cont .brk-empty-media {
-    border: 2px solid #DDD;
-    width: 120px;
-    height: 120px;
+    border: 2px solid #DDD;    
 }
 ul.no-disc {
     list-style: none;
@@ -252,6 +248,15 @@ div.dates-section {
     div.pc-rank div.figure {
         height: 200px !important;
     }
+    .brkt-voting-cont img.brk-image {
+        max-width: 120px;
+        max-height: 120px;
+    }
+    .brkt-voting-cont .brk-empty-media {
+        width: 120px;
+        height: 120px;
+    }
+    
 }
 @media only screen and (min-device-width: 321px) and (max-device-width: 568px) { 
     div.pc-rank div.figure {
@@ -260,4 +265,12 @@ div.dates-section {
     ul.bracket-pattern {
         margin-left: 43px !important;
     }
+    .brkt-voting-cont img.brk-image {
+        max-width: 130px;
+        max-height: 130px;
+    }
+    .brkt-voting-cont .brk-empty-media {
+        width: 130px;
+        height: 130px;
+    }    
 }
