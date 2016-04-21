@@ -155,7 +155,7 @@ if ($shareMedia) {
             $(this).parent('li.combo-box-border').removeClass('combo-box-border');
         });
     });
-    
+
     var guestloggedIn = <?php echo $guestloggedIn; ?>;
     var round = <?php echo isset($contest['current_round']) ? $contest['current_round'] : 0; ?>;
     $(window).ready(function () {
@@ -164,13 +164,33 @@ if ($shareMedia) {
                 guestLogin();
             }, 100);
         } else {
-            <?php if (!$shareMedia) { ?>
+<?php if (!$shareMedia) { ?>
                 showModal(gameBasePath + '/brackets/get-next-art?contestId=' + contestId + '&round=' + round);
-            <?php } else { ?>
+<?php } else { ?>
                 var mediaId = <?php echo $shareMedia['media_id']; ?>;
                 showModal(gameBasePath + '/brackets/get-next-art?contestId=' + contestId + '&round=' + round + '&mediaId=' + mediaId);
-            <?php } ?>
+<?php } ?>
         }
+
+        function calculateAspectRatioFit(srcWidth, srcHeight, maxWidth, maxHeight) {            
+            var ratio = Math.min(maxWidth / srcWidth, maxHeight / srcHeight);
+            return {width: srcWidth * ratio, height: srcHeight * ratio};
+        }
+        
+        $('#remoteModal').on('show.bs.modal', function () {
+            $('img.brk-image').each(function () {                
+                var $this = $(this);
+                $("<img/>")
+                    .attr("src", $(this).attr("src"))
+                    .load(function() {                        
+                        pic_real_width = this.width;
+                        pic_real_height = this.height;
+                        var newDim = calculateAspectRatioFit(pic_real_width, pic_real_height, 120, 120);                
+                        $this.css({width:newDim.width, height:newDim.height});
+                    });                    
+                
+            });
+        });
     });
 
     function guestLogin() {

@@ -194,6 +194,13 @@ div.brkt-voting-cont {
 }
 .brkt-voting-cont img.brk-image{
     border: 5px solid #FFF;
+    vertical-align: middle;
+    width: 120px;
+    height: 120px;
+}
+.brkt-voting-cont .brk-vote-it-img-lt,
+.brkt-voting-cont .brk-vote-it-img-rt {
+    line-height: 120px;    
 }
 .brkt-voting-cont img.combo-border {
     border: 5px solid #555 !important;
@@ -201,8 +208,8 @@ div.brkt-voting-cont {
 }
 .brkt-voting-cont .brk-empty-media {
     border: 2px solid #DDD;
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
 }
 ul.no-disc {
     list-style: none;
