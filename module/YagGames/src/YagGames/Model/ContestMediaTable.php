@@ -6,9 +6,11 @@ use Exception;
 use Zend\Db\Sql\Predicate\Expression;
 use Zend\Db\Sql\Select;
 
-class ContestMediaTable extends BaseTable {
+class ContestMediaTable extends BaseTable
+{
 
-    public function insert(ContestMedia $contestMedia) {
+    public function insert(ContestMedia $contestMedia)
+    {
         try {
 
             $this->created($contestMedia);
@@ -24,7 +26,8 @@ class ContestMediaTable extends BaseTable {
         }
     }
 
-    public function update(ContestMedia $contestMedia) {
+    public function update(ContestMedia $contestMedia)
+    {
         try {
             $this->updated($contestMedia);
             if (!$this->isValid($contestMedia)) {
@@ -38,7 +41,8 @@ class ContestMediaTable extends BaseTable {
         }
     }
 
-    public function delete($params) {
+    public function delete($params)
+    {
         try {
             $where = new \Zend\Db\Sql\Where();
             $where->equalTo('contest_id', $params['contest_id'])
@@ -50,19 +54,22 @@ class ContestMediaTable extends BaseTable {
         }
     }
 
-    public function fetchRecord($contestMediaId) {
+    public function fetchRecord($contestMediaId)
+    {
         $rowset = $this->tableGateway->select(array('id' => $contestMediaId));
         $contestRow = $rowset->current();
         return $contestRow;
     }
 
-    public function fetchContestMedia($contestId, $mediaId) {
+    public function fetchContestMedia($contestId, $mediaId)
+    {
         $rowset = $this->tableGateway->select(array('contest_id' => $contestId, 'media_id' => $mediaId));
         $contestRow = $rowset->current();
         return $contestRow;
     }
 
-    public function fetchAll() {
+    public function fetchAll()
+    {
         $select = new Select;
         $select->from(array('c' => 'contest_media'))
                 ->columns(array('*'));
@@ -73,7 +80,8 @@ class ContestMediaTable extends BaseTable {
         return $resultSet;
     }
 
-    public function fetchAllByContest($contestId) {
+    public function fetchAllByContest($contestId)
+    {
         $select = new \Zend\Db\Sql\Select;
         $select->from(array('c' => 'contest_media'))
                 ->columns(array('*'))
@@ -90,8 +98,9 @@ class ContestMediaTable extends BaseTable {
 
         return $photos;
     }
-    
-    public function getContestMediaDetails($contestMediaId) {
+
+    public function getContestMediaDetails($contestMediaId)
+    {
         try {
 
             $sql = $this->getSql();
@@ -102,7 +111,7 @@ class ContestMediaTable extends BaseTable {
                     ->join(array('u' => 'ps4_members'), 'm.owner = u.mem_id', array('username', 'f_name', 'l_name', 'email'))
                     ->where(array('cm.id' => $contestMediaId))
                     ->group('cm.media_id');
-            
+
             $rows = $sql->prepareStatementForSqlObject($query)->execute();
             $row = $rows->current();
 
@@ -113,7 +122,8 @@ class ContestMediaTable extends BaseTable {
         }
     }
 
-    public function getContestMedia($contestId, $userId = null, $keyword = null, $page = 1, $offset = 20, $sort = 'rank') {
+    public function getContestMedia($contestId, $userId = null, $keyword = null, $page = 1, $offset = 20, $sort = 'rank')
+    {
         try {
             $sort = ($sort == 'rank') ? 'rank DESC' : 'cm.id ASC';
 
@@ -122,7 +132,7 @@ class ContestMediaTable extends BaseTable {
             $query = $sql->select()
                     ->from(array('cm' => 'contest_media'))
                     ->join(array('m' => 'ps4_media'), 'm.media_id = cm.media_id')
-                    ->join(array('u' => 'ps4_members'), 'm.owner = u.mem_id', array('username', 'f_name','l_name', 'email'))
+                    ->join(array('u' => 'ps4_members'), 'm.owner = u.mem_id', array('username', 'f_name', 'l_name', 'email'))
                     ->join(array('cmr' => 'contest_media_rating'), 'cm.id = cmr.contest_media_id', array(), 'left')
                     ->quantifier(new Expression('SQL_CALC_FOUND_ROWS'))
                     ->columns($columns)
@@ -162,7 +172,51 @@ class ContestMediaTable extends BaseTable {
         }
     }
 
-    public function getContestMediaCount($contestId, $userId = null) {
+    // Get Contest Arts without considering Ranking
+    public function getContestArts($contestId, $userId = null, $keyword = null, $page = 1, $offset = 20)
+    {
+        try {
+
+            $sql = $this->getSql();
+            $columns = array('*');
+            $query = $sql->select()
+                    ->from(array('cm' => 'contest_media'))
+                    ->join(array('m' => 'ps4_media'), 'm.media_id = cm.media_id')
+                    ->join(array('u' => 'ps4_members'), 'm.owner = u.mem_id', array('username', 'f_name', 'l_name', 'email'))
+                    ->quantifier(new Expression('SQL_CALC_FOUND_ROWS'))
+                    ->columns($columns)
+                    ->where(array('cm.contest_id' => $contestId))
+                    ->limit($offset)
+                    ->offset(($page - 1) * $offset)
+                    ->order('cm.id ASC')
+                    ->group('cm.media_id');
+
+            if (!empty($keyword)) {
+                $query->where->like('u.f_name', "%" . $keyword . "%");
+            }
+
+            $rows = $sql->prepareStatementForSqlObject($query)->execute();
+
+            $media = array();
+            foreach ($rows as $row) {
+                $media[] = $row;
+            }
+
+            return array(
+                "total" => $this->getFoundRows(),
+                "medias" => $media
+            );
+        } catch (Exception $e) {
+            $this->logException($e);
+            return array(
+                "total" => 0,
+                "medias" => array()
+            );
+        }
+    }
+
+    public function getContestMediaCount($contestId, $userId = null)
+    {
         try {
             $sql = $this->getSql();
             $columns = array('*', 'count' => new Expression('COUNT(cm.id)'));
@@ -194,35 +248,34 @@ class ContestMediaTable extends BaseTable {
         }
     }
 
-    public function getNextContestMedia($contestId, $mediaId, $clientIP, $config, $userId = null, $ratedMedia = array()) {
+    public function getNextContestMedia($contestId, $mediaId, $clientIP, $config, $userId = null, $ratedMedia = array())
+    {
         try {
             $limit = 1;
             $sql = $this->getSql();
-            $columns = array('contest_name' => 'name', 'max_no_of_photos', 'votes' => new Expression('COUNT(cmr.id)'));
+            $columns = array('contest_name' => 'name', 'max_no_of_photos');
             $query = $sql->select()
                     ->from(array('c' => 'contest'))
                     ->join(array('cm' => 'contest_media'), 'cm.contest_id = c.id', array('*'))
-                    ->join(array('m' => 'ps4_media'), 'm.media_id = cm.media_id', array('*'))
-                    ->join(array('u' => 'ps4_members'), 'm.owner = u.mem_id', array('username', 'f_name', 'l_name'))
-                    ->join(array('cmr' => 'contest_media_rating'), 'cm.id = cmr.contest_media_id', array(), 'left')
+                    ->join(array('m' => 'ps4_media'), 'm.media_id = cm.media_id', array('folder_id'))
+                    ->join(array('u' => 'ps4_members'), 'm.owner = u.mem_id', array('username', 'f_name', 'l_name'))                    
                     ->columns($columns)
-                    ->where(array('cm.contest_id' => $contestId))
-                    ->order("votes")
+                    ->where(array('cm.contest_id' => $contestId))                    
                     ->group('cm.media_id');
 
             if (!empty($mediaId)) {
                 $query->where(array('cm.media_id' => $mediaId));
             }
-            
-            if (is_array($config) && !in_array($clientIP, $config['white_listed_ips'])) {           
-               
-               $subQry1 = $sql->select()
-                          ->from(array('cmr3' => 'contest_media_rating'))
-                          ->columns(array('contest_media_id'))
-                          ->where(new Expression('DATE(cmr3.created_at) = CURDATE()'))
-                          ->where(array('cmr3.ip_address' => $clientIP));                          
-               
-               $query->where(
+
+            if (is_array($config) && !in_array($clientIP, $config['white_listed_ips'])) {
+
+                $subQry1 = $sql->select()
+                        ->from(array('cmr3' => 'contest_media_rating'))
+                        ->columns(array('contest_media_id'))
+                        ->where(new Expression('DATE(cmr3.created_at) = CURDATE()'))
+                        ->where(array('cmr3.ip_address' => $clientIP));
+
+                $query->where(
                         new \Zend\Db\Sql\Predicate\PredicateSet(
                         array(
                     new \Zend\Db\Sql\Predicate\NotIn('cm.id', $subQry1)
@@ -230,7 +283,7 @@ class ContestMediaTable extends BaseTable {
                         )
                 );
             }
-            
+
             if (!empty($userId)) {
                 //exclude already rated media of today
                 $subQry = $sql->select()
@@ -253,13 +306,13 @@ class ContestMediaTable extends BaseTable {
                 $query->where(new \Zend\Db\Sql\Predicate\NotIn('cm.media_id', $ratedMedia));
             }
 
-            $rows = $sql->prepareStatementForSqlObject($query)->execute();            
+            $rows = $sql->prepareStatementForSqlObject($query)->execute();
             $contestMedia = array();
             foreach ($rows as $row) {
                 $contestMedia[] = $row;
-            }                   
+            }
             // Get a Random Image from det of all Contest Media's
-            $row = isset($contestMedia[rand(0, count($contestMedia)-1)])?$contestMedia[rand(0, count($contestMedia)-1)]:null;
+            $row = isset($contestMedia[rand(0, count($contestMedia) - 1)]) ? $contestMedia[rand(0, count($contestMedia) - 1)] : null;
             if ($row) {
                 $count = $this->getContestMediaCount($contestId, $userId);
                 $row['count'] = $count['count'];
@@ -272,8 +325,9 @@ class ContestMediaTable extends BaseTable {
             return false;
         }
     }
-    
-    public function getUserContestMediaCount($contestId, $userId = null) {
+
+    public function getUserContestMediaCount($contestId, $userId = null)
+    {
         try {
             $sql = $this->getSql();
             $query = $sql->select()
@@ -281,21 +335,22 @@ class ContestMediaTable extends BaseTable {
                     ->columns(array('*'))
                     ->where(array('cm.contest_id' => $contestId));
 
-            $userId = (int) $userId;            
+            $userId = (int) $userId;
             $query->join(array('m' => 'ps4_media'), 'm.media_id = cm.media_id', array(), 'left')
-                    ->where(array('m.owner' => $userId));            
+                    ->where(array('m.owner' => $userId));
 
             $rows = $sql->prepareStatementForSqlObject($query)->execute();
             $row = $rows->current();
-            
-            return $row;            
+
+            return $row;
         } catch (Exception $e) {
             $this->logException($e);
             return array('count' => 0, 'has_uploaded' => 0);
         }
     }
 
-    public function fetchAllUserMediaDetailsByContest($contestId) {
+    public function fetchAllUserMediaDetailsByContest($contestId)
+    {
         $select = new \Zend\Db\Sql\Select;
         $select->from(array('c' => 'contest_media'))
                 ->columns(array('*'))
@@ -313,9 +368,10 @@ class ContestMediaTable extends BaseTable {
 
         return $photos;
     }
-    
-    public function fetchBracketContestMedia($contestId, $userId = null) {
-        
+
+    public function fetchBracketContestMedia($contestId, $userId = null)
+    {
+
         $resultSet = $this->getContestMedia($contestId, $userId, NULL, 1, 64);
 
         $photos = array();
@@ -324,12 +380,13 @@ class ContestMediaTable extends BaseTable {
         }
 
         return array(
-                "total" => $this->getFoundRows(),
-                "medias" => $photos
-            );
+            "total" => $this->getFoundRows(),
+            "medias" => $photos
+        );
     }
-    
-    public function getNextBracketCombo($contestId, $userId = null, $contestComboId, $ratedComboMedia = array(), $round, $whiteListedIP, $clientIP) {
+
+    public function getNextBracketCombo($contestId, $userId = null, $contestComboId, $ratedComboMedia = array(), $round, $whiteListedIP, $clientIP)
+    {
         try {
             $limit = 1;
             $sql = $this->getSql();
@@ -338,33 +395,33 @@ class ContestMediaTable extends BaseTable {
                     ->from(array('c' => 'contest'))
                     ->columns($columns)
                     ->join(array('cbr' => 'contest_bracket_round'), 'cbr.contest_id = c.id', array('*'))
-                    ->join(array('cbmc' => 'contest_bracket_media_combo'), new Expression(' c.id = cbmc.contest_id AND cbr.current_round = cbmc.round') , array('*'))
+                    ->join(array('cbmc' => 'contest_bracket_media_combo'), new Expression(' c.id = cbmc.contest_id AND cbr.current_round = cbmc.round'), array('*'))
                     ->join(array('cmr' => 'contest_media_rating'), new Expression('cbmc.combo_id = cmr.bracket_combo_id AND cbmc.round = cmr.round'), array(), 'left')
                     ->where(array('c.id' => $contestId))
                     ->limit($limit)
                     ->group('cbmc.combo_id')
                     ->order('cbmc.combo_id');
-            
+
             if (!empty($contestComboId)) {
-                $query->where(array('cbmc.combo_id' => $contestComboId)); 
+                $query->where(array('cbmc.combo_id' => $contestComboId));
             }
-            
+
             if (is_array($whiteListedIP) && !in_array($clientIP, $whiteListedIP)) {
-               $subQry1 = $sql->select()
-                          ->from(array('cmr3' => 'contest_media_rating'))
-                          ->columns(array('bracket_combo_id'))
-                          ->join(array('cm3' => 'contest_media'), new Expression('cm3.id = cmr3.contest_media_id'), array())
-                          ->where(array(
-                                 'cmr3.ip_address' => $clientIP,
-                                 'cmr3.round' => $round,
-                                 'cm3.contest_id' => $contestId,
-                             ));
-               
-               $query->where(new \Zend\Db\Sql\Predicate\PredicateSet(
-                       array(new \Zend\Db\Sql\Predicate\NotIn('cbmc.combo_id', $subQry1))
-                        ));
+                $subQry1 = $sql->select()
+                        ->from(array('cmr3' => 'contest_media_rating'))
+                        ->columns(array('bracket_combo_id'))
+                        ->join(array('cm3' => 'contest_media'), new Expression('cm3.id = cmr3.contest_media_id'), array())
+                        ->where(array(
+                    'cmr3.ip_address' => $clientIP,
+                    'cmr3.round' => $round,
+                    'cm3.contest_id' => $contestId,
+                ));
+
+                $query->where(new \Zend\Db\Sql\Predicate\PredicateSet(
+                        array(new \Zend\Db\Sql\Predicate\NotIn('cbmc.combo_id', $subQry1))
+                ));
             }
-            
+
             if (!empty($userId)) {
                 //exclude already rated media of this round
                 $subQry = $sql->select()
@@ -388,25 +445,25 @@ class ContestMediaTable extends BaseTable {
                 //add not in condition to eliminate rated media
                 $query->where(new \Zend\Db\Sql\Predicate\NotIn('cbmc.combo_id', $ratedComboMedia));
             }
-            
+
             $rows = $sql->prepareStatementForSqlObject($query)->execute();
-            
+
             return $rows->current();
         } catch (Exception $e) {
             $this->logException($e);
             return false;
         }
     }
-    
+
     public function getNextBracketMedia($contestId, $userId = null, $contestComboId, $ratedMedia = array(), $round, $whiteListedIP = array(), $clientIP)
     {
         try {
             $comboDetails = $this->getNextBracketCombo($contestId, $userId, $contestComboId, $ratedMedia, $round, $whiteListedIP, $clientIP);
             $media = array();
-            if($comboDetails) {
+            if ($comboDetails) {
                 $limit = 2;
-                $sql = $this->getSql();            
-                $query = $sql->select()                    
+                $sql = $this->getSql();
+                $query = $sql->select()
                         ->from(array('cm' => 'contest_media'))
                         ->columns(array('*'))
                         ->join(array('m' => 'ps4_media'), 'm.media_id = cm.media_id', array('*'))
@@ -414,27 +471,28 @@ class ContestMediaTable extends BaseTable {
                         ->where(array('cm.contest_id' => $contestId))
                         ->limit($limit)
                         ->group('cm.media_id');
-                
+
                 $query->where
-                        ->NEST
-                        ->equalTo('cm.id', $comboDetails['contest_media_id1'])
-                        ->OR
-                        ->equalTo('cm.id', $comboDetails['contest_media_id2'])
-                        ->UNNEST;  
-                 
+                                ->NEST
+                                ->equalTo('cm.id', $comboDetails['contest_media_id1'])
+                                ->OR
+                                ->equalTo('cm.id', $comboDetails['contest_media_id2'])
+                        ->UNNEST;
+
                 $rows = $sql->prepareStatementForSqlObject($query)->execute();
-                
+
                 foreach ($rows as $row) {
                     $media[$row['id']] = $row;
                 }
-            } 
+            }
             return array(
                 "contestDetails" => $comboDetails,
                 "medias" => $media
-            );         
+            );
         } catch (Exception $e) {
             $this->logException($e);
             return false;
         }
     }
+
 }

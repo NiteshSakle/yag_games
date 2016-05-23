@@ -191,9 +191,6 @@ class PhotoContestController extends BaseController
     $search = $this->params()->fromPost('search', null);
     $this->session = $this->sessionPlugin();
     
-//    echo "<pre>";
-//    var_dump($_SESSION);
-//    echo "</pre>";
     $userId = '';
     $guestloggedIn = 0;
     if (isset($this->session->mem_id)) {
@@ -232,7 +229,7 @@ class PhotoContestController extends BaseController
     }
 
     $photoContestService = $this->getServiceLocator()->get('photoContestService');
-    $data = $photoContestService->getContestMedia($contestId, $userId, $search, $page, $size, '');
+    $data = $photoContestService->getContestArts($contestId, $userId, $search, $page, $size);
 
     $paginator = new Paginator(new NullFill($data['total']));
     $paginator->setCurrentPageNumber($page);
