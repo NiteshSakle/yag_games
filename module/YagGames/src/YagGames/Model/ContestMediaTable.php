@@ -257,7 +257,7 @@ class ContestMediaTable extends BaseTable
             $query = $sql->select()
                     ->from(array('c' => 'contest'))
                     ->join(array('cm' => 'contest_media'), 'cm.contest_id = c.id', array('*'))
-                    ->join(array('m' => 'ps4_media'), 'm.media_id = cm.media_id', array('title, folder_id'))
+                    ->join(array('m' => 'ps4_media'), 'm.media_id = cm.media_id', array('title', 'folder_id'))
                     ->join(array('u' => 'ps4_members'), 'm.owner = u.mem_id', array('username', 'f_name', 'l_name'))                    
                     ->columns($columns)
                     ->where(array('cm.contest_id' => $contestId))                    
