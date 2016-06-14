@@ -226,6 +226,8 @@ class AnnounceWinnersController extends BaseConsoleController
                     // Generate Coupon Code And Insert Into Promotions Table
                     if ($winner['rank'] == 1) { //Winner
                         $promotionsModel = $this->couponService->generateWinnersCoupon($contest, $winner['owner'], $winner['rank'], 1);
+                        // $250 Coupon
+                        $promotionsModel2 = $this->couponService->generateWinnersCoupon($contest, $winner['owner'], $winner['rank'], 3);
                     } else { //Runner Up
                         $promotionsModel = $this->couponService->generateWinnersCoupon($contest, $winner['owner'], $winner['rank'], 2);
                     }
@@ -235,6 +237,9 @@ class AnnounceWinnersController extends BaseConsoleController
                         if ($insertPromotionsData) {
                             $data['promoCode'] = $promotionsModel->promo_code;
                             if ($winner['rank'] == 1) {
+                                if($promotionsTable->insert($promotionsModel2)) {
+                                    $data['promoCode2'] = $promotionsModel2->promo_code;
+                                }
                                 //Upgrade Membership to Platinum for next 6 months
                                 $newMsExpDate = new \DateTime('+6 months', new \DateTimeZone('GMT'));
                                 $upgradeMebership = $this->membershipService->upgradeToPlatinumMembership($winner['owner'], $newMsExpDate);
