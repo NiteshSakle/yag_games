@@ -1,13 +1,14 @@
 <?php if ($this->pageCount && $this->pageCount > 1) { ?>
 <div class="new-pagination">
+    <?php if ($this->current > 1) { ?>
+        <button type="button" name="page-btn" class="page-btn prev-btn" data-page-href="<?php echo $this->url($this->route, array_merge(array('page' => $this->previous), $this->routeParams), array('query' => $this->queryParams)); ?>">&nbsp;&nbsp;&nbsp;&nbsp;Previous</button>
+    <?php } ?>
     <input type="text" name="page" class="page-input" value="<?php echo $this->current; ?>" data-page-href="<?php echo $this->url($this->route, array_merge(array('page' => 'inputPageNum'), $this->routeParams), array('query' => $this->queryParams)); ?>" data-total-pages="<?php echo $this->pageCount; ?>"/>
     <label class="page-lbl1">of</label>
     <label class="page-lbl2"><?php echo $this->pageCount; ?></label>
     <?php 
     if (($this->current + 1) <= $this->pageCount) { ?>
-        <button type="button" name="page-btn" class="page-btn next-btn" data-page-href="<?php echo $this->url($this->route, array_merge(array('page' => $this->next), $this->routeParams), array('query' => $this->queryParams)); ?>">Next&nbsp;&nbsp</button>
-    <?php } elseif ($this->current == $this->pageCount) { ?>
-        <button type="button" name="page-btn" class="page-btn prev-btn" data-page-href="<?php echo $this->url($this->route, array_merge(array('page' => $this->previous), $this->routeParams), array('query' => $this->queryParams)); ?>">&nbsp;&nbsp;&nbsp;&nbspLast</button>
+        <button type="button" name="page-btn" class="page-btn next-btn" data-page-href="<?php echo $this->url($this->route, array_merge(array('page' => $this->next), $this->routeParams), array('query' => $this->queryParams)); ?>">Next&nbsp;&nbsp;</button>
     <?php } ?>
 </div>
 <?php } ?>
