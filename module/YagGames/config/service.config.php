@@ -28,6 +28,7 @@ use YagGames\Service\KCryptService;
 use YagGames\Service\PhotoContestService;
 use YagGames\Service\BracketService;
 use YagGames\Service\SessionService;
+use YagGames\Service\GuestSessionService;
 use YagGames\Utils\Process;
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\TableGateway\TableGateway;
@@ -80,7 +81,12 @@ return array(
             $sessionService->setSessionContainer($sessionContainer);
             return $sessionService;
         },
-                
+        'guestSessionService' => function(ServiceLocatorInterface $serviceLocator) {
+            $guestSessionContainer = new Container('guestUser');             
+            $guestSessionService = new GuestSessionService();
+            $guestSessionService->setSessionContainer($guestSessionContainer);
+            return $guestSessionService;
+        },        
         'kcryptService' => function(ServiceLocatorInterface $serviceLocator) {
             $kcryptService = new KCryptService();
             $kcryptService->setSettingsTable($serviceLocator->get('YagGames\Model\SettingsTable'));
