@@ -68,21 +68,26 @@
                         <li><a href="<?php echo $this->config('main_site', 'url') ?>/rate-and-review">Critique Art</a></li>
                         <li><a href="<?php echo $this->config('main_site', 'url') ?>/contests">Contests</a></li>
                         <li class="text-danger"><a href="http://yaguniversity.tumblr.com/">YAG University (BLOG)</a></li>        
-                        <?php if ($session->mem_id) { ?>
+                        <?php if ($session->mem_id || (string)$session->guestLoggedIn == '1') { ?>
                             <li>
-                                <?php if ($session->login_as_buyer == 1 && $session->membership == 1) { ?> 
-                                    <a href="<?php echo $this->config('main_site', 'url') ?>/buyer.welcome.php" class="purple-txt">
-                                    <?php } else { ?>
-                                        <a href="<?php echo $this->config('main_site', 'url') ?>/artist.welcome.php" class="purple-txt">
-                                            <?php
-                                        }
+                                    <?php
+                                    if ($session->login_as_buyer == 1 && $session->membership == 1) {
+                                        $userHomePage = $this->config('main_site', 'url') . '/buyer.welcome.php';
+                                    } elseif ($session->membership > 1) {
+                                        $userHomePage = $this->config('main_site', 'url') . '/artist.welcome.php';
+                                    } else {
+                                        $userHomePage = '#';
+                                    }
 
-                                        if ($session->username != "") {
-                                            echo $session->username;
-                                        } else {
-                                            echo $session->f_name;
-                                        }
-                                        ?></a>
+                                    if ($session->username != "") {
+                                        $userDisName = $session->username;
+                                    } elseif ($session->f_name != "") {
+                                        $userDisName = $session->f_name;
+                                    } elseif ((string) $session->guestLoggedIn == '1') {
+                                        $userDisName = 'Guest';
+                                    }
+                                    ?>
+                                <a href="<?php echo $userHomePage; ?>" class="purple-txt"><?php echo $userDisName; ?></a>                                
                             </li>
                             <li><a href="<?php echo $this->config('main_site', 'url') ?>/login.php?cmd=logout">Logout</a></li>
                         <?php } else {

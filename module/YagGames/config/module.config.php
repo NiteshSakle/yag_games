@@ -240,6 +240,12 @@ return array(
             $sessionHelper->setSessionService($sessionService);
             return $sessionHelper;
         },
+        'guestSession' => function (Zend\View\HelperPluginManager $helperPluginManager) {
+            $guestSessionService = $helperPluginManager->getServiceLocator()->get('guestSessionService');
+            $guestSessionHelper = new YagGames\View\Helper\GuestSessionHelper();
+            $guestSessionHelper->setSessionService($guestSessionService);
+            return $guestSessionHelper;
+        },        
         'mediaImage' => function (Zend\View\HelperPluginManager $helperPluginManager) {
             $kcryptService = $helperPluginManager->getServiceLocator()->get('kcryptService');
             $sessionHelper = new YagGames\View\Helper\MediaImageHelper();
