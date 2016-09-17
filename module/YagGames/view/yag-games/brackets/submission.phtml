@@ -316,6 +316,7 @@
 </script>
 <script type="text/javascript" src="<?php echo $this->basePath() ?>/js/helpers.js"></script>
 <script type="text/javascript" src="<?php echo $this->config('main_site', 'url') ?>/assets/javascript/popup.js"></script>
+<script type="text/javascript" src="<?php echo $this->basePath() ?>/js/sfrm-pagination.js"></script>
 <script type="text/javascript">
 <?php if ($showPopupDiv): ?>
         showSuccessPopup('uploadPopUpDiv');
@@ -325,10 +326,7 @@
     //disable submit button
     $('#submitImage').prop('disabled', true);
 
-    loadHtml(gameBasePath + '/media/get-my-media/mid/<?php echo $mediaId;?>', '.media-list', '', function () {
-        registerHoverFunction();
-        registerFollowCursor();
-    });
+    getHTMLData(gameBasePath + '/media/get-my-media/mid/<?php echo $mediaId;?>', '.media-list');  
 
     var contestId = "<?php echo $contest['id']; ?>";
     $('#submitImage').click(function () {

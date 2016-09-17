@@ -33,17 +33,18 @@
     </div>  
 </div>
 
-<?php
-echo $this->paginationControl($this->paginator, 'Sliding', 'paginator-slide', array(
-    'route' => 'media',
-    'routeParams' => array(
-        'action' => 'get-my-media'
-    ),
-    'queryParams' => array(
-    )
-));
-?>
-
+<div id="sbtFrmPagination">
+    <?php
+    echo $this->paginationControl($this->paginator, 'Sliding', 'paginator-slide', array(
+        'route' => 'media',
+        'routeParams' => array(
+            'action' => 'get-my-media'
+        ),
+        'queryParams' => array(
+        )
+    ));
+    ?>
+</div>
 <script>
     $(document).ready(function () {
         var mediaId = <?php echo $mediaId ?>;
