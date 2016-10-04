@@ -60,7 +60,7 @@
                 $userDisName = 'Guest';
             }
           ?>
-        <a href="<?php echo $userHomePage; ?>" style=" min-width: 75px;color: #997CAF !important;"><?php echo $userDisName; ?>,</a>
+                <a href="<?php echo $userHomePage; ?>" style="max-width: 128px;color: #997CAF !important;"  class="show-ellipsis"><?php echo $userDisName; ?>,</a>
         <a href="<?php echo $this->config('main_site', 'url') ?>/login.php?cmd=logout" style=" min-width: 50px;color: #997CAF !important;">Logout</a></div></li>
     <?php } else { ?>
         <li><a id="loginPopup" href="<?php echo $this->config('main_site', 'url') ?>/workbox.php?mode=loginPopup&login_type=both"  style="color: #997CAF !important;">Login or Join for FREE</a></li>
