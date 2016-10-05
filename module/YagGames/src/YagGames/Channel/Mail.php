@@ -28,7 +28,7 @@ class Mail
     try {
       $message = new Message();
       $message->addTo($to)
-              ->setFrom($from)
+              ->setFrom($from, 'Your Art Gallery')
               ->setSubject($subject)
               ->setBody($body)
               ->setEncoding('UTF-8');
