@@ -4,13 +4,20 @@
     }
     .media-art img {
         width: 70px;
+        height: 70px;
     }
     .iradio_square-purple {
         margin: 0% 60%;        
     }
-    /*    input[type="radio"] {
-            -webkit-appearance: radio;
-        }*/
+    .contest-image {
+        width: 156px !important;
+        height: 155px !important;
+        font-size: 14px;
+    }
+    .contest-image img {
+        width: 150px;
+        height: 150px;
+    }
 </style>
 <div class="media-list contest-list clearfix">
     <div class="row">
@@ -19,7 +26,7 @@
             <div class="col-md-2 <?php if ($key % 5 == 0): ?>col-md-offset-1<?php endif; ?>">
                 <div class="media-art" >
                     <a class="media_image" href="#." data-media_id="<?php echo $media['media_id'] ?>">
-                        <img mediaid="<?php echo $this->KCrypt()->enc($media['media_id']) ?>" class="mediaThumb showHoverWindow" src="<?php echo $this->mediaImage($media, 'icons'); ?>" title="<?php echo $media['title'] ?>" alt="<?php echo $media['title'] ?>" />
+                        <img mediaid="<?php echo $this->KCrypt()->enc($media['media_id']) ?>" class="mediaThumb showHoverWindow" src="<?php echo $this->mediaImage($media, 'icons', 70, 70); ?>" title="<?php echo $media['title'] ?>" alt="<?php echo $media['title'] ?>" data-thumb-src="<?php echo $this->mediaImage($media, 'thumbs', 150, 150); ?>"/>
                     </a>          
                     <input type="radio" name="my_media" value="<?php echo $media['media_id'] ?>">
                 </div>
@@ -46,6 +53,19 @@
     ?>
 </div>
 <script>
+    function enableSubmitImage() {
+        $('#submitImage').prop('disabled', false);
+    }
+
+    function disableSubmitImage() {
+        $('#submitImage').prop('disabled', true);
+    }
+
+    function updateImage(anchor) {
+        $('.contest-image').html(anchor.clone().find('img').css('opacity', 1));
+        $('.contest-image img').attr('src', anchor.children('img').data('thumb-src'));
+    }
+    
     $(document).ready(function () {
         var mediaId = <?php echo $mediaId ?>;
         $('input').iCheck({
@@ -61,74 +81,32 @@
                 updateImage(anchor);
             }            
         });
+    
+        // Don't change pages if the user is just changing the checkbox
+        $(".media-list a.media_image").click(function (e) {           
+            var checkbox = $(this).next();
+            if (checkbox.hasClass('checked')) {                
+                disableSubmitImage();
+            } else {                
+                $('.iradio_square-purple').removeClass('checked');
+                checkbox.addClass('checked');
+                enableSubmitImage();
+                // show selected image
+                var anchor = $(this);
+                updateImage(anchor);
+            }
+        });
 
-    });
-    // Don't change pages if the user is just changing the checkbox
-    $(".media-list a.media_image").click(function (e) {
-        var checkbox = $(this).next();
-        if (checkbox.hasClass('checked')) {
-            disableSubmitImage();
-        } else {
-            $('.iradio_square-purple').removeClass('checked');
-            checkbox.addClass('checked');
-            enableSubmitImage();
+        $('.iCheck-helper').click(function () {
+            if ($(this).parent().hasClass('checked')) {
+                enableSubmitImage();
+            } else {
+                disableSubmitImage();
+            }
 
-            //debugger;
             // show selected image
-            var anchor = $(this);
-            updateImage(anchor);
-        }
-//        var checkbox = $(this).next();
-//        if (checkbox.is(':checked')) {
-//            checkbox.prop('checked', false);
-//            disableSubmitImage();
-//        } else {
-//            checkbox.prop('checked', true);
-//            enableSubmitImage();
-//
-//            // show selected image
-//            var anchor = $("input:radio[name=my_media]").filter(':checked').siblings('a');
-//            updateImage(anchor);
-//        }
-
+            var anchor = $(this).parent().siblings('a');
+            updateImage(anchor);            
+        });
     });
-
-    $('.iCheck-helper').click(function () {
-        if ($(this).parent().hasClass('checked')) {
-            enableSubmitImage();
-        } else {
-            disableSubmitImage();
-        }
-
-        // show selected image
-        var anchor = $(this).parent().siblings('a');
-        updateImage(anchor);
-
-        $('.contest-image > img').attr('src', $(this).parent().children('a').children('img').attr('src'));
-    });
-//    $("input:radio[name=my_media]").change(function () {
-//        if ($(this).is(':checked')) {
-//            enableSubmitImage();
-//        } else {
-//            disableSubmitImage();
-//        }
-//
-//        // show selected image
-//        var anchor = $(this).siblings('a');
-//        updateImage(anchor);
-//
-//        $('.contest-image > img').attr('src', $(this).parent().children('a').children('img').attr('src'));
-//    });
-
-    function enableSubmitImage() {
-        $('#submitImage').prop('disabled', false);
-    }
-
-    function disableSubmitImage() {
-        $('#submitImage').prop('disabled', true);
-    }
-
-    function updateImage(anchor) {
-        $('.contest-image').html(anchor.clone().find('img').css('opacity', 1));
-    }
 </script>

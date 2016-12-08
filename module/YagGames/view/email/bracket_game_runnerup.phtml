@@ -36,9 +36,13 @@
         </tr>
         <tr>
             <td colspan="2">
-                <a href="<?php echo $contest['main_site_url'] . '/photo/' . $kCrypt->enc($contestTopWinners[0]['media_id']) . '/' . str_replace(" ", "-", $contestTopWinners[0]['title']) . '.html' ?>" style="text-decoration: none;">
-                    <img src="<?php echo $mediaImage($contestTopWinners[0], 'icons', '240', '240'); ?>"  width="240px" height="240px;">
-                </a>
+                <?php if (!empty($contestTopWinners[0])) { ?>
+                    <a href="<?php echo $contest['main_site_url'] . '/photo/' . $kCrypt->enc($contestTopWinners[0]['media_id']) . '/' . str_replace(" ", "-", $contestTopWinners[0]['title']) . '.html' ?>" style="text-decoration: none;">
+                        <img src="<?php echo $mediaImage($contestTopWinners[0], 'icons', '240', '240'); ?>"  width="240px" height="240px;">
+                    </a>
+                <?php } else { ?>
+                    <div  style="width: 240px;height: 240px">&nbsp;</div>
+                <?php } ?>
             </td>
         </tr>
         <tr>
@@ -48,34 +52,38 @@
         </tr>
         <tr>
             <td style=" width: 120px;">
-                <a href="<?php echo $contest['main_site_url'] . '/photo/' . $kCrypt->enc($contestTopWinners[0]['media_id']) . '/' . str_replace(" ", "-", $contestTopWinners[0]['title']) . '.html' ?>" style="text-decoration: none;">
-                    <img src="<?php echo $mediaImage($contestTopWinners[0], 'icons', '120', '120'); ?>"  width="120px" height="120px;">
-                </a>
-                <a href="<?php echo $contest['main_site_url'] . '/' . $contestTopWinners[0]['username']; ?>" style="text-decoration: none;color:inherit;font-size: 14px;">
-                    <?php
-                    $displayName = $contestTopWinners[0]['f_name'] . ' ' . $contestTopWinners[0]['l_name'];
-                    if (strlen($displayName) > 14) {
-                        echo substr($displayName, 0, 13) . '..';
-                    } else {
-                        echo $displayName;
-                    }
-                    ?>
-                </a>
+                <?php if (!empty($contestTopWinners[0])) { ?>
+                    <a href="<?php echo $contest['main_site_url'] . '/photo/' . $kCrypt->enc($contestTopWinners[0]['media_id']) . '/' . str_replace(" ", "-", $contestTopWinners[0]['title']) . '.html' ?>" style="text-decoration: none;">
+                        <img src="<?php echo $mediaImage($contestTopWinners[0], 'icons', '120', '120'); ?>"  width="120px" height="120px;">
+                    </a>
+                    <a href="<?php echo $contest['main_site_url'] . '/' . $contestTopWinners[0]['username']; ?>" style="text-decoration: none;color:inherit;font-size: 14px;">
+                        <?php
+                        $displayName = $contestTopWinners[0]['f_name'] . ' ' . $contestTopWinners[0]['l_name'];
+                        if (strlen($displayName) > 14) {
+                            echo substr($displayName, 0, 13) . '..';
+                        } else {
+                            echo $displayName;
+                        }
+                        ?>
+                    </a>
+                <?php } ?>
             </td>
             <td style=" width: 120px;">
-                <a href="<?php echo $contest['main_site_url'] . '/photo/' . $kCrypt->enc($contestTopWinners[1]['media_id']) . '/' . str_replace(" ", "-", $contestTopWinners[1]['title']) . '.html' ?>" style="text-decoration: none;">
-                    <img src="<?php echo $mediaImage($contestTopWinners[1], 'icons', '120', '120'); ?>"  width="120px" height="120px;">
-                </a>
-                <a href="<?php echo $contest['main_site_url'] . '/' . $contestTopWinners[1]['username']; ?>" style="text-decoration: none;color:inherit;font-size: 14px;">
-                    <?php
-                    $displayName = $contestTopWinners[1]['f_name'] . ' ' . $contestTopWinners[1]['l_name'];
-                    if (strlen($displayName) > 14) {
-                        echo substr($displayName, 0, 13) . '..';
-                    } else {
-                        echo $displayName;
-                    }
-                    ?>
-                </a>                
+                <?php if (!empty($contestTopWinners[1])) { ?>
+                    <a href="<?php echo $contest['main_site_url'] . '/photo/' . $kCrypt->enc($contestTopWinners[1]['media_id']) . '/' . str_replace(" ", "-", $contestTopWinners[1]['title']) . '.html' ?>" style="text-decoration: none;">
+                        <img src="<?php echo $mediaImage($contestTopWinners[1], 'icons', '120', '120'); ?>"  width="120px" height="120px;">
+                    </a>
+                    <a href="<?php echo $contest['main_site_url'] . '/' . $contestTopWinners[1]['username']; ?>" style="text-decoration: none;color:inherit;font-size: 14px;">
+                        <?php
+                        $displayName = $contestTopWinners[1]['f_name'] . ' ' . $contestTopWinners[1]['l_name'];
+                        if (strlen($displayName) > 14) {
+                            echo substr($displayName, 0, 13) . '..';
+                        } else {
+                            echo $displayName;
+                        }
+                        ?>
+                    </a>
+                <?php } ?>
             </td>
         </tr>
         <tr>
@@ -85,34 +93,38 @@
         </tr>
         <tr>
             <td style=" width: 120px;">
-                <a href="<?php echo $contest['main_site_url'] . '/photo/' . $kCrypt->enc($contestTopWinners[2]['media_id']) . '/' . str_replace(" ", "-", $contestTopWinners[2]['title']) . '.html' ?>" style="text-decoration: none;">
-                    <img src="<?php echo $mediaImage($contestTopWinners[2], 'icons', '120', '120'); ?>"  width="120px" height="120px;">
-                </a>
-                <a href="<?php echo $contest['main_site_url'] . '/' . $contestTopWinners[2]['username']; ?>" style="text-decoration: none;color:inherit;font-size: 14px;">
-                    <?php
-                    $displayName = $contestTopWinners[2]['f_name'] . ' ' . $contestTopWinners[2]['l_name'];
-                    if (strlen($displayName) > 14) {
-                        echo substr($displayName, 0, 13) . '..';
-                    } else {
-                        echo $displayName;
-                    }
-                    ?>
-                </a>
+                <?php if (!empty($contestTopWinners[2])) { ?>
+                    <a href="<?php echo $contest['main_site_url'] . '/photo/' . $kCrypt->enc($contestTopWinners[2]['media_id']) . '/' . str_replace(" ", "-", $contestTopWinners[2]['title']) . '.html' ?>" style="text-decoration: none;">
+                        <img src="<?php echo $mediaImage($contestTopWinners[2], 'icons', '120', '120'); ?>"  width="120px" height="120px;">
+                    </a>
+                    <a href="<?php echo $contest['main_site_url'] . '/' . $contestTopWinners[2]['username']; ?>" style="text-decoration: none;color:inherit;font-size: 14px;">
+                        <?php
+                        $displayName = $contestTopWinners[2]['f_name'] . ' ' . $contestTopWinners[2]['l_name'];
+                        if (strlen($displayName) > 14) {
+                            echo substr($displayName, 0, 13) . '..';
+                        } else {
+                            echo $displayName;
+                        }
+                        ?>
+                    </a>
+                <?php } ?>
             </td>
             <td style=" width: 120px;">
-                <a href="<?php echo $contest['main_site_url'] . '/photo/' . $kCrypt->enc($contestTopWinners[3]['media_id']) . '/' . str_replace(" ", "-", $contestTopWinners[3]['title']) . '.html' ?>" style="text-decoration: none;">
-                    <img src="<?php echo $mediaImage($contestTopWinners[3], 'icons', '120', '120'); ?>"  width="120px" height="120px;">
-                </a>
-                <a href="<?php echo $contest['main_site_url'] . '/' . $contestTopWinners[3]['username']; ?>" style="text-decoration: none;color:inherit;font-size: 14px;">
-                    <?php
-                    $displayName = $contestTopWinners[3]['f_name'] . ' ' . $contestTopWinners[3]['l_name'];
-                    if (strlen($displayName) > 14) {
-                        echo substr($displayName, 0, 13) . '..';
-                    } else {
-                        echo $displayName;
-                    }
-                    ?>
-                </a>
+                <?php if (!empty($contestTopWinners[3])) { ?>
+                    <a href="<?php echo $contest['main_site_url'] . '/photo/' . $kCrypt->enc($contestTopWinners[3]['media_id']) . '/' . str_replace(" ", "-", $contestTopWinners[3]['title']) . '.html' ?>" style="text-decoration: none;">
+                        <img src="<?php echo $mediaImage($contestTopWinners[3], 'icons', '120', '120'); ?>"  width="120px" height="120px;">
+                    </a>
+                    <a href="<?php echo $contest['main_site_url'] . '/' . $contestTopWinners[3]['username']; ?>" style="text-decoration: none;color:inherit;font-size: 14px;">
+                        <?php
+                        $displayName = $contestTopWinners[3]['f_name'] . ' ' . $contestTopWinners[3]['l_name'];
+                        if (strlen($displayName) > 14) {
+                            echo substr($displayName, 0, 13) . '..';
+                        } else {
+                            echo $displayName;
+                        }
+                        ?>
+                    </a>
+                <?php } ?>
             </td>
         </tr>
     </table>

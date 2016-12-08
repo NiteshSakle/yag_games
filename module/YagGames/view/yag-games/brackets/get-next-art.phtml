@@ -110,21 +110,35 @@
         <div class="brk-vote-it-wrapper">
             <div>
                 <div class="brk-vote-it-img-lt pull-left text-center" data-target-star=".brk-vote-lt">
-                    <img class="brk-image" src="<?php echo $this->mediaImage($media1, 'samples', 300); ?>" />
+                    <?php if (!empty($media1)) { ?>
+                        <img class="brk-image" src="<?php echo $this->mediaImage($media1, 'samples', 300); ?>" />
+                    <?php } else { ?>
+                        <img class="brk-image" src="#" />
+                    <?php } ?>    
                 </div>               
                 <div class="brk-vote-it-img-rt pull-right text-center" data-target-star=".brk-vote-rt">
-                    <img class="brk-image" src="<?php echo $this->mediaImage($media2, 'samples', 300); ?>" />                    
-                    <span id="closeWorkbox" class="brk-closeWorkbox">X</span>
+                     <?php if (!empty($media2)) { ?>
+                        <img class="brk-image" src="<?php echo $this->mediaImage($media2, 'samples', 300); ?>" />                    
+                        <span id="closeWorkbox" class="brk-closeWorkbox">X</span>
+                    <?php } else { ?>
+                        <img class="brk-image" src="#" />
+                    <?php } ?>
                 </div>
             </div>                     
         </div>
         <div class="brk-bottom-wrapper col-md-12">
             <div class="col-md-1"></div>
             <div class="col-md-4">
-                <div class="brk-vote-lt text-center" data-media-id="<?php echo $media1['media_id'] ?>" data-target-img=".brk-vote-it-img-lt">
-                    <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/star.0.png" class="voteStar">
-                    <p class="artist-name"><?php echo $media1['f_name'].' '.$media1['l_name']; ?></p>
-                </div>
+                <?php if (!empty($media1)) { ?>
+                    <div class="brk-vote-lt text-center" data-media-id="<?php echo $media1['media_id'] ?>" data-target-img=".brk-vote-it-img-lt">
+                        <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/star.0.png" class="voteStar">
+                        <p class="artist-name"><?php echo $media1['f_name'].' '.$media1['l_name']; ?></p>
+                    </div>
+                <?php } else { ?>
+                    <div class="brk-vote-lt text-center" >
+                        <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/star.0.png">
+                    </div>
+                <?php } ?>
             </div>
             <div class="col-md-2 text-center no-padding">
                 <div class="rate-it-details">
@@ -135,10 +149,16 @@
                 </div>                
             </div>
             <div class="col-md-4">
-                <div class="brk-vote-rt text-center" data-media-id="<?php echo isset($media2['media_id']) ? $media2['media_id'] : ""; ?>" data-target-img=".brk-vote-it-img-rt">
-                    <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/star.0.png" class="voteStar">
-                    <p class="artist-name"><?php echo isset($media2['f_name']) && isset($media2['l_name']) ? $media2['f_name'].' '.$media2['l_name'] : ""; ?></p>
-                </div>
+                 <?php if (!empty($media2)) { ?>
+                    <div class="brk-vote-rt text-center" data-media-id="<?php echo isset($media2['media_id']) ? $media2['media_id'] : ""; ?>" data-target-img=".brk-vote-it-img-rt">
+                        <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/star.0.png" class="voteStar">
+                        <p class="artist-name"><?php echo isset($media2['f_name']) && isset($media2['l_name']) ? $media2['f_name'].' '.$media2['l_name'] : ""; ?></p>
+                    </div>
+                 <?php } else { ?>
+                    <div class="brk-vote-lt text-center" >
+                        <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/star.0.png">
+                    </div>
+                <?php } ?>
             </div>
             <div class="col-md-1"></div>
         </div>

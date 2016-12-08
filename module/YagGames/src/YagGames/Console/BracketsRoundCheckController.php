@@ -37,53 +37,61 @@ class BracketsRoundCheckController extends BaseConsoleController
 
             if (empty($record['current_round']) && $roundDate <= $today) {
                 $contestMediaTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaTable');
-                $contestMedia = $contestMediaTable->fetchAllByContest($record['contest_id']);
-                $mediaCount = count($contestMedia);
-
-                shuffle($contestMedia); // Shuffle the array for more randomization                
-                $comboCount = (int) ($mediaCount / 2); // Should be 32;                
-                $orphanMediaKey = 0;
-
-                if (!($mediaCount % 2 == 0)) {
-                    $orphanMediaKey = array_rand($contestMedia, 1);
-                    $orphanMedia = $contestMedia[$orphanMediaKey];
-                    unset($contestMedia[$orphanMediaKey]);
+                $contestMediaRecords = $contestMediaTable->fetchAllByContest($record['contest_id']);
+                
+                $contestMedia = array();
+                foreach ($contestMediaRecords as $mediaRecord) {
+                    $contestMedia[] = $mediaRecord['id'];
                 }
-
+                
+                $mediaCount = count($contestMedia);
+                $diffMediaCount = 64 - $mediaCount;
+                $dummyMedia = array();
+                // Insert dummy media if contest is not full
+                for ($i = 1 ; $i <= $diffMediaCount; $i++) {
+                    $dummyMedia[] = 0;
+                }               
+                
+                if ($mediaCount >= $diffMediaCount) {
+                    $iterator = $contestMedia;
+                    $nonIterator = $dummyMedia;
+                } else {
+                    $iterator = $dummyMedia;
+                    $nonIterator = $contestMedia;
+                }
+                unset($contestMedia, $dummyMedia);                
+                $comboMedia = array();                
+                shuffle($iterator);
+                shuffle($nonIterator);
+                
+                // Create ComboMedia
+                for($i = 0, $j = 0; $j < 32;) {
+                    $nonIteratorCount = count($nonIterator);                    
+                    if ($nonIteratorCount > 0) {                        
+                        $randKey = array_rand($nonIterator, 1);
+                        $comboMedia[$j][0] = $iterator[$i];                        
+                        $comboMedia[$j][1] = $nonIterator[$randKey];
+                        unset($nonIterator[$randKey]);
+                        $i = $i + 1;
+                    } else {                        
+                        $comboMedia[$j][0] = $iterator[$i];                        
+                        $comboMedia[$j][1] = $iterator[$i + 1];
+                        $i = $i + 2;
+                    }                  
+                    $j++;
+                }                
+                shuffle($comboMedia); // Shuffle the array for more randomization
+                
                 $bracketMediaCombo = new \YagGames\Model\ContestBracketMediaCombo();
                 $bracketMediaCombo->contest_id = $record['contest_id'];
                 $bracketMediaCombo->round = 1;
 
-                for ($i = 1; $i <= $comboCount; $i++) {
-                    $bracketMediaCombo->combo_id = $i;
-                    $randomMedia = array_rand($contestMedia, 2);
-                    $bracketMediaCombo->contest_media_id1 = $contestMedia[$randomMedia[0]]['id'];
-                    $bracketMediaCombo->contest_media_id2 = $contestMedia[$randomMedia[1]]['id'];
+                for ($i = 0; $i < 32; $i++) {
+                    $bracketMediaCombo->combo_id = $i+1;
+                    $bracketMediaCombo->contest_media_id1 = $comboMedia[$i][0];
+                    $bracketMediaCombo->contest_media_id2 = $comboMedia[$i][1];                            
 
-                    $contestBracketMediaComboTable->insert($bracketMediaCombo);
-                    // To avoid duplicates unset inserted media
-                    unset($contestMedia[$randomMedia[0]], $contestMedia[$randomMedia[1]]);
-                }
-
-                //Insert orphan media
-                if (isset($orphanMedia)) {
-                    $bracketMediaCombo->combo_id = $i;
-                    $bracketMediaCombo->contest_media_id1 = $orphanMedia['id'];
-                    $bracketMediaCombo->contest_media_id2 = 0;
-
-                    $contestBracketMediaComboTable->insert($bracketMediaCombo);
-                    $i++;
-                }
-
-                if (!($i == 33)) {
-                    $zeroMediaCount = (33 - $i);
-                    for ($j = 1; $j <= $zeroMediaCount; $j++, $i++) {
-                        $bracketMediaCombo->combo_id = $i;
-                        $bracketMediaCombo->contest_media_id1 = 0;
-                        $bracketMediaCombo->contest_media_id2 = 0;
-
-                        $contestBracketMediaComboTable->insert($bracketMediaCombo);
-                    }
+                    $contestBracketMediaComboTable->insert($bracketMediaCombo);                    
                 }
                 // Update Current Round
                 $this->updateContestround($record['contest_id'], 1);

@@ -84,7 +84,7 @@
             <div class="col-span-2 img1">
                 <div class="brk-vote-it-img-lt" data-target-star=".brk-vote-lt">
                     <?php if (!empty($media1)) { ?>
-                        <img class="brk-image" src="<?php echo $this->mediaImage($media1, 'samples', 150); ?>" >
+                        <img class="brk-image" src="<?php echo $this->mediaImage($media1, 'thumbs', 150, 150); ?>" >
                     <?php } else { ?>
                         <div class="brk-empty-media"></div>
                     <?php } ?>
@@ -93,7 +93,7 @@
             <div class="col-span-2 img2">
                 <div class="brk-vote-it-img-rt pull-right" data-target-star=".brk-vote-rt">
                     <?php if (!empty($media2)) { ?>
-                        <img class="brk-image" src="<?php echo $this->mediaImage($media2, 'samples', 150); ?>">
+                        <img class="brk-image" src="<?php echo $this->mediaImage($media2, 'thumbs', 150, 150); ?>">
                     <?php } else { ?>
                         <div class="brk-empty-media"></div>
                     <?php } ?>
@@ -102,20 +102,28 @@
         </div>
         <div class="clear"></div>
         <div class="mt-10 text-center purple-txt">
-            <div class="col-xs-4 col-sm-4 p-5 font12 brk-vote-lt" data-media-id="<?php echo $media1['media_id'] ?>" data-target-img=".brk-vote-it-img-lt">
-                <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/star.0.png" class="vote-star">
-                <p class="artist-name"><?php echo $media1['f_name'].' '.$media1['l_name']; ?></p>
-            </div>
+            <?php if (!empty($media1)) { ?>
+                <div class="col-xs-4 col-sm-4 p-5 font12 brk-vote-lt" data-media-id="<?php echo $media1['media_id'] ?>" data-target-img=".brk-vote-it-img-lt">
+                    <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/star.0.png" class="vote-star">
+                    <p class="artist-name"><?php echo $media1['f_name'].' '.$media1['l_name']; ?></p>
+                </div>
+            <?php } else { ?>
+                <div class="col-xs-4 col-sm-4 p-5 font12">&nbsp;</div>
+            <?php } ?>
             <div class="col-xs-4 col-sm-4 p-5 font13 mt-5">
                 <div>OR</div>
                 <div><?php echo $contestData['round_name']; ?></div>                    
                 <div><strong><?php echo $contestData['totalRated'] + 1 ?>/<?php echo $contestData['count'] ?></strong></div>
                 <div><strong>FACEOFF</strong></div>
             </div>
-            <div class="col-xs-4 col-sm-4 p-5 font12 brk-vote-rt" data-media-id="<?php echo isset($media2['media_id']) ? $media2['media_id'] : ""; ?>" data-target-img=".brk-vote-it-img-rt"> 
-                <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/star.0.png" class="vote-star">
-                <p class="artist-name"><?php echo isset($media2['f_name']) && isset($media2['l_name']) ? $media2['f_name'].' '.$media2['l_name'] : ""; ?></p>
-            </div>
+            <?php if (!empty($media2)) { ?>
+                <div class="col-xs-4 col-sm-4 p-5 font12 brk-vote-rt" data-media-id="<?php echo isset($media2['media_id']) ? $media2['media_id'] : ""; ?>" data-target-img=".brk-vote-it-img-rt"> 
+                    <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/star.0.png" class="vote-star">
+                    <p class="artist-name"><?php echo isset($media2['f_name']) && isset($media2['l_name']) ? $media2['f_name'].' '.$media2['l_name'] : ""; ?></p>
+                </div>
+            <?php } else { ?>
+                <div class="col-xs-4 col-sm-4 p-5 font12">&nbsp;</div>
+            <?php } ?>
         </div>
         <div class="clear"></div>
     </div>
