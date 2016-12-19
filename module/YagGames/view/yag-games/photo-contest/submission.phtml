@@ -273,8 +273,8 @@
         </div>
         <?php if($media) { ?>
         <div class="join-popup-img">            
-            <img class="down-image" style="width: 110px;height: 90px;margin-left: 10px;" mediaid="<?php echo $this->KCrypt()->enc($media['media_id']) ?>" class="icon_man" src="<?php echo $this->mediaImage($media, 'icons'); ?>" title="<?php echo $media['title'] ?>" alt="<?php echo $media['title'] ?>">
-            <img class="upper-image" style="width: 150px;height: 160px;" src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/man-icon-yag.png">            
+            <img class="down-image" style="width: 130px;height: 130px;margin-left: -16px;margin-top: -1px;" mediaid="<?php echo $this->KCrypt()->enc($media['media_id']) ?>" class="icon_man" src="<?php echo $this->mediaImage($media, 'icons', 130, 130); ?>" title="<?php echo $media['title'] ?>" alt="<?php echo $media['title'] ?>">
+            <img class="upper-image" style="width: 150px;height: 167px;margin-left: -26px;margin-top: 12px;" src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/man-icon-yag.png">
         </div> 
         <div class="social-links-upload-another-img">
             <ul class="social_links">
