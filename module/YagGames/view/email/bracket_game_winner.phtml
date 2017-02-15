@@ -1,189 +1,193 @@
-<div style="width:48em;font-family: Trebuchet MS;font-size: 16px;color: #333;">    
-    <table style="width:100%;">
-        <tr>
-            <td style="padding: 2px;text-align: center;">
-                <a href="<?php echo $contest['main_site_url']; ?>" style="text-decoration: none;color:inherit;">
-                    <img src="<?php echo $contest['main_site_url']; ?>/contests/img/mail_head.png"/>
-                </a>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <hr style="border-top: 2px solid #E1E5E6 !important;">
-            </td>
-        </tr>
-    </table>
-    <table style="font-size: 15px;font-family: Trebuchet MS;width:55%;float: left;padding-left: 8px;line-height: 22px;text-align: left; margin: 5px 25px 5px 20px;">
-        <tr>
-            <td style="line-height: 26px;">                      
-                Hi <?php echo $winner['f_name']; ?>,<br>
-                Congratulations! You are the CHAMPION of our "<?php echo $contest['name']; ?>". Your photo "<?php echo $winner['title']; ?>" made it through the Top 32, the Super 16, the Great Eight, the Core Four and the Championship! Great job!<br>
-            </td>
-        </tr>
-        
-        <tr><td style="padding-top: 35px;">As a reminder,here are the prizes you have won:</td></tr>
-        <tr><td style="text-decoration: underline">The Core Four Prize:</td></tr>
-        <tr><td>A print of your image up to 12" x 18"</td></tr>
-        <tr><td style="font-weight: bold">USE COUPON CODE <i>"<?php echo $promoCode2; ?>"</i> AT CHECKOUT.*</td></tr>
-        
-        <tr><td style="padding-top: 35px;text-decoration: underline">The Final Two Prize:</td></tr>
-        <tr><td>A gallery mounted print of your image up to 16" x 20"</td></tr>
-        <tr><td style="font-weight: bold">USE COUPON CODE <i>"<?php echo $promoCode1; ?>"</i> AT CHECKOUT.*</td></tr>
-        
-        <tr><td style="padding-top: 35px;text-decoration: underline">CHAMPIONSHIP Prizes:</td></tr>
-        <tr><td>$250 YourArtGallery.com credits</td></tr>
-        <tr><td style="font-weight: bold">USE COUPON CODE <i>"<?php echo $promoCode3; ?>"</i> AT CHECKOUT.*</td></tr>
-        
-        <tr><td style="padding-top: 10px;">A free 6 month Platinum Membership</td></tr>
-        <tr><td style=" padding-left: 30px;">(automatically upgraded immediately)</td></tr>
-    </table>
-    <table style="width:31%;float: left;margin: 0px 15px;text-align: center;">
-        <tr>
-            <td style=" font-weight: bold; text-decoration: underline;" colspan="2">
-                The Champion
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <?php if (!empty($contestTopWinners[0])) { ?>
-                    <a href="<?php echo $contest['main_site_url'] . '/photo/' . $kCrypt->enc($contestTopWinners[0]['media_id']) . '/' . str_replace(" ", "-", $contestTopWinners[0]['title']) . '.html' ?>" style="text-decoration: none;">
-                        <img src="<?php echo $mediaImage($contestTopWinners[0], 'icons', '240', '240'); ?>"  width="240px" height="240px;">
-                    </a>
-                <?php } else { ?>
-                    <div  style="width: 240px;height: 240px">&nbsp;</div>
-                <?php } ?>
-            </td>
-        </tr>
-        <tr>
-            <td style=" font-weight: bold; text-decoration: underline;" colspan="2">
-                The Final Two
-            </td>
-        </tr>
-        <tr>
-            <td style=" width: 120px;">
-                <?php if (!empty($contestTopWinners[0])) { ?>
-                    <a href="<?php echo $contest['main_site_url'] . '/photo/' . $kCrypt->enc($contestTopWinners[0]['media_id']) . '/' . str_replace(" ", "-", $contestTopWinners[0]['title']) . '.html' ?>" style="text-decoration: none;">
-                        <img src="<?php echo $mediaImage($contestTopWinners[0], 'icons', '120', '120'); ?>"  width="120px" height="120px;">
-                    </a>
-                    <a href="<?php echo $contest['main_site_url'] . '/' . $contestTopWinners[0]['username']; ?>" style="text-decoration: none;color:inherit;font-size: 14px;">
-                        <?php
-                        $displayName = $contestTopWinners[0]['f_name'] . ' ' . $contestTopWinners[0]['l_name'];
-                        if (strlen($displayName) > 14) {
-                            echo substr($displayName, 0, 13) . '..';
-                        } else {
-                            echo $displayName;
-                        }
-                        ?>
-                    </a>
-                <?php } ?>
-            </td>
-            <td style=" width: 120px;">
-                <?php if (!empty($contestTopWinners[1])) { ?>
-                    <a href="<?php echo $contest['main_site_url'] . '/photo/' . $kCrypt->enc($contestTopWinners[1]['media_id']) . '/' . str_replace(" ", "-", $contestTopWinners[1]['title']) . '.html' ?>" style="text-decoration: none;">
-                        <img src="<?php echo $mediaImage($contestTopWinners[1], 'icons', '120', '120'); ?>"  width="120px" height="120px;">
-                    </a>
-                    <a href="<?php echo $contest['main_site_url'] . '/' . $contestTopWinners[1]['username']; ?>" style="text-decoration: none;color:inherit;font-size: 14px;">
-                        <?php
-                        $displayName = $contestTopWinners[1]['f_name'] . ' ' . $contestTopWinners[1]['l_name'];
-                        if (strlen($displayName) > 14) {
-                            echo substr($displayName, 0, 13) . '..';
-                        } else {
-                            echo $displayName;
-                        }
-                        ?>
-                    </a>  
-               <?php } ?>
-            </td>
-        </tr>
-        <tr>
-            <td style=" font-weight: bold; text-decoration: underline;" colspan="2">
-                The Core Four
-            </td>
-        </tr>
-        <tr>
-            <td style=" width: 120px;">
-                <?php if (!empty($contestTopWinners[2])) { ?>
-                    <a href="<?php echo $contest['main_site_url'] . '/photo/' . $kCrypt->enc($contestTopWinners[2]['media_id']) . '/' . str_replace(" ", "-", $contestTopWinners[2]['title']) . '.html' ?>" style="text-decoration: none;">
-                        <img src="<?php echo $mediaImage($contestTopWinners[2], 'icons', '120', '120'); ?>"  width="120px" height="120px;">
-                    </a>
-                    <a href="<?php echo $contest['main_site_url'] . '/' . $contestTopWinners[2]['username']; ?>" style="text-decoration: none;color:inherit;font-size: 14px;">
-                        <?php
-                        $displayName = $contestTopWinners[2]['f_name'] . ' ' . $contestTopWinners[2]['l_name'];
-                        if (strlen($displayName) > 14) {
-                            echo substr($displayName, 0, 13) . '..';
-                        } else {
-                            echo $displayName;
-                        }
-                        ?>
-                    </a>
-                <?php } ?>
-            </td>
-            <td style=" width: 120px;">
-                <?php if (!empty($contestTopWinners[3])) { ?>
-                    <a href="<?php echo $contest['main_site_url'] . '/photo/' . $kCrypt->enc($contestTopWinners[3]['media_id']) . '/' . str_replace(" ", "-", $contestTopWinners[3]['title']) . '.html' ?>" style="text-decoration: none;">
-                        <img src="<?php echo $mediaImage($contestTopWinners[3], 'icons', '120', '120'); ?>"  width="120px" height="120px;">
-                    </a>
-                    <a href="<?php echo $contest['main_site_url'] . '/' . $contestTopWinners[3]['username']; ?>" style="text-decoration: none;color:inherit;font-size: 14px;">
-                        <?php
-                        $displayName = $contestTopWinners[3]['f_name'] . ' ' . $contestTopWinners[3]['l_name'];
-                        if (strlen($displayName) > 14) {
-                            echo substr($displayName, 0, 13) . '..';
-                        } else {
-                            echo $displayName;
-                        }
-                        ?>
-                    </a>
-                <?php } ?>
-            </td>
-        </tr>
-    </table>
-    <table style="border-spacing: 0; border-width: 0; font-size: 15px;padding-top: 40px;font-family: Trebuchet MS;width: 100%;text-align: center; padding: 0px 20px; line-height: 26px;">
-        <tr><td style="padding-top: 20px;font-weight: bold; text-align: left">*IMPORTANT INFORMATION</td></tr>
-        <tr><td style="text-align: justify">All prizes must be redeemed within 30 days of the contest's end date. Please note that you can only use ONE COUPON CODE PER TRANSACTION. Each prize redemption Must be separate transactions. Apply coupon code at check out.</td></tr>
-        
-        <tr><td style="padding: 20px 0px;">Congratulations again and thanks for participating!</td></tr>
-        <tr>
-            <td style="padding: 5px; font-size: 18px; font-weight: bold;">  
-                The Your Art Gallery Team
-            </td>   
-        </tr>    
-    </table>
-    <table style="text-align: center;padding-top:50px;font-size: 13px;width: 100%;">
-        <tr><td style="padding: 5px;">The community continues at...</td></tr>
-        <tr>
-            <td>
-                <a href="https://www.facebook.com/YourArtGallery" ><img src="<?php echo $contest['main_site_url'] . '/assets/files/content_files/facebook_share_new.png'; ?>" alt="" /></a>
-                <a href="https://instagram.com/Your.Art.Gallery/" ><img src="<?php echo $contest['main_site_url'] . '/assets/files/content_files/instagram_share_new.png'; ?>" alt="" /></a>
-                <a href="https://twitter.com/YourArtGallery" ><img src="<?php echo $contest['main_site_url'] . '/assets/files/content_files/twitter_share_new.png'; ?>" alt="" /></a>
-                <a href="https://www.linkedin.com/company/your-art-gallery-llc" ><img src="<?php echo $contest['main_site_url'] . '/assets/files/content_files/linkedin_share_new.png'; ?>" alt="" /></a>
-                <a href="https://www.pinterest.com/yourartgallery" ><img src="<?php echo $contest['main_site_url'] . '/assets/files/content_files/pinterest_share_new.png'; ?>" alt="" /></a>
-                <a href="https://www.youtube.com/YourArtGallery"><img src="<?php echo $contest['main_site_url'] . '/assets/files/content_files/youtube_share_new.png'; ?>" alt="" /></a>
-                <a href="http://yaguniversity.tumblr.com" ><img src="<?php echo $contest['main_site_url'] . '/assets/files/content_files/yag_university_share_new.png'; ?>" alt="" /></a>
-            </td>
-        </tr>                
-    </table>
-    <table style="width: 100%;padding: 0px 60px;">
-        <tr>
-            <td>
-                <hr style="margin-top: 40px;margin-bottom: 30px;border-top: 2px solid #E1E5E6 !important;">
-            </td>
-        </tr>
-    </table>           
-    <table style="text-align: center;font-size: 13px;width: 100%;">
-        <tr>
-            <td> <a href="<?php echo $contest['main_site_url']; ?>" style="margin:5px;"><img src="<?php echo $contest['main_site_url'] . '/assets/themes/yag/images/main_logo.png'; ?>" alt="" width="100px" height="68px"/></a></td>                      
-        </tr>
-        <tr style="font-size: 10px;"><td><a href="<?php echo $contest['main_site_url']; ?>" style="color: #653F8A;font-weight: bold;font-size: 10px;">YourArtGallery.com</a></td></tr>
-        <tr><td>43W.24th St. 2nd FL</td></tr>
-        <tr><td>New York, NY 10010</td></tr>
-        <tr><td>646.638.7171</td></tr>
-        <tr><td><a href="mailto:info@yourartgallery.com" style="text-decoration: none;color:inherit;">info@yourartgallery.com</a></td></tr>        
-    </table>
-    <table style="width: 100%;padding: 0px 60px;">
-        <tr>
-            <td>
-                <hr style="margin-top: 30px;margin-bottom: 30px;border-top: 2px solid #E1E5E6 !important;">
-            </td>
-        </tr>
-    </table>       
-</div>
+        <table>
+            <tr>                
+                <td style="width:48em;font-family: Trebuchet MS;font-size: 16px;color: #333;">    
+                    <table style="width:100%;">
+                        <tr>
+                            <td style="padding: 2px;text-align: center;">
+                                <a href="<?php echo $contest['main_site_url']; ?>" style="text-decoration: none;color:inherit;">
+                                    <img src="<?php echo $contest['main_site_url']; ?>/contests/img/mail_head.png"/>
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <hr style="border-top: 2px solid #E1E5E6 !important;">
+                            </td>
+                        </tr>
+                    </table>
+                    <table style="font-size: 15px;font-family: Trebuchet MS;width:55%;float: left;padding-left: 8px;line-height: 22px;text-align: left; margin: 5px 25px 5px 20px;">
+                        <tr>
+                            <td style="line-height: 26px;">                      
+                                Hi <?php echo $winner['f_name']; ?>,<br>
+                                Congratulations! You are the CHAMPION of our "<?php echo $contest['name']; ?>". Your photo "<?php echo $winner['title']; ?>" made it through the Top 32, the Super 16, the Great Eight, the Core Four and the Championship! Great job!<br>
+                            </td>
+                        </tr>
+
+                        <tr><td style="padding-top: 35px;">As a reminder,here are the prizes you have won:</td></tr>
+                        <tr><td style="text-decoration: underline">The Core Four Prize:</td></tr>
+                        <tr><td>A print of your image up to 12" x 18"</td></tr>
+                        <tr><td style="font-weight: bold">USE COUPON CODE <i>"<?php echo $promoCode2; ?>"</i> AT CHECKOUT.*</td></tr>
+
+                        <tr><td style="padding-top: 35px;text-decoration: underline">The Final Two Prize:</td></tr>
+                        <tr><td>A gallery mounted print of your image up to 16" x 20"</td></tr>
+                        <tr><td style="font-weight: bold">USE COUPON CODE <i>"<?php echo $promoCode1; ?>"</i> AT CHECKOUT.*</td></tr>
+
+                        <tr><td style="padding-top: 35px;text-decoration: underline">CHAMPIONSHIP Prizes:</td></tr>
+                        <tr><td>$250 YourArtGallery.com credits</td></tr>
+                        <tr><td style="font-weight: bold">USE COUPON CODE <i>"<?php echo $promoCode3; ?>"</i> AT CHECKOUT.*</td></tr>
+
+                        <tr><td style="padding-top: 10px;">A free 6 month Platinum Membership</td></tr>
+                        <tr><td style=" padding-left: 30px;">(automatically upgraded immediately)</td></tr>
+                    </table>
+                    <table style="width:31%;float: left;margin: 0px 15px;text-align: center;">
+                        <tr>
+                            <td style=" font-weight: bold; text-decoration: underline;" colspan="2">
+                                The Champion
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <?php if (!empty($contestTopWinners[0])) { ?>
+                                    <a href="<?php echo $contest['main_site_url'] . '/photo/' . $kCrypt->enc($contestTopWinners[0]['media_id']) . '/' . str_replace(" ", "-", $contestTopWinners[0]['title']) . '.html' ?>" style="text-decoration: none;">
+                                        <img src="<?php echo $mediaImage($contestTopWinners[0], 'icons', '240', '240'); ?>"  width="240px" height="240px;">
+                                    </a>
+                                <?php } else { ?>
+                                    <div  style="width: 240px;height: 240px">&nbsp;</div>
+                                <?php } ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style=" font-weight: bold; text-decoration: underline;" colspan="2">
+                                The Final Two
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style=" width: 120px;">
+                                <?php if (!empty($contestTopWinners[0])) { ?>
+                                    <a href="<?php echo $contest['main_site_url'] . '/photo/' . $kCrypt->enc($contestTopWinners[0]['media_id']) . '/' . str_replace(" ", "-", $contestTopWinners[0]['title']) . '.html' ?>" style="text-decoration: none;">
+                                        <img src="<?php echo $mediaImage($contestTopWinners[0], 'icons', '120', '120'); ?>"  width="120px" height="120px;">
+                                    </a>
+                                    <a href="<?php echo $contest['main_site_url'] . '/' . $contestTopWinners[0]['username']; ?>" style="text-decoration: none;color:inherit;font-size: 14px;">
+                                        <?php
+                                        $displayName = $contestTopWinners[0]['f_name'] . ' ' . $contestTopWinners[0]['l_name'];
+                                        if (strlen($displayName) > 14) {
+                                            echo substr($displayName, 0, 13) . '..';
+                                        } else {
+                                            echo $displayName;
+                                        }
+                                        ?>
+                                    </a>
+                                <?php } ?>
+                            </td>
+                            <td style=" width: 120px;">
+                                <?php if (!empty($contestTopWinners[1])) { ?>
+                                    <a href="<?php echo $contest['main_site_url'] . '/photo/' . $kCrypt->enc($contestTopWinners[1]['media_id']) . '/' . str_replace(" ", "-", $contestTopWinners[1]['title']) . '.html' ?>" style="text-decoration: none;">
+                                        <img src="<?php echo $mediaImage($contestTopWinners[1], 'icons', '120', '120'); ?>"  width="120px" height="120px;">
+                                    </a>
+                                    <a href="<?php echo $contest['main_site_url'] . '/' . $contestTopWinners[1]['username']; ?>" style="text-decoration: none;color:inherit;font-size: 14px;">
+                                        <?php
+                                        $displayName = $contestTopWinners[1]['f_name'] . ' ' . $contestTopWinners[1]['l_name'];
+                                        if (strlen($displayName) > 14) {
+                                            echo substr($displayName, 0, 13) . '..';
+                                        } else {
+                                            echo $displayName;
+                                        }
+                                        ?>
+                                    </a>  
+                                <?php } ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style=" font-weight: bold; text-decoration: underline;" colspan="2">
+                                The Core Four
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style=" width: 120px;">
+                                <?php if (!empty($contestTopWinners[2])) { ?>
+                                    <a href="<?php echo $contest['main_site_url'] . '/photo/' . $kCrypt->enc($contestTopWinners[2]['media_id']) . '/' . str_replace(" ", "-", $contestTopWinners[2]['title']) . '.html' ?>" style="text-decoration: none;">
+                                        <img src="<?php echo $mediaImage($contestTopWinners[2], 'icons', '120', '120'); ?>"  width="120px" height="120px;">
+                                    </a>
+                                    <a href="<?php echo $contest['main_site_url'] . '/' . $contestTopWinners[2]['username']; ?>" style="text-decoration: none;color:inherit;font-size: 14px;">
+                                        <?php
+                                        $displayName = $contestTopWinners[2]['f_name'] . ' ' . $contestTopWinners[2]['l_name'];
+                                        if (strlen($displayName) > 14) {
+                                            echo substr($displayName, 0, 13) . '..';
+                                        } else {
+                                            echo $displayName;
+                                        }
+                                        ?>
+                                    </a>
+                                <?php } ?>
+                            </td>
+                            <td style=" width: 120px;">
+                                <?php if (!empty($contestTopWinners[3])) { ?>
+                                    <a href="<?php echo $contest['main_site_url'] . '/photo/' . $kCrypt->enc($contestTopWinners[3]['media_id']) . '/' . str_replace(" ", "-", $contestTopWinners[3]['title']) . '.html' ?>" style="text-decoration: none;">
+                                        <img src="<?php echo $mediaImage($contestTopWinners[3], 'icons', '120', '120'); ?>"  width="120px" height="120px;">
+                                    </a>
+                                    <a href="<?php echo $contest['main_site_url'] . '/' . $contestTopWinners[3]['username']; ?>" style="text-decoration: none;color:inherit;font-size: 14px;">
+                                        <?php
+                                        $displayName = $contestTopWinners[3]['f_name'] . ' ' . $contestTopWinners[3]['l_name'];
+                                        if (strlen($displayName) > 14) {
+                                            echo substr($displayName, 0, 13) . '..';
+                                        } else {
+                                            echo $displayName;
+                                        }
+                                        ?>
+                                    </a>
+                                <?php } ?>
+                            </td>
+                        </tr>
+                    </table>
+                    <table style="border-spacing: 0; border-width: 0; font-size: 15px;padding-top: 40px;font-family: Trebuchet MS;width: 100%;text-align: center; padding: 0px 20px; line-height: 26px;">
+                        <tr><td style="padding-top: 20px;font-weight: bold; text-align: left">*IMPORTANT INFORMATION</td></tr>
+                        <tr><td style="text-align: justify">All prizes must be redeemed within 30 days of the contest's end date. Please note that you can only use ONE COUPON CODE PER TRANSACTION. Each prize redemption Must be separate transactions. Apply coupon code at check out.</td></tr>
+
+                        <tr><td style="padding: 20px 0px;">Congratulations again and thanks for participating!</td></tr>
+                        <tr>
+                            <td style="padding: 5px; font-size: 18px; font-weight: bold;">  
+                                The Your Art Gallery Team
+                            </td>   
+                        </tr>    
+                    </table>
+                    <table style="text-align: center;padding-top:50px;font-size: 13px;width: 100%;">
+                        <tr><td style="padding: 5px;">The community continues at...</td></tr>
+                        <tr>
+                            <td>
+                                <a href="https://www.facebook.com/YourArtGallery" ><img src="<?php echo $contest['main_site_url'] . '/assets/files/content_files/facebook_share_new.png'; ?>" alt="" /></a>
+                                <a href="https://instagram.com/Your.Art.Gallery/" ><img src="<?php echo $contest['main_site_url'] . '/assets/files/content_files/instagram_share_new.png'; ?>" alt="" /></a>
+                                <a href="https://twitter.com/YourArtGallery" ><img src="<?php echo $contest['main_site_url'] . '/assets/files/content_files/twitter_share_new.png'; ?>" alt="" /></a>
+                                <a href="https://www.linkedin.com/company/your-art-gallery-llc" ><img src="<?php echo $contest['main_site_url'] . '/assets/files/content_files/linkedin_share_new.png'; ?>" alt="" /></a>
+                                <a href="https://www.pinterest.com/yourartgallery" ><img src="<?php echo $contest['main_site_url'] . '/assets/files/content_files/pinterest_share_new.png'; ?>" alt="" /></a>
+                                <a href="https://www.youtube.com/YourArtGallery"><img src="<?php echo $contest['main_site_url'] . '/assets/files/content_files/youtube_share_new.png'; ?>" alt="" /></a>
+                                <a href="http://yaguniversity.tumblr.com" ><img src="<?php echo $contest['main_site_url'] . '/assets/files/content_files/yag_university_share_new.png'; ?>" alt="" /></a>
+                            </td>
+                        </tr>                
+                    </table>
+                    <table style="width: 100%;padding: 0px 60px;">
+                        <tr>
+                            <td>
+                                <hr style="margin-top: 40px;margin-bottom: 30px;border-top: 2px solid #E1E5E6 !important;">
+                            </td>
+                        </tr>
+                    </table>           
+                    <table style="text-align: center;font-size: 13px;width: 100%;">
+                        <tr>
+                            <td> <a href="<?php echo $contest['main_site_url']; ?>" style="margin:5px;"><img src="<?php echo $contest['main_site_url'] . '/assets/themes/yag/images/main_logo.png'; ?>" alt="" width="100px" height="68px"/></a></td>                      
+                        </tr>
+                        <tr style="font-size: 10px;"><td><a href="<?php echo $contest['main_site_url']; ?>" style="color: #653F8A;font-weight: bold;font-size: 10px;">YourArtGallery.com</a></td></tr>
+                        <tr><td>43 W 24th St. 2nd FL</td></tr>
+                        <tr><td>New York, NY 10010</td></tr>
+                        <tr><td>646.638.7171</td></tr>
+                        <tr><td><a href="mailto:info@yourartgallery.com" style="text-decoration: none;color:inherit;">info@yourartgallery.com</a></td></tr>        
+                    </table>
+                    <table style="width: 100%;padding: 0px 60px;">
+                        <tr>
+                            <td>
+                                <hr style="margin-top: 30px;margin-bottom: 30px;border-top: 2px solid #E1E5E6 !important;">
+                            </td>
+                        </tr>
+                    </table>       
+                </td>
+            </tr>
+        </table>
