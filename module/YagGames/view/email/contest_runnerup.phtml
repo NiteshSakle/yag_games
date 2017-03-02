@@ -1,6 +1,6 @@
 <table>
     <tr>
-        <td style="width:52em;font-family: Trebuchet MS;font-size: 15px;">    
+        <td style="width:52em;font-family: Trebuchet MS;font-size: 15px;background-color: #fff;">    
             <table style="width:100%;">
                 <tr>
                     <td style="padding: 2px;text-align: center;">
@@ -15,52 +15,64 @@
                     </td>
                 </tr>
             </table>
-            <table style="width:38%;float: left;">
+            <table>
                 <tr>
-                    <td>
-                        <img src="<?php echo $awsPath . $contest['thumbnail']; ?>" width="287px" height="288px;">
+                    <td style="width: 100%;">
+                        <table style="width:38%;float: left;">
+                            <tr>
+                                <td>
+                                    <img src="<?php echo $awsPath . $contest['thumbnail']; ?>" width="287px" height="288px;">
+                                </td>
+                            </tr>
+                        </table>
+                        <table style="font-size: 15px;font-family: Trebuchet MS;padding-left: 8px;line-height: 26px;">
+                            <tr>
+                                <td>                      
+                                    Hi <?php echo $winner['f_name']; ?>,<br>
+                                    <div style="margin-top: 2px;">
+                                        Congratulations! You are the RUNNER UP of
+                                        our "<?php echo $contest['name']; ?>"! Your image was
+                                        rated top 5 out of <?php echo $totalEntries; ?> entries! Great job!
+                                </td>
+                            </tr>                                
+                            <tr><td style="padding-top: 27px;">As a reminder, you have won:</td><tr>
+                            <tr><td>- An HD Photographic Print</td></tr>    
+                            <tr><td style="padding-left: 35px;">(up to 12" x 18")</td></tr>
+                            <tr><td style="padding-top: 2px;">- A mention in our YAG University Newsletter</td></tr>
+                        </table>
                     </td>
                 </tr>
             </table>
-            <table style="font-size: 15px;font-family: Trebuchet MS;width:62%;float: left;padding-left: 8px;line-height: 26px;">
+            <table>
                 <tr>
-                    <td>                      
-                        Hi <?php echo $winner['f_name']; ?>,<br>
-                        <div style="margin-top: 2px;">
-                            Congratulations! You are the RUNNER UP of
-                            our "<?php echo $contest['name']; ?>"! Your image was
-                            rated top 5 out of <?php echo $totalEntries; ?> entries! Great job!
-                    </td>
-                </tr>                                
-                <tr><td style="padding-top: 27px;">As a reminder, you have won:</td><tr>
-                <tr><td>- An HD Photographic Print</td></tr>    
-                <tr><td style="padding-left: 35px;">(up to 12" x 18")</td></tr>
-                <tr><td style="padding-top: 2px;">- A mention in our YAG University Newsletter</td></tr>
-            </table>
-            <table style="width:38%;clear: both;float: left;padding-top: 20px;">
-                <tr>
-                    <td>
-                        <img src="<?php echo $mediaImage($winner, 'samples', '287'); ?>" alt="<?php echo $winner['title'] ?>" width="287px" height="218px;">
-                    </td>              
-                </tr>
-            </table>
-            <table style="font-size: 15px;font-family: Trebuchet MS;width:62%;float: left;padding-left: 8px;line-height: 26px;">    
-                <tr>
-                    <td>
-                        Your coupon code for the HD Photographic print is:
-                        <b><?php echo $promoCode; ?></b>. Enter this promo code at check out.                                
-                    </td>
-                </tr>
-                <tr>      
-                    <td style="padding-top: 23px;">
-                        * All prizes must be redeemed within 30 days of the contest's end date.
+                    <td style="width: 100%;">
+                        <table style="width:38%;clear: both;float: left;padding-top: 20px;">
+                            <tr>
+                                <td>
+                                    <img src="<?php echo $mediaImage($winner, 'samples', '287'); ?>" alt="<?php echo $winner['title'] ?>" width="287px" height="218px;">
+                                </td>              
+                            </tr>
+                        </table>
+                        <table style="font-size: 15px;font-family: Trebuchet MS;padding-left: 8px;line-height: 26px;">    
+                            <tr>
+                                <td>
+                                    Your coupon code for the HD Photographic print is:
+                                    <b><?php echo $promoCode; ?></b>. Enter this promo code at check out.                                
+                                </td>
+                            </tr>
+                            <tr>      
+                                <td style="padding-top: 23px;">
+                                    * All prizes must be redeemed within 30 days of the contest's end date.
+                                </td>
+                            </tr>
+                            <tr> <td style="padding-top: 23px;">
+                                    Congratulations again and thanks for participating!
+                                </td>
+                            <tr>
+                            <tr><td style="padding-top: 18px;text-align: center;font-size: 21px;">The Your Art Gallery Team</td></tr>
+                        </table>                        
                     </td>
                 </tr>
-                <tr> <td style="padding-top: 23px;">
-                        Congratulations again and thanks for participating!
-                    </td>
-                <tr>
-                <tr><td style="padding-top: 18px;text-align: center;font-size: 21px;">The Your Art Gallery Team</td></tr>
             </table>
             <table style="border-spacing: 0; border-width: 0; font-size: 15px;padding-top: 50px;font-family: Trebuchet MS;width: 100%;">
                 <tr style="background-color: #EDEFEA;">

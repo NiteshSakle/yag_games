@@ -1,7 +1,6 @@
 <table>
     <tr>
-
-        <td style="width:52em;font-family: Trebuchet MS;font-size: 15px;">    
+        <td style="width:52em;font-family: Trebuchet MS;font-size: 15px;background-color: #fff;">    
             <table style="width:100%;">
                 <tr>
                     <td style="padding: 2px;text-align: center;">
@@ -16,61 +15,73 @@
                     </td>
                 </tr>
             </table>
-            <table style="width:38%;float: left;">
+            <table>
                 <tr>
-                    <td>
-                        <img src="<?php echo $awsPath . $contest['thumbnail']; ?>" width="287px" height="288px;">
+                    <td style="width: 100%;">
+                        <table style="width:38%;float: left;">
+                            <tr>
+                                <td>
+                                    <img src="<?php echo $awsPath . $contest['thumbnail']; ?>" width="287px" height="288px;">
+                                </td>
+                            </tr>
+                        </table>
+                        <table style="font-size: 15px;font-family: Trebuchet MS;padding-left: 8px;line-height: 21px;">
+                            <tr>
+                                <td style="line-height: 26px;">                      
+                                    Hi <?php echo $winner['f_name']; ?>,<br>
+                                    Congratulations! You are the FIRST PLACE winner of
+                                    our "<?php echo $contest['name']; ?>"! Your photo "<?php echo $winner['title']; ?>"
+                                    had the highest rating of all <?php echo $totalEntries; ?> entries! Great job!
+                                </td>
+                            </tr>                                
+                            <tr><td style="padding-top: 20px;">As a reminder, you have won:</td><tr>
+                            <tr><td>- $250 YourArtGallery.com credit</td></tr>
+                            <tr><td style="padding-top: 2px;">- Gallery Plexi HD Photographic Print </td></tr> 
+                            <tr><td style="padding-left: 35px;">(up to 16" x 20")</td></tr>
+                            <tr><td style="padding-top: 2px;">- Free 6 months Platinum Membership</td></tr> 
+                            <tr><td style="padding-left: 35px;">(automatically upgraded)</td></tr>
+                            <tr><td style="padding-top: 2px;">- A highlight in our YAG University Newsletter</td></tr>
+                        </table>
                     </td>
                 </tr>
             </table>
-            <table style="font-size: 15px;font-family: Trebuchet MS;width:62%;float: left;padding-left: 8px;line-height: 21px;">
+            <table>
                 <tr>
-                    <td style="line-height: 26px;">                      
-                        Hi <?php echo $winner['f_name']; ?>,<br>
-                        Congratulations! You are the FIRST PLACE winner of
-                        our "<?php echo $contest['name']; ?>"! Your photo "<?php echo $winner['title']; ?>"
-                        had the highest rating of all <?php echo $totalEntries; ?> entries! Great job!
-                    </td>
-                </tr>                                
-                <tr><td style="padding-top: 20px;">As a reminder, you have won:</td><tr>
-                <tr><td>- $250 YourArtGallery.com credit</td></tr>
-                <tr><td style="padding-top: 2px;">- Gallery Plexi HD Photographic Print </td></tr> 
-                <tr><td style="padding-left: 35px;">(up to 16" x 20")</td></tr>
-                <tr><td style="padding-top: 2px;">- Free 6 months Platinum Membership</td></tr> 
-                <tr><td style="padding-left: 35px;">(automatically upgraded)</td></tr>
-                <tr><td style="padding-top: 2px;">- A highlight in our YAG University Newsletter</td></tr>
-            </table>
-            <table style="width:38%;clear: both;float: left;padding-top: 20px;">
-                <tr>
-                    <td>
-                        <img src="<?php echo $mediaImage($winner, 'samples', '287'); ?>" alt="<?php echo $winner['title'] ?>" width="287px" height="218px;">
-                    </td>              
-                </tr>
-            </table>
-            <table style="font-size: 15px;font-family: Trebuchet MS;width:62%;float: left;padding-left: 8px;line-height: 26px;padding-top: 20px;">        
-                <tr>
-                    <td style="padding-top: 15px;">
-                        Your coupon code for $250 YourArtGallery Credit is:
-                        <b><?php echo $promoCode2; ?></b>. Enter this promo code at check out.                                
-                    </td>
-                </tr>
-                <tr>
-                    <td style="padding-top: 15px;">
-                        Your coupon code for the Gallery Plexi HD Photographic print is:
-                        <b><?php echo $promoCode; ?></b>. Enter this promo code at check out.                                
-                    </td>
-                </tr>
-                <tr>      
-                    <td style="padding-top: 15px;">
-                        * All prizes must be redeemed within 30 days of the contest's end date.
+                    <td style="width: 100%;">
+                        <table style="width:38%;clear: both;float: left;padding-top: 20px;">
+                            <tr>
+                                <td>
+                                    <img src="<?php echo $mediaImage($winner, 'samples', '287'); ?>" alt="<?php echo $winner['title'] ?>" width="287px" height="218px;">
+                                </td>              
+                            </tr>
+                        </table>
+                        <table style="font-size: 15px;font-family: Trebuchet MS;padding-left: 8px;line-height: 26px;padding-top: 20px;">        
+                            <tr>
+                                <td style="padding-top: 15px;">
+                                    Your coupon code for $250 YourArtGallery Credit is:
+                                    <b><?php echo $promoCode2; ?></b>. Enter this promo code at check out.                                
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding-top: 15px;">
+                                    Your coupon code for the Gallery Plexi HD Photographic print is:
+                                    <b><?php echo $promoCode; ?></b>. Enter this promo code at check out.                                
+                                </td>
+                            </tr>
+                            <tr>      
+                                <td style="padding-top: 15px;">
+                                    * All prizes must be redeemed within 30 days of the contest's end date.
+                                </td>
+                            </tr>
+                            <tr> <td style="padding-top: 15px;">
+                                    Congratulations again and thanks for participating!
+                                </td>
+                            <tr>
+                            <tr><td style="padding-top: 18px;text-align: center;font-size: 21px;">The Your Art Gallery Team</td></tr>
+                        </table>
                     </td>
                 </tr>
-                <tr> <td style="padding-top: 15px;">
-                        Congratulations again and thanks for participating!
-                    </td>
-                <tr>
-                <tr><td style="padding-top: 18px;text-align: center;font-size: 21px;">The Your Art Gallery Team</td></tr>
-            </table>
+            </table>            
             <table style="border-spacing: 0; border-width: 0; font-size: 15px;padding-top: 50px;font-family: Trebuchet MS;width: 100%;">
                 <tr style="background-color: #EDEFEA;">
                     <?php foreach ($contestTopWinners as $row) { ?>
