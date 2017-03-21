@@ -12,9 +12,6 @@ body {
     padding: 10px 0px 0px 0px;
     width: 825px;
 }
-.header-container nav {
-    margin: 10px 0px;
-}
 
 .inner_main .inner_txt h1.page-titleHead {
     padding: 10px;
@@ -614,8 +611,6 @@ body {
 .disable-btn:hover{color: white;}
 .btn-default:hover{color: #333333;background-color: #8C8C8C;}
 .active-btn:hover {color: #333333;}
-.nav-others ul li.myaccount-dropmenu a {width: 136px;}
-.nav-others ul li.myaccount-dropmenu li a { min-width: 136px;}
 .footer-social img{width: 24px;height: 24px;}
 .footer_box h1{line-height: 26px;}
 
@@ -639,3 +634,10 @@ body {
 .formError .formErrorContent{
     width: 130%;
 }
+/* New Site Design March 17 */
+.header-container *, .header-cart-section:before, .header-cart-section:after, div#workbox * {
+    -webkit-box-sizing: content-box !important;
+    -moz-box-sizing: content-box !important;
+    box-sizing: content-box !important;
+}
+/* End of Site Design March 17 */
