@@ -24,7 +24,7 @@
         <li class="myaccount-dropmenu">
             <span class="span-anchor">For Artists&nbsp;<span class="dropdown_header">&#8744;</span></span>
             <ul>
-                <?php if (!$session->mem_id || empty($this->guestSession()->email)) { ?>
+                <?php if (!($session->mem_id || !empty($this->guestSession()->email))) { ?>
                     <li><a href="<?php echo $this->config('main_site', 'url') ?>/create-account">Join For Free</a></li>
                 <?php }  ?>               
                 <li><a href="<?php echo $this->config('main_site', 'url') ?>/sell-your-art">Sell Your Art</a></li>                
