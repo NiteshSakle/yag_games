@@ -66,9 +66,9 @@
 
     <div style="display: none;" id="blanket"></div>
     <div style="display: none; text-align: center" id="thanksPopUpDiv">
-        <div class="popup-another-img">
+        <div class="popup-another-img" style="border:none;padding: 16px">
             <a style="float:right; margin-top: -5%; margin-right: -4%;" onclick="hideThankYouPopUp();" href="#."><span id="closeWorkbox" style="top: 58px; right: 60px;" >X</span></a>
-            <div style="border:1px solid rgba(128,128,128,0.4); text-align: center; margin: 5%">
+            <div style="border:1px solid rgba(128,128,128,0.4); text-align: center">
                 <p style="font-size: 40px; font-weight: bold; text-align: center; color: #663f8e; font-family: 'franklin_gothic_bookregular'; line-height: 1em;">Thank You
                     <br>
                     <span style="font-size: 25px;">for entering the</span>
@@ -82,8 +82,8 @@
                         <img class="upper-image" width="177" height="189" src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/man-icon-yag.png">            
                     </div>                        
                 </div>
-            </div>
-            <div class="btn-upload-another-img"><input type="button" onClick="javascript:window.location.href = '<?php echo $this->basePath() ?>/new-contest'"  value="More Contests" style="font-weight: bold;"></div>
-        </div>
+            
+            <div class="btn-upload-another-img"><input type="button" onClick="javascript:window.location.href = '<?php echo $this->basePath() ?>/new-contest'"  value="More Contests" style="font-weight: bold; margin: 5px;padding:10px"></div>
+        </div></div>
     </div>
 </div>
