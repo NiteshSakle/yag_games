@@ -24,7 +24,7 @@
         <link rel="stylesheet" type="text/css" href="<?php echo $this->config('main_site', 'theme_assets_path') ?>/css/validationEngine.jquery.css">
         <link rel="stylesheet" type="text/css" href="<?php echo $this->basePath() ?>/css/custom.css">
         <link rel="stylesheet" type="text/css" href="<?php echo $this->basePath() ?>/css/square/purple.css">
-
+        <link rel="stylesheet" type="text/css" href="<?php echo $this->config('main_site', 'url') ?>/assets/css/font-awesome/css/font-awesome.css"> 
         <script>
             var browser = {'mobile': '0', 'iOS': '0'};
             var baseURL = '<?php echo $this->config('main_site', 'url') ?>';
@@ -48,36 +48,88 @@
         <div id="overlay">&nbsp;</div>
         <div id="workbox"></div>
         <div id="hoverWindow"><div id="hoverWindowInner"></div></div>
-        <div class="header-container">    
-            <header class="wrapper clearfix">
-                <div class="home_head_new" >
-                    <div style=" width: 87%; float: left;">
-                        <div class="home_header_msg ">
-                            <?php echo $this->layout()->settings['home_header_text_msg'];?>
-                        </div>
-                        <div class="home_form_new">
-                            <form id="searchFormTest1" action="<?php echo $this->config('main_site', 'url') ?>/search.php" method="get">
-                                <input type="text" id="searchPhraseHead" placeholder="SEARCH ART" name="searchPhrase" autofocus="autofocus">
-                                <input type="hidden" name="clearSearch" value="true">
-                            </form>
-                        </div>
-                    </div>
-                    <div class="home_cart">
-                        <a href="<?php echo $this->config('main_site', 'url') ?>/cart.php">Cart: <?php if(isset($_SESSION['cartTotalsSession']['itemsInCart'])){ echo $_SESSION['cartTotalsSession']['itemsInCart']; } else { echo '0';} ?> item(s)</a>
-                    </div>
-                </div>
-                <div class="header-container header-container-others ">            
-                    <header class="wrapper clearfix">                
-                        <h1 class="title">
-                            <a href="<?php echo $this->config('main_site', 'url') ?>"><img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/logo.png" alt="" height="73" width="116"></a>
+        <header class="wrapper clearfix">            
+            <div class="home_head_new" >                    
+                <div class="home_header_msg ">
+                    <?php echo $this->layout()->settings['home_header_text_msg'];?>
+                </div>                        
+            </div>
+            <div class="header-container">
+                <div class="wrapper clearfix">                          
+                    <div class="header-logo-section pull-left">
+                        <h1>
+                            <a href="<?php echo $this->config('main_site', 'url') ?>">
+                                <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/yag-logo.png" alt="Your Art Gallery" class="h-logo"/>
+                            </a>
                         </h1>
-                        <div class="inner_righttop">
+                    </div> 
+                    <div class="pull-right">
+                        <div class="header-cart-section pull-right"> 
+                            <form action="<?php echo $this->config('main_site', 'url') ?>/search.php" method="get" id="hsearchForm">
+                                <div class="h-sbox pull-left inline-block">
+                                    <div>
+                                        <span class="font-11 mr-3">
+                                            <label><input type="radio" name="searchType" id="hSearchImage" class="radio-button mr-3 v-middle" checked="checked">SEARCH BY IMAGE</label>
+                                        </span>                            
+                                        <span class="font-11">
+                                            <label><input type="radio" name="searchType" id="hSearchArtist" class="radio-button mr-3 v-middle">SEARCH BY ARTIST</label>
+                                        </span>                            
+                                    </div>
+                                    <div class="bg-white">
+                                        <input type="text" name="searchPhrase" placeholder="SEARCH ART" class="h-searchbox text-centered"/>
+                                        <span class="fa fa-search h-searchbtn" id="hSsearchBtn"></span>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="p-10 h-cbox inline-block pull-right">
+                                <div class="h-cart-link">
+                                    <a href="<?php echo $this->config('main_site', 'url') ?>/cart.php">CART: <?php if(isset($_SESSION['cartTotalsSession']['itemsInCart'])){ echo $_SESSION['cartTotalsSession']['itemsInCart']; } else { echo '0';} ?> ITEMS(S)</a>
+                                </div>                            
+                                <?php                       
+                                if ($this->session()->mem_id || !empty($this->guestSession()->email)) { 
+                                    if ($this->session()->login_as_buyer == 1 && $this->session()->membership == 1) {
+                                        $userHomePage = $this->config('main_site', 'url') . '/buyer.welcome.php';
+                                    } elseif ($this->session()->membership > 1) {
+                                        $userHomePage = $this->config('main_site', 'url') . '/artist.welcome.php';
+                                    } else {
+                                        $userHomePage = '#';
+                                    }
+
+                                    if ($this->session()->username != "") {
+                                        $userDisName = $this->session()->username;
+                                    } elseif ($this->session()->f_name != "") {
+                                        $userDisName = $this->session()->f_name;
+                                    } elseif (!empty($this->guestSession()->email)) {
+                                        $userDisName = 'Guest';
+                                    }
+                                    ?>
+                                <div class="h-user-sect">
+                                    <a href="<?php echo $userHomePage; ?>" class="h-uname show-ellipsis v-middle inline-block"><?php echo $userDisName; ?>,</a>
+                                    <a href="<?php echo $this->config('main_site', 'url') ?>/login.php?cmd=logout" class="v-middle inline-block">Logout</a>
+                                </div>
+                                <?php } else { ?>
+                                    <div class="h-login-hld">
+                                        <span>
+                                            <a href="<?php echo $this->config('main_site', 'url') ?>/create-account" class="font-white">Join Now</a>
+                                        </span>
+                                        |
+                                        <span>
+                                            <a id="loginPopup" href="<?php echo $this->config('main_site', 'url') ?>/workbox.php?mode=newLoginPopup&login_type=both" class="font-white">Log In</a>
+                                        </span>
+                                    </div>
+                                <?php } ?>
+                            </div>
+                        </div>
+                        <div class="clr"></div>
+                        <div class="pull-right">
                             <?php echo $this->partial('navigation.phtml'); ?>
                         </div>
-                    </header>
-                </div>                
-            </header>
-        </div>
+                    </div>
+                    <div class="clr"></div>
+                    <hr class="header-hline">
+                </div>
+            </div>
+        </header>        
 
         <div class="wrapper flashMessages">
             <?php
