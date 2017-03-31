@@ -108,7 +108,8 @@
         });
     }
 </script>
-<div class="rate-it-popup">
+<div class="rate-it-popup" style="border:none;padding: 16px">
+    <div class="new-popup-border" style="overflow:hidden">
     <?php if (isset($media['contest_name'])) : ?>
         <div class="rate-it-wrapper">
             <div class="rangetitle1 animalcol"><?php echo $media['contest_name']; ?></div>
@@ -135,7 +136,7 @@
             <div class="rate-it-category">
                 <div class="category-name"> <?php echo $media['totalRated'] + 1 ?>/<?php echo $media['count'] ?></div>  
             </div>
-
+        </div>
         </div>
     <?php elseif ($mediaId): ?>
         <div class="rate-it-wrapper">
@@ -143,11 +144,11 @@
             <div class="rate-it-image">
                 <span id="closeWorkbox">X</span>
             </div>
-            <div class="row" style="border:1px solid grey">
+            <div class="row">
                 <span class="col-md-4">
                     <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/thankyou1.png">
                 </span>
-                <span class="col-md-8" style="font-size: 25px; text-align: center; line-height: 1.3em; color: #663f8e; font-family: 'franklin_gothic_bookregular';">
+                <span class="col-md-8" style="font-size: 25px; text-align: center; line-height: 1.3em; color: #663f8e; font-family: 'franklin_gothic_bookregular'; width: 50%">
                     <p><b>Thank You </b><br>
                         for your recent vote! <br>
                         Come back <br>
@@ -177,11 +178,11 @@
 <!--                <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/close.button.png" id="closeWorkbox">-->
                 <span id="closeWorkbox">X</span>
             </div>
-            <div class="row" style="border:1px solid grey">
+            <div class="row">
                 <span class="col-md-4">
                     <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/thankyou1.png">
                 </span>
-                <span class="col-md-8" style="font-size: 25px; text-align: center; line-height: 1.3em; color: #663f8e; font-family: 'franklin_gothic_bookregular';">
+                <span class="col-md-8" style="font-size: 25px; text-align: center; line-height: 1.3em; color: #663f8e; font-family: 'franklin_gothic_bookregular'; width: 50%">
                     <p><b>Thank You </b><br>
                         for your recent vote! <br>
                         Come back <br>
@@ -205,4 +206,5 @@
             </div>
         </div>
     <?php endif; ?>
+</div>
 </div>
