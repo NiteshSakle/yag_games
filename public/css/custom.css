@@ -20,7 +20,7 @@ body {
 
 /*contest boxes start*/
 .inner_main {
-    margin:10px 0px;
+    margin:0px 0px 10px 0px;
 }
 .navigation {
     margin:10px 0px;
@@ -593,7 +593,7 @@ body {
 /* Voting Popup End */
 
 .active-btn {
-    background-color: #997CAF !important;
+    background-color: #817EBC !important;
 }
 .disable-btn, .disable-btn1 {
     background-color: #8C8C8C !important;
@@ -639,5 +639,8 @@ body {
     -webkit-box-sizing: content-box !important;
     -moz-box-sizing: content-box !important;
     box-sizing: content-box !important;
+}
+.container .main.wrapper {
+    padding-top: 1px;
 }
 /* End of Site Design March 17 */
