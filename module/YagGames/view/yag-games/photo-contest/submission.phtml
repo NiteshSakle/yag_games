@@ -240,10 +240,10 @@
 </div>
 
 <div style="display: none;" id="blanket"></div>
-<div style="display: none;" id="popUpDiv">
+<div style="display: none; margin: 0 0 0 5%" id="popUpDiv">
     <div class="popup-another-img" style="border:none;padding: 16px">
         <div class="new-popup-border">
-            <a style="float:right;" onclick="hideSuccessPopup('popUpDiv');" href="#."><span  class="closeButtonNew" style="right: 75px;">X</span></a>
+            <a style="float:right;" onclick="hideSuccessPopup('popUpDiv');" href="#."><span  class="closeButtonNew" style="right: 20px; top:18px">X</span></a>
             <div class="leftcol">
                 <h1 class="title" style="  text-align: left;">CONGRATULATIONS!<br><br>You have entered the  <strong><?php echo $contest['name']; ?> </strong> </h1>
                 <div class="congrts">Voting Begins: <?php echo date("F jS, Y", strtotime($contest['voting_start_date'])); ?>. Follow your ranking daily.

@@ -617,9 +617,9 @@ body {
 .guestlogin-popup .social_login img {
     height: 42px;
 }
-.guestlogin-popup .social_login {
+/*.guestlogin-popup .social_login {
     width: 370px;
-}
+}*/
 
 .guestlogin-popup{
     margin: 70px 1px 1px -60px;
