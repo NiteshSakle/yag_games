@@ -22,10 +22,8 @@
                     <h1>COMPANY INFO</h1>
                     <ul>
                         <li><a href="<?php echo $this->config('main_site', 'url') ?>/about-us">About Us</a></li>
-                        <li><a href="<?php echo $this->config('main_site', 'url') ?>/about-our-prints">About Our Prints</a></li>
-                        <li><a href="http://yaguniversity.tumblr.com/tagged/media" target="_blank">Media</a></li>
-                        <li><a href="http://yaguniversity.tumblr.com/tagged/news" target="_blank">News & Press</a></li>
-                        <li><a href="http://yaguniversity.tumblr.com/tagged/events" target="_blank">Events & Exhibitions</a></li>
+                        <li><a href="<?php echo $this->config('main_site', 'url') ?>/about-our-prints">About Our Prints</a></li>                        
+                        <li><a href="http://www.yaguniversity.com/categories/events/" target="_blank">Events & Exhibitions</a></li>
                     </ul>
                 </div>
 
@@ -41,8 +39,8 @@
                 <div class="footer_box" style="margin-right: 5px;">
                     <h1>HELP / FEEDBACK</h1>
                     <ul>
-                        <li><a href="http://yaguniversity.tumblr.com/faq" target="_blank">FAQs</a></li>
-                        <li><a href="http://yaguniversity.tumblr.com" target="_blank">Blog</a></li>
+                        <li><a href="<?php echo $this->config('main_site', 'url') ?>/faqs" target="_blank">FAQs</a></li>
+                        <li><a href="http://yaguniversity.com" target="_blank">YAG University</a></li>
                         <li>
                             <a href="<?php echo $this->config('main_site', 'url') ?>/feedback">Feedback</a>
                         </li>
@@ -88,7 +86,7 @@
                 </div>
 
                 <div class="footer_bottom clear clearfix">
-                    <span>Your Art Gallery, LLC &copy;2016</span>
+                    <span>Your Art Gallery, LLC &copy;<?php echo date('Y'); ?></span>
                 </div>
             </footer>
             <script>        
