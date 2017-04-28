@@ -16,6 +16,7 @@
     }
     .rate-it-wrapper{margin: 15px 35px;}
     .bottom-wrapper{width: 94%;margin: auto}
+    .col-md-4{padding: 0px !important}
 </style>
 <script type="text/javascript" src="<?php echo $this->config('main_site', 'url') ?>/assets/javascript/workbox.js"></script>
 <script type="text/javascript">
@@ -106,7 +107,8 @@
 </script>
 
 <?php if ($contestData['contestDetails'] && !$noImages) : ?>
-    <div class="brk-vote-it-popup">
+<div class="brk-vote-it-popup" style="border:none;padding:16px">
+    <div class="new-popup-border">
         <div class="brk-vote-it-wrapper">
             <div>
                 <div class="brk-vote-it-img-lt pull-left text-center" data-target-star=".brk-vote-lt">
@@ -163,6 +165,7 @@
             <div class="col-md-1"></div>
         </div>
     </div>
+</div>
     <?php elseif($showThankq && $noImages): ?>
     <div class="rate-it-popup brk-old-round">
             <div class="rate-it-image-close" >
