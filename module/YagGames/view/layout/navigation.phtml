@@ -12,7 +12,7 @@
                 <li><a href="<?php echo $this->config('main_site', 'url') ?>/corporate-sales">Corporate Sales</a></li>                
             </ul>
         </li>
-        <li class="myaccount-dropmenu">
+        <li class="myaccount-dropmenu" style="width:130px;">
             <a href="<?php echo $this->config('main_site', 'url') ?>/image-search">Shop&nbsp;<span class="dropdown_header">&#8744;</span></a>
             <ul>
                 <li><a href="<?php echo $this->config('main_site', 'url') ?>/search.php?mode=best-selling-media&new=1">Best Selling</a></li>
@@ -21,8 +21,8 @@
                 <li><a href="<?php echo $this->config('main_site', 'url') ?>/search.php?searchSortBy=leditions">Limited Editions</a></li>                
             </ul>
         </li>
-        <li class="myaccount-dropmenu">
-            <span class="span-anchor">For Artists&nbsp;<span class="dropdown_header">&#8744;</span></span>
+        <li class="myaccount-dropmenu" style="width: 160px;">
+            <span class="span-anchor">For Artists/ Buyer&nbsp;<span class="dropdown_header">&#8744;</span></span>
             <ul>
                 <?php if (!($session->mem_id || !empty($this->guestSession()->email))) { ?>
                     <li><a href="<?php echo $this->config('main_site', 'url') ?>/create-account">Join For Free</a></li>
@@ -34,12 +34,14 @@
                     <?php } else { ?>
                         <li><a href="<?php echo $this->config('main_site', 'url') ?>/artist.welcome.php">My Artist Account</a></li>
                     <?php } ?>
+                        <li><a href="<?php echo $this->config('main_site', 'url') ?>/buyer.welcome.php">My Buyer Account</a></li>
                 <?php } else { ?>
-                    <li><a id="loginPopup3" href="<?php echo $this->config('main_site', 'url') ?>/workbox.php?mode=loginPopup&login_type=artist">My Artist Account</a></li>
+                    <li><a id="loginPopup3" href="<?php echo $this->config('main_site', 'url') ?>/workbox.php?mode=newLoginPopup">My Artist Account</a></li>
+                    <li><a class="loginPopArtist" href="<?php echo $this->config('main_site', 'url') ?>/workbox.php?mode=newLoginPopup&login_redirect=order_history.php">My Buyer Account</a></li>
                 <?php } ?>
             </ul>
         </li>
-        <li><a href="<?php echo $this->config('main_site', 'url') ?>/contests">Contests</a></li>
-        <li class="blog-link"><a href="<?php echo $this->config('main_site', 'url') ?>/contests">Blog</a></li>
+        <li style="margin-left: 50px;width: 110px;"><a href="<?php echo $this->config('main_site', 'url') ?>/contests">Contests</a></li>
+        <li class="blog-link"><a href="http://www.yaguniversity.com" target="_blank">Blog</a></li>
     </ul>
 </nav>
