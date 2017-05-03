@@ -9,8 +9,7 @@
         padding: 1.2% !important;
         text-align: center;
     }
-    .rate-it-wrapper{margin: 15px 35px;}
-    .bottom-wrapper{width: 94%;}
+    .rate-it-wrapper{margin: 15px 35px;}    
 </style>
 <script type="text/javascript" src="<?php echo $this->config('main_site', 'url') ?>/assets/javascript/workbox.js"></script>
 <script type="text/javascript">
@@ -109,7 +108,7 @@
     }
 </script>
 <div class="rate-it-popup" style="border:none;padding: 16px">
-    <div class="new-popup-border" style="overflow:hidden">
+    <div class="new-popup-border" style="overflow:hidden;">
     <?php if (isset($media['contest_name'])) : ?>
         <div class="rate-it-wrapper">
             <div class="rangetitle1 animalcol"><?php echo $media['contest_name']; ?></div>
@@ -144,7 +143,7 @@
             <div class="rate-it-image">
                 <span id="closeWorkbox">X</span>
             </div>
-            <div class="new-popup-border" style="overflow:hidden;margin:-3px">            
+            <div class="new-popup-border" style="overflow:hidden;margin:-3px;padding: 10px !important;">            
                 <div class="row">
                     <span class="col-md-4">
                         <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/thankyou1.png">
@@ -169,7 +168,7 @@
                 OR
                 <br>
                 <div class="contest" style="border:none; text-align: center">
-                    <button onclick="window.location = '<?php echo $this->basePath() ?>/active-contest'">More Contests</button>            
+                    <button class="btn btn-default" onclick="window.location = '<?php echo $this->basePath() ?>/active-contest'">More Contests</button>            
                 </div>      
             </div>
         </div>
@@ -180,7 +179,7 @@
 <!--                <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/close.button.png" id="closeWorkbox">-->
                 <span id="closeWorkbox">X</span>
             </div>
-            <div class="new-popup-border" style="overflow:hidden;margin:-3px">
+            <div class="new-popup-border" style="overflow:hidden;margin:-3px;padding: 10px !important;">
             <div class="row">
                 <span class="col-md-4" style="margin-top: 20px">
                     <img src="<?php echo $this->config('main_site', 'theme_assets_path') ?>/images/thankyou1.png" >
