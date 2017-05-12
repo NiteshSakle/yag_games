@@ -68,7 +68,7 @@
     }
 
     #popUpDiv, #uploadPopUpDiv {
-        margin: 0 0 0 10%;
+        margin: 0 0 0 55px;
     }
     .join-popup-img {
         border: none !important;
@@ -113,7 +113,9 @@
         overflow: auto;
         padding: 5px !important;
     }    
-
+    .popup-another-img .join-popup-img {
+        height: 200px;
+    }
 </style>
 
 <div  class="home_content clearfix">
@@ -254,8 +256,8 @@
 
 <div style="display: none;" id="blanket"></div>
 <div style="display: none;" id="popUpDiv">
-    <div class="popup-another-img" style="border:none;padding: 16px">
-        <div class="new-popup-border">        
+    <div class="popup-another-img" style="border:none;padding: 16px;">
+        <div class="new-popup-border" style="padding: 15px !important;">        
         <a style="float:right;" onclick="hideSuccessPopup('popUpDiv');" href="#."><span class="closeButtonNew" style="right: 20px; top:18px">X</span></a>
         <div class="leftcol">
             <h1 class="title" style="  text-align: left;">CONGRATULATIONS!<br><br>You have entered the  <strong><?php echo $contest['name']; ?> </strong> </h1>
@@ -284,7 +286,7 @@
 </div>
 <div style="display: none;" id="uploadPopUpDiv">
     <div class="popup-another-img" style="height: 80% !important;">
-        <div class="new-popup-border" style="border:none;padding: 16px">
+        <div class="new-popup-border" style="padding: 15px !important;">
         <a style="float:right; margin: -4%;" onclick="hideSuccessPopup('uploadPopUpDiv');" href="#."><span class="closeButtonNew" style="right: 75px; " >X</span></a>
         <div class="leftcol">
             <h1 class="title" style="  text-align: left;">Congratulations you have successfully entered the bracket contest!</h1>
@@ -308,6 +310,13 @@
             <span class="or">or</span>
             <div class="btn-upload-another-img"><input type="button" onClick="javascript:window.location.href = '<?php echo $this->basePath() ?>/new-contest'"  value="Enter Another Contest" name="" class="back"></div>
         </div>
+        <script>
+            $(document).ready(function() {
+                if ($('.contest-image img').length == 0) {
+                    $('.contest-image').html('<img src="<?php echo $this->mediaImage($media, 'icons', 150, 150)?>" />');
+                }
+            });
+        </script>
         <?php } ?>
     </div>
     </div>

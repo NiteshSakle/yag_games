@@ -16,7 +16,7 @@
         $media['media_id'] = $contest['media_id'];
         $media['folder_id'] = $contest['folder_id'];
         ?>
-        <button class="btn btn-default" onclick="showThankYouPopUp('<?php echo $this->mediaImage($media, 'icons'); ?>', '<?php echo $contest['name']; ?>')">You're In</button>
+        <button class="btn btn-default" onclick="showThankYouPopUp('<?php echo $this->mediaImage($media, 'icons', 124, 124); ?>', '<?php echo $contest['name']; ?>')">You're In</button>
     <?php elseif ($session->mem_id): ?>
         <?php if ($session->login_as_buyer == 1): ?>
             <button id="loginPopup4" class="btn btn-default active-btn" href="<?php echo $this->config('main_site', 'url') ?>/workbox.php?mode=loginPopup&login_type=artist">Enter Contest</button>

@@ -61,4 +61,39 @@ class MediaViewTable extends BaseTable
             );
         }
     }
+    
+    public function getMyMediaRank($userId, $mediaId)
+    {
+        try {
+            $sqlStr = "SELECT z.rank
+                        FROM
+                          ( SELECT rv.media_id, @rownum := @rownum + 1 AS rank
+                           FROM rating_view rv,
+                             (SELECT @rownum := 0) r
+                           WHERE rv.owner = :userId
+                             AND rv.active = 1
+                           GROUP BY rv.media_id
+                           ORDER BY rv.rating DESC) as z
+                        WHERE media_id = :mediaId";
+            $sqlStmt = $this->tableGateway->adapter->createStatement($sqlStr, array(
+                'userId' => $userId,
+                'mediaId' => $mediaId
+            ));
+
+            $resultset = $sqlStmt->execute();         
+
+            $rank = 0;
+            foreach ($resultset as $row) {
+                $rank = $row['rank'];
+            }
+            
+            return $rank;
+        } catch (Exception $e) {
+            return array(
+                "total" => 0,
+                "medias" => array()
+            );
+        }
+    }
+
 }
