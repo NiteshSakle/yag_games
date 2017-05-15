@@ -3,8 +3,8 @@
         top: 85px;
         left: 7px; 
         position: fixed;
-        width: 700px;
-        height: 500px;
+        width: 700px;        
+        height: 550px;
         z-index: 900;
         margin: 0 0 0 265px;
         border: 1.5px solid rgb(61, 61, 61);;
@@ -22,7 +22,8 @@
     
     #contestMediaImg {
         padding: 10px;        
-        max-width: 550px;
+        max-width: 350px;
+        max-height: 350px;
     }
     .details-main {
         font-size: 16px;
@@ -67,7 +68,7 @@
                 ?>
 
         <div class="col-lg-2 col-md-3 col-xs-4 thumb" style="max-width: 180px;">
-            <a href="#"><img class="img-responsive" src="<?php echo $this->mediaImage($photo, 'icons', '150', '150'); ?>" alt="<?php echo $photo['filename']; ?>" data-media_src="<?php echo $this->mediaImage($photo, 'samples'); ?>" data-image_title="<?php echo $photo['title']; ?>" data-image_photo_id="<?php echo $photo['umedia_id']; ?>" data-image_name="<?php echo $photo['f_name'] . ' ' . $photo['l_name']; ?>" data-image_mail_id="<?php echo $photo['email']; ?>" data-image_media_id="<?php echo $photo['media_id']; ?>" data-image_contest_id="<?php echo $photo['contest_id']; ?>"></a>
+            <a href="#"><img class="img-responsive" src="<?php echo $this->mediaImage($photo, 'icons', '150', '150'); ?>" alt="<?php echo $photo['filename']; ?>" data-media_src="<?php echo $this->mediaImage($photo, 'samples', 350); ?>" data-image_title="<?php echo $photo['title']; ?>" data-image_photo_id="<?php echo $photo['umedia_id']; ?>" data-image_name="<?php echo $photo['f_name'] . ' ' . $photo['l_name']; ?>" data-image_mail_id="<?php echo $photo['email']; ?>" data-image_media_id="<?php echo $photo['media_id']; ?>" data-image_contest_id="<?php echo $photo['contest_id']; ?>"></a>
             <button media_id="<?php echo $photo['media_id']; ?>" contest_id="<?php echo $photo['contest_id']; ?>" type="button" class="btn btn-danger center-block remove thumb-rm-btn">Remove</button>
         </div>
             <?php }
