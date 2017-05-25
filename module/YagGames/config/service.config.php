@@ -42,6 +42,8 @@ use YagGames\Service\CouponService;
 use YagGames\Service\MediaImageService;
 use YagGames\Service\MembershipService;
 use YagGames\View\Helper\OrdinalHelper;
+use YagGames\Model\AdminActivityTrackTable;
+use YagGames\Model\AdminActivityTrack;
 
 return array(
     
@@ -255,6 +257,17 @@ return array(
             $resultSetPrototype = new ResultSet();
             $resultSetPrototype->setArrayObjectPrototype(new Promotions());
             return new TableGateway('ps4_promotions', $dbAdapter, null, $resultSetPrototype);
-        }    
+        },
+        'YagGames\Model\AdminActivityTrackTable' => function ($sm) {
+            $tableGateway = $sm->get('AdminActivityTrackTableGateway');
+            $table = new AdminActivityTrackTable($tableGateway, $sm->get('YagGames\Logger'));
+            return $table;
+        },
+        'AdminActivityTrackTableGateway' => function ($sm) {
+            $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+            $resultSetPrototype = new ResultSet();
+            $resultSetPrototype->setArrayObjectPrototype(new AdminActivityTrack());
+            return new TableGateway('ps4_admin_activity_track', $dbAdapter, null, $resultSetPrototype);
+        }                
     ),
 );

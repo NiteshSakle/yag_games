@@ -250,14 +250,131 @@ class IndexController extends BaseController {
                         if ($params['thumbnail'] != 'NOT_UPDATED') {
                             $contest->thumbnail = $params['thumbnail'];
                         }
-
+                        
                         $contestTable = $this->getServiceLocator()->get('YagGames\Model\ContestTable');
+                        $oldContestInfo = $contestTable->getByContestId($params['id']);
+                        
                         $data = $contestTable->update($contest);
                         if($params['type'] == '3' && $data) {
                             $params['contest_id'] = $params['id'];
                             $this->insertOrUpdateBracketRounds($params);
                         }
                         
+                        $config = $this->getConfig();                      
+                        $adminActivityTrackTable = $this->getServiceLocator()->get('YagGames\Model\AdminActivityTrackTable');                        
+                        $insertData['admin_id'] = $_SESSION['admin_user']['admin_id'];
+                        $insertData['form_name']  = "Manager > Edit Contest";
+                        $insertData['comment'] = "Contest [". $params['id']. "] Updated";
+                        $insertData['change_type'] = "FIELD UPDATE";
+                        
+                        $contestType = [
+                            '1' => 'Photo Contest', 
+                            '2' => 'Fan Favourite', 
+                            '3' => 'Brackets',                             
+                        ];
+                        
+                        $radioType = [
+                            '0' => "No",
+                            "1" => "Yes"
+                        ];
+                        
+                        $insertData['field_name'] = "Name";
+                        $insertData['old_value'] = $oldContestInfo['name'];
+                        $insertData['new_value'] = $contest->name;                        
+                        $adminActivityTrackTable->saveAdminTracking($insertData,TRUE);
+
+                        $insertData['field_name'] = "description";
+                        $insertData['old_value'] = $oldContestInfo['description'];
+                        $insertData['new_value'] = $contest->description;
+                        $adminActivityTrackTable->saveAdminTracking($insertData,TRUE);
+                        
+                        if($contest->publish_contest != '') {
+                            $insertData['field_name'] = "Publish Contest";
+                            $insertData['old_value'] = $radioType[$oldContestInfo['publish_contest']];
+                            $insertData['new_value'] = $radioType[$contest->publish_contest];                        
+                            $adminActivityTrackTable->saveAdminTracking($insertData,TRUE);
+                        }
+                        
+                        $insertData['field_name'] = "Entry Start Date";
+                        $insertData['old_value'] = $oldContestInfo['entry_start_date'];
+                        $insertData['new_value'] = $contest->entry_start_date;                        
+                        $adminActivityTrackTable->saveAdminTracking($insertData,TRUE);
+                                
+                        $insertData['field_name'] = "Entry End Date";
+                        $insertData['old_value'] = $oldContestInfo['entry_end_date'];
+                        $insertData['new_value'] = $contest->entry_end_date;                        
+                        $adminActivityTrackTable->saveAdminTracking($insertData,TRUE);
+                                
+                        $insertData['field_name'] = "Winners Announce Date";
+                        $insertData['old_value'] = $oldContestInfo['winners_announce_date'];
+                        $insertData['new_value'] = $contest->winners_announce_date;
+                        $adminActivityTrackTable->saveAdminTracking($insertData,TRUE);
+                                
+                        $insertData['field_name'] = "Voting Start Date";
+                        $insertData['old_value'] = $oldContestInfo['voting_start_date'];
+                        $insertData['new_value'] = $contest->voting_start_date;
+                        $adminActivityTrackTable->saveAdminTracking($insertData,TRUE);
+                        
+                        $insertData['field_name'] = "Maximum Number Of Photos";
+                        $insertData['old_value'] = $oldContestInfo['max_no_of_photos'];
+                        $insertData['new_value'] = $contest->max_no_of_photos;                        
+                        $adminActivityTrackTable->saveAdminTracking($insertData,TRUE);
+                        
+                        if($contest->is_exclusive != '') {
+                            $insertData['field_name'] = "Exclusive";
+                            $insertData['old_value'] = $radioType[$oldContestInfo['is_exclusive']];
+                            $insertData['new_value'] = $radioType[$contest->is_exclusive];
+                            $adminActivityTrackTable->saveAdminTracking($insertData,TRUE);
+                        }
+                        $insertData['field_name'] = "Contest Type";
+                        $insertData['old_value'] = $contestType[$oldContestInfo['type_id']];
+                        $insertData['new_value'] = $contestType[$contest->type_id];
+                        $adminActivityTrackTable->saveAdminTracking($insertData,TRUE); 
+                        
+                        if ($params['thumbnail'] != 'NOT_UPDATED') {
+                            $insertData['field_name'] = "Thumbnail";
+                            if($oldContestInfo['thumbnail'] == 'NOT_UPDATED') {
+                                $insertData['old_value'] = $oldContestInfo['thumbnail'];                                
+                            } else {
+                                $insertData['old_value'] = $config['aws']['path'].$oldContestInfo['thumbnail'];
+                            }                            
+                            $insertData['new_value'] =  $config['aws']['path'].$params['thumbnail'];                        
+                            $adminActivityTrackTable->saveAdminTracking($insertData,TRUE);                        
+                        }
+                        
+                        if($oldContestInfo['type_id'] == 3) {
+                            $insertData['field_name'] = "Round One Date";
+                            $insertData['old_value'] = $oldContestInfo['round1'];
+                            $insertData['new_value'] = $this->reformatDate($params['br_round1']);
+                            $adminActivityTrackTable->saveAdminTracking($insertData,TRUE);
+
+                            $insertData['field_name'] = "Round Two Date";
+                            $insertData['old_value'] = $oldContestInfo['round2'];
+                            $insertData['new_value'] = $this->reformatDate($params['br_round2']);
+                            $adminActivityTrackTable->saveAdminTracking($insertData,TRUE);
+
+                            $insertData['field_name'] = "Round Three Date";
+                            $insertData['old_value'] = $oldContestInfo['round3'];
+                            $insertData['new_value'] = $this->reformatDate($params['br_round3']);
+                            $adminActivityTrackTable->saveAdminTracking($insertData,TRUE);
+
+                            $insertData['field_name'] = "Round Four Date";
+                            $insertData['old_value'] = $oldContestInfo['round4'];
+                            $insertData['new_value'] = $this->reformatDate($params['br_round4']);
+                            $adminActivityTrackTable->saveAdminTracking($insertData,TRUE);
+
+                            $insertData['field_name'] = "Round Five Date";
+                            $insertData['old_value'] = $oldContestInfo['round5'];
+                            $insertData['new_value'] = $this->reformatDate($params['br_round5']);
+                            $adminActivityTrackTable->saveAdminTracking($insertData,TRUE);
+
+                            $insertData['field_name'] = "Round Six Date";
+                            $insertData['old_value'] = $oldContestInfo['round6'];
+                            $insertData['new_value'] = $this->reformatDate($params['br_round6']);
+                            $adminActivityTrackTable->saveAdminTracking($insertData,TRUE);
+                            
+                        }
+                                                
                         $response['success'] = true;
                         $response['message'] = 'Contest updated successfully';
                         
@@ -273,10 +390,21 @@ class IndexController extends BaseController {
                             $params['contest_id'] = $data;
                             $this->insertOrUpdateBracketRounds($params);
                         }
-
+                        
+                        $adminActivityTrackTable = $this->getServiceLocator()->get('YagGames\Model\AdminActivityTrackTable');
+                        $contest->id = $data;
+                        $insertData = [
+                            'admin_id' => $_SESSION['admin_user']['admin_id'],
+                            'form_name' => "Manager > Create Contest",
+                            'new_value' => json_encode($contest),
+                            'comment' => "Contest [". $data. "] Created",
+                            'change_type' => "NEW RECORD",
+                        ];                    
+                        $adminActivityTrackTable->saveAdminTracking($insertData);  
+                        
                         $response['success'] = true;
                         $response['message'] = 'Contest created successfully';
-                        
+
                         $fbscrap->informFbToScrap($data);
                     }
                 }
@@ -325,6 +453,14 @@ class IndexController extends BaseController {
                 $id = trim($this->getRequest()->getPost('id'));
                 $contestTable = $this->getServiceLocator()->get('YagGames\Model\ContestTable');
                 if ($contestTable->delete($id)) {
+                    $adminActivityTrackTable = $this->getServiceLocator()->get('YagGames\Model\AdminActivityTrackTable');
+                    $data = [
+                        'admin_id' => $_SESSION['admin_user']['admin_id'],
+                        'form_name' => "Manager > Action > Delete Contest",
+                        'comment' => "Contest [". $id. "] Deleted",
+                        'change_type' => "OTHER",
+                    ];                    
+                    $adminActivityTrackTable->saveAdminTracking($data);                    
                     $response['success'] = true;
                     $response['message'] = 'Deleted successfully';
                 } else {
@@ -347,13 +483,15 @@ class IndexController extends BaseController {
     //removing a media from a contest(wrongly upload by user)
     public function deleteContestMediaAction() {
         $response = array();
-
+      
         $request = $this->getRequest();
         if ($request->isPost()) {
             $params['contest_id'] = trim($this->getRequest()->getPost('contest_id'));
             $params['media_id'] = trim($this->getRequest()->getPost('media_id'));
+            $params['umedia_id'] = trim($this->getRequest()->getPost('umedia_id'));
+            
             $contestMediaTable = $this->getServiceLocator()->get('YagGames\Model\ContestMediaTable');
-
+ 
             if ($contestMediaTable->delete($params)) {
 
                 $contest = array();
@@ -364,7 +502,16 @@ class IndexController extends BaseController {
                 $contest['main_site_url'] = $config['main_site']['url'];
                 $contest['user_data'] = $user_data;
                 //$this->sendEmail('Your image has been disqualified and removed from the ' . $contest['name'], $user_data['email'], 'image_disqualified', $contest);
-
+                $data = [
+                    'admin_id' => $_SESSION['admin_user']['admin_id'],
+                    'form_name' => "Manager > Contest Name > delete Media",
+                    'comment' => "Deleted Media [".$params['umedia_id']."] from contest [".$params['contest_id']."]",
+                    'change_type' => "OTHER",
+                ];
+                
+                $adminActivityTrackTable = $this->getServiceLocator()->get('YagGames\Model\AdminActivityTrackTable');
+                $adminActivityTrackTable->saveAdminTracking($data);
+                
                 $response['success'] = true;
                 $response['message'] = 'Removed successfully';
             } else {
