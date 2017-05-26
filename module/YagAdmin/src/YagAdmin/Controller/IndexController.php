@@ -629,8 +629,25 @@ class IndexController extends BaseController {
                 $contestTable = $this->getServiceLocator()->get('YagGames\Model\ContestTable');
                 $contest = new \YagGames\Model\Contest();
                 $contest->id = $id;
-                $contest->publish_contest = (int)trim($this->getRequest()->getPost('publish_contest'));                
-                if ($contestTable->update($contest)) {
+                $contest->publish_contest = (int)trim($this->getRequest()->getPost('publish_contest')); 
+                $oldContestInfo = $contestTable->getByContestId($id);
+                if ($contestTable->update($contest)) {                    
+                    $adminActivityTrackTable = $this->getServiceLocator()->get('YagGames\Model\AdminActivityTrackTable');
+
+                    $publishContest = [
+                        '0' => "Don't Publish",
+                        '1' => "Publish"
+                    ];
+                    $insertData['admin_id'] = $_SESSION['admin_user']['admin_id'];
+                    $insertData['form_name'] = "Manager > Publish Contest";
+                    $insertData['field_name'] = "Publish Contest";
+                    $insertData['comment'] = "Contest ". $oldContestInfo['name'] . "Updated";
+                    $insertData['change_type'] = "FIELD UPDATE";
+                    $insertData['old_value'] = $publishContest[$oldContestInfo['publish_contest']];
+                    $insertData['new_value'] = $publishContest[$contest->publish_contest];
+
+                    $adminActivityTrackTable->saveAdminTracking($insertData, TRUE);
+
                     $response['success'] = true;
                     if($contest->publish_contest == 1) {
                         $response['message'] = 'Published contest successfully';
