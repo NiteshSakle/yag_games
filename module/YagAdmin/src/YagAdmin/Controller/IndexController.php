@@ -13,6 +13,8 @@ namespace YagAdmin\Controller;
 use Zend\View\Model\ViewModel;
 use Zend\View\Model\JsonModel;
 use Aws\S3\S3Client;
+use Zend\Db\Sql\Expression;
+
 
 class IndexController extends BaseController {
 
@@ -244,6 +246,7 @@ class IndexController extends BaseController {
                     $contest->publish_contest = $params['publishContest'];
 
                     $fbscrap = $this->getServiceLocator()->get('fbScrapService');
+                    $config = $this->getConfig();  
                     //checking for editing(updating) or creating(insert) the contest
                     if ($params['id']) {
                         $contest->id = $params['id'];
@@ -259,12 +262,12 @@ class IndexController extends BaseController {
                             $params['contest_id'] = $params['id'];
                             $this->insertOrUpdateBracketRounds($params);
                         }
-                        
-                        $config = $this->getConfig();                      
+                                                                    
                         $adminActivityTrackTable = $this->getServiceLocator()->get('YagGames\Model\AdminActivityTrackTable');                        
                         $insertData['admin_id'] = $_SESSION['admin_user']['admin_id'];
                         $insertData['form_name']  = "Manager > Edit Contest";
-                        $insertData['comment'] = "Contest [". $params['id']. "] Updated";
+                        $insertData['comment'] = "Contest ". $params['name']. " [". $params['id']. "] Updated";
+                            
                         $insertData['change_type'] = "FIELD UPDATE";
                         
                         $contestType = [
@@ -333,6 +336,7 @@ class IndexController extends BaseController {
                         
                         if ($params['thumbnail'] != 'NOT_UPDATED') {
                             $insertData['field_name'] = "Thumbnail";
+                            $insertData['change_type'] = "IMAGE UPDATE";
                             if($oldContestInfo['thumbnail'] == 'NOT_UPDATED') {
                                 $insertData['old_value'] = $oldContestInfo['thumbnail'];                                
                             } else {
@@ -388,18 +392,25 @@ class IndexController extends BaseController {
                         $data = $contestTable->insert($contest);
                         if($params['type'] == '3' && $data) {
                             $params['contest_id'] = $data;
+                            
                             $this->insertOrUpdateBracketRounds($params);
                         }
                         
                         $adminActivityTrackTable = $this->getServiceLocator()->get('YagGames\Model\AdminActivityTrackTable');
                         $contest->id = $data;
+                        $params['created_at'] = date('Y-m-d H:i:s'); 
+                        if($contest->thumbnail != "NOT_UPDATED")
+                            $params['thumbnail'] = $config['aws']['path']. $contest->thumbnail;
+                        
+                        $upperCaseKeyArray = array_change_key_case($params,CASE_UPPER);
+                        
                         $insertData = [
                             'admin_id' => $_SESSION['admin_user']['admin_id'],
                             'form_name' => "Manager > Create Contest",
-                            'new_value' => json_encode($contest),
-                            'comment' => "Contest [". $data. "] Created",
+                            'new_value' => json_encode($upperCaseKeyArray),
+                            'comment' => "Contest ". $params['name']. " [". $data. "] Created",
                             'change_type' => "NEW RECORD",
-                        ];                    
+                        ];  
                         $adminActivityTrackTable->saveAdminTracking($insertData);  
                         
                         $response['success'] = true;
@@ -452,12 +463,13 @@ class IndexController extends BaseController {
             if ($request->isPost()) {
                 $id = trim($this->getRequest()->getPost('id'));
                 $contestTable = $this->getServiceLocator()->get('YagGames\Model\ContestTable');
+                $oldContestInfo = $contestTable->getByContestId($id);
                 if ($contestTable->delete($id)) {
-                    $adminActivityTrackTable = $this->getServiceLocator()->get('YagGames\Model\AdminActivityTrackTable');
+                    $adminActivityTrackTable = $this->getServiceLocator()->get('YagGames\Model\AdminActivityTrackTable');                    
                     $data = [
                         'admin_id' => $_SESSION['admin_user']['admin_id'],
                         'form_name' => "Manager > Action > Delete Contest",
-                        'comment' => "Contest [". $id. "] Deleted",
+                        'comment' => "Contest ". $oldContestInfo['name']. " [". $id. "] Deleted",
                         'change_type' => "OTHER",
                     ];                    
                     $adminActivityTrackTable->saveAdminTracking($data);                    
@@ -502,10 +514,12 @@ class IndexController extends BaseController {
                 $contest['main_site_url'] = $config['main_site']['url'];
                 $contest['user_data'] = $user_data;
                 //$this->sendEmail('Your image has been disqualified and removed from the ' . $contest['name'], $user_data['email'], 'image_disqualified', $contest);
+                
+                $oldContestInfo = $contestTable->getByContestId($params['contest_id']);
                 $data = [
                     'admin_id' => $_SESSION['admin_user']['admin_id'],
                     'form_name' => "Manager > Contest Name > delete Media",
-                    'comment' => "Deleted Media [".$params['umedia_id']."] from contest [".$params['contest_id']."]",
+                    'comment' => "Deleted Media [".$params['umedia_id']."] from contest ".$oldContestInfo['name'],
                     'change_type' => "OTHER",
                 ];
                 
