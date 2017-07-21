@@ -72,8 +72,22 @@ class IndexController extends BaseController {
         } else {
             $this->redirect()->toRoute('admin');
         }
-
-        return new ViewModel(array('contestDetails' => $contestDetails, 'contestPhotos' => $contestPhotos));
+        
+        $allowToModifyRankings = false;
+        
+        if ($contestDetails['type_id'] == '1' && $contestDetails['voting_started'] == '1' && $contestDetails['winners_announced'] == '0') {
+            $allowToModifyRankings = true;
+            $contestRankingsModifyTable = $this->getServiceLocator()->get('YagGames\Model\ContestRankingsModifyTable');
+            $contestRankingsModify = $contestRankingsModifyTable->fetchRecordsByContest($contestDetails['id']);
+            
+            foreach($contestPhotos as $key => $row) {                
+                if (array_key_exists($row['id'], $contestRankingsModify)) {                    
+                    $contestPhotos[$key]['intended_rank'] = $contestRankingsModify[$row['id']]['intended_rank'];
+                }
+            }
+        }        
+        
+        return new ViewModel(array('contestDetails' => $contestDetails, 'contestPhotos' => $contestPhotos, 'allowToModifyRankings' => $allowToModifyRankings));
     }
 
     //returning particular contest details for edit operation
@@ -671,6 +685,81 @@ class IndexController extends BaseController {
         return new JsonModel($response);
     }
     
+    public function modifyContestRankingsAction()
+    {
+        $response = array('success' => false, 'message' => 'Something went wrong, try again!');        
+
+        try {
+            $this->checkLogin();
+            $request = $this->getRequest();
+            if ($request->isPost()) {
+                if (!empty($_SESSION['admin_user']['permissions']) && in_array('review-contest', $_SESSION['admin_user']['permissions'])) {
+                    $contestMediaRatings = $this->getServiceLocator()->get('YagGames\Model\ContestMediaRatingTable');
+                    $mediaRankInfo = $contestMediaRatings->getPhotoContestMediaRank($request->getPost('contest_id'), $request->getPost('contest_media_id'));
+
+                    if ($mediaRankInfo) {
+                        if ($request->getPost('intended_rank') > $mediaRankInfo['rank']) {
+                            $contestRankingsModify = new \YagGames\Model\ContestRankingsModify;
+                            $contestRankingsModify->admin_id = $this->session->admin_id;
+                            $contestRankingsModify->contest_media_id = $request->getPost('contest_media_id');
+                            $contestRankingsModify->intended_rank = $request->getPost('intended_rank');
+                            $contestRankingsModify->status = 1;
+                            
+                            $contestRankingsModifyTable = $this->getServiceLocator()->get('YagGames\Model\ContestRankingsModifyTable');
+                            $contestRankingsRecord = $contestRankingsModifyTable->fetchRecordByMediaId($request->getPost('contest_media_id'));
+                           
+                            if ($contestRankingsRecord) {
+                                $contestRankingsModify->id = $contestRankingsRecord->id;
+                                $insertedId = $contestRankingsModifyTable->update($contestRankingsModify);
+                            } else {
+                                $insertedId = $contestRankingsModifyTable->insert($contestRankingsModify);
+                            }                            
+
+                            if ($insertedId) {
+                                $response['success'] = true;
+                                $response['message'] = 'Success';
+                            }
+                        } else {
+                            $response['message'] = "Current rank of this art is {$mediaRankInfo['rank']}, intended rank should be lowest of this.";                            
+                        }
+                    }
+                } else {
+                    $response['message'] = "You don't have enough permissions";
+                }
+            }
+        } catch (Exception $ex) {
+            
+        }
+
+        return new JsonModel($response);
+    }
+
+    public function removeIntendedRankAction()
+    {
+        $response = array('success' => false, 'message' => 'Something went wrong, try again!');
+
+        try {
+            $this->checkLogin();
+            $request = $this->getRequest();
+            if ($request->isPost()) {
+                if (!empty($_SESSION['admin_user']['permissions']) && in_array('review-contest', $_SESSION['admin_user']['permissions'])) {
+                    $contestRankingsModifyTable = $this->getServiceLocator()->get('YagGames\Model\ContestRankingsModifyTable');
+                    $contestRankingsModifyTable->inActivateByMediaId($request->getPost('contest_media_id'));
+                    $response['success'] = true;
+                    $response['message'] = 'Success';                    
+                } else {
+                    $response['message'] = "You don't have enough permissions";
+                }
+            } else {
+                
+            }
+        } catch (Exception $ex) {
+            
+        }
+
+        return new JsonModel($response);
+    }
+
     /**
      * 
      * @param String $date - Input Date format MM-DD-YYYY

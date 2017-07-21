@@ -44,6 +44,10 @@ use YagGames\Service\MembershipService;
 use YagGames\View\Helper\OrdinalHelper;
 use YagGames\Model\AdminActivityTrackTable;
 use YagGames\Model\AdminActivityTrack;
+use YagGames\Model\ContestRankingsModify;
+use YagGames\Model\ContestRankingsModifyTable;
+use YagGames\Model\ContestRankingsProcessed;
+use YagGames\Model\ContestRankingsProcessedTable;
 
 return array(
     
@@ -268,6 +272,28 @@ return array(
             $resultSetPrototype = new ResultSet();
             $resultSetPrototype->setArrayObjectPrototype(new AdminActivityTrack());
             return new TableGateway('ps4_admin_activity_track', $dbAdapter, null, $resultSetPrototype);
-        }                
+        },
+        'YagGames\Model\ContestRankingsModifyTable' => function ($sm) {
+            $tableGateway = $sm->get('ContestRankingsModifyTableGateway');
+            $table = new ContestRankingsModifyTable($tableGateway, $sm->get('YagGames\Logger'));
+            return $table;
+        },
+        'ContestRankingsModifyTableGateway' => function ($sm) {
+            $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+            $resultSetPrototype = new ResultSet();
+            $resultSetPrototype->setArrayObjectPrototype(new ContestRankingsModify());
+            return new TableGateway('contest_rankings_modify', $dbAdapter, null, $resultSetPrototype);
+        },
+        'YagGames\Model\ContestRankingsProcessedTable' => function ($sm) {
+            $tableGateway = $sm->get('ContestRankingsProcessedTableGateway');
+            $table = new ContestRankingsProcessedTable($tableGateway, $sm->get('YagGames\Logger'));
+            return $table;
+        },
+        'ContestRankingsProcessedTableGateway' => function ($sm) {
+            $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+            $resultSetPrototype = new ResultSet();
+            $resultSetPrototype->setArrayObjectPrototype(new ContestRankingsProcessed());
+            return new TableGateway('contest_rankings_processed', $dbAdapter, null, $resultSetPrototype);
+        },
     ),
 );

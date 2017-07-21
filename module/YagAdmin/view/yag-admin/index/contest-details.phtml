@@ -4,7 +4,7 @@
         left: 7px; 
         position: fixed;
         width: 700px;        
-        height: 550px;
+        height: 580px;
         z-index: 900;
         margin: 0 0 0 265px;
         border: 1.5px solid rgb(61, 61, 61);;
@@ -48,6 +48,14 @@
         background-repeat: repeat;
         display: none;
     }
+    div.details-main > div {
+        margin: 5px 2px;
+    }
+    .hide-1 { display: none; }
+    #removeIntendedRank {
+        font-size: 19px;
+        margin-left: 10px;
+    }
 </style>
 <div id="overlay-admin">&nbsp;</div>
 <div class="jumbotron">
@@ -68,7 +76,9 @@
                 ?>
 
         <div class="col-lg-2 col-md-3 col-xs-4 thumb" style="max-width: 180px;">
-            <a href="#"><img class="img-responsive" src="<?php echo $this->mediaImage($photo, 'icons', '150', '150'); ?>" alt="<?php echo $photo['filename']; ?>" data-media_src="<?php echo $this->mediaImage($photo, 'samples', 350); ?>" data-image_title="<?php echo $photo['title']; ?>" data-image_photo_id="<?php echo $photo['umedia_id']; ?>" data-image_name="<?php echo $photo['f_name'] . ' ' . $photo['l_name']; ?>" data-image_mail_id="<?php echo $photo['email']; ?>" data-image_media_id="<?php echo $photo['media_id']; ?>" data-image_contest_id="<?php echo $photo['contest_id']; ?>"></a>
+            <a href="#">
+                <img class="img-responsive contest-participant" src="<?php echo $this->mediaImage($photo, 'icons', '150', '150'); ?>" alt="<?php echo $photo['filename']; ?>" data-media_src="<?php echo $this->mediaImage($photo, 'samples', 350); ?>" data-image_title="<?php echo $photo['title']; ?>" data-image_photo_id="<?php echo $photo['umedia_id']; ?>" data-image_name="<?php echo $photo['f_name'] . ' ' . $photo['l_name']; ?>" data-image_mail_id="<?php echo $photo['email']; ?>" data-image_media_id="<?php echo $photo['media_id']; ?>" data-image_contest_id="<?php echo $photo['contest_id']; ?>" data-contest_media_id="<?php echo $photo['id']; ?>"  data-intended_rank="<?php echo isset($photo['intended_rank']) ? $photo['intended_rank'] : ''; ?>">
+            </a>
             <button media_id="<?php echo $photo['media_id']; ?>" contest_id="<?php echo $photo['contest_id']; ?>" umedia_id="<?php echo $photo['umedia_id']; ?>" type="button" class="btn btn-danger center-block remove thumb-rm-btn">Remove</button>
         </div>
             <?php }
@@ -92,53 +102,144 @@
         <div> Photo Id : <span class="details-sub" id="image_photo_id"></span> </div>
         <div> Owner Name : <span class="details-sub" id="image_name"></span> </div>
         <div> Owner Email-Id : <span class="details-sub" id="image_mail_id"></span> </div>
-        <!--<div> Owner Email-Id : <span class="details-sub"></span> </div>-->
+        <?php
+        if ($allowToModifyRankings === true) {
+            ?>  
+        <div>            
+            <div>
+                <form method="post" id="contest_rankings_form" onsubmit="return false;">
+                    <input type="hidden" name="contest_id" id="contest_id" >
+                    <input type="hidden" name="contest_media_id" id="contest_media_id" >
+                        Set Intended Rank: <input type="number" name="intended_rank" id="intended_rank" min="2" max="<?php echo count($contestPhotos); ?>" step="1" >
+                        <input type="submit" name="sumbit_btn" value="Submit">
+                        <span id="removeIntendedRank" class="fa fa-trash-o text-danger pointer hide-1"></span>
+                </form>        
+            </div>
+        </div>
+        <div id="respStatus" class="hide-1"></div>
+        <?php }
+        ?>
     </div>
     <button id="image_remove_btn" type="button" class="btn btn-danger center-block remove thumb-rm-btn">Remove</button>
 </div>
 
 <script>
-
-    $('.remove').click(function () {
-        var contestId = $(this).attr('contest_id');
-        var mediaId = $(this).attr('media_id');
-        var umediaId = $(this).attr('umedia_id');
-        if (confirm("Do you want to remove this photo from the contest ?")) {
-            $.ajax({
-                url: '<?php echo $this->basePath('/manager/delete-contest-media'); ?>',
-                type: 'POST',
-                data: 'contest_id=' + contestId + '&media_id=' + mediaId + '&umedia_id=' + umediaId ,
-                success: function (response) {
-                    saveArtistActivity('removed_contest', mediaId, contestId);
-                    bootbox.alert(response.message, function () {
-                        
-                        location.reload();
-                    });                    
-                    location.reload();
-                }
-            });
-        }
-        return false;
-    });
-    
-    $(".thumb img.img-responsive").click(function (e) {    
-        $('#contestMediaImg').attr('src', $(this).data('media_src'));
-        $('#image_title').html($(this).data('image_title'));
-        $('#image_photo_id').html($(this).data('image_photo_id'));
-        $('#image_name').html($(this).data('image_name'));
-        $('#image_mail_id').html($(this).data('image_mail_id'));
-        $('#image_remove_btn').attr('media_id', $(this).data('image_media_id'));
-        $('#image_remove_btn').attr('contest_id', $(this).data('image_contest_id'));
-        $('#contestMediaDetails').show();
-        
-        $('div#overlay-admin').css('display', 'block');
-        $('div#overlay-admin').css('opacity', '0.47');
-        $('div#blanket').css('height', '0');
-        
-    });
-    
     function hideshowImageDetails() {
         $('#contestMediaDetails').hide();
         $('div#overlay-admin').css('display', 'none');
     }
+    
+    $(document).ready(function() {        
+        var allowToModifyRankings = <?php echo $allowToModifyRankings === true ? 1 : 0 ?>;
+        
+        $('.remove').click(function () {
+            var contestId = $(this).attr('contest_id');
+            var mediaId = $(this).attr('media_id');
+            var umediaId = $(this).attr('umedia_id');
+            if (confirm("Do you want to remove this photo from the contest ?")) {
+                $.ajax({
+                    url: '<?php echo $this->basePath('/manager/delete-contest-media'); ?>',
+                    type: 'POST',
+                    data: 'contest_id=' + contestId + '&media_id=' + mediaId + '&umedia_id=' + umediaId ,
+                    success: function (response) {
+                        saveArtistActivity('removed_contest', mediaId, contestId);
+                        bootbox.alert(response.message, function () {
+
+                            location.reload();
+                        });                    
+                        location.reload();
+                    }
+                });
+            }
+            return false;
+        });
+    
+        $(".thumb img.img-responsive").click(function (e) {
+            var intendendRank = parseInt($(this).data('intended_rank'));
+            
+            $('#contestMediaImg').attr('src', $(this).data('media_src'));
+            $('#image_title').html($(this).data('image_title'));
+            $('#image_photo_id').html($(this).data('image_photo_id'));
+            $('#image_name').html($(this).data('image_name'));
+            $('#image_mail_id').html($(this).data('image_mail_id'));
+            $('#image_remove_btn').attr('media_id', $(this).data('image_media_id'));
+            $('#image_remove_btn').attr('contest_id', $(this).data('image_contest_id'));
+            $('#contest_rankings_form #contest_id').val($(this).data('image_contest_id'));
+            $('#contest_rankings_form #contest_media_id').val($(this).data('contest_media_id'));
+            $('#contest_rankings_form #intended_rank').val(intendendRank);
+            if (intendendRank) {
+                $('#removeIntendedRank').show();
+            }
+            $('#contestMediaDetails').show();
+            
+            $('div#overlay-admin').css('display', 'block');
+            $('div#overlay-admin').css('opacity', '0.47');
+            $('div#blanket').css('height', '0');
+
+        });
+        
+        $('form#contest_rankings_form').on('submit', function(e){
+            e.preventDefault();
+            var intendedRank = $('#intended_rank').val();
+            var contestMediaId = $('#contest_media_id').val();
+            
+            if (intendedRank <= 1) {
+                alert('Intended rank must be less than or equal 2');
+                return false;
+            }
+                
+            $.ajax({
+                url: '<?php echo $this->basePath('/manager/modify-contest-rankings'); ?>',
+                type: 'POST',
+                data: $('#contest_rankings_form').serialize(),
+                success: function (response) {
+                    if (response.success === true) {
+                        $('#respStatus').text('Intended rank is set').addClass('text-success').show();
+                        $('#removeIntendedRank').show();
+                        setTimeout(function(){
+                            $('#respStatus').text('').hide();
+                        }, 2000);
+                        $('img.contest-participant[data-contest_media_id='+contestMediaId+']').data('intended_rank', intendedRank);                                                
+                    } else if (response.message) {
+                        alert(response.message);
+                    }
+                }, 
+                error: function() {
+                    alert('Something went wrong, please try again!');   
+                    location.reload();
+                }
+            });
+        });
+        
+        $('#removeIntendedRank').on('click', function(){
+            var contestId = $('#contest_id').val();
+            var contestMediaId = $('#contest_media_id').val();
+            
+            if (confirm("Are you sure you want to remove intended rank ?")) {
+                $.ajax({
+                    url: '<?php echo $this->basePath('/manager/remove-intended-rank'); ?>',
+                    type: 'POST',
+                    data: 'contest_id=' + contestId + '&contest_media_id=' + contestMediaId,
+                    success: function (response) {
+                        if (response.success === true) {
+                            $('#respStatus').text('Intended rank is removed').addClass('text-success').show();
+                            $('#removeIntendedRank').hide();
+                            setTimeout(function(){
+                                $('#respStatus').text('').hide();
+                            }, 2000);
+                            $('img.contest-participant[data-contest_media_id='+contestMediaId+']').data('intended_rank', '');
+                            $('#contest_rankings_form #intended_rank').val('');
+                        } else {
+                            alert(response.message);                            
+                        }
+                    },                  
+                    error: function() {
+                        alert('Something went wrong, please try again!');   
+                        location.reload();
+                    }
+                });
+            }
+        });
+    });
+   
 </script>

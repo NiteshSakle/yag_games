@@ -21,7 +21,8 @@ return array(
             'YagGames\Console\SendSuccessSubmissionEmail' => 'YagGames\Console\SendSuccessSubmissionEmailController',
             'YagGames\Console\SendVotingStartEmail' => 'YagGames\Console\SendVotingStartEmailController',
             'YagGames\Console\StartVoting' => 'YagGames\Console\StartVotingController',            
-            'YagGames\Console\BracketsRoundCheck' => 'YagGames\Console\BracketsRoundCheckController'
+            'YagGames\Console\BracketsRoundCheck' => 'YagGames\Console\BracketsRoundCheckController',
+            'YagGames\Console\ModifyRankings' => 'YagGames\Console\ModifyRankingsController'
         ),
         'factories' => array(
             'YagGames\Console\AnnounceWinners' => function(Zend\Mvc\Controller\ControllerManager $cm) {
@@ -220,6 +221,15 @@ return array(
                       'route'    => 'BracketsRoundCheck',
                       'defaults' => array(
                           'controller' => 'YagGames\Console\BracketsRoundCheck',
+                          'action'     => 'index'
+                      )
+                  )
+                ),
+                'ModifyRankings' => array(
+                  'options' => array(
+                      'route'    => 'ModifyRankings',
+                      'defaults' => array(
+                          'controller' => 'YagGames\Console\ModifyRankings',
                           'action'     => 'index'
                       )
                   )
