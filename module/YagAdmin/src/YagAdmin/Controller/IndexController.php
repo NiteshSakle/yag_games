@@ -718,6 +718,16 @@ class IndexController extends BaseController {
                             if ($insertedId) {
                                 $response['success'] = true;
                                 $response['message'] = 'Success';
+                                
+                                $logData = [
+                                    'admin_id' => $_SESSION['admin_user']['admin_id'],
+                                    'form_name' => "Manager > Contest Name > Edit Contest",
+                                    'comment' => "Intended Rank #{$request->getPost('intended_rank')} is set for contest media #{$request->getPost('contest_media_id')}",
+                                    'change_type' => "OTHER",
+                                ];
+
+                                $adminActivityTrackTable = $this->getServiceLocator()->get('YagGames\Model\AdminActivityTrackTable');
+                                $adminActivityTrackTable->saveAdminTracking($logData);
                             }
                         } else {
                             $response['message'] = "Current rank of this art is {$mediaRankInfo['rank']}, intended rank should be lowest of this.";                            
@@ -746,7 +756,17 @@ class IndexController extends BaseController {
                     $contestRankingsModifyTable = $this->getServiceLocator()->get('YagGames\Model\ContestRankingsModifyTable');
                     $contestRankingsModifyTable->inActivateByMediaId($request->getPost('contest_media_id'));
                     $response['success'] = true;
-                    $response['message'] = 'Success';                    
+                    $response['message'] = 'Success'; 
+                    
+                    $logData = [
+                        'admin_id' => $_SESSION['admin_user']['admin_id'],
+                        'form_name' => "Manager > Contest Name > Edit Contest",
+                        'comment' => "Intended Rank is removed for contest media #{$request->getPost('contest_media_id')}",
+                        'change_type' => "OTHER",
+                    ];
+
+                    $adminActivityTrackTable = $this->getServiceLocator()->get('YagGames\Model\AdminActivityTrackTable');
+                    $adminActivityTrackTable->saveAdminTracking($logData);
                 } else {
                     $response['message'] = "You don't have enough permissions";
                 }

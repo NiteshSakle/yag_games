@@ -28,7 +28,7 @@ class ContestRankingsModifyTable extends BaseTable
             if (!$this->isValid($contestRankingsModify)) {
                 return false;
             }
-            $this->tableGateway->update($contestRankingsModify->getArrayCopy());
+            $this->tableGateway->update($contestRankingsModify->getArrayCopy(), array('id' => $contestRankingsModify->id));
             return true;
         } catch (Exception $e) {
             $this->logger->err($e->getMessage());

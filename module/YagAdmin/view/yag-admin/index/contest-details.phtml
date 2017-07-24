@@ -167,8 +167,10 @@
             $('#contest_rankings_form #contest_id').val($(this).data('image_contest_id'));
             $('#contest_rankings_form #contest_media_id').val($(this).data('contest_media_id'));
             $('#contest_rankings_form #intended_rank').val(intendendRank);
-            if (intendendRank) {
+            if (intendendRank) {                
                 $('#removeIntendedRank').show();
+            } else {
+                $('#removeIntendedRank').hide();
             }
             $('#contestMediaDetails').show();
             
