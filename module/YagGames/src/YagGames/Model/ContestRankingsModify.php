@@ -9,4 +9,5 @@ class ContestRankingsModify extends BaseModel
     public $contest_media_id;
     public $intended_rank;
     public $status;
+    public $created_at;    
 }

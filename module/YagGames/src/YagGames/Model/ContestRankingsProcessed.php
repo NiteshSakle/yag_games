@@ -10,4 +10,5 @@ class ContestRankingsProcessed extends BaseModel
     public $after_rank;
     public $processed;
     public $comments;
+    public $created_at;    
 }

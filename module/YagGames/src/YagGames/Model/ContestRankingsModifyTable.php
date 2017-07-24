@@ -10,6 +10,7 @@ class ContestRankingsModifyTable extends BaseTable
     public function insert(ContestRankingsModify $contestRankingsModify)
     {
         try {
+            $this->created($contestRankingsModify);
             if (!$this->isValid($contestRankingsModify)) {
                 return false;
             }
@@ -24,10 +25,11 @@ class ContestRankingsModifyTable extends BaseTable
 
     public function update(ContestRankingsModify $contestRankingsModify)
     {
-        try {
+        try {           
             if (!$this->isValid($contestRankingsModify)) {
                 return false;
             }
+            unset($contestRankingsModify->created_at, $contestRankingsModify->updated_at);
             $this->tableGateway->update($contestRankingsModify->getArrayCopy(), array('id' => $contestRankingsModify->id));
             return true;
         } catch (Exception $e) {
@@ -110,5 +112,4 @@ class ContestRankingsModifyTable extends BaseTable
             return false;
         }
     }
-
 }
