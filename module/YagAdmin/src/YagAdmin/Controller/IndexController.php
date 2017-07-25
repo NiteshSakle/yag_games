@@ -401,7 +401,8 @@ class IndexController extends BaseController {
                         $contest->thumbnail = $params['thumbnail'];
                         $contest->voting_started = 0;
                         $contest->winners_announced = 0;
-
+                        $contest->announce_winners_under_process = 0;
+                        
                         $contestTable = $this->getServiceLocator()->get('YagGames\Model\ContestTable');
                         $data = $contestTable->insert($contest);
                         if($params['type'] == '3' && $data) {
