@@ -3,7 +3,7 @@ namespace YagGames\Console;
 
 use Zend\Console\Request as ConsoleRequest;
 
-set_time_limit(3600);
+set_time_limit(7200);
 class ModifyRankingsController extends BaseConsoleController
 {
 

@@ -49,6 +49,7 @@ class AnnounceWinnersController extends BaseConsoleController
         $this->config = $this->getConfig();
 
         foreach ($contests as $contest) {
+            $contestMediaTable->updateSpecificFields($contest['id'], array('announce_winners_under_process' => 1));
             if ($this->announceWinners($contest)) {
                 $contestArtists = $contestMediaTable->getContestArtistData($contest['id']);
                 $contest['main_site_url'] = $this->config['main_site']['url'];
@@ -65,6 +66,7 @@ class AnnounceWinnersController extends BaseConsoleController
                 //Update Contest Record
                 $contestData = array();
                 $contestData['winners_announced'] = 1;
+                $contestData['announce_winners_under_process'] = 0;
                 $contestMediaTable->updateSpecificFields($contest['id'], $contestData);
             }
         }

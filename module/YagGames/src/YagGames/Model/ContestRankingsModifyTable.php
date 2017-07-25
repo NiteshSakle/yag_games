@@ -85,7 +85,7 @@ class ContestRankingsModifyTable extends BaseTable
                                 'c.voting_started' => 1,
                                 'c.winners_announced' => 0,
                                 'c.type_id' => 1,
-                                new Expression('DATE(c.winners_announce_date) > CURDATE()')
+                                'c.announce_winners_under_process' => 0
                             ))->order('crm.id ASC');
 
             $rows = $sql->prepareStatementForSqlObject($query)->execute();

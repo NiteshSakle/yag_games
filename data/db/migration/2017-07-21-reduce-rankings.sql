@@ -30,3 +30,6 @@ CREATE TABLE IF NOT EXISTS `contest_rankings_processed` (
   `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+
+ALTER TABLE  `contest` ADD  `announce_winners_under_process` TINYINT( 1 ) NULL DEFAULT  '0' AFTER  `winners_announced` ;
