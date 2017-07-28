@@ -39,7 +39,7 @@
     <div class="contest-winner">   
         <?php if ($contest['coming_soon'] == 0) { ?>
         <?php if ($contest['voting_started'] || $percentage == 100 || ($entryEndDate < $today)): ?>
-        <img src="<?php echo $this->basePath() ?>/img/closed.png"  alt="contest closed" style="width:40%" />
+<!--        <img src="<?php echo $this->basePath() ?>/img/closed.png"  alt="contest closed" style="width:40%" />    -->
         <?php else:?>
         <img src="<?php echo $this->basePath() ?>/img/congratulation.png" style="width:50%" alt="contest status" />        
         <div class="progress">

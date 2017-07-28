@@ -59,7 +59,7 @@ $percentage = ($contest['total_entries']) ? floor(($contest['total_entries'] / $
             <?php
             if ($contest['voting_started'] || $percentage == 100 || ($entryEndDate < $today)) {
                 ?>
-                <img src="<?php echo $this->basePath() ?>/img/closed.png"  alt="contest closed" style="width:63%" />
+<!--                <img src="<?php echo $this->basePath() ?>/img/closed.png"  alt="contest closed" style="width:63%" /> -->
             <?php } else { ?>
                 <img src="<?php echo $this->basePath() ?>/img/congratulation.png" style="width:63%" alt="contest status" />        
                 <div class="progress">

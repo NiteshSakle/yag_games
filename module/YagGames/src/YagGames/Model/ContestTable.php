@@ -297,7 +297,7 @@ class ContestTable extends BaseTable {
            
             if ($type == 'new') {
                 $select->order(array('new_sort' => 'ASC', 'c.entry_end_date' => 'ASC'));
-            } elseif ($type == 'past-winners') {                     
+            } elseif ($type == 'past-winners' || $type == 'my' ) {                     
                 $select->order(array('c.winners_announce_date' => 'DESC')); 
             } else {
                 $select->order('c.entry_end_date');

@@ -7,7 +7,7 @@
   <div class="contest-winner">
       
     <?php if (empty($contest['rank'])):?>
-    <img src="<?php echo $this->basePath() ?>/img/closed.png"  alt="contest status" style="width:40%" />
+<!--    <img src="<?php echo $this->basePath() ?>/img/closed.png"  alt="contest status" style="width:40%" />        -->
     <?php elseif ($contest['rank'] == 1 && $contest['type_id'] != 3) :?>
     <div class="you_ranked">You Ranked</div>
     <div class="rank">WINNER</div>
