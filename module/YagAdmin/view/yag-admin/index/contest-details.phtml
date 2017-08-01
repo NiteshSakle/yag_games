@@ -74,12 +74,15 @@
         } else {
             foreach ($contestPhotos as $photo) {
                 ?>
-
+        
         <div class="col-lg-2 col-md-3 col-xs-4 thumb" style="max-width: 180px;">
             <a href="#">
                 <img class="img-responsive contest-participant" src="<?php echo $this->mediaImage($photo, 'icons', '150', '150'); ?>" alt="<?php echo $photo['filename']; ?>" data-media_src="<?php echo $this->mediaImage($photo, 'samples', 350); ?>" data-image_title="<?php echo $photo['title']; ?>" data-image_photo_id="<?php echo $photo['umedia_id']; ?>" data-image_name="<?php echo $photo['f_name'] . ' ' . $photo['l_name']; ?>" data-image_mail_id="<?php echo $photo['email']; ?>" data-image_media_id="<?php echo $photo['media_id']; ?>" data-image_contest_id="<?php echo $photo['contest_id']; ?>" data-contest_media_id="<?php echo $photo['id']; ?>"  data-intended_rank="<?php echo isset($photo['intended_rank']) ? $photo['intended_rank'] : ''; ?>">
             </a>
-            <button media_id="<?php echo $photo['media_id']; ?>" contest_id="<?php echo $photo['contest_id']; ?>" umedia_id="<?php echo $photo['umedia_id']; ?>" type="button" class="btn btn-danger center-block remove thumb-rm-btn">Remove</button>
+            <span style="display:-webkit-box">
+                <a href="<?php echo $this->basePath('/manager/voting-details/'. $photo['id']); ?>" target="_blank" class="btn btn-primary thumb-rm-btn" title="Get Voting Details" style="margin-left:30px"><i class="fa fa-eye"></i></a>
+                <button media_id="<?php echo $photo['media_id']; ?>" contest_id="<?php echo $photo['contest_id']; ?>" umedia_id="<?php echo $photo['umedia_id']; ?>" type="button" title="Remove" class="btn btn-danger center-block remove thumb-rm-btn" style="margin-left:3px"><i class="fa fa-trash-o"></i></button>
+            </span>
         </div>
             <?php }
         }

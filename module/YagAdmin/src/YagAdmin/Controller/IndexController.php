@@ -792,5 +792,28 @@ class IndexController extends BaseController {
         
         return $d->format("Y-m-d");
     }
+    
+    public function votingDetailsAction()
+    {
+        $this->checkLogin();
+        $totalPages = 0;
+
+        $page = $this->params()->fromQuery('page', 1);
+        $contestMediaId = $this->params()->fromRoute('ContestMediaId', "0");     
+
+        $contestMediaRatings = $this->getServiceLocator()->get('YagGames\Model\ContestMediaRatingTable');
+        $data = $contestMediaRatings->getVotingDetails($page, $contestMediaId);
+        if ($data['total']) {
+            $totalPages = ceil($data['total'] / 10);
+        }  
+        
+        return new ViewModel(array(
+            'VotingDetails' => $data['resultSet'],
+            'currentPage' => $page,
+            'totalPages' => $totalPages,
+            'cMediaId' => $contestMediaId
+        ));
+
+    }
 
 }

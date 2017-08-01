@@ -30,10 +30,11 @@ return array(
             'admin' => array(
                 'type' => 'Segment',
                 'options' => array(
-                    'route'    => '/manager[/:action][/page/:page]',
+                    'route'    => '/manager[/:action][/:ContestMediaId][/page/:page]',
                     'constraints' => array(
                         'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'page'     => '[0-9]+'
+                        'page'     => '[0-9]+',
+                        'ContestMediaId'     => '[0-9]+'
                     ),
                     'defaults' => array(
                         '__NAMESPACE__' => 'YagAdmin\Controller',

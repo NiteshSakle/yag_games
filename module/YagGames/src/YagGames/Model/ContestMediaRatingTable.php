@@ -305,5 +305,40 @@ class ContestMediaRatingTable extends BaseTable
             return false;
         }
     }
+            
+    public function getVotingDetails($page = 1,$contestMediaId)
+    {
+        try { 
+            $offset = 0;
+            $limit = 10;
+            if ($page > 1) {
+                $offset = $page * 10 - 10;
+            }
+
+            $select = new Select;
+            $select->from(array('cmr' => 'contest_media_rating'))
+                    ->join(array('m' => 'ps4_members'), 'm.mem_id = cmr.member_id', array('f_name','l_name'), 'left')                    
+                    ->columns(array('*'))
+                    ->where(array(
+                            'cmr.contest_media_id' => $contestMediaId,
+                           ))
+                    ->limit($limit)
+                    ->offset($offset)
+                    ->order('cmr.created_at DESC');
+            
+            $select->quantifier(new Expression('SQL_CALC_FOUND_ROWS'));
+
+            $statement = $this->getSql()->prepareStatementForSqlObject($select);
+            $resultSet = $statement->execute();
+            return array(
+                "total" => $this->getFoundRows(),
+                "resultSet" => $resultSet
+            );
+            
+        } catch (Exception $ex) {
+            $this->logException($ex);
+            return false;
+        }                
+    }
 
 }
