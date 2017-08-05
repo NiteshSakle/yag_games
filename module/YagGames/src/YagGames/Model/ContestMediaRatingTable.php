@@ -310,9 +310,9 @@ class ContestMediaRatingTable extends BaseTable
     {
         try { 
             $offset = 0;
-            $limit = 10;
+            $limit = 50;
             if ($page > 1) {
-                $offset = $page * 10 - 10;
+                $offset = $page * 50 - 50;
             }
 
             $select = new Select;
@@ -330,9 +330,25 @@ class ContestMediaRatingTable extends BaseTable
 
             $statement = $this->getSql()->prepareStatementForSqlObject($select);
             $resultSet = $statement->execute();
+            
+            $select = new Select;
+            $select->from(array('cmr' => 'contest_media_rating'))
+                ->columns(array(
+                    'rate' => 'rating',
+                    'total_rate_count' => new Expression('COUNT(cmr.id)')
+                ))
+                ->where(array(
+                        'cmr.contest_media_id' => $contestMediaId,
+                       ))
+                ->group('cmr.rating');
+
+            $statement = $this->getSql()->prepareStatementForSqlObject($select);
+            $countPerRating = $statement->execute();
+
             return array(
                 "total" => $this->getFoundRows(),
-                "resultSet" => $resultSet
+                "resultSet" => $resultSet,
+                'countPerRating' => $countPerRating                
             );
             
         } catch (Exception $ex) {

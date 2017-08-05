@@ -2,12 +2,15 @@
     <a class="pull-left" href="<?php echo $this->config('admin_main_site', 'url') ?>">
         <i class="fa fa-backward"></i> Go to main site
     </a>   
+    <br>
 <div class="portlet">
-        <div class="portlet-title">
-            <div class="caption">
-                <i class="fa fa-trophy"></i>Voting Details 
-            </div>
-        </div>
+    <br>
+         <span style="font-size: 18px"> Total Number Of Vote(s): <?php echo $totalVotes;?></h4></span>
+         <br>
+         <?php foreach ($countPerRating as $count) { ?>
+            <span style="font-size: 18px"><?php echo $count['rate']/2; ?> Star Voting By <?php echo $count['total_rate_count'];?> Vote(s); &nbsp;</span>
+         <?php } ?>
+         <hr>
         <?php
             if($totalPages >= 1) {?>
                 <div class="portlet-body">
@@ -55,7 +58,7 @@
                                         <?php echo $details['ip_address']; ?>
                                     </td>
                                     <td>
-                                        <?php echo $details['created_at']; ?>
+                                        <?php echo date("F jS, Y h:i A", strtotime($details['created_at']));?>
                                     </td>
                                 </tr>
                             <?php } ?>                        

@@ -804,14 +804,16 @@ class IndexController extends BaseController {
         $contestMediaRatings = $this->getServiceLocator()->get('YagGames\Model\ContestMediaRatingTable');
         $data = $contestMediaRatings->getVotingDetails($page, $contestMediaId);
         if ($data['total']) {
-            $totalPages = ceil($data['total'] / 10);
+            $totalPages = ceil($data['total'] / 50);
         }  
         
         return new ViewModel(array(
             'VotingDetails' => $data['resultSet'],
             'currentPage' => $page,
             'totalPages' => $totalPages,
-            'cMediaId' => $contestMediaId
+            'cMediaId' => $contestMediaId,
+            'totalVotes' => $data['total'],
+            'countPerRating' => $data['countPerRating']
         ));
 
     }
