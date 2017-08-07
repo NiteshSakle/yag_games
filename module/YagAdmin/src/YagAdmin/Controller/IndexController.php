@@ -800,9 +800,10 @@ class IndexController extends BaseController {
 
         $page = $this->params()->fromQuery('page', 1);
         $contestMediaId = $this->params()->fromRoute('ContestMediaId', "0");     
-
+        $searchText = $this->params()->fromQuery('search', "");
+        
         $contestMediaRatings = $this->getServiceLocator()->get('YagGames\Model\ContestMediaRatingTable');
-        $data = $contestMediaRatings->getVotingDetails($page, $contestMediaId);
+        $data = $contestMediaRatings->getVotingDetails($contestMediaId, $page, $searchText);
         if ($data['total']) {
             $totalPages = ceil($data['total'] / 50);
         }  

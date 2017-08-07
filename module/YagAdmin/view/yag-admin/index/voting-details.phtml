@@ -3,6 +3,10 @@
         <i class="fa fa-backward"></i> Go to main site
     </a>   
     <br>
+    <div class="pull-right">
+        <input type="text" name="search" id="search_field" value="<?Php if(isset($_GET['search'])) {echo $_GET['search'];}?>" style="width: 250px;" placeholder="Search By Name or Ip ">
+        <input type="button" value="Search" onclick="search()" />
+    </div>
 <div class="portlet">
     <br>
          <span style="font-size: 18px"> Total Number Of Vote(s): <?php echo $totalVotes;?></h4></span>
@@ -90,7 +94,7 @@
             </div>
         </div>
         <?php }else{
-                echo "<h3>No Votes For This Image Till Now..!!!</h3>";
+                echo "<h3>No Votes For Selected category..!!</h3>";
         }?>
     </div>
 </div>
@@ -98,6 +102,13 @@
 <script>
         $('.page-number').click(function () {
             page = $(this).attr('value');
-            window.location.href = "<?php echo $this->basePath('/manager/voting-details/'. "$cMediaId" .'?page='); ?>" + page;
+            var searchText = document.getElementById("search_field").value;
+            window.location.href = "<?php echo $this->basePath('/manager/voting-details/'. "$cMediaId" .'?page='); ?>" + page + '&search=' + searchText; ;
         });    
+        
+        function search() {
+            var searchText = document.getElementById("search_field").value;
+            window.location.href = "<?php echo $this->basePath('/manager/voting-details/'. "$cMediaId". '?search=') ?>" + searchText;
+        }
+        
 </script>

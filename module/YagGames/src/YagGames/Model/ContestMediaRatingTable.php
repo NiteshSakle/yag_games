@@ -5,6 +5,7 @@ namespace YagGames\Model;
 use Exception;
 use Zend\Db\Sql\Predicate\Expression;
 use Zend\Db\Sql\Select;
+use Zend\Db\Sql\Expression as Expr;
 
 class ContestMediaRatingTable extends BaseTable
 {
@@ -306,7 +307,7 @@ class ContestMediaRatingTable extends BaseTable
         }
     }
             
-    public function getVotingDetails($page = 1,$contestMediaId)
+    public function getVotingDetails($contestMediaId, $page = 1, $searchText)
     {
         try { 
             $offset = 0;
@@ -315,6 +316,32 @@ class ContestMediaRatingTable extends BaseTable
                 $offset = $page * 50 - 50;
             }
 
+            //Total Votes Per Rating
+            $select = new Select;
+            $select->from(array('cmr' => 'contest_media_rating'))
+                    ->join(array('m' => 'ps4_members'), 'm.mem_id = cmr.member_id', array('f_name','l_name'), 'left') 
+                ->columns(array(
+                    'rate' => 'rating',
+                    'total_rate_count' => new Expression('COUNT(cmr.id)')
+                ))
+                ->where(array(
+                        'cmr.contest_media_id' => $contestMediaId,
+                       ))
+                ->group('cmr.rating');
+            
+            if ($searchText != "") {
+                $select->where
+                        ->nest()
+                            ->like(new Expression("CONCAT(m.f_name, ' ', m.l_name)"), "%" . $searchText . "%")
+                            -> OR 
+                            ->like('cmr.ip_address', "%" . $searchText . "%")
+                        ->unnest();
+            }
+
+            $statement = $this->getSql()->prepareStatementForSqlObject($select);
+            $countPerRating = $statement->execute();
+
+            //Voting Details
             $select = new Select;
             $select->from(array('cmr' => 'contest_media_rating'))
                     ->join(array('m' => 'ps4_members'), 'm.mem_id = cmr.member_id', array('f_name','l_name'), 'left')                    
@@ -326,24 +353,18 @@ class ContestMediaRatingTable extends BaseTable
                     ->offset($offset)
                     ->order('cmr.created_at DESC');
             
+            if ($searchText != "") {
+                $select->where
+                        ->nest()
+                            ->like(new Expression("CONCAT(m.f_name, ' ', m.l_name)"), "%" . $searchText . "%")
+                            -> OR 
+                            ->like('cmr.ip_address', "%" . $searchText . "%")
+                        ->unnest();            }
+            
             $select->quantifier(new Expression('SQL_CALC_FOUND_ROWS'));
-
             $statement = $this->getSql()->prepareStatementForSqlObject($select);
             $resultSet = $statement->execute();
             
-            $select = new Select;
-            $select->from(array('cmr' => 'contest_media_rating'))
-                ->columns(array(
-                    'rate' => 'rating',
-                    'total_rate_count' => new Expression('COUNT(cmr.id)')
-                ))
-                ->where(array(
-                        'cmr.contest_media_id' => $contestMediaId,
-                       ))
-                ->group('cmr.rating');
-
-            $statement = $this->getSql()->prepareStatementForSqlObject($select);
-            $countPerRating = $statement->execute();
 
             return array(
                 "total" => $this->getFoundRows(),
