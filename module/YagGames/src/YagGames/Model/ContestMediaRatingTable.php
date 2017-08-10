@@ -327,7 +327,8 @@ class ContestMediaRatingTable extends BaseTable
                 ->where(array(
                         'cmr.contest_media_id' => $contestMediaId,
                        ))
-                ->group('cmr.rating');
+                ->group('cmr.rating')
+                ->order('rate DESC');
             
             if ($searchText != "") {
                 $select->where
